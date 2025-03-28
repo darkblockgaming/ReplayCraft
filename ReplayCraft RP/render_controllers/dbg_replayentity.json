@@ -1,0 +1,27 @@
+{
+  "format_version": "1.16.0",
+  "render_controllers": {
+    "controller.render.replayentity": {
+      "arrays": {
+        "textures": {
+          "array.skin": [
+            "texture.steve",
+            "texture.custom1",
+            "texture.custom2",
+            "texture.custom3",
+            "texture.custom4"
+          ]
+        }
+      },
+      "geometry": "geometry.default",
+      "materials": [
+        {
+          "*": "material.default"
+        }
+      ],
+      "textures": [
+        "array.skin[query.property('dbg:skin')]"
+      ]
+    }
+  }
+}

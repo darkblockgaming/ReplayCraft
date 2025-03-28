@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Menu Putar Ulang] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Pengaturan Pemutaran Ulang
+dbg.rc1.title.preview.settings=Pengaturan Pratinjau
+dbg.rc1.title.replaycraft.settings=§bPengaturan Putar Ulang Kerajinan§r
+dbg.rc1.title.multiplayer.settings=§bPengaturan Multipemain§r
+
+dbg.rc1.body.2a=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bOff
+dbg.rc1.body.2b=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bOn (Latar Belakang)
+dbg.rc1.body.2c=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bDijeda
+dbg.rc1.body.2d=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bDisimpan (Mati)
+dbg.rc1.body.2e=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bDisimpan (Mati)
+dbg.rc1.body.2f=Dibuat Oleh §6DarkBlock Gaming§r\nRekaman: §bDisimpan (Mati)
+
+dbg.rc1.body.made.by.dbg=Dibuat Oleh §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Mulai Merekam
+dbg.rc1.button.settings=Pengaturan
+dbg.rc1.button.multiplayer.settings=Pengaturan Multipemain
+dbg.rc1.button.important.info=Info Penting [Harus Dibaca]
+
+dbg.rc1.button.save.recording=Simpan Rekaman
+dbg.rc1.button.pause.recording=Jeda Perekaman
+dbg.rc1.button.cancel.recording=Batalkan Perekaman
+
+dbg.rc1.button.resume.recording=Lanjutkan Perekaman
+
+dbg.rc1.button.preview.replay=Pratinjau Putar Ulang [Kamera Gratis]
+dbg.rc1.button.stop.preview=Hentikan Pratinjau
+dbg.rc1.button.preview.settings=Pengaturan Pratinjau
+dbg.rc1.button.start.camera.setup=Mulai Pengaturan Kamera
+dbg.rc1.button.cancel.recording=Batalkan Perekaman
+
+dbg.rc1.button.load.frame.t=Bingkai Beban (Kutu)
+dbg.rc1.button.load.frame.s=Bingkai Beban (Detik)
+dbg.rc1.button.add.camera.point=Tambahkan Titik Kamera
+dbg.rc1.button.proceed.further=Lanjutkan Lebih Lanjut
+dbg.rc1.button.reset.camera.setup=Atur Ulang Pengaturan Kamera
+
+dbg.rc1.button.start.replay=Mulai Putar Ulang
+dbg.rc1.button.stop.replay=Hentikan Pemutaran Ulang
+dbg.rc1.button.settings=Pengaturan
+dbg.rc1.button.goback.camsetup=Kembali (Pengaturan Kamera)
+dbg.rc1.button.load.structure.or.reset=Memuat Struktur Atau Reset
+
+dbg.rc1.dropdown.title.replay.type=Jenis Pemutaran Ulang
+dbg.rc1.dropdown.title.replay.skin.type=Opsi untuk menyesuaikan kecepatan pemutaran ulang/pratinjau untuk sementara tidak tersedia di versi ini.\n\nPutar Ulang Skin Pemain
+dbg.rc1.dropdown.title.name.of.replay.player=Nama Pemutar Putar Ulang
+dbg.rc1.textfield.custom.name=Nama Kustom
+dbg.rc1.dropdown.title.camera.ease.type=Jenis Kemudahan Kamera
+dbg.rc1.dropdown.title.camera.type=Tipe Kamera
+dbg.rc1.dropdown.title.focus.on.player=Fokus Pada (Pemain)
+dbg.rc1.dropdown.title.affect.camera.of.players=Mempengaruhi Kamera Pemain
+dbg.rc1.slider.title.topdown.cam.height=Tinggi Kamera Atas-bawah 
+
+dbg.rc1.dropdown.title.preview.type=Jenis Pratinjau
+dbg.rc1.dropdown.title.preview.skin.type=Opsi untuk menyesuaikan kecepatan pemutaran ulang/pratinjau untuk sementara tidak tersedia dalam versi ini.\n\nPratinjau Skin Pemain
+dbg.rc1.dropdown.title.name.of.preview.player=Nama Pemutar Pratinjau
+dbg.rc1.textfield.title.custom.name=Nama Kustom
+
+dbg.rc1.button.load.build.and.Reset=Muat Bangun & Setel Ulang
+dbg.rc1.button.delete.progress=Hapus Kemajuan
+
+dbg.rc1.toggle.sound.cues=Isyarat Suara
+dbg.rc1.toggle.text.prompts=Perintah Teks
+dbg.rc1.dropdown.select.block.placing.sound=Karena banyaknya saran dan permintaan untuk menambahkan suara penempatan blok selama pemutaran ulang, saya telah menerapkan fitur ini. Anda sekarang dapat mengaktifkannya, dan selama pemutaran ulang atau pratinjau, blok akan menghasilkan suara yang sesuai.\nSaat ini, fitur ini tidak otomatis, dan semua blok akan menggunakan sumber suara yang sama yang dipilih di sini. Namun, saya akan melakukan segala upaya untuk menerapkan suara khusus blok otomatis di versi mendatang.\n\nPilih Blokir Suara Penempatan
+dbg.rc1.toggle.block.placing.sound=Blokir Penempatan Suara
+dbg.rc1.toggle.multiplayer.replay=Pemutaran Ulang Multipemain
+
+dbg.rc1.mes.thanks=§gTerima kasih telah mengunduh ReplayCraft, saya harap Anda menikmatinya!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cHarap muat bingkai sebelum menambahkan titik kamera
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cTitik kamera sudah ada pada tanda centang ini!
+dbg.rc1.mes.no.camera.points.found=§cTidak Ada Titik Kamera yang Ditemukan
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cTidak ditemukan titik kamera, tambahkan setidaknya satu titik kamera
+dbg.rc1.mes.rec.has.started=§bPerekaman Telah Dimulai (Di Latar Belakang)
+dbg.rc1.mes.rec.resumed.successfully=§bPerekaman Dilanjutkan Berhasil
+dbg.rc1.mes.rec.paused.successfully=§bRekaman Berhasil Dijeda
+dbg.rc1.mes.rec.saved.successfully=§bRekaman Berhasil Disimpan
+dbg.rc1.mes.replay.preview.is.already.on=§cReplay Pratinjau Sudah Aktif, Tunggu Hingga Selesai atau Hentikan
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Pratinjau Pemutaran Ulang Telah Berhasil Dihentikan"
+dbg.rc1.mes.replay.preview.is.already.off=§cPratinjau Putar Ulang Sudah Mati
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cHarap Tunggu Hingga Pratinjau Pemutaran Ulang Selesai atau Klik Hentikan Pratinjau
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gHarap Lakukan Pengaturan Kamera Sinematik
+dbg.rc1.mes.replay.stopped=Pemutaran Ulang Dihentikan
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cHarap Tunggu Hingga Pemutaran Ulang Selesai atau Klik Hentikan Pemutaran Ulang
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§cSetidaknya dua titik kamera direkomendasikan
+dbg.rc1.mes.replay.is.already.in.progress=§cPemutaran Ulang Sudah Sedang Berlangsung
+dbg.rc1.mes.replay.is.already.stopped=§cPemutaran Ulang Sudah Dihentikan
+dbg.rc1.mes.please.click.submit=§cSilakan Klik Kirim
+dbg.rc1.mes.wait.for.replay.preview.end=§cTunggu Pratinjau Pemutaran Ulang Berakhir
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cHarap Tunggu Hingga Pemutaran Ulang/Pratinjau Selesai atau Hentikan
+dbg.rc1.mes.interaction.successfull=Interaksi Berhasil
+dbg.rc1.mes.no.other.players.available=§cTidak ada pemain lain yang tersedia.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cAnda Harus Memilih Beberapa Pemain
+dbg.rc1.mes.multiplayer.replay.is.off=§aPemutaran ulang multipemain tidak aktif.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Menu Sinematik] v1.8.0§r
+dbg.rc2.title.settings=Pengaturan
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Pengaturan Kamera§r\n\nJenis Kemudahan (Animasi Transisi)
+dbg.rc2.textfield.time=Waktu (Waktu Lebih Banyak 
+dbg.rc2.dropdown.camera.facing=Menghadapi Kamera
+dbg.rc2.slider.pitch=Pitch (rotasi X)
+dbg.rc2.slider.yaw=Yaw (rotasi Y)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Pengaturan Partikel§r\n\nJenis Partikel Bingkai
+dbg.rc2.toggle.enable.position.frame.particles=Aktifkan Partikel Bingkai Posisi
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Pengaturan Pratinjau§r\n\nPengganda Kecepatan Pratinjau
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Pengaturan Layar Pudar§r\n\n§cNilai Merah
+dbg.rc2.slider.green.value=§aNilai Hijau
+dbg.rc2.slider.blue.value=§9Nilai Biru
+
+dbg.rc2.body=Dibuat Oleh §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Tambahkan Bingkai Posisi
+dbg.rc2.button.start.camera=Mulai Kamera
+dbg.rc2.button.preview=Pratinjau
+dbg.rc2.button.stop.camera=Hentikan Kamera
+dbg.rc2.button.settings=Pengaturan
+dbg.rc2.button.reset.settings=Atur Ulang Pengaturan
+dbg.rc2.button.remove.last.frame=Hapus Bingkai Terakhir
+dbg.rc2.button.remove.all.frames=Hapus Semua Bingkai
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cTidak Dapat Menambahkan Bingkai Saat Kamera Bergerak§r
+dbg.rc2.mes.camera.is.already.moving=§cKamera sudah bergerak §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cPratinjau Kamera sudah bergerak §r
+dbg.rc2.mes.camera.movement.complete=§aPergerakan kamera selesai §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cTidak ada gerakan kamera aktif untuk menghentikan §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cTidak Dapat Mengubah Pengaturan Saat Kamera Bergerak§r
+dbg.rc2.mes.please.click.submit=§cSilakan Klik Kirim
+dbg.rc2.mes.settings.have.been.saved.successfully=Pengaturan telah berhasil disimpan
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cTidak dapat mengatur ulang pengaturan saat kamera bergerak§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Semua pengaturan telah diatur ulang ke default.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cTidak dapat menghapus bingkai terakhir saat kamera bergerak§r
+dbg.rc2.mes.no.frames.to.remove=§cTidak ada bingkai yang perlu dihapus§r
+dbg.rc2.mes.removed.last.frame=Menghapus bingkai terakhir
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cTidak dapat menghapus semua bingkai saat kamera bergerak§r
+dbg.rc2.mes.no.frames.to.remove=§cTidak ada bingkai yang perlu dihapus§r
+dbg.rc2.mes.all.frames.have.been.removed=Semua bingkai telah dihapus.
