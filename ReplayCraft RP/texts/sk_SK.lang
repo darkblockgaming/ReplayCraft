@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Nastavenia opakovaného prehrávania
+dbg.rc1.title.preview.settings=Nastavenia ukážky
+dbg.rc1.title.replaycraft.settings=§bNastavenia ReplayCraft§r
+dbg.rc1.title.multiplayer.settings=§bNastavenia pre viacerých hráčov§r
+
+dbg.rc1.body.2a=Vyrobil §6DarkBlock Gaming§r\nNahrávanie: §bVyp
+dbg.rc1.body.2b=Vytvoril §6DarkBlock Gaming§r\nNahrávanie: §bOn (Pozadie)
+dbg.rc1.body.2c=Vytvoril §6DarkBlock Gaming§r\nNahrávanie: §bPozastavené
+dbg.rc1.body.2d=Vytvoril §6DarkBlock Gaming§r\nNahrávanie: §bUložené (vypnuté)
+dbg.rc1.body.2e=Vytvoril §6DarkBlock Gaming§r\nNahrávanie: §bUložené (vypnuté)
+dbg.rc1.body.2f=Vytvoril §6DarkBlock Gaming§r\nNahrávanie: §bUložené (vypnuté)
+
+dbg.rc1.body.made.by.dbg=Vyrobil §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Spustite nahrávanie
+dbg.rc1.button.settings=Nastavenia
+dbg.rc1.button.multiplayer.settings=Nastavenia hry pre viacerých hráčov
+dbg.rc1.button.important.info=Dôležité informácie [Must Read]
+
+dbg.rc1.button.save.recording=Uložiť záznam
+dbg.rc1.button.pause.recording=Pozastaviť nahrávanie
+dbg.rc1.button.cancel.recording=Zrušiť nahrávanie
+
+dbg.rc1.button.resume.recording=Obnoviť nahrávanie
+
+dbg.rc1.button.preview.replay=Prehrať ukážku [Free Cam]
+dbg.rc1.button.stop.preview=Zastaviť ukážku
+dbg.rc1.button.preview.settings=Nastavenia ukážky
+dbg.rc1.button.start.camera.setup=Spustite nastavenie fotoaparátu
+dbg.rc1.button.cancel.recording=Zrušiť nahrávanie
+
+dbg.rc1.button.load.frame.t=Načítať rámec (Ticks)
+dbg.rc1.button.load.frame.s=Načítať rámec (sekundy)
+dbg.rc1.button.add.camera.point=Pridať bod kamery
+dbg.rc1.button.proceed.further=Pokračovať ďalej
+dbg.rc1.button.reset.camera.setup=Obnoviť nastavenie fotoaparátu
+
+dbg.rc1.button.start.replay=Spustite prehrávanie
+dbg.rc1.button.stop.replay=Zastaviť prehrávanie
+dbg.rc1.button.settings=Nastavenia
+dbg.rc1.button.goback.camsetup=Prejsť späť (Nastavenie kamery)
+dbg.rc1.button.load.structure.or.reset=Načítať štruktúru alebo resetovať
+
+dbg.rc1.dropdown.title.replay.type=Typ opakovaného prehrávania
+dbg.rc1.dropdown.title.replay.skin.type=Možnosť upraviť rýchlosť prehrávania/náhľadu je v tejto verzii dočasne nedostupná.\n\nReplay Player Skin
+dbg.rc1.dropdown.title.name.of.replay.player=Meno prehrávača prehrávania
+dbg.rc1.textfield.custom.name=Vlastný názov
+dbg.rc1.dropdown.title.camera.ease.type=Typ uľahčenia fotoaparátu
+dbg.rc1.dropdown.title.camera.type=Typ fotoaparátu
+dbg.rc1.dropdown.title.focus.on.player=Zamerať sa na (prehrávač)
+dbg.rc1.dropdown.title.affect.camera.of.players=Ovplyvnite kameru hráčov
+dbg.rc1.slider.title.topdown.cam.height=Výška vačky zhora nadol 
+
+dbg.rc1.dropdown.title.preview.type=Typ ukážky
+dbg.rc1.dropdown.title.preview.skin.type=Možnosť upraviť rýchlosť prehrávania/náhľadu je v tejto verzii dočasne nedostupná.\n\nUkážka vzhľadu prehrávača
+dbg.rc1.dropdown.title.name.of.preview.player=Meno prehrávača ukážky
+dbg.rc1.textfield.title.custom.name=Vlastný názov
+
+dbg.rc1.button.load.build.and.Reset=Načítať Build & Reset
+dbg.rc1.button.delete.progress=Odstrániť priebeh
+
+dbg.rc1.toggle.sound.cues=Zvukové podnety
+dbg.rc1.toggle.text.prompts=Textové výzvy
+dbg.rc1.dropdown.select.block.placing.sound=Kvôli početným návrhom a požiadavkám na pridanie blokujúcich zvukov počas prehrávania som túto funkciu implementoval. Teraz ju môžete povoliť a počas prehrávania alebo ukážky budú bloky vydávať zvuky podľa toho.\nV súčasnosti táto funkcia nie je automatická a všetky bloky budú používať rovnaký zdroj zvuku, ktorý ste tu vybrali. Vynaložím však maximálne úsilie na implementáciu automatických zvukov špecifických pre blok v budúcich verziách.\n\nVyberte Block Placeing Sound
+dbg.rc1.toggle.block.placing.sound=Blokovať zvuk
+dbg.rc1.toggle.multiplayer.replay=Opakované prehrávanie pre viacerých hráčov
+
+dbg.rc1.mes.thanks=§gĎakujem za stiahnutie ReplayCraft, dúfam, že sa vám bude páčiť!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cPred pridaním bodu kamery načítajte snímku
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cKamerový bod v tomto bode už existuje!
+dbg.rc1.mes.no.camera.points.found=§c Nenašli sa žiadne body kamery
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cNenašli sa žiadne kamerové body, pridajte aspoň jeden kamerový bod
+dbg.rc1.mes.rec.has.started=§bNahrávanie sa začalo (na pozadí)
+dbg.rc1.mes.rec.resumed.successfully=§bNahrávanie bolo úspešne obnovené
+dbg.rc1.mes.rec.paused.successfully=§bNahrávanie bolo úspešne pozastavené
+dbg.rc1.mes.rec.saved.successfully=§bZáznam bol úspešne uložený
+dbg.rc1.mes.replay.preview.is.already.on=§c Ukážka opakovaného prehrávania je už zapnutá, počkajte na dokončenie alebo ju zastavte
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Opakované prehrávanie ukážky sa úspešne zastavilo"
+dbg.rc1.mes.replay.preview.is.already.off=§c Ukážka opakovaného prehrávania je už vypnutá
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cPočkajte, prosím, na dokončenie ukážky opätovného prehrávania alebo kliknite na Zastaviť ukážku
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gVykonajte nastavenie filmovej kamery
+dbg.rc1.mes.replay.stopped=Opakované prehrávanie zastavené
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cProsím, počkajte na dokončenie opätovného prehrávania alebo kliknite na Zastaviť opätovné prehrávanie
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§cOdporúčajú sa aspoň dva kamerové body
+dbg.rc1.mes.replay.is.already.in.progress=§cPrehrávanie už prebieha
+dbg.rc1.mes.replay.is.already.stopped=§cPrehrávanie je už zastavené
+dbg.rc1.mes.please.click.submit=§cKliknite na tlačidlo Odoslať
+dbg.rc1.mes.wait.for.replay.preview.end=§cPočkajte na koniec ukážky opakovaného prehrávania
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cProsím, počkajte na dokončenie prehrávania/náhľadu alebo zastavte
+dbg.rc1.mes.interaction.successfull=Interakcia bola úspešná
+dbg.rc1.mes.no.other.players.available=§c Nie sú k dispozícii žiadni ďalší hráči.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cMusíte vybrať viacerých hráčov
+dbg.rc1.mes.multiplayer.replay.is.off=§aPrehrávanie pre viacerých hráčov je vypnuté.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v1.8.0§r
+dbg.rc2.title.settings=Nastavenia
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Nastavenia fotoaparátu§r\n\nTyp zjednodušenia (animácia prechodu)
+dbg.rc2.textfield.time=Čas (Viac času 
+dbg.rc2.dropdown.camera.facing=Čelná kamera
+dbg.rc2.slider.pitch=Pitch (X-rotácia)
+dbg.rc2.slider.yaw=Vybočenie (otáčanie Y)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Nastavenia častíc§r\n\nTyp častíc rámu
+dbg.rc2.toggle.enable.position.frame.particles=Povoliť umiestnenie častíc rámu
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Nastavenia ukážky§r\n\nNáhľad násobiteľ rýchlosti
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Nastavenia stmavenia obrazovky§r\n\n§cČervená hodnota
+dbg.rc2.slider.green.value=§aZelená hodnota
+dbg.rc2.slider.blue.value=§9 Modrá hodnota
+
+dbg.rc2.body=Vyrobené spoločnosťou §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Pridať pozičný rámec
+dbg.rc2.button.start.camera=Spustite fotoaparát
+dbg.rc2.button.preview=Ukážka
+dbg.rc2.button.stop.camera=Zastaviť kameru
+dbg.rc2.button.settings=Nastavenia
+dbg.rc2.button.reset.settings=Obnoviť nastavenia
+dbg.rc2.button.remove.last.frame=Odstrániť posledný rám
+dbg.rc2.button.remove.all.frames=Odstrániť všetky rámy
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cNie je možné pridať snímky, keď je kamera v pohybe§r
+dbg.rc2.mes.camera.is.already.moving=§cCamera sa už pohybuje §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cNáhľad Kamera sa už pohybuje §r
+dbg.rc2.mes.camera.movement.complete=§aPohyb kamery kompletný §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cŽiadny aktívny pohyb kamery na zastavenie §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cNie je možné zmeniť nastavenia, keď je kamera v pohybe§r
+dbg.rc2.mes.please.click.submit=§cKliknite na tlačidlo Odoslať
+dbg.rc2.mes.settings.have.been.saved.successfully=Nastavenia boli úspešne uložené
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cNie je možné resetovať nastavenia, keď je kamera v pohybe§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Všetky nastavenia boli obnovené na predvolené hodnoty.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cPoslednú snímku nemožno odstrániť, keď je kamera v pohybe§r
+dbg.rc2.mes.no.frames.to.remove=§cŽiadne rámy na odstránenie§r
+dbg.rc2.mes.removed.last.frame=Odstránený posledný rám
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cKeď je kamera v pohybe, nemožno odstrániť všetky snímky§r
+dbg.rc2.mes.no.frames.to.remove=§cŽiadne rámy na odstránenie§r
+dbg.rc2.mes.all.frames.have.been.removed=Všetky rámy boli odstránené.

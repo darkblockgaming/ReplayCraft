@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Herhalingsmenu] v2.0.8-bèta§r
+dbg.rc1.title.replay.settings=Instellingen voor opnieuw afspelen
+dbg.rc1.title.preview.settings=Voorbeeldinstellingen
+dbg.rc1.title.replaycraft.settings=§bReplayCraft-instellingen§r
+dbg.rc1.title.multiplayer.settings=§bMultiplayer-instellingen§r
+
+dbg.rc1.body.2a=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bUit
+dbg.rc1.body.2b=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bAan (achtergrond)
+dbg.rc1.body.2c=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bGepauzeerd
+dbg.rc1.body.2d=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bOpgeslagen (uit)
+dbg.rc1.body.2e=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bOpgeslagen (uit)
+dbg.rc1.body.2f=Gemaakt door §6DarkBlock Gaming§r\nOpname: §bOpgeslagen (uit)
+
+dbg.rc1.body.made.by.dbg=Gemaakt door §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Begin met opnemen
+dbg.rc1.button.settings=Instellingen
+dbg.rc1.button.multiplayer.settings=Multiplayer-instellingen
+dbg.rc1.button.important.info=Belangrijke informatie [moet lezen]
+
+dbg.rc1.button.save.recording=Opname opslaan
+dbg.rc1.button.pause.recording=Pauzeer de opname
+dbg.rc1.button.cancel.recording=Annuleer de opname
+
+dbg.rc1.button.resume.recording=Hervat de opname
+
+dbg.rc1.button.preview.replay=Voorbeeld opnieuw afspelen [Gratis camera]
+dbg.rc1.button.stop.preview=Voorbeeld stoppen
+dbg.rc1.button.preview.settings=Voorbeeldinstellingen
+dbg.rc1.button.start.camera.setup=Start Camera-instellingen
+dbg.rc1.button.cancel.recording=Annuleer de opname
+
+dbg.rc1.button.load.frame.t=Laadframe (teken)
+dbg.rc1.button.load.frame.s=Laadframe (seconden)
+dbg.rc1.button.add.camera.point=Camerapunt toevoegen
+dbg.rc1.button.proceed.further=Ga verder
+dbg.rc1.button.reset.camera.setup=Camera-instellingen resetten
+
+dbg.rc1.button.start.replay=Start opnieuw afspelen
+dbg.rc1.button.stop.replay=Stop met opnieuw afspelen
+dbg.rc1.button.settings=Instellingen
+dbg.rc1.button.goback.camsetup=Ga terug (Cam-instelling)
+dbg.rc1.button.load.structure.or.reset=Structuur laden of resetten
+
+dbg.rc1.dropdown.title.replay.type=Type herhaling
+dbg.rc1.dropdown.title.replay.skin.type=De optie om de snelheid voor opnieuw afspelen/preview aan te passen is tijdelijk niet beschikbaar in deze versie.\n\nPlayer-skin opnieuw afspelen
+dbg.rc1.dropdown.title.name.of.replay.player=Naam van de herhalingsspeler
+dbg.rc1.textfield.custom.name=Aangepaste naam
+dbg.rc1.dropdown.title.camera.ease.type=Type cameragemak
+dbg.rc1.dropdown.title.camera.type=Cameratype
+dbg.rc1.dropdown.title.focus.on.player=Focus op (speler)
+dbg.rc1.dropdown.title.affect.camera.of.players=Beïnvloed de camera van spelers
+dbg.rc1.slider.title.topdown.cam.height=Cam-hoogte van boven naar beneden 
+
+dbg.rc1.dropdown.title.preview.type=Voorbeeldtype
+dbg.rc1.dropdown.title.preview.skin.type=De optie om de afspeel-/voorbeeldsnelheid aan te passen is tijdelijk niet beschikbaar in deze versie.\n\nBekijk een voorbeeld van de spelerskin
+dbg.rc1.dropdown.title.name.of.preview.player=Naam van voorbeeldspeler
+dbg.rc1.textfield.title.custom.name=Aangepaste naam
+
+dbg.rc1.button.load.build.and.Reset=Laad opbouwen en resetten
+dbg.rc1.button.delete.progress=Voortgang verwijderen
+
+dbg.rc1.toggle.sound.cues=Geluidssignalen
+dbg.rc1.toggle.text.prompts=Tekstprompts
+dbg.rc1.dropdown.select.block.placing.sound=Vanwege talrijke suggesties en verzoeken om tijdens het opnieuw afspelen blokplaatsingsgeluiden toe te voegen, heb ik deze functie geïmplementeerd. Je kunt het nu inschakelen, en tijdens het opnieuw afspelen of bekijken zullen blokken dienovereenkomstig geluiden produceren.\nMomenteel is deze functie niet automatisch en gebruiken alle blokken dezelfde geluidsbron die hier is geselecteerd. Ik zal echter alles in het werk stellen om in toekomstige versies automatische blokspecifieke geluiden te implementeren.\n\nSelecteer Geluid blokkeren
+dbg.rc1.toggle.block.placing.sound=Blok plaatsen van geluid
+dbg.rc1.toggle.multiplayer.replay=Multiplayer-herhaling
+
+dbg.rc1.mes.thanks=§gBedankt voor het downloaden van ReplayCraft, ik hoop dat je ervan zult genieten!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cLaad een frame voordat je een camerapunt toevoegt
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cEr bestaat al een camerapunt bij dit vinkje!
+dbg.rc1.mes.no.camera.points.found=§cGeen camerapunten gevonden
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cGeen camerapunten gevonden, voeg minimaal één camerapunt toe
+dbg.rc1.mes.rec.has.started=§bOpname is gestart (op de achtergrond)
+dbg.rc1.mes.rec.resumed.successfully=§bOpname succesvol hervat
+dbg.rc1.mes.rec.paused.successfully=§bOpname succesvol gepauzeerd
+dbg.rc1.mes.rec.saved.successfully=§bOpname succesvol opgeslagen
+dbg.rc1.mes.replay.preview.is.already.on=§cVoorbeeld opnieuw afspelen staat al aan, wacht tot het voltooid is of stop het
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Voorbeeld van herhaling is succesvol gestopt"
+dbg.rc1.mes.replay.preview.is.already.off=§cVoorbeeld opnieuw afspelen staat al uit
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cWacht tot het voorbeeld van het opnieuw afspelen is voltooid of klik op Voorbeeld stoppen
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gVoer de installatie van de filmcamera uit
+dbg.rc1.mes.replay.stopped=Opnieuw afspelen gestopt
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cWacht tot het opnieuw afspelen is voltooid of klik op Opnieuw afspelen stoppen
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§cEr worden ten minste twee camerapunten aanbevolen
+dbg.rc1.mes.replay.is.already.in.progress=§cHerhaling is al bezig
+dbg.rc1.mes.replay.is.already.stopped=§cHerhaling is al gestopt
+dbg.rc1.mes.please.click.submit=§cKlik op Verzenden
+dbg.rc1.mes.wait.for.replay.preview.end=§cWacht tot het voorbeeld van de herhaling is afgelopen
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cWacht tot het opnieuw afspelen/voorbeeld is voltooid of stop het
+dbg.rc1.mes.interaction.successfull=Interactie succesvol
+dbg.rc1.mes.no.other.players.available=§cEr zijn geen andere spelers beschikbaar.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cJe moet meerdere spelers selecteren
+dbg.rc1.mes.multiplayer.replay.is.off=§aMultiplayer-herhaling is uitgeschakeld.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Filmmenu] v1.8.0§r
+dbg.rc2.title.settings=Instellingen
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Camera-instellingen§r\n\nGemakstype (overgangsanimatie)
+dbg.rc2.textfield.time=Tijd (tijd meer 
+dbg.rc2.dropdown.camera.facing=Camera gericht
+dbg.rc2.slider.pitch=Pitch (X-rotatie)
+dbg.rc2.slider.yaw=Yaw (Y-rotatie)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Deeltjesinstellingen§r\n\nFrame Deeltjestype
+dbg.rc2.toggle.enable.position.frame.particles=Schakel Positieframedeeltjes in
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Voorbeeldinstellingen§r\n\nVoorbeeldsnelheidsvermenigvuldiger
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Scherminstellingen vervagen§r\n\n§cRoodwaarde
+dbg.rc2.slider.green.value=§aGroene waarde
+dbg.rc2.slider.blue.value=§9Blauwe waarde
+
+dbg.rc2.body=Gemaakt door §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Positiekader toevoegen
+dbg.rc2.button.start.camera=Camera starten
+dbg.rc2.button.preview=Voorbeeld
+dbg.rc2.button.stop.camera=Camera stoppen
+dbg.rc2.button.settings=Instellingen
+dbg.rc2.button.reset.settings=Instellingen resetten
+dbg.rc2.button.remove.last.frame=Laatste frame verwijderen
+dbg.rc2.button.remove.all.frames=Verwijder alle frames
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cKan geen kaders toevoegen terwijl de camera in beweging is§r
+dbg.rc2.mes.camera.is.already.moving=§cCamera beweegt al §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cVoorbeeld Camera beweegt al §r
+dbg.rc2.mes.camera.movement.complete=§aCamerabeweging voltooid §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cGeen actieve camerabeweging om §r te stoppen
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cKan instellingen niet wijzigen terwijl de camera in beweging is§r
+dbg.rc2.mes.please.click.submit=§cKlik op Verzenden
+dbg.rc2.mes.settings.have.been.saved.successfully=Instellingen zijn succesvol opgeslagen
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cKan instellingen niet resetten terwijl de camera in beweging is§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Alle instellingen zijn teruggezet naar de standaardinstellingen.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cKan laatste frame niet verwijderen terwijl de camera beweegt§r
+dbg.rc2.mes.no.frames.to.remove=§cGeen frames om te verwijderen§r
+dbg.rc2.mes.removed.last.frame=Laatste frame verwijderd
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cKan niet alle frames verwijderen terwijl de camera beweegt§r
+dbg.rc2.mes.no.frames.to.remove=§cGeen frames om te verwijderen§r
+dbg.rc2.mes.all.frames.have.been.removed=Alle kozijnen zijn verwijderd.

@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Toistovalikko] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Toistoasetukset
+dbg.rc1.title.preview.settings=Esikatseluasetukset
+dbg.rc1.title.replaycraft.settings=§bReplayCraft-asetukset§r
+dbg.rc1.title.multiplayer.settings=§bMonipeliasetukset§r
+
+dbg.rc1.body.2a=Tekijä §6DarkBlock Gaming§r\nTallennus: §bOff
+dbg.rc1.body.2b=Tekijä §6DarkBlock Gaming§r\nTallennus: §bOn (tausta)
+dbg.rc1.body.2c=Tekijä §6DarkBlock Gaming§r\nTallennus: §bKeskeytetty
+dbg.rc1.body.2d=Tekijä §6DarkBlock Gaming§r\nTallennus: §bTallennettu (pois päältä)
+dbg.rc1.body.2e=Tekijä §6DarkBlock Gaming§r\nTallennus: §bTallennettu (pois päältä)
+dbg.rc1.body.2f=Tekijä §6DarkBlock Gaming§r\nTallennus: §bTallennettu (pois päältä)
+
+dbg.rc1.body.made.by.dbg=Tekijä §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Aloita tallennus
+dbg.rc1.button.settings=Asetukset
+dbg.rc1.button.multiplayer.settings=Moninpeliasetukset
+dbg.rc1.button.important.info=Tärkeää tietoa [Pakollinen lukeminen]
+
+dbg.rc1.button.save.recording=Tallenna tallennus
+dbg.rc1.button.pause.recording=Keskeytä tallennus
+dbg.rc1.button.cancel.recording=Peruuta tallennus
+
+dbg.rc1.button.resume.recording=Jatka tallennusta
+
+dbg.rc1.button.preview.replay=Esikatselutoisto [Free Cam]
+dbg.rc1.button.stop.preview=Lopeta esikatselu
+dbg.rc1.button.preview.settings=Esikatseluasetukset
+dbg.rc1.button.start.camera.setup=Käynnistä kameran asetukset
+dbg.rc1.button.cancel.recording=Peruuta tallennus
+
+dbg.rc1.button.load.frame.t=Lataa kehys (rasit)
+dbg.rc1.button.load.frame.s=Lataa kehys (sekuntia)
+dbg.rc1.button.add.camera.point=Lisää kamerapiste
+dbg.rc1.button.proceed.further=Jatka Jatka
+dbg.rc1.button.reset.camera.setup=Nollaa kameran asetukset
+
+dbg.rc1.button.start.replay=Aloita toisto
+dbg.rc1.button.stop.replay=Lopeta toisto
+dbg.rc1.button.settings=Asetukset
+dbg.rc1.button.goback.camsetup=Palaa takaisin (kameran asetukset)
+dbg.rc1.button.load.structure.or.reset=Lataa rakenne tai nollaa
+
+dbg.rc1.dropdown.title.replay.type=Toistotyyppi
+dbg.rc1.dropdown.title.replay.skin.type=Toiston/esikatselun nopeuden säätäminen ei ole tilapäisesti käytettävissä tässä versiossa.\n\nToista Playerin ulkoasu
+dbg.rc1.dropdown.title.name.of.replay.player=Toistosoittimen nimi
+dbg.rc1.textfield.custom.name=Mukautettu nimi
+dbg.rc1.dropdown.title.camera.ease.type=Kameran helppokäyttöinen tyyppi
+dbg.rc1.dropdown.title.camera.type=Kameran tyyppi
+dbg.rc1.dropdown.title.focus.on.player=Keskity päälle (soitin)
+dbg.rc1.dropdown.title.affect.camera.of.players=Vaikuttaa pelaajien kameraan
+dbg.rc1.slider.title.topdown.cam.height=Ylhäältä alas suuntautuva kameran korkeus 
+
+dbg.rc1.dropdown.title.preview.type=Esikatselun tyyppi
+dbg.rc1.dropdown.title.preview.skin.type=Toiston/esikatselun nopeuden säätäminen ei ole tilapäisesti käytettävissä tässä versiossa.\n\nEsikatsele Playerin ulkoasu
+dbg.rc1.dropdown.title.name.of.preview.player=Esikatselusoittimen nimi
+dbg.rc1.textfield.title.custom.name=Mukautettu nimi
+
+dbg.rc1.button.load.build.and.Reset=Lataa Build & Reset
+dbg.rc1.button.delete.progress=Poista edistyminen
+
+dbg.rc1.toggle.sound.cues=Äänimerkit
+dbg.rc1.toggle.text.prompts=Tekstikehotteet
+dbg.rc1.dropdown.select.block.placing.sound=Olen ottanut tämän ominaisuuden käyttöön lukuisten ehdotusten ja pyyntöjen vuoksi lisätä lohkojakoääniä toiston aikana. Voit nyt ottaa sen käyttöön, ja toiston tai esikatselun aikana lohkot tuottavat ääniä vastaavasti.\nTällä hetkellä tämä ominaisuus ei ole automaattinen, ja kaikki lohkot käyttävät samaa tässä valittua äänilähdettä. Teen kuitenkin kaikkeni ottaakseni automaattiset lohkokohtaiset äänet käyttöön tulevissa versioissa.\n\nValitse Block Placing Sound
+dbg.rc1.toggle.block.placing.sound=Estä sijoitteluääni
+dbg.rc1.toggle.multiplayer.replay=Moninpelin uusinta
+
+dbg.rc1.mes.thanks=§gKiitos ReplayCraftin lataamisesta, toivottavasti pidät siitä!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cLataa kehys ennen kamerapisteen lisäämistä
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cKamerapiste on jo olemassa tässä rastissa!
+dbg.rc1.mes.no.camera.points.found=§cKamerapisteitä ei löytynyt
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cKamerapisteitä ei löytynyt, lisää vähintään yksi kamerapiste
+dbg.rc1.mes.rec.has.started=§bTallennus on alkanut (taustalla)
+dbg.rc1.mes.rec.resumed.successfully=§bTallennusta jatkettiin onnistuneesti
+dbg.rc1.mes.rec.paused.successfully=§bTallennus keskeytetty onnistuneesti
+dbg.rc1.mes.rec.saved.successfully=§bTallennus tallennettu onnistuneesti
+dbg.rc1.mes.replay.preview.is.already.on=§cToiston esikatselu on jo päällä, odota sen valmistumista tai lopeta se
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Toiston esikatselu on pysähtynyt onnistuneesti"
+dbg.rc1.mes.replay.preview.is.already.off=§cToiston esikatselu on jo pois päältä
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cOdota toiston esikatselun valmistumista tai napsauta Lopeta esikatselu
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gSuorita elokuvakameran asetukset
+dbg.rc1.mes.replay.stopped=Toisto pysäytetty
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cOdota toiston päättymistä tai napsauta Lopeta toisto
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§cVähintään kaksi kamerapistettä suositellaan
+dbg.rc1.mes.replay.is.already.in.progress=§cToisto on jo käynnissä
+dbg.rc1.mes.replay.is.already.stopped=§cToisto on jo pysäytetty
+dbg.rc1.mes.please.click.submit=§cNapsauta Lähetä
+dbg.rc1.mes.wait.for.replay.preview.end=§cOdota toiston esikatselun loppumista
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cOdota toiston/esikatselun valmistumista tai lopeta se
+dbg.rc1.mes.interaction.successfull=Vuorovaikutus onnistui
+dbg.rc1.mes.no.other.players.available=§cEi muita pelaajia saatavilla.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cSinun on valittava useita pelaajia
+dbg.rc1.mes.multiplayer.replay.is.off=§aMoninpelin toisto on pois päältä.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v1.8.0§r
+dbg.rc2.title.settings=Asetukset
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Kameran asetukset§r\n\nHelppotyyppi (siirtymäanimaatio)
+dbg.rc2.textfield.time=Aika (Time More 
+dbg.rc2.dropdown.camera.facing=Kameraan päin
+dbg.rc2.slider.pitch=Pitch (X-kierto)
+dbg.rc2.slider.yaw=Yw (Y-kierto)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Partikkeliasetukset§r\n\nFrame Partikkelityyppi
+dbg.rc2.toggle.enable.position.frame.particles=Ota Position Frame Particles käyttöön
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Esikatseluasetukset§r\n\nEsikatsele nopeuskerroin
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Näytön häivytysasetukset§r\n\n§cPunainen arvo
+dbg.rc2.slider.green.value=§aVihreä arvo
+dbg.rc2.slider.blue.value=§9 Sininen arvo
+
+dbg.rc2.body=Tekijä §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Lisää sijaintikehys
+dbg.rc2.button.start.camera=Käynnistä kamera
+dbg.rc2.button.preview=Esikatselu
+dbg.rc2.button.stop.camera=Pysäytä kamera
+dbg.rc2.button.settings=Asetukset
+dbg.rc2.button.reset.settings=Palauta asetukset
+dbg.rc2.button.remove.last.frame=Poista viimeinen kehys
+dbg.rc2.button.remove.all.frames=Poista kaikki kehykset
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cEi voi lisätä kehyksiä kameran ollessa liikkeessä§r
+dbg.rc2.mes.camera.is.already.moving=§cKamera liikkuu jo §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cEsikatselu Kamera liikkuu jo §r
+dbg.rc2.mes.camera.movement.complete=§aKameran liike valmis §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cEi aktiivista kameran liikettä pysäyttämiseksi §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cEi voi muuttaa asetuksia kameran ollessa liikkeessä§r
+dbg.rc2.mes.please.click.submit=§cNapsauta Lähetä
+dbg.rc2.mes.settings.have.been.saved.successfully=Asetukset on tallennettu onnistuneesti
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cEi voi nollata asetuksia kameran ollessa liikkeessä§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Kaikki asetukset on palautettu oletusasetuksiin.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cEi voi poistaa viimeistä kuvaa kameran ollessa liikkeessä§r
+dbg.rc2.mes.no.frames.to.remove=§cEi kehyksiä poistettavaksi§r
+dbg.rc2.mes.removed.last.frame=Viimeinen kehys poistettu
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cEi voi poistaa kaikkia kehyksiä kameran ollessa liikkeessä§r
+dbg.rc2.mes.no.frames.to.remove=§cEi kehyksiä poistettavaksi§r
+dbg.rc2.mes.all.frames.have.been.removed=Kaikki kehykset on poistettu.

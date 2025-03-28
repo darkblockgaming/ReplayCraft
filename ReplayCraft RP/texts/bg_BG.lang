@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Меню за повторение] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Настройки за повторение
+dbg.rc1.title.preview.settings=Настройки за визуализация
+dbg.rc1.title.replaycraft.settings=§bНастройки на ReplayCraft§r
+dbg.rc1.title.multiplayer.settings=§bНастройки за мултиплейър§r
+
+dbg.rc1.body.2a=Направено от §6DarkBlock Gaming§r\nЗапис: §bИзкл
+dbg.rc1.body.2b=Направено от §6DarkBlock Gaming§r\nЗапис: §bНа (фон)
+dbg.rc1.body.2c=Направено от §6DarkBlock Gaming§r\nЗапис: §bПауза
+dbg.rc1.body.2d=Направено от §6DarkBlock Gaming§r\nЗапис: §bЗапазено (Изкл.)
+dbg.rc1.body.2e=Направено от §6DarkBlock Gaming§r\nЗапис: §bЗапазено (Изкл.)
+dbg.rc1.body.2f=Направено от §6DarkBlock Gaming§r\nЗапис: §bЗапазено (Изкл.)
+
+dbg.rc1.body.made.by.dbg=Направено от §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Започнете запис
+dbg.rc1.button.settings=Настройки
+dbg.rc1.button.multiplayer.settings=Настройки за мултиплейър
+dbg.rc1.button.important.info=Важна информация [Трябва да се прочете]
+
+dbg.rc1.button.save.recording=Запазване на записа
+dbg.rc1.button.pause.recording=Пауза на записа
+dbg.rc1.button.cancel.recording=Отказ от записване
+
+dbg.rc1.button.resume.recording=Възобновяване на записа
+
+dbg.rc1.button.preview.replay=Преглед на повторение [Безплатна камера]
+dbg.rc1.button.stop.preview=Спрете визуализацията
+dbg.rc1.button.preview.settings=Настройки за визуализация
+dbg.rc1.button.start.camera.setup=Стартирайте настройката на камерата
+dbg.rc1.button.cancel.recording=Отказ от записване
+
+dbg.rc1.button.load.frame.t=Заредете рамка (отметки)
+dbg.rc1.button.load.frame.s=Заредете рамка (секунди)
+dbg.rc1.button.add.camera.point=Добавете точка на камерата
+dbg.rc1.button.proceed.further=Продължете по-нататък
+dbg.rc1.button.reset.camera.setup=Нулирайте настройките на камерата
+
+dbg.rc1.button.start.replay=Стартиране на повторение
+dbg.rc1.button.stop.replay=Спрете повторението
+dbg.rc1.button.settings=Настройки
+dbg.rc1.button.goback.camsetup=Връщане назад (Настройка на камерата)
+dbg.rc1.button.load.structure.or.reset=Заредете структурата или нулирайте
+
+dbg.rc1.dropdown.title.replay.type=Тип повторение
+dbg.rc1.dropdown.title.replay.skin.type=Опцията за регулиране на скоростта на повторно възпроизвеждане/предварителен преглед временно не е налична в тази версия.\n\nПовторно възпроизвеждане на кожата на играча
+dbg.rc1.dropdown.title.name.of.replay.player=Име на плейъра за повторение
+dbg.rc1.textfield.custom.name=Персонализирано име
+dbg.rc1.dropdown.title.camera.ease.type=Camera Ease Type
+dbg.rc1.dropdown.title.camera.type=Тип камера
+dbg.rc1.dropdown.title.focus.on.player=Фокус върху (плейър)
+dbg.rc1.dropdown.title.affect.camera.of.players=Влияе на камерата на играчите
+dbg.rc1.slider.title.topdown.cam.height=Височина на камерата отгоре надолу 
+
+dbg.rc1.dropdown.title.preview.type=Тип преглед
+dbg.rc1.dropdown.title.preview.skin.type=Опцията за регулиране на скоростта на повторение/преглед временно не е налична в тази версия.\n\nВизуализация на кожата на играча
+dbg.rc1.dropdown.title.name.of.preview.player=Име на плейъра за предварителен преглед
+dbg.rc1.textfield.title.custom.name=Персонализирано име
+
+dbg.rc1.button.load.build.and.Reset=Зареждане на изграждане и нулиране
+dbg.rc1.button.delete.progress=Изтриване на напредъка
+
+dbg.rc1.toggle.sound.cues=Звукови знаци
+dbg.rc1.toggle.text.prompts=Текстови подкани
+dbg.rc1.dropdown.select.block.placing.sound=Поради многобройни предложения и искания за добавяне на звуци за поставяне на блокове по време на повторение, внедрих тази функция. Вече можете да я активирате и по време на повторение или предварителен преглед блоковете ще издават съответни звуци.\nВ момента тази функция не е автоматична и всички блокове ще използват един и същ източник на звук, избран тук. Въпреки това ще положа всички усилия да внедря автоматични специфични за блок звуци в бъдещи версии.\n\nИзберете Блокиране на звук при поставяне
+dbg.rc1.toggle.block.placing.sound=Блокиране на звука
+dbg.rc1.toggle.multiplayer.replay=Мултиплейър повторение
+
+dbg.rc1.mes.thanks=§gБлагодаря, че изтеглихте ReplayCraft, надявам се, че ще ви хареса!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cМоля, заредете рамка, преди да добавите точка на камерата
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cТочка на камерата вече съществува на тази отметка!
+dbg.rc1.mes.no.camera.points.found=§cНяма намерени точки на камерата
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cНяма намерени точки за камера, добавете поне една точка за камера
+dbg.rc1.mes.rec.has.started=§bЗаписването е започнало (на заден план)
+dbg.rc1.mes.rec.resumed.successfully=§b Записването е възобновено успешно
+dbg.rc1.mes.rec.paused.successfully=§bЗаписът е поставен на пауза успешно
+dbg.rc1.mes.rec.saved.successfully=§bЗаписът е запазен успешно
+dbg.rc1.mes.replay.preview.is.already.on=§cПредварителният преглед вече е включен, изчакайте да завърши или го спрете
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Визуализацията на повторното пускане е спряна успешно"
+dbg.rc1.mes.replay.preview.is.already.off=§cПредварителният преглед вече е изключен
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cМоля, изчакайте завършването на повторния преглед или щракнете върху Спри прегледа
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gМоля, направете настройката на кинематографичната камера
+dbg.rc1.mes.replay.stopped=Повторното възпроизвеждане е спряно
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cМоля, изчакайте повторното възпроизвеждане да завърши или щракнете върху Спри повторното възпроизвеждане
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§c Препоръчват се най-малко две точки на камерата
+dbg.rc1.mes.replay.is.already.in.progress=§cПовторното възпроизвеждане вече е в ход
+dbg.rc1.mes.replay.is.already.stopped=§cПовторното възпроизвеждане вече е спряно
+dbg.rc1.mes.please.click.submit=§cМоля, щракнете върху Изпрати
+dbg.rc1.mes.wait.for.replay.preview.end=§cИзчакайте края на прегледа на повторното възпроизвеждане
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cМоля, изчакайте повторното възпроизвеждане/прегледът да бъде завършен или го спрете
+dbg.rc1.mes.interaction.successfull=Взаимодействието е успешно
+dbg.rc1.mes.no.other.players.available=§cНяма налични други играчи.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cТрябва да изберете няколко играча
+dbg.rc1.mes.multiplayer.replay.is.off=§a Мултиплейърът е изключен.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Кинематографично меню] v1.8.0§r
+dbg.rc2.title.settings=Настройки
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Настройки на камерата§r\n\nТип улесняване (анимация на преход)
+dbg.rc2.textfield.time=Време (Повече време 
+dbg.rc2.dropdown.camera.facing=Облицовка на камерата
+dbg.rc2.slider.pitch=Стъпка (X-ротация)
+dbg.rc2.slider.yaw=Отклоняване (Y-завъртане)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Настройки на частиците§r\n\nТип частица на рамката
+dbg.rc2.toggle.enable.position.frame.particles=Активиране на частиците на рамката за позициониране
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Настройки за визуализация§r\n\nМножител на скоростта за визуализация
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Настройки за избледняване на екрана§r\n\n§cЧервена стойност
+dbg.rc2.slider.green.value=§aЗелена стойност
+dbg.rc2.slider.blue.value=§9Синя стойност
+
+dbg.rc2.body=Направено от §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Добавяне на рамка за позиция
+dbg.rc2.button.start.camera=Стартирайте Камера
+dbg.rc2.button.preview=Преглед
+dbg.rc2.button.stop.camera=Спрете камерата
+dbg.rc2.button.settings=Настройки
+dbg.rc2.button.reset.settings=Нулиране на настройките
+dbg.rc2.button.remove.last.frame=Премахване на последния кадър
+dbg.rc2.button.remove.all.frames=Премахване на всички рамки
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cНе мога да добавям рамки, докато камерата е в движение§r
+dbg.rc2.mes.camera.is.already.moving=§cКамерата вече се движи §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cПреглед Камерата вече се движи §r
+dbg.rc2.mes.camera.movement.complete=§aЗавършено движение на камерата §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cНяма активно движение на камерата за спиране §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cНе могат да се променят настройките, докато камерата е в движение§r
+dbg.rc2.mes.please.click.submit=§cМоля, щракнете върху Изпрати
+dbg.rc2.mes.settings.have.been.saved.successfully=Настройките са запазени успешно
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cНе могат да се нулират настройките, докато камерата е в движение§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Всички настройки са върнати по подразбиране.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cНе може да премахне последния кадър, докато камерата е в движение§r
+dbg.rc2.mes.no.frames.to.remove=§cНяма рамки за премахване§r
+dbg.rc2.mes.removed.last.frame=Премахнат последния кадър
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cНе могат да се премахнат всички кадри, докато камерата е в движение§r
+dbg.rc2.mes.no.frames.to.remove=§cНяма рамки за премахване§r
+dbg.rc2.mes.all.frames.have.been.removed=Всички рамки са премахнати.

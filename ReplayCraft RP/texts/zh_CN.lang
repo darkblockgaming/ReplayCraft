@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9回放工坊 [回放菜单] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=回放设置
+dbg.rc1.title.preview.settings=预览设置
+dbg.rc1.title.replaycraft.settings=§b回放工坊 设置§r
+dbg.rc1.title.multiplayer.settings=§b多人模式设置§r
+
+dbg.rc1.body.2a=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b已停止
+dbg.rc1.body.2b=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b录制中
+dbg.rc1.body.2c=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b已暂停
+dbg.rc1.body.2d=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b已保存 (已停止录制)
+dbg.rc1.body.2e=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b已保存 (已停止录制)
+dbg.rc1.body.2f=§6DarkBlock Gaming§r 制作  §6MRUIAW§r 授权汉化\n录制状态: §b已保存 (已停止录制)
+
+dbg.rc1.body.made.by.dbg=§6DarkBlock Gaming§r 制作\n§6MRUIAW§r 授权翻译
+
+dbg.rc1.button.start.recording=开始录制
+dbg.rc1.button.settings=设置
+dbg.rc1.button.multiplayer.settings=多人模式设置
+dbg.rc1.button.important.info=重要须知 [必读]
+
+dbg.rc1.button.save.recording=保存录制
+dbg.rc1.button.pause.recording=暂停录制
+dbg.rc1.button.cancel.recording=取消录制
+
+dbg.rc1.button.resume.recording=继续录制
+
+dbg.rc1.button.preview.replay=预览回放 [自由视角]
+dbg.rc1.button.stop.preview=停止预览
+dbg.rc1.button.preview.settings=预览设置
+dbg.rc1.button.start.camera.setup=开始编辑相机设置
+dbg.rc1.button.cancel.recording=取消录制
+
+dbg.rc1.button.load.frame.t=加载帧 (单位：游戏刻)
+dbg.rc1.button.load.frame.s=加载帧 (单位：秒)
+dbg.rc1.button.add.camera.point=添加相机点
+dbg.rc1.button.proceed.further=进一步设置
+dbg.rc1.button.reset.camera.setup=重置相机设置
+
+dbg.rc1.button.start.replay=开始回放
+dbg.rc1.button.stop.replay=停止回放
+dbg.rc1.button.settings=设置
+dbg.rc1.button.goback.camsetup=返回 (相机设置)
+dbg.rc1.button.load.structure.or.reset=加载被修改的方块 或 重置
+
+dbg.rc1.dropdown.title.replay.type=回放类型
+dbg.rc1.dropdown.title.replay.skin.type=调整回放/预览速度的选项在此版本暂时不可用。\n\n回放时玩家皮肤
+dbg.rc1.dropdown.title.name.of.replay.player=回放时玩家的名称
+dbg.rc1.textfield.custom.name=自定义玩家名
+dbg.rc1.dropdown.title.camera.ease.type=相机平滑视角类型
+dbg.rc1.dropdown.title.camera.type=相机类型
+dbg.rc1.dropdown.title.focus.on.player=相机跟随（玩家）
+dbg.rc1.dropdown.title.affect.camera.of.players=将相机效果应用于玩家：
+dbg.rc1.slider.title.topdown.cam.height=相机俯视高度
+
+dbg.rc1.dropdown.title.preview.type=预览类型
+dbg.rc1.dropdown.title.preview.skin.type=调整回放/预览速度的选项在此版本暂时不可用。\n\n预览时玩家皮肤
+dbg.rc1.dropdown.title.name.of.preview.player=预览时玩家的名称
+dbg.rc1.textfield.title.custom.name=自定义玩家名
+
+dbg.rc1.button.load.build.and.Reset=加载被修改的方块
+dbg.rc1.button.delete.progress=删除进度
+
+dbg.rc1.toggle.sound.cues=提示音
+dbg.rc1.toggle.text.prompts=提示文本
+dbg.rc1.dropdown.select.block.placing.sound=由于收到大量建议和请求，希望在回放期间添加方块放置的声音，我已实现此功能。您现在可以启用它，在回放或预览期间，方块将相应地发出声音。\n目前，所有方块在放置时都将使用此处所选择的声音,无法自动按照方块类型来切换声音。但是，我将尽一切努力在未来版本中实现自动切换不同方块放置时的声音。\n\n选择方块放置时的声音
+dbg.rc1.toggle.block.placing.sound=方块放置时的声音
+dbg.rc1.toggle.multiplayer.replay=多人模式回放
+
+dbg.rc1.mes.thanks=§g感谢您下载 回放工坊，希望你会喜欢它！
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§c请在添加相机点前先加载某一帧
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§c此游戏刻已有一相机点！
+dbg.rc1.mes.no.camera.points.found=§c未找到相机点
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§c未找到相机点，请至少添加一个相机点
+dbg.rc1.mes.rec.has.started=§b录制已开始
+dbg.rc1.mes.rec.resumed.successfully=§b已成功继续录制
+dbg.rc1.mes.rec.paused.successfully=§b已成功暂停录制
+dbg.rc1.mes.rec.saved.successfully=§b已成功保存录制
+dbg.rc1.mes.replay.preview.is.already.on=§c正在预览回放，请等待其回放结束或手动结束它
+dbg.rc1.mes.replay.preview.has.stopped.successfully=回放预览已停止"
+dbg.rc1.mes.replay.preview.is.already.off=§c回放预览已关闭
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§c请等待其回放预览结束或点击 停止预览
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§g请完成 运镜摄像机 设置
+dbg.rc1.mes.replay.stopped=已停止回放
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§c请等待回放完成 或点击 停止回放
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§c建议添加至少两个相机点
+dbg.rc1.mes.replay.is.already.in.progress=§c已正在回放
+dbg.rc1.mes.replay.is.already.stopped=§c已停止回放
+dbg.rc1.mes.please.click.submit=§c请点击提交以确认修改
+dbg.rc1.mes.wait.for.replay.preview.end=§c等待回放预览结束
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§c请等待 回放/预览 结束 或 手动结束它
+dbg.rc1.mes.interaction.successfull=修改成功
+dbg.rc1.mes.no.other.players.available=§c无其他玩家
+dbg.rc1.mes.you.have.to.select.multiple.players=§c你必须选择多名玩家
+dbg.rc1.mes.multiplayer.replay.is.off=§a多人回放已关闭.
+
+dbg.rc2.title.cinematic.menu=§9回放工坊 [运镜菜单] v1.8.0§r
+dbg.rc2.title.settings=设置
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- 相机设置§r\n\n缓动类型（过渡动画）
+dbg.rc2.textfield.time=时间（时间越长 = 速度越慢）
+dbg.rc2.dropdown.camera.facing=相机朝向
+dbg.rc2.slider.pitch=俯仰角（X轴旋转）
+dbg.rc2.slider.yaw=偏航角（Y轴旋转）
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- 粒子设置§r\n\n帧粒子类型
+dbg.rc2.toggle.enable.position.frame.particles=启用位置帧粒子
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- 预览设置§r\n\n预览速度倍率
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- 屏幕淡入淡出设置§r\n\n§cR
+dbg.rc2.slider.green.value=§aG
+dbg.rc2.slider.blue.value=§9B
+
+dbg.rc2.body=§6DarkBlock Gaming§r 制作\n§6MRUIAW§r 授权翻译
+
+dbg.rc2.button.add.position.frame=添加关键帧
+dbg.rc2.button.start.camera=开始播放
+dbg.rc2.button.preview=预览
+dbg.rc2.button.stop.camera=停止播放
+dbg.rc2.button.settings=设置
+dbg.rc2.button.reset.settings=重置设置
+dbg.rc2.button.remove.last.frame=移除最后一个关键帧
+dbg.rc2.button.remove.all.frames=移除所有关键帧
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§c无法在相机运动时添加帧§r
+dbg.rc2.mes.camera.is.already.moving=§c相机已在运动中§r
+dbg.rc2.mes.preview.camera.is.already.moving=§c预览相机已在运动中§r
+dbg.rc2.mes.camera.movement.complete=§a相机运动完成§r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§c没有可停止的正在进行运动的相机§r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§c相机运动时无法修改设置§r
+dbg.rc2.mes.please.click.submit=§c请点击提交
+dbg.rc2.mes.settings.have.been.saved.successfully=已保存设置
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§c相机运动时无法重置设置§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=所有设置选项已被重置为默认
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§c相机运动时无法删除最后一个关键帧§r
+dbg.rc2.mes.no.frames.to.remove=§c没有关键帧可以移除§r
+dbg.rc2.mes.removed.last.frame=移除最后一个关键帧
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§c相机运动时无法删除所有关键帧§r
+dbg.rc2.mes.no.frames.to.remove=§c没有关键帧可以移除§r
+dbg.rc2.mes.all.frames.have.been.removed=已移除所有关键帧

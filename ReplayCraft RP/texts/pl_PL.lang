@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Menu powtórki] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Ustawienia odtwarzania
+dbg.rc1.title.preview.settings=Podgląd ustawień
+dbg.rc1.title.replaycraft.settings=§bUstawienia ReplayCraft§r
+dbg.rc1.title.multiplayer.settings=§bUstawienia gry wieloosobowej§r
+
+dbg.rc1.body.2a=Wykonane przez §6DarkBlock Gaming§r\nNagrywanie: §bWyłączone
+dbg.rc1.body.2b=Wykonane przez §6DarkBlock Gaming§r\nNagrywanie: §bWł. (w tle)
+dbg.rc1.body.2c=Wykonane przez §6DarkBlock Gaming§r\nNagrywanie: §bWstrzymane
+dbg.rc1.body.2d=Wykonane przez §6DarkBlock Gaming§r\nNagranie: §bZapisane (Wyłączone)
+dbg.rc1.body.2e=Wykonane przez §6DarkBlock Gaming§r\nNagranie: §bZapisane (Wyłączone)
+dbg.rc1.body.2f=Wykonane przez §6DarkBlock Gaming§r\nNagranie: §bZapisane (Wyłączone)
+
+dbg.rc1.body.made.by.dbg=Wykonane przez §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Rozpocznij nagrywanie
+dbg.rc1.button.settings=Ustawienia
+dbg.rc1.button.multiplayer.settings=Ustawienia gry wieloosobowej
+dbg.rc1.button.important.info=Ważne informacje [trzeba przeczytać]
+
+dbg.rc1.button.save.recording=Zapisz nagranie
+dbg.rc1.button.pause.recording=Wstrzymaj nagrywanie
+dbg.rc1.button.cancel.recording=Anuluj nagrywanie
+
+dbg.rc1.button.resume.recording=Wznów nagrywanie
+
+dbg.rc1.button.preview.replay=Podgląd powtórki [Darmowa kamera]
+dbg.rc1.button.stop.preview=Zatrzymaj podgląd
+dbg.rc1.button.preview.settings=Podgląd ustawień
+dbg.rc1.button.start.camera.setup=Rozpocznij konfigurację aparatu
+dbg.rc1.button.cancel.recording=Anuluj nagrywanie
+
+dbg.rc1.button.load.frame.t=Załaduj ramkę (kleszcze)
+dbg.rc1.button.load.frame.s=Załaduj ramkę (sekundy)
+dbg.rc1.button.add.camera.point=Dodaj punkt kamery
+dbg.rc1.button.proceed.further=Przejdź dalej
+dbg.rc1.button.reset.camera.setup=Zresetuj konfigurację aparatu
+
+dbg.rc1.button.start.replay=Rozpocznij odtwarzanie
+dbg.rc1.button.stop.replay=Zatrzymaj odtwarzanie
+dbg.rc1.button.settings=Ustawienia
+dbg.rc1.button.goback.camsetup=Wróć (konfiguracja kamery)
+dbg.rc1.button.load.structure.or.reset=Załaduj strukturę lub zresetuj
+
+dbg.rc1.dropdown.title.replay.type=Typ powtórki
+dbg.rc1.dropdown.title.replay.skin.type=Opcja dostosowania szybkości odtwarzania/podglądu jest tymczasowo niedostępna w tej wersji.\n\nSkórka odtwarzacza „Odtwórz ponownie”.
+dbg.rc1.dropdown.title.name.of.replay.player=Nazwa gracza powtórkowego
+dbg.rc1.textfield.custom.name=Nazwa niestandardowa
+dbg.rc1.dropdown.title.camera.ease.type=Typ łatwości aparatu
+dbg.rc1.dropdown.title.camera.type=Typ aparatu
+dbg.rc1.dropdown.title.focus.on.player=Skup się na (graczu)
+dbg.rc1.dropdown.title.affect.camera.of.players=Wpływ na kamerę graczy
+dbg.rc1.slider.title.topdown.cam.height=Wysokość krzywki z góry na dół 
+
+dbg.rc1.dropdown.title.preview.type=Typ podglądu
+dbg.rc1.dropdown.title.preview.skin.type=Opcja dostosowania szybkości odtwarzania/podglądu jest tymczasowo niedostępna w tej wersji.\n\nPodgląd skórki gracza
+dbg.rc1.dropdown.title.name.of.preview.player=Nazwa odtwarzacza podglądu
+dbg.rc1.textfield.title.custom.name=Nazwa niestandardowa
+
+dbg.rc1.button.load.build.and.Reset=Załaduj kompilację i zresetuj
+dbg.rc1.button.delete.progress=Usuń postęp
+
+dbg.rc1.toggle.sound.cues=Wskazówki dźwiękowe
+dbg.rc1.toggle.text.prompts=Podpowiedzi tekstowe
+dbg.rc1.dropdown.select.block.placing.sound=Ze względu na liczne sugestie i prośby o dodanie dźwięków umieszczania bloków podczas powtórki, zaimplementowałem tę funkcję. Możesz teraz to włączyć, a podczas powtórki lub podglądu bloki będą generować odpowiednie dźwięki.\nObecnie ta funkcja nie jest automatyczna i wszystkie bloki będą korzystać z tego samego wybranego tutaj źródła dźwięku. Jednakże dołożę wszelkich starań, aby w przyszłych wersjach zaimplementować automatyczne dźwięki charakterystyczne dla bloków.\n\nWybierz opcję Dźwięk umieszczania bloku
+dbg.rc1.toggle.block.placing.sound=Blokuj umieszczanie dźwięku
+dbg.rc1.toggle.multiplayer.replay=Powtórka w trybie wieloosobowym
+
+dbg.rc1.mes.thanks=§gDziękujemy za pobranie ReplayCraft, mam nadzieję, że Ci się spodoba!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cProszę załadować klatkę przed dodaniem punktu kamery
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§c W tym miejscu istnieje już punkt kamery!
+dbg.rc1.mes.no.camera.points.found=§cNie znaleziono punktów kamery
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cNie znaleziono punktów kamery, dodaj przynajmniej jeden punkt kamery
+dbg.rc1.mes.rec.has.started=§bRozpoczęło się nagrywanie (w tle)
+dbg.rc1.mes.rec.resumed.successfully=§bNagrywanie zostało pomyślnie wznowione
+dbg.rc1.mes.rec.paused.successfully=§bNagrywanie zostało pomyślnie wstrzymane
+dbg.rc1.mes.rec.saved.successfully=§bNagranie zostało pomyślnie zapisane
+dbg.rc1.mes.replay.preview.is.already.on=§cPodgląd powtórki jest już włączony. Poczekaj na jego zakończenie lub zatrzymaj go
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Podgląd powtórki został zatrzymany pomyślnie”
+dbg.rc1.mes.replay.preview.is.already.off=§cPodgląd powtórki jest już wyłączony
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cProszę poczekać na zakończenie podglądu powtórki lub kliknąć Zatrzymaj podgląd
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gProszę przeprowadzić konfigurację kamery kinowej
+dbg.rc1.mes.replay.stopped=Powtórka zatrzymana
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cPoczekaj na zakończenie odtwarzania lub kliknij przycisk Zatrzymaj odtwarzanie
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§c Zalecane są co najmniej dwa punkty kamery
+dbg.rc1.mes.replay.is.already.in.progress=§cPowtórka już trwa
+dbg.rc1.mes.replay.is.already.stopped=§cPowtórka została już zatrzymana
+dbg.rc1.mes.please.click.submit=§cProszę kliknąć Prześlij
+dbg.rc1.mes.wait.for.replay.preview.end=§cPoczekaj na zakończenie podglądu powtórki
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cProszę poczekać na zakończenie powtórki/podglądu lub go zatrzymać
+dbg.rc1.mes.interaction.successfull=Interakcja powiodła się
+dbg.rc1.mes.no.other.players.available=§cBrak innych graczy.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cMusisz wybrać wielu graczy
+dbg.rc1.mes.multiplayer.replay.is.off=§aPowtórka w trybie wieloosobowym jest wyłączona.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Menu kinowe] v1.8.0§r
+dbg.rc2.title.settings=Ustawienia
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Ustawienia aparatu§r\n\nTyp ułatwienia (animacja przejścia)
+dbg.rc2.textfield.time=Czas (Czas Więcej 
+dbg.rc2.dropdown.camera.facing=Kamera skierowana w stronę kamery
+dbg.rc2.slider.pitch=Skok (obrót X)
+dbg.rc2.slider.yaw=Odchylenie (obrót Y)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Ustawienia cząstek§r\n\nTyp cząstek ramki
+dbg.rc2.toggle.enable.position.frame.particles=Włącz cząstki ramy pozycji
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Podgląd ustawień§r\n\nPodgląd mnożnika prędkości
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Ustawienia przyciemnienia ekranu§r\n\n§cWartość koloru czerwonego
+dbg.rc2.slider.green.value=§aZielona wartość
+dbg.rc2.slider.blue.value=§9Niebieska wartość
+
+dbg.rc2.body=Wykonane przez §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Dodaj ramkę pozycji
+dbg.rc2.button.start.camera=Uruchom Aparat
+dbg.rc2.button.preview=Zapowiedź
+dbg.rc2.button.stop.camera=Zatrzymaj kamerę
+dbg.rc2.button.settings=Ustawienia
+dbg.rc2.button.reset.settings=Zresetuj ustawienia
+dbg.rc2.button.remove.last.frame=Usuń ostatnią klatkę
+dbg.rc2.button.remove.all.frames=Usuń wszystkie ramki
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cNie można dodawać klatek, gdy kamera jest w ruchu§r
+dbg.rc2.mes.camera.is.already.moving=§cKamera już się porusza §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cKamera podglądu już się porusza §r
+dbg.rc2.mes.camera.movement.complete=§aZakończono ruch kamery §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cBrak aktywnego ruchu kamery, który mógłby zatrzymać §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cNie można zmienić ustawień, gdy kamera jest w ruchu§r
+dbg.rc2.mes.please.click.submit=§cProszę kliknąć Prześlij
+dbg.rc2.mes.settings.have.been.saved.successfully=Ustawienia zostały pomyślnie zapisane
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cNie można zresetować ustawień, gdy kamera jest w ruchu§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Wszystkie ustawienia zostały zresetowane do ustawień domyślnych.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cNie można usunąć ostatniej klatki, gdy kamera jest w ruchu§r
+dbg.rc2.mes.no.frames.to.remove=§cBrak ramek do usunięcia§r
+dbg.rc2.mes.removed.last.frame=Usunięto ostatnią klatkę
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cNie można usunąć wszystkich klatek, gdy kamera jest w ruchu§r
+dbg.rc2.mes.no.frames.to.remove=§cBrak ramek do usunięcia§r
+dbg.rc2.mes.all.frames.have.been.removed=Wszystkie ramki zostały usunięte.

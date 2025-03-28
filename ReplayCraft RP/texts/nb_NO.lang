@@ -1,0 +1,138 @@
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.0.8-beta§r
+dbg.rc1.title.replay.settings=Replay-innstillinger
+dbg.rc1.title.preview.settings=Forhåndsvisningsinnstillinger
+dbg.rc1.title.replaycraft.settings=§bReplayCraft-innstillinger§r
+dbg.rc1.title.multiplayer.settings=§bFlerspillerinnstillinger§r
+
+dbg.rc1.body.2a=Laget av §6DarkBlock Gaming§r\nOpptak: §bAv
+dbg.rc1.body.2b=Laget av §6DarkBlock Gaming§r\nOpptak: §bOn (bakgrunn)
+dbg.rc1.body.2c=Laget av §6DarkBlock Gaming§r\nOpptak: §bPause
+dbg.rc1.body.2d=Laget av §6DarkBlock Gaming§r\nOpptak: §bLagret (Av)
+dbg.rc1.body.2e=Laget av §6DarkBlock Gaming§r\nOpptak: §bLagret (Av)
+dbg.rc1.body.2f=Laget av §6DarkBlock Gaming§r\nOpptak: §bLagret (Av)
+
+dbg.rc1.body.made.by.dbg=Laget av §6DarkBlock Gaming§r
+
+dbg.rc1.button.start.recording=Start opptak
+dbg.rc1.button.settings=Innstillinger
+dbg.rc1.button.multiplayer.settings=Flerspillerinnstillinger
+dbg.rc1.button.important.info=Viktig informasjon [må leses]
+
+dbg.rc1.button.save.recording=Lagre opptak
+dbg.rc1.button.pause.recording=Pause opptak
+dbg.rc1.button.cancel.recording=Avbryt opptaket
+
+dbg.rc1.button.resume.recording=Fortsett opptak
+
+dbg.rc1.button.preview.replay=Forhåndsvisning Replay [Free Cam]
+dbg.rc1.button.stop.preview=Stopp forhåndsvisning
+dbg.rc1.button.preview.settings=Forhåndsvisningsinnstillinger
+dbg.rc1.button.start.camera.setup=Start kameraoppsett
+dbg.rc1.button.cancel.recording=Avbryt opptaket
+
+dbg.rc1.button.load.frame.t=Lastramme (haker)
+dbg.rc1.button.load.frame.s=Lastramme (sekunder)
+dbg.rc1.button.add.camera.point=Legg til kamerapunkt
+dbg.rc1.button.proceed.further=Fortsett videre
+dbg.rc1.button.reset.camera.setup=Tilbakestill kameraoppsett
+
+dbg.rc1.button.start.replay=Start Replay
+dbg.rc1.button.stop.replay=Stopp avspilling
+dbg.rc1.button.settings=Innstillinger
+dbg.rc1.button.goback.camsetup=Gå tilbake (kameraoppsett)
+dbg.rc1.button.load.structure.or.reset=Laststruktur eller tilbakestill
+
+dbg.rc1.dropdown.title.replay.type=Replay Type
+dbg.rc1.dropdown.title.replay.skin.type=Alternativet for å justere avspillings-/forhåndsvisningshastigheten er midlertidig utilgjengelig i denne versjonen.\n\nReplay Player Skin
+dbg.rc1.dropdown.title.name.of.replay.player=Navn på Replay Player
+dbg.rc1.textfield.custom.name=Egendefinert navn
+dbg.rc1.dropdown.title.camera.ease.type=Kameraletthetstype
+dbg.rc1.dropdown.title.camera.type=Kameratype
+dbg.rc1.dropdown.title.focus.on.player=Fokus på (spiller)
+dbg.rc1.dropdown.title.affect.camera.of.players=Påvirker kamera til spillere
+dbg.rc1.slider.title.topdown.cam.height=Topp-ned kamhøyde 
+
+dbg.rc1.dropdown.title.preview.type=Forhåndsvisningstype
+dbg.rc1.dropdown.title.preview.skin.type=Alternativet for å justere avspillings-/forhåndsvisningshastigheten er midlertidig utilgjengelig i denne versjonen.\n\nPreview Player Skin
+dbg.rc1.dropdown.title.name.of.preview.player=Navn på forhåndsvisningsspiller
+dbg.rc1.textfield.title.custom.name=Egendefinert navn
+
+dbg.rc1.button.load.build.and.Reset=Last inn Bygg og tilbakestill
+dbg.rc1.button.delete.progress=Slett fremdrift
+
+dbg.rc1.toggle.sound.cues=Lydsignaler
+dbg.rc1.toggle.text.prompts=Tekstmeldinger
+dbg.rc1.dropdown.select.block.placing.sound=På grunn av mange forslag og forespørsler om å legge til blokkplasserende lyder under replay, har jeg implementert denne funksjonen. Du kan nå aktivere det, og under avspilling eller forhåndsvisning vil blokker produsere lyder tilsvarende.\nFor øyeblikket er denne funksjonen ikke automatisk, og alle blokker vil bruke den samme lydkilden som er valgt her. Jeg vil imidlertid gjøre mitt ytterste for å implementere automatiske blokkspesifikke lyder i fremtidige versjoner.\n\nVelg Block Plasing Sound
+dbg.rc1.toggle.block.placing.sound=Blokkplassering av lyd
+dbg.rc1.toggle.multiplayer.replay=Multiplayer Replay
+
+dbg.rc1.mes.thanks=§gTakk for at du laster ned ReplayCraft, jeg håper du vil like det!
+
+dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§cVennligst last inn en ramme før du legger til kamerapunkt
+dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§cEt kamerapunkt eksisterer allerede ved denne haken!
+dbg.rc1.mes.no.camera.points.found=§cIngen kamerapunkter funnet
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§cIngen kamerapunkter funnet, legg til minst ett kamerapunkt
+dbg.rc1.mes.rec.has.started=§bOpptaket har startet (i bakgrunnen)
+dbg.rc1.mes.rec.resumed.successfully=§bOpptaket ble gjenopptatt
+dbg.rc1.mes.rec.paused.successfully=§bOpptaket er satt på pause
+dbg.rc1.mes.rec.saved.successfully=§bOpptaket er lagret
+dbg.rc1.mes.replay.preview.is.already.on=§cReplay forhåndsvisning er allerede på, vent til den er fullført eller stopp den
+dbg.rc1.mes.replay.preview.has.stopped.successfully=Replay forhåndsvisning har stoppet vellykket"
+dbg.rc1.mes.replay.preview.is.already.off=§cReplay-forhåndsvisning er allerede av
+dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§cVennlig vent til Replay Preview er fullført eller klikk Stopp forhåndsvisning
+dbg.rc1.mes.please.do.the.cinematic.camera.setup=§gVennligst gjør det kinomatiske kameraoppsettet
+dbg.rc1.mes.replay.stopped=Replay stoppet
+dbg.rc1.mes.please.wait.for.replay.to.be.completed=§cVennligst vent til avspilling er fullført, eller klikk på Stopp avspilling
+dbg.rc1.mes.at.least.two.camera.points.are.recommended=§cMinst to kamerapunkter anbefales
+dbg.rc1.mes.replay.is.already.in.progress=§cReplay er allerede i gang
+dbg.rc1.mes.replay.is.already.stopped=§cReplay er allerede stoppet
+dbg.rc1.mes.please.click.submit=§cVennligst klikk på Send
+dbg.rc1.mes.wait.for.replay.preview.end=§cVent på Replay Preview End
+dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed=§cVennligst vent til avspilling/forhåndsvisning er fullført eller stopp den
+dbg.rc1.mes.interaction.successfull=Vellykket samhandling
+dbg.rc1.mes.no.other.players.available=§cIngen andre spillere tilgjengelig.
+dbg.rc1.mes.you.have.to.select.multiple.players=§cDu må velge flere spillere
+dbg.rc1.mes.multiplayer.replay.is.off=§aMultiplayer-replay er av.
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v1.8.0§r
+dbg.rc2.title.settings=Innstillinger
+
+dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Kamerainnstillinger§r\n\nEase Type (Transition Animation)
+dbg.rc2.textfield.time=Tid (Time More 
+dbg.rc2.dropdown.camera.facing=Kamera vendt
+dbg.rc2.slider.pitch=Pitch (X-rotasjon)
+dbg.rc2.slider.yaw=Yaw (Y-rotasjon)
+dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Partikkelinnstillinger§r\n\nRammepartikkeltype
+dbg.rc2.toggle.enable.position.frame.particles=Aktiver Posisjonsrammepartikler
+dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Forhåndsvisningsinnstillinger§r\n\nForhåndsvisningshastighetsmultiplikator
+dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Toningsskjerminnstillinger§r\n\n§cRød verdi
+dbg.rc2.slider.green.value=§aGrønn Verdi
+dbg.rc2.slider.blue.value=§9Blå verdi
+
+dbg.rc2.body=Laget av §6DarkBlock Gaming
+
+dbg.rc2.button.add.position.frame=Legg til posisjonsramme
+dbg.rc2.button.start.camera=Start kamera
+dbg.rc2.button.preview=Forhåndsvisning
+dbg.rc2.button.stop.camera=Stopp kamera
+dbg.rc2.button.settings=Innstillinger
+dbg.rc2.button.reset.settings=Tilbakestill innstillinger
+dbg.rc2.button.remove.last.frame=Fjern siste ramme
+dbg.rc2.button.remove.all.frames=Fjern alle rammer
+
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§cKan ikke legge til rammer mens kameraet er i bevegelse§r
+dbg.rc2.mes.camera.is.already.moving=§cKamera flytter allerede §r
+dbg.rc2.mes.preview.camera.is.already.moving=§cForhåndsvisningskamera beveger seg allerede §r
+dbg.rc2.mes.camera.movement.complete=§aKamerabevegelse komplett §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§cIngen aktiv kamerabevegelse for å stoppe §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§cKan ikke endre innstillinger mens kameraet er i bevegelse§r
+dbg.rc2.mes.please.click.submit=§cVennligst klikk på Send
+dbg.rc2.mes.settings.have.been.saved.successfully=Innstillingene er lagret
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§cKan ikke tilbakestille innstillingene mens kameraet er i bevegelse§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=Alle innstillinger er tilbakestilt til standard.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§cKan ikke fjerne siste bilde mens kameraet er i bevegelse§r
+dbg.rc2.mes.no.frames.to.remove=§cIngen rammer å fjerne§r
+dbg.rc2.mes.removed.last.frame=Fjernet siste ramme
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cKan ikke fjerne alle bilder mens kameraet er i bevegelse§r
+dbg.rc2.mes.no.frames.to.remove=§cIngen rammer å fjerne§r
+dbg.rc2.mes.all.frames.have.been.removed=Alle rammer er fjernet.
