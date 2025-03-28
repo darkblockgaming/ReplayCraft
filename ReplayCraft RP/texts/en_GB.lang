@@ -104,6 +104,7 @@ dbg.rc2.slider.pitch=Pitch (X-rotation)
 dbg.rc2.slider.yaw=Yaw (Y-rotation)
 dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Particle Settings§r\n\nFrame Particle Type
 dbg.rc2.toggle.enable.position.frame.particles=Enable Position Frame Particles
+dbg.rc2.toggle.hide.hud=Hide Hud During Cinematic
 dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Preview Settings§r\n\nPreview Speed Multiplier
 dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Fade Screen Settings§r\n\n§cRed Value
 dbg.rc2.slider.green.value=§aGreen Value
