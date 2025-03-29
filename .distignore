@@ -1,0 +1,9 @@
+.github
+.vscode
+src
+types
+.distignore
+.gitignore
+.mcattributes
+.prettierrc
+tsconfig.json

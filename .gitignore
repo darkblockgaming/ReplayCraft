@@ -1,0 +1,15 @@
+# Ignore the root level 'scripts', 'types', and 'build' directories
+/scripts/
+/types/
+/build/
+
+# Ignore the main node_modules directory
+/node_modules/
+
+# Ignore src/ files only at the root level
+/src/node_modules/
+/src/package.json
+/src/package-lock.json
+
+# Ignore Bedrock Dedicated Server directories at the root level
+/bedrock-server-*/
