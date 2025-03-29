@@ -1,6 +1,13 @@
 import {Player} from "@minecraft/server";
+import { ReplayCraft2F } from "../ui/replayCraft2F";
+import { ReplayCraft2D } from "../ui/replayCraft2D";
+import { ReplayCraft2E } from "../ui/replayCraft2E";
+import { ReplayCraft2C } from "../ui/replayCraft2C";
+import { ReplayCraft2B } from "../ui/replayCraft2B";
+import { ReplayCraft2A } from "../ui/replayCraft2A";
 
-class ReplayStateMachine {
+
+export class ReplayStateMachine {
     state: string;
     states: { [key: string]: (player: Player) => void };
 
