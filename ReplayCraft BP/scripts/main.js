@@ -124,8 +124,8 @@ class ReplayStateMachine {
 	}
 }
 
-world.beforeEvents.itemUse.subscribe((eventData) => {
-	const player = eventData.source;
+world.beforeEvents.playerInteractWithBlock.subscribe((eventData) => {
+	const player = eventData.player;
 	if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
 		if (player === dbgRecController || !dbgRecController) {
 			if (multiToggle === false) {
@@ -137,8 +137,8 @@ world.beforeEvents.itemUse.subscribe((eventData) => {
 });
 
 
-world.afterEvents.itemUse.subscribe((eventData) => {
-	const player = eventData.source;
+world.afterEvents.playerInteractWithBlock.subscribe((eventData) => {
+	const player = eventData.player;
 	if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
 		if (player === dbgRecController || !dbgRecController) {
 			multiPlayers.forEach((player) => {
