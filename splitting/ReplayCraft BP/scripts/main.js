@@ -5,7 +5,9 @@ import * as ui from "@minecraft/server-ui";
 import './ReplayCraft.js';
 import { rcInfo } from './guideabout.js';
 import { keyFeatures } from './guideabout.js';
+//------------------------------------------------
 import { ReplayStateMachine } from './ReplayStateMachine.js';
+import { afterChatSend } from "./classes/subscriptions/chatSendAfterEvent.js";
 //showParticle();
 
 const easeTypes = ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"];
@@ -56,20 +58,8 @@ let topDownCamHight = 8;
 let focusPlayerSelection = 0;
 let affectCameraSelection = 0;
 
-world.afterEvents.chatSend.subscribe((event) => {
-	const {
-		sender,
-		message
-	} = event;
-	if (["?rc", "?dbgReplayCraft", "?ReplayCraft", "?replaycraft", "?RC", "?dbgreplaycraft"].includes(message)) {
-		sender.runCommand(`loot give @s loot "rc_items"`);
-		sender.onScreenDisplay.setActionBar({
-			"rawtext": [{
-				"translate": "dbg.rc1.mes.thanks"
-			}]
-		});
-	}
-});
+//Chat events
+afterChatSend();
 
 
 
