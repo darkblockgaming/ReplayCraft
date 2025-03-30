@@ -21,6 +21,6 @@
         "noImplicitThis": true,
         "noUnusedParameters": true
     },
-    "include": ["src"],
+    "include": ["src", "src/scripts/classes/subscriptions/.ts"],
     "exclude": ["node_modules"]
 }
