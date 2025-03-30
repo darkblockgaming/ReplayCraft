@@ -1,0 +1,55 @@
+{
+  "format_version": "1.20.40",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "dbg:replayentity",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "dbg:skin": {
+        "type": "int",
+        "default": 0,
+        "client_sync": true,
+        "range": [0, 4]
+      }
+     }
+    },
+    "components": {
+    "minecraft:tick_world": {
+                "distance_to_players": 128,
+                "never_despawn": true,
+                "radius": 6
+            },
+      "minecraft:type_family": {
+        "family": ["other"]
+      },
+      "minecraft:damage_sensor": {
+        "triggers": {
+          "cause": "all",
+          "deals_damage": false
+        }
+      },
+      "minecraft:water_movement": {
+        "drag_factor": 0
+      },
+      "minecraft:equip_item": {},
+      "minecraft:collision_box": {
+        "height": 1.8,
+        "width": 0.0
+      },
+      "minecraft:physics": {
+        "has_gravity": false,
+        "has_collision": false
+      },
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      },
+      "minecraft:nameable": {
+        "always_show": true,
+        "allow_name_tag_renaming": false
+      }
+    }
+  }
+}

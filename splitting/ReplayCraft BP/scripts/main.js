@@ -5,6 +5,7 @@ import * as ui from "@minecraft/server-ui";
 import './ReplayCraft.js';
 import { rcInfo } from './guideabout.js';
 import { keyFeatures } from './guideabout.js';
+import { ReplayStateMachine } from './ReplayStateMachine.js';
 //showParticle();
 
 const easeTypes = ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"];
@@ -70,59 +71,7 @@ world.afterEvents.chatSend.subscribe((event) => {
 	}
 });
 
-class ReplayStateMachine {
-	constructor() {
-		this.state = "default";
-		this.states = {
-			"recStartRep": this.handleRecStartRep.bind(this),
-			"viewStartRep": this.handleViewStartRep.bind(this),
-			"recCompleted": this.handleRecCompleted.bind(this),
-			"recCamSetup": this.handleRecCamSetup.bind(this),
-			"recSaved": this.handleRecSaved.bind(this),
-			"recPaused": this.handleRecPaused.bind(this),
-			"recPending": this.handleRecPending.bind(this),
-			"default": this.handleDefault.bind(this)
-		};
-	}
-	handleRecStartRep(player) {
-		ReplayCraft2F(player);
-	}
-	handleViewStartRep(player) {
-		ReplayCraft2D(player);
-	}
-	handleRecCompleted(player) {
-		ReplayCraft2F(player);
-	}
-	handleRecCamSetup(player) {
-		ReplayCraft2E(player);
-	}
-	handleRecSaved(player) {
-		ReplayCraft2D(player);
-	}
-	handleRecPaused(player) {
-		ReplayCraft2C(player);
-	}
-	handleRecPending(player) {
-		ReplayCraft2B(player);
-	}
-	handleDefault(player) {
-		ReplayCraft2A(player);
-	}
-	setState(newState) {
-		if (this.states[newState]) {
-			this.state = newState;
-		} else {
-			this.state = "default";
-		}
-	}
-	handleEvent(player) {
-		if (this.states[this.state]) {
-			this.states[this.state](player);
-		} else {
-			this.handleDefault(player);
-		}
-	}
-}
+
 
 world.beforeEvents.itemUse.subscribe((eventData) => {
 	const player = eventData.source;
