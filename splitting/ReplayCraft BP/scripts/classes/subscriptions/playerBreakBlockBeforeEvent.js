@@ -1,5 +1,5 @@
 import { SharedVariables } from "../../main";
-
+import { world } from "@minecraft/server";
 //@ts-check
 function recordBlocks(event) {
     if (SharedVariables.replayStateMachine.state === "recPending") {

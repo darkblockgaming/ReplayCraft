@@ -1,5 +1,5 @@
 import { SharedVariables } from "../../main";
-
+import { world } from "@minecraft/server";
 function recordBlocks (event){
     if (SharedVariables.replayStateMachine.state === "recPending") {
         const {
@@ -25,7 +25,7 @@ function recordBlocks (event){
 };
 
 const replaycraftPlaceBlockBeforeEvent = () => {
-    world.beforeEvents.playerPlaceBlockBeforeEvent.subscribe(recordBlocks)
+    world.beforeEvents.playerPlaceBlock.subscribe(recordBlocks)
 };
 
 export { replaycraftPlaceBlockBeforeEvent };

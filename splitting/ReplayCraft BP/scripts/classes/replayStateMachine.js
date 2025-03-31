@@ -46,16 +46,22 @@ export class ReplayStateMachine {
     }
     setState(newState) {
         if (this.states[newState]) {
+            console.log(`[ReplayStateMachine] Changing state from "${this.state}" to "${newState}"`);
             this.state = newState;
         } else {
+            console.log(`[ReplayStateMachine] Invalid state "${newState}", defaulting to "default"`);
             this.state = "default";
         }
     }
     handleEvent(player) {
+        console.log(`[ReplayStateMachine] Handling event for state: "${this.state}"`);
+        
         if (this.states[this.state]) {
             this.states[this.state](player);
         } else {
+            console.log(`[ReplayStateMachine] State "${this.state}" is invalid, using default state.`);
             this.handleDefault(player);
         }
     }
+    
 }
