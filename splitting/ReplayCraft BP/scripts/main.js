@@ -10,15 +10,19 @@ import { replayStateMachine } from './SharedVariables.replayStateMachine.js';
 import { afterChatSend } from "./classes/subscriptions/chatSendAfterEvent.js";
 import{setdbgRecControllerAfter} from "./classes/subscriptions/playerInteractWithBlockAfterEvent.js";
 import {setdbgRecControllerBefore} from "./classes/subscriptions/playerInteractWithBlockBeforeEvent.js";
+import { playerBreakBlock } from "./classes/subscriptions/playerBreakBlockAfterEvent.js";
+import { playerPlaceBlock } from "./classes/subscriptions/playerPlaceBlockAfterEvent.js";
 //showParticle();
 
 const easeTypes = ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"];
 const easeTypesCom = ["linear", "in_back", "in_bounce", "in_circ", "in_cubic", "in_elastic", "in_expo", "in_out_back", "in_out_bounce", "in_out_circ", "in_out_cubic", "in_out_elastic", "in_out_expo", "in_out_quad", "in_out_quart", "in_out_quint", "in_out_sine", "in_quad", "in_quart", "in_quint", "in_sine", "out_back", "out_bounce", "out_circ", "out_cubic", "out_elastic", "out_expo", "out_quad", "out_quart", "out_quint", "out_sine", "spring"];
-const soundIds = ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"];
+
 const skinTypes = ["Steve Skin", "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4"];
 
 export const SharedVariables = {
+	soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"],
     dbgRecController: undefined,
+	dbgRecTime:0,
 	replayStateMachine: new replayStateMachine,
 	multiPlayers: [],
 	multiToggle: false, //Multiplayer replay check. 
@@ -30,11 +34,14 @@ export const SharedVariables = {
 	replayMDataMap: new Map(), //Player Actions Data
 	replayODataMap: new Map(), // Stores data related to the replay entity. {customEntity}
 	replaySDataMap: new Map(), //Stores Armor & Weapon data.
+	twoPartBlocks: ["minecraft:copper_door", "minecraft:exposed_copper_door", "minecraft:weathered_copper_door", "minecraft:oxidized_copper_door", "minecraft:waxed_copper_door", "minecraft:waxed_exposed_copper_door", "minecraft:waxed_weathered_copper_door", "minecraft:waxed_oxidized_copper_door", "minecraft:acacia_door", "minecraft:bamboo_door", "minecraft:birch_door", "minecraft:cherry_door", "minecraft:crimson_door", "minecraft:dark_oak_door", "minecraft:iron_door", "minecraft:jungle_door", "minecraft:mangrove_door", "minecraft:spruce_door", "minecraft:warped_door", "minecraft:wooden_door", "minecraft:sunflower", "minecraft:double_plant", "minecraft:tall_grass", "minecraft:large_fern"],
+	toggleSound: false,
+	selectedSound: 0,
+
 };
 let soundCue = true;
 let textPrompt = true;
-let selectedSound = 0;
-let toggleSound = false;
+
 let choosenReplaySkin = 0;
 let settReplayType = 0;
 let settNameType = 1;
@@ -53,7 +60,6 @@ let startingValueHrs = 0;
 
 let currentSwitch = false;
 
-let dbgRecTime = 0;
 let lilTick = 0;
 let replaySpeed = 1;
 
@@ -77,6 +83,8 @@ afterChatSend();
 //Item events
 setdbgRecControllerAfter();
 setdbgRecControllerBefore();
+playerBreakBlock();
+playerPlaceBlock();
 
 
 
@@ -88,13 +96,13 @@ setdbgRecControllerBefore();
 
 system.runInterval(() => {
 	if (SharedVariables.replayStateMachine.state === "recPending") {
-		dbgRecTime += 1;
+		SharedVariables.dbgRecTime += 1;
 	}
 }, 1);
 
 system.runInterval(() => {
 	if (SharedVariables.replayStateMachine.state === "viewStartRep") {
-		if (lilTick >= (dbgRecTime - 1)) {
+		if (lilTick >= (SharedVariables.dbgRecTime - 1)) {
 			SharedVariables.replayStateMachine.setState("recSaved");
 			SharedVariables.multiPlayers.forEach((player) => {
 				currentSwitch = false;
@@ -115,7 +123,7 @@ system.runInterval(() => {
 
 system.runInterval(() => {
 	if (SharedVariables.replayStateMachine.state === "recStartRep") {
-		if (lilTick >= (dbgRecTime - 1)) {
+		if (lilTick >= (SharedVariables.dbgRecTime - 1)) {
 			SharedVariables.replayStateMachine.setState("recCompleted");
 			SharedVariables.multiPlayers.forEach((player) => {
 				followCamSwitch = false;
@@ -141,22 +149,12 @@ system.runInterval(() => {
 
 //============================After Block
 
-function playBlockSound(blockData) {
-	if (toggleSound === false) return;
-	const {
-		location,
-		typeId,
-		states
-	} = blockData;
-	dbgRecController.playSound(soundIds[selectedSound], {
-		position: location
-	});
-}
+
 
 system.runInterval(() => { // Load The Blocks Depending On The Tick 
 	SharedVariables.multiPlayers.forEach((player) => {
 		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
-			if (lilTick <= dbgRecTime) {
+			if (lilTick <= SharedVariables.dbgRecTime) {
 				const playerData = SharedVariables.replayBDataMap.get(player.id);
 				const customEntity = SharedVariables.replayODataMap.get(player.id);
 				if (playerData && playerData.dbgBlockData[lilTick]) {
@@ -206,161 +204,8 @@ system.runInterval(() => { // Load The Blocks Depending On The Tick
 }, 1);
 
 
-/*
-world.afterEvents.entityHitBlock.subscribe(event => {
-	const player = event.source;
-	const block = event.block;
-	player.onScreenDisplay.setActionBar(`${block.typeId}`);
-});
-*/
 
-world.afterEvents.playerBreakBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (block.typeId === "minecraft:bed" || twoPartBlocks.includes(block.type.id)) {
-			if (block.typeId === "minecraft:bed") {
-				saveBedParts(block, player);
-			} else {
-				saveDoorParts(block, player);
-			}
-		} else {
-			const playerData = SharedVariables.replayBDataMap.get(player.id);
-			playerData.dbgBlockData[dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-		}
-	}
-});
 
-world.afterEvents.playerPlaceBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (block.typeId === "minecraft:bed" || twoPartBlocks.includes(block.type.id)) {
-			if (block.typeId === "minecraft:bed") {
-				saveBedParts(block, player);
-			} else {
-				saveDoorParts(block, player);
-			}
-		} else {
-			const playerData = SharedVariables.replayBDataMap.get(player.id);
-			playerData.dbgBlockData[dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-		}
-	}
-});
-
-function saveDoorParts(block, player) { //Calculate Orher Part Of Doors/Grass 
-	const isUpper = block.permutation.getState("upper_block_bit");
-	if (!isUpper) {
-		const lowerPart = {
-			location: block.location,
-			typeId: block.typeId,
-			states: block.permutation.getAllStates()
-		};
-
-		const upperPartLocation = {
-			x: block.location.x,
-			y: block.location.y + 1,
-			z: block.location.z
-		};
-		const upperPartBlock = block.dimension.getBlock(upperPartLocation);
-		const upperPart = {
-			location: upperPartLocation,
-			typeId: upperPartBlock.typeId,
-			states: upperPartBlock.permutation.getAllStates()
-		};
-
-		const playerData = SharedVariables.replayBDataMap.get(player.id);
-		playerData.dbgBlockData[dbgRecTime] = {
-			lowerPart,
-			upperPart
-		};
-	}
-}
-
-function saveBedParts(block, player) { //Calculate Other Part Of Bed
-	const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
-	const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east =3', 'west = 1'
-	let otherPartLocation = {
-		x: block.location.x,
-		y: block.location.y,
-		z: block.location.z
-	};
-	if (isHead) {
-		if (direction === 2) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z + 1
-		};
-		else if (direction === 0) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z - 1
-		};
-		else if (direction === 3) otherPartLocation = {
-			x: block.location.x - 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-		else if (direction === 1) otherPartLocation = {
-			x: block.location.x + 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-	} else {
-		if (direction === 2) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z - 1
-		};
-		else if (direction === 0) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z + 1
-		};
-		else if (direction === 3) otherPartLocation = {
-			x: block.location.x + 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-		else if (direction === 1) otherPartLocation = {
-			x: block.location.x - 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-	}
-	const otherPartBlock = block.dimension.getBlock(otherPartLocation);
-	if (otherPartBlock && otherPartBlock.typeId !== "minecraft:air") {
-		const otherPart = {
-			location: otherPartLocation,
-			typeId: otherPartBlock.typeId,
-			states: otherPartBlock.permutation.getAllStates()
-		};
-
-		const playerData = SharedVariables.replayBDataMap.get(player.id);
-		playerData.dbgBlockData[dbgRecTime] = {
-			thisPart: {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			},
-			otherPart
-		};
-	}
-}
 
 //================
 //Interact After Block
@@ -369,7 +214,7 @@ function saveBedParts(block, player) { //Calculate Other Part Of Bed
 system.runInterval(() => {
 	SharedVariables.multiPlayers.forEach((player) => {
 		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
-			if (lilTick <= dbgRecTime) {
+			if (lilTick <= SharedVariables.dbgRecTime) {
 				//const blockData = dbgBlockDataB[lilTick];
 				const playerData = SharedVariables.replayBDataBMap.get(player.id);
 				const customEntity = SharedVariables.replayODataMap.get(player.id);
@@ -408,57 +253,14 @@ system.runInterval(() => {
 
 
 //Calculate Orher Part Of Doors/Grass
-function saveDoorPartsB(block, player) {
-	const isUpper = block.permutation.getState("upper_block_bit");
-	if (!isUpper) {
-		const lowerPart = {
-			location: block.location,
-			typeId: block.typeId,
-			states: block.permutation.getAllStates()
-		};
-		const upperPartLocation = {
-			x: block.location.x,
-			y: block.location.y + 1,
-			z: block.location.z
-		};
-		const upperPartBlock = block.dimension.getBlock(upperPartLocation);
-		const upperPart = {
-			location: upperPartLocation,
-			typeId: upperPartBlock.typeId,
-			states: upperPartBlock.permutation.getAllStates()
-		};
-		const playerData = SharedVariables.replayBDataBMap.get(player.id);
-		playerData.dbgBlockDataB[dbgRecTime] = {
-			lowerPart,
-			upperPart
-		};
-	}
-}
 
-world.afterEvents.playerInteractWithBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (twoPartBlocks.includes(block.type.id)) {
-			saveDoorPartsB(block, player);
-		} else {
-			const playerData = SharedVariables.replayBDataBMap.get(player.id);
-			playerData.dbgBlockDataB[dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-		}
-	}
-});
+
+
 
 
 //============================Before Block
 
-const twoPartBlocks = ["minecraft:copper_door", "minecraft:exposed_copper_door", "minecraft:weathered_copper_door", "minecraft:oxidized_copper_door", "minecraft:waxed_copper_door", "minecraft:waxed_exposed_copper_door", "minecraft:waxed_weathered_copper_door", "minecraft:waxed_oxidized_copper_door", "minecraft:acacia_door", "minecraft:bamboo_door", "minecraft:birch_door", "minecraft:cherry_door", "minecraft:crimson_door", "minecraft:dark_oak_door", "minecraft:iron_door", "minecraft:jungle_door", "minecraft:mangrove_door", "minecraft:spruce_door", "minecraft:warped_door", "minecraft:wooden_door", "minecraft:sunflower", "minecraft:double_plant", "minecraft:tall_grass", "minecraft:large_fern"];
+
 
 
 async function clearStructure(player) {
@@ -568,7 +370,7 @@ function saveDoorParts1(block, player) {
 			states: upperPartBlock.permutation.getAllStates()
 		};
 		const playerData = SharedVariables.replayBData1Map.get(player.id);
-		playerData.dbgBlockData1[dbgRecTime] = {
+		playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
 			lowerPart,
 			upperPart
 		};
@@ -635,7 +437,7 @@ function saveBedParts1(block, player) { //Calculate Orher Part Of Bed
 		};
 
 		const playerData = SharedVariables.replayBData1Map.get(player.id);
-		playerData.dbgBlockData1[dbgRecTime] = {
+		playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
 			thisPart: {
 				location: block.location,
 				typeId: block.typeId,
@@ -661,12 +463,12 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
 			}
 		} else {
 			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[dbgRecTime] = {
+			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
 				location: block.location,
 				typeId: block.typeId,
 				states: block.permutation.getAllStates()
 			};
-			//dbgBlockData1[dbgRecTime] = { location: block.location, typeId: block.typeId, states: block.permutation.getAllStates() };
+			//dbgBlockData1[SharedVariables.dbgRecTime] = { location: block.location, typeId: block.typeId, states: block.permutation.getAllStates() };
 		}
 	}
 });
@@ -686,7 +488,7 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
 			}
 		} else {
 			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[dbgRecTime] = {
+			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
 				location: block.location,
 				typeId: block.typeId,
 				states: block.permutation.getAllStates()
@@ -706,7 +508,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
 			saveDoorParts1(block, player);
 		} else {
 			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[dbgRecTime] = {
+			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
 				location: block.location,
 				typeId: block.typeId,
 				states: block.permutation.getAllStates()
@@ -947,7 +749,7 @@ async function loadBlocksUpToTick(targetTick, player) {
 function loadFrameTicksForm(player) {
 	const replaySettingsForm = new ui.ModalFormData().title("Load Frames - Ticks");
 	replaySettingsForm.slider("This is most accurate way of loading frames.\n\nSelect Frame (Ticks)",
-		startingValueTick, dbgRecTime, 1, wantLoadFrameTick);
+		startingValueTick, SharedVariables.dbgRecTime, 1, wantLoadFrameTick);
 	replaySettingsForm.show(player).then(response => {
 		if (response.canceled || !response.formValues) {
 			return;
@@ -972,11 +774,11 @@ function loadFrameTicksForm(player) {
 }
 
 function loadFrameSecondsForm(player) {
-    const maxFrameSeconds = Math.floor(dbgRecTime / 20);
-    const totalTicks = dbgRecTime;
+    const maxFrameSeconds = Math.floor(SharedVariables.dbgRecTime / 20);
+    const totalTicks = SharedVariables.dbgRecTime;
     const form = new ui.ModalFormData()
         .title("Load Frames - Seconds")
-        .slider(`These values are slightly rounded off.\n§bAccurate time: §r${(Math.round((dbgRecTime / 20) * 100) / 100).toFixed(2)}\n\nSelect Frame (Secs)`, startingValueSecs, maxFrameSeconds, 1, Math.floor(wantLoadFrameTick / 20));
+        .slider(`These values are slightly rounded off.\n§bAccurate time: §r${(Math.round((SharedVariables.dbgRecTime / 20) * 100) / 100).toFixed(2)}\n\nSelect Frame (Secs)`, startingValueSecs, maxFrameSeconds, 1, Math.floor(wantLoadFrameTick / 20));
 
     form.show(player).then(async (response) => {
         if (response.canceled || !response.formValues) return;
@@ -1531,8 +1333,8 @@ function mainSettings(player) {
 		.title("dbg.rc1.title.replaycraft.settings")
 		.toggle(`dbg.rc1.toggle.sound.cues`, soundCue)
 		.toggle(`dbg.rc1.toggle.text.prompts`, textPrompt)
-		.dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, soundIds, selectedSound)
-		.toggle(`dbg.rc1.toggle.block.placing.sound`, toggleSound);
+		.dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, soundIds, SharedVariables.selectedSound)
+		.toggle(`dbg.rc1.toggle.block.placing.sound`, SharedVariables.toggleSound);
 
 	replaySettingsForm.show(player).then(response => {
 		if (response.canceled) {
@@ -1548,8 +1350,8 @@ function mainSettings(player) {
 		}
 		soundCue = response.formValues[0];
 		textPrompt = response.formValues[1];
-		selectedSound = response.formValues[2];
-		toggleSound = response.formValues[3];
+		SharedVariables.selectedSound = response.formValues[2];
+		SharedVariables.toggleSound = response.formValues[3];
 	})
 }
 
@@ -2033,7 +1835,7 @@ async function doSaveReset(player) {
     removeEntities(player);
 
     // Now safely load blocks
-    await loadBlocksUpToTick(dbgRecTime, player);
+    await loadBlocksUpToTick(SharedVariables.dbgRecTime, player);
 
     // Final reset
     resetRec(player);
@@ -2043,7 +1845,7 @@ async function doSaveReset(player) {
 function resetRec(player) {
 	dbgRecController = undefined;
 	currentSwitch = false;
-	dbgRecTime = 0;
+	SharedVariables.dbgRecTime = 0;
 	lilTick = 0;
 	replaySpeed = 1;
 	SharedVariables.replayBDataMap.set(player.id, {
@@ -2191,8 +1993,8 @@ function retrieveReplayData(player) {
 function saveReplaySettings() {
 	world.setDynamicProperty("soundCue", soundCue);
 	world.setDynamicProperty("textPrompt", textPrompt);
-	world.setDynamicProperty("selectedSound", selectedSound);
-	world.setDynamicProperty("toggleSound", toggleSound);
+	world.setDynamicProperty("SharedVariables.selectedSound", SharedVariables.selectedSound);
+	world.setDynamicProperty("SharedVariables.toggleSound", SharedVariables.toggleSound);
 	world.setDynamicProperty("choosenReplaySkin", choosenReplaySkin);
 	world.setDynamicProperty("settReplayType", settReplayType);
 	world.setDynamicProperty("settNameType", settNameType);
@@ -2220,8 +2022,8 @@ function saveReplaySettings() {
 function retrieveReplaySettings() {
 	soundCue = world.getDynamicProperty("soundCue") ?? true;
 	textPrompt = world.getDynamicProperty("textPrompt") ?? true;
-	selectedSound = world.getDynamicProperty("selectedSound") ?? 0;
-	toggleSound = world.getDynamicProperty("toggleSound") ?? false;
+	SharedVariables.selectedSound = world.getDynamicProperty("SharedVariables.selectedSound") ?? 0;
+	SharedVariables.toggleSound = world.getDynamicProperty("SharedVariables.toggleSound") ?? false;
 	choosenReplaySkin = world.getDynamicProperty("choosenReplaySkin") ?? 0;
 	settReplayType = world.getDynamicProperty("settReplayType") ?? 0;
 	settNameType = world.getDynamicProperty("settNameType") ?? 1;
@@ -2260,7 +2062,7 @@ function saveReplayAnchors() {
 	world.setDynamicProperty("replayCamPos", JSON.stringify(replayCamPos));
 	world.setDynamicProperty("replayCamRot", JSON.stringify(replayCamRot));
 	world.setDynamicProperty("currentSwitch", currentSwitch);
-	world.setDynamicProperty("dbgRecTime", dbgRecTime);
+	world.setDynamicProperty("SharedVariables.dbgRecTime", SharedVariables.dbgRecTime);
 	world.setDynamicProperty("lilTick", lilTick);
 	
 	//Saving all the ids of SharedVariables.multiPlayers
@@ -2291,7 +2093,7 @@ function retrieveReplayAnchors() {
 	replayCamPos = JSON.parse(world.getDynamicProperty("replayCamPos") ?? "[]");
 	replayCamRot = JSON.parse(world.getDynamicProperty("replayCamRot") ?? "[]");
 	currentSwitch = world.getDynamicProperty("currentSwitch") ?? false;
-	dbgRecTime = world.getDynamicProperty("dbgRecTime") ?? 0;
+	SharedVariables.dbgRecTime = world.getDynamicProperty("SharedVariables.dbgRecTime") ?? 0;
 	lilTick = world.getDynamicProperty("lilTick") ?? 0;
 
 	//Player ids to {player} in [SharedVariables.multiPlayers]
