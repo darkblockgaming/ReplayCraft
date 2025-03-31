@@ -1,10 +1,10 @@
 
-import { SharedVariables } from "../main";
+import { SharedVariables } from "../../main";
 import * as ui from "@minecraft/server-ui";
-import { loadBlocksUpToTick } from "./loadBlocksUpToTick";
-import {loadEntity} from "./loadEntity";
-import { clearStructure } from "./clearStructure";
-function loadFrameTicksForm(player) {
+import { loadBlocksUpToTick } from "../loadBlocksUpToTick";
+import {loadEntity} from "../loadEntity";
+import { clearStructure } from "../clearStructure";
+export function loadFrameTicksForm(player) {
     const replaySettingsForm = new ui.ModalFormData().title("Load Frames - Ticks");
     replaySettingsForm.slider("This is most accurate way of loading frames.\n\nSelect Frame (Ticks)",
         SharedVariables.startingValueTick, SharedVariables.dbgRecTime, 1, SharedVariables.wantLoadFrameTick);
