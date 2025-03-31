@@ -1,9 +1,6 @@
 //@ts-check
 
-import { world, system, Player, BlockPermutation, EasingType } from "@minecraft/server";
-import { MessageFormResponse, ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
-import { EquipmentSlot, EntityComponentTypes } from '@minecraft/server';
-import * as ui from "@minecraft/server-ui";
+import { world, system, BlockPermutation, EasingType } from "@minecraft/server";
 import './ReplayCraft.js';
 //------------------------------------------------
 import { ReplayStateMachine } from "./classes/replayStateMachine.js";
