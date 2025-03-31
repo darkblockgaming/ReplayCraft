@@ -6,8 +6,10 @@ import './ReplayCraft.js';
 import { rcInfo } from './guideabout.js';
 import { keyFeatures } from './guideabout.js';
 //------------------------------------------------
-import { ReplayStateMachine } from './ReplayStateMachine.js';
+import { replayStateMachine } from './SharedVariables.replayStateMachine.js';
 import { afterChatSend } from "./classes/subscriptions/chatSendAfterEvent.js";
+import{setdbgRecControllerAfter} from "./classes/subscriptions/playerInteractWithBlockAfterEvent.js";
+import {setdbgRecControllerBefore} from "./classes/subscriptions/playerInteractWithBlockBeforeEvent.js";
 //showParticle();
 
 const easeTypes = ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"];
@@ -15,6 +17,20 @@ const easeTypesCom = ["linear", "in_back", "in_bounce", "in_circ", "in_cubic", "
 const soundIds = ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"];
 const skinTypes = ["Steve Skin", "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4"];
 
+export const SharedVariables = {
+    dbgRecController: undefined,
+	replayStateMachine: new replayStateMachine,
+	multiPlayers: [],
+	multiToggle: false, //Multiplayer replay 
+	replayBDataMap: new Map(), //Block Related Data
+	replayBDataBMap:new Map(),
+ 	replayBData1Map: new Map(),
+	replayPosDataMap: new Map(),
+	replayRotDataMap: new Map(),
+	replayMDataMap: new Map(), //Player actions data
+	replayODataMap: new Map(),//Just Stores the {customEntity}
+	replaySDataMap: new Map(), //armor & weapon data
+};
 let soundCue = true;
 let textPrompt = true;
 let selectedSound = 0;
@@ -36,7 +52,7 @@ let startingValueHrs = 0;
 let multiToggle = false; //Multiplayer replay 
 let multiPlayers = []; //Multiplayer Players list
 
-let dbgRecController = undefined;
+
 let currentSwitch = false;
 
 let dbgRecTime = 0;
@@ -60,69 +76,14 @@ let affectCameraSelection = 0;
 
 //Chat events
 afterChatSend();
+//Item events
+setdbgRecControllerAfter();
+setdbgRecControllerBefore();
 
 
 
-world.beforeEvents.itemUse.subscribe((eventData) => {
-	const player = eventData.source;
-	if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
-		if (player === dbgRecController || !dbgRecController) {
-			if (multiToggle === false) {
-				multiPlayers = [];
-				multiPlayers.push(player);
-			}
-		}
-	}
-});
 
 
-world.afterEvents.itemUse.subscribe((eventData) => {
-	const player = eventData.source;
-	if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
-		if (player === dbgRecController || !dbgRecController) {
-			multiPlayers.forEach((player) => {
-				if (!replayBDataMap.has(player.id)) {
-					replayBDataMap.set(player.id, {
-						dbgBlockData: {}
-					});
-					replayBDataBMap.set(player.id, {
-						dbgBlockDataB: {}
-					});
-					replayBData1Map.set(player.id, {
-						dbgBlockData1: {}
-					});
-					replayPosDataMap.set(player.id, {
-						dbgRecPos: []
-					});
-					replayRotDataMap.set(player.id, {
-						dbgRecRot: []
-					});
-					replayMDataMap.set(player.id, {
-						isSneaking: []
-					});
-					replayODataMap.set(player.id, {
-						customEntity: undefined
-					});
-					replaySDataMap.set(player.id, {
-						weapon1: [],
-						weapon2: [],
-						armor1: [],
-						armor2: [],
-						armor3: [],
-						armor4: []
-					});
-				}
-			});
-			replayStateMachine.handleEvent(player);
-			//player.onScreenDisplay.setActionBar(`${player.name} ${player.id}`);
-		} else {
-			player.onScreenDisplay.setActionBar(`${dbgRecController.name} is controlling the replay.`);
-		}
-	}
-});
-
-
-const replayStateMachine = new ReplayStateMachine();
 const replayBDataMap = new Map(); //Block Related Data
 const replayBDataBMap = new Map();
 const replayBData1Map = new Map();
@@ -141,15 +102,15 @@ const replaySDataMap = new Map(); //armor & weapon data
 //========================Start (Increase Time Per Tick)
 
 system.runInterval(() => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		dbgRecTime += 1;
 	}
 }, 1);
 
 system.runInterval(() => {
-	if (replayStateMachine.state === "viewStartRep") {
+	if (SharedVariables.replayStateMachine.state === "viewStartRep") {
 		if (lilTick >= (dbgRecTime - 1)) {
-			replayStateMachine.setState("recSaved");
+			SharedVariables.replayStateMachine.setState("recSaved");
 			multiPlayers.forEach((player) => {
 				currentSwitch = false;
 				clearStructure(player);
@@ -168,9 +129,9 @@ system.runInterval(() => {
 }, 1);
 
 system.runInterval(() => {
-	if (replayStateMachine.state === "recStartRep") {
+	if (SharedVariables.replayStateMachine.state === "recStartRep") {
 		if (lilTick >= (dbgRecTime - 1)) {
-			replayStateMachine.setState("recCompleted");
+			SharedVariables.replayStateMachine.setState("recCompleted");
 			multiPlayers.forEach((player) => {
 				followCamSwitch = false;
 				topDownCamSwitch = false;
@@ -209,7 +170,7 @@ function playBlockSound(blockData) {
 
 system.runInterval(() => { // Load The Blocks Depending On The Tick 
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state === "viewStartRep" || replayStateMachine.state === "recStartRep") {
+		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			if (lilTick <= dbgRecTime) {
 				const playerData = replayBDataMap.get(player.id);
 				const customEntity = replayODataMap.get(player.id);
@@ -269,7 +230,7 @@ world.afterEvents.entityHitBlock.subscribe(event => {
 */
 
 world.afterEvents.playerBreakBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -293,7 +254,7 @@ world.afterEvents.playerBreakBlock.subscribe(event => {
 });
 
 world.afterEvents.playerPlaceBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -422,7 +383,7 @@ function saveBedParts(block, player) { //Calculate Other Part Of Bed
 
 system.runInterval(() => {
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state === "viewStartRep" || replayStateMachine.state === "recStartRep") {
+		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			if (lilTick <= dbgRecTime) {
 				//const blockData = dbgBlockDataB[lilTick];
 				const playerData = replayBDataBMap.get(player.id);
@@ -490,7 +451,7 @@ function saveDoorPartsB(block, player) {
 }
 
 world.afterEvents.playerInteractWithBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -701,7 +662,7 @@ function saveBedParts1(block, player) { //Calculate Orher Part Of Bed
 }
 
 world.beforeEvents.playerBreakBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -726,7 +687,7 @@ world.beforeEvents.playerBreakBlock.subscribe(event => {
 });
 
 world.beforeEvents.playerPlaceBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -750,7 +711,7 @@ world.beforeEvents.playerPlaceBlock.subscribe(event => {
 });
 
 world.beforeEvents.playerInteractWithBlock.subscribe(event => {
-	if (replayStateMachine.state === "recPending") {
+	if (SharedVariables.replayStateMachine.state === "recPending") {
 		const {
 			player,
 			block
@@ -773,7 +734,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(event => {
 
 system.runInterval(() => {
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state !== "recPending") return;
+		if (SharedVariables.replayStateMachine.state !== "recPending") return;
 		const posData = replayPosDataMap.get(player.id);
 		const customEntity = replayODataMap.get(player.id);
 		const rotData = replayRotDataMap.get(player.id);
@@ -809,7 +770,7 @@ function summonReplayEntity(player) {
 
 system.runInterval(() => {
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state === "viewStartRep" || replayStateMachine.state === "recStartRep") {
+		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			const customEntity = replayODataMap.get(player.id);
 			const posData = replayPosDataMap.get(player.id);
 			const rotData = replayRotDataMap.get(player.id);
@@ -829,7 +790,7 @@ system.runInterval(() => {
 
 system.runInterval(() => {
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state !== "recPending") return;
+		if (SharedVariables.replayStateMachine.state !== "recPending") return;
 		const playerData = replayMDataMap.get(player.id);
 		if (!playerData) return;
 		playerData.isSneaking.push(player.isSneaking ? 1 : 0);
@@ -839,7 +800,7 @@ system.runInterval(() => {
 system.runInterval(() => {
 	if (settReplayType !== 0) return;
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state === "viewStartRep" || replayStateMachine.state === "recStartRep") {
+		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			const playerData = replayMDataMap.get(player.id);
 			const customEntity = replayODataMap.get(player.id);
 			if (!playerData) return;
@@ -852,7 +813,7 @@ system.runInterval(() => {
 
 system.runInterval(() => {
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state !== "recPending") return;
+		if (SharedVariables.replayStateMachine.state !== "recPending") return;
 		const playerData = replaySDataMap.get(player.id);
 		if (!playerData) return;
 		playerData.weapon1.push(player.getComponent("minecraft:equippable").getEquipment("Mainhand")?.typeId || "air");
@@ -867,7 +828,7 @@ system.runInterval(() => {
 system.runInterval(() => {
 	if (settReplayType !== 0) return;
 	multiPlayers.forEach((player) => {
-		if (replayStateMachine.state === "viewStartRep" || replayStateMachine.state === "recStartRep") {
+		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			const playerData = replaySDataMap.get(player.id);
 			const customEntity = replayODataMap.get(player.id);
 			if (!playerData) return;
@@ -1352,7 +1313,7 @@ function ReplayCraft2A(player) { //Default
 	});
 }
 
-function ReplayCraft2B(player) { //if replayStateMachine.state = recPending 
+function ReplayCraft2B(player) { //if SharedVariables.replayStateMachine.state = recPending 
 	const replayForm = new ui.ActionFormData()
 		.title("dbg.rc1.title.replay.menu")
 		.button("dbg.rc1.button.save.recording") //0
@@ -1373,7 +1334,7 @@ function ReplayCraft2B(player) { //if replayStateMachine.state = recPending
 	});
 }
 
-function ReplayCraft2C(player) { //if replayStateMachine.state = recPaused
+function ReplayCraft2C(player) { //if SharedVariables.replayStateMachine.state = recPaused
 	const replayForm = new ui.ActionFormData()
 		.title("dbg.rc1.title.replay.menu")
 		.button("dbg.rc1.button.save.recording") //0
@@ -1394,7 +1355,7 @@ function ReplayCraft2C(player) { //if replayStateMachine.state = recPaused
 	});
 }
 
-function ReplayCraft2D(player) { //if replayStateMachine.state = recSaved
+function ReplayCraft2D(player) { //if SharedVariables.replayStateMachine.state = recSaved
 	const replayForm = new ui.ActionFormData()
 		.title("dbg.rc1.title.replay.menu")
 		.button("dbg.rc1.button.preview.replay") //0
@@ -1419,7 +1380,7 @@ function ReplayCraft2D(player) { //if replayStateMachine.state = recSaved
 	});
 }
 
-function ReplayCraft2E(player) { //if replayStateMachine.state = recCamSetup
+function ReplayCraft2E(player) { //if SharedVariables.replayStateMachine.state = recCamSetup
 	const replayForm = new ui.ActionFormData()
 		.title("dbg.rc1.title.replay.menu")
 		.button("dbg.rc1.button.load.frame.t") //0
@@ -1446,7 +1407,7 @@ function ReplayCraft2E(player) { //if replayStateMachine.state = recCamSetup
 	});
 }
 
-function ReplayCraft2F(player) { //if replayStateMachine.state = recSaved
+function ReplayCraft2F(player) { //if SharedVariables.replayStateMachine.state = recSaved
 	const replayForm = new ui.ActionFormData()
 		.title("dbg.rc1.title.replay.menu")
 		.button("dbg.rc1.button.start.replay") //0
@@ -1678,7 +1639,7 @@ function doStart(player) {
 		removeEntities(player);
 		resetRec(player);
 	});
-	replayStateMachine.setState("recPending");
+	SharedVariables.replayStateMachine.setState("recPending");
 	dbgRecController = player;
 	if (multiToggle === false) {
 		dbgCamFocusPlayer = dbgRecController;
@@ -1698,7 +1659,7 @@ function doStart(player) {
 }
 
 function doResume(player) {
-	replayStateMachine.setState("recPending");
+	SharedVariables.replayStateMachine.setState("recPending");
 	dbgRecController = player;
 	if (textPrompt) {
 		player.onScreenDisplay.setActionBar({
@@ -1710,7 +1671,7 @@ function doResume(player) {
 }
 
 function doPause(player) {
-	replayStateMachine.setState("recPaused");
+	SharedVariables.replayStateMachine.setState("recPaused");
 	if (textPrompt) {
 		player.onScreenDisplay.setActionBar({
 			"rawtext": [{
@@ -1721,7 +1682,7 @@ function doPause(player) {
 }
 
 function doSave(player) {
-	replayStateMachine.setState("recSaved");
+	SharedVariables.replayStateMachine.setState("recSaved");
 	if (textPrompt) {
 		player.onScreenDisplay.setActionBar({
 			"rawtext": [{
@@ -1750,7 +1711,7 @@ async function doViewReplay(player) {
         return;
     }
 
-    replayStateMachine.setState("viewStartRep");
+    SharedVariables.replayStateMachine.setState("viewStartRep");
 
     for (const player of multiPlayers) {
         const posData = replayPosDataMap.get(player.id);
@@ -1784,7 +1745,7 @@ function doStopPreview(player) {
 				}]
 			});
 		}
-		replayStateMachine.setState("recSaved");
+		SharedVariables.replayStateMachine.setState("recSaved");
 
 		multiPlayers.forEach((player) => {
 			const customEntity = replayODataMap.get(player.id);
@@ -1823,7 +1784,7 @@ function doCamSetup(player) {
 		}
 		return;
 	}
-	replayStateMachine.setState("recCamSetup");
+	SharedVariables.replayStateMachine.setState("recCamSetup");
 	if (textPrompt) {
 		player.onScreenDisplay.setActionBar({
 			"rawtext": [{
@@ -1850,7 +1811,7 @@ function doCamSetupGoBack(player) {
 		}
 		return;
 	}
-	replayStateMachine.setState("recCamSetup");
+	SharedVariables.replayStateMachine.setState("recCamSetup");
 	replayCamPos = [];
 	replayCamRot = [];
 	wantLoadFrameTick = 0;
@@ -1877,7 +1838,7 @@ function doProceedFurther(player) {
 		}
 		return;
 	}
-	replayStateMachine.setState("recCompleted");
+	SharedVariables.replayStateMachine.setState("recCompleted");
 	multiPlayers.forEach((player) => {
 		clearStructure(player);
 	});
@@ -1908,7 +1869,7 @@ async function doReplay(player) {
         return;
     }
 
-    replayStateMachine.setState("recStartRep");
+    SharedVariables.replayStateMachine.setState("recStartRep");
     currentSwitch = true;
 
     const posData = replayPosDataMap.get(player.id);
@@ -1976,7 +1937,7 @@ function doStopReplay(player) {
 		}
 		return;
 	}
-	replayStateMachine.setState("recCompleted");
+	SharedVariables.replayStateMachine.setState("recCompleted");
 	if (settReplayType === 0) {
 		multiPlayers.forEach((player) => {
 
@@ -2055,7 +2016,7 @@ function deletePro(player) {
 		return;
 	}
 	resetCamSetup(player);
-	replayStateMachine.setState("default");
+	SharedVariables.replayStateMachine.setState("default");
 	multiPlayers.forEach((player) => {
 		removeEntities(player);
 		clearStructure(player);
@@ -2078,7 +2039,7 @@ async function doSaveReset(player) {
     }
 
     resetCamSetup(player);
-    replayStateMachine.setState("default");
+    SharedVariables.replayStateMachine.setState("default");
 
     // Wait for `clearStructure()` to finish before proceeding
     await clearStructure(player); 
@@ -2301,7 +2262,7 @@ function retrieveReplaySettings() {
 }
 
 function saveReplayAnchors() {
-	world.setDynamicProperty("replayMachineState", replayStateMachine.state);
+	world.setDynamicProperty("replayMachineState", SharedVariables.replayStateMachine.state);
 	
 
 	if (dbgRecController) {
@@ -2328,7 +2289,7 @@ function saveReplayAnchors() {
 
 
 function retrieveReplayAnchors() {
-	replayStateMachine.setState(world.getDynamicProperty("replayMachineState"));
+	SharedVariables.replayStateMachine.setState(world.getDynamicProperty("replayMachineState"));
 	
 	const dbgRecControllerId = world.getDynamicProperty("dbgRecController");
 	const dbgCamFocusPlayerId = world.getDynamicProperty("dbgCamFocusPlayer");
