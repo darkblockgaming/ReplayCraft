@@ -27,8 +27,8 @@ function recordBlocks(event){
     }
 }
 
-const playerPlaceBlock = () => {
-    world.afterEvents.playerBreakBlock.subscribe(recordBlocks)
+const replaycraftPlaceBlockAfterEvent = () => {
+    world.afterEvents.playerPlaceBlock.subscribe(recordBlocks)
 };
 
-export { playerPlaceBlock };
+export { replaycraftPlaceBlockAfterEvent };

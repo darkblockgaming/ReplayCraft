@@ -27,8 +27,8 @@ function recordBlocks(event){
 } 
 
 
-const playerBreakBlock = () => {
+const replaycraftBreakBlockAfterEvent = () => {
     world.beforeAfter.playerBreakBlock.subscribe(recordBlocks)
 };
 
-export { playerBreakBlock };
+export { replaycraftBreakBlockAfterEvent };

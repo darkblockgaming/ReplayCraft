@@ -69,9 +69,9 @@ function b (event){
 } 
 
 
-const setdbgRecControllerAfter= () => {
+const replaycraftInteractWithBlockAfterEvent = () => {
     world.afterEvents.playerInteractWithBlock.subscribe(setController);
     world.afterEvents.playerInteractWithBlock.subscribe(b);
 };
 
-export { setdbgRecControllerAfter };
+export { replaycraftInteractWithBlockAfterEvent }

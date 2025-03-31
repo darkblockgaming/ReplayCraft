@@ -24,8 +24,8 @@ function recordBlocks (event){
     }
 };
 
-const playerPlaceBlockBefore = () => {
-    world.beforeEvents.playerInteractWithBlock.subscribe(recordBlocks)
+const replaycraftPlaceBlockBeforeEvent = () => {
+    world.beforeEvents.playerPlaceBlockBeforeEvent.subscribe(recordBlocks)
 };
 
-export { playerPlaceBlockBefore };
+export { replaycraftPlaceBlockBeforeEvent };

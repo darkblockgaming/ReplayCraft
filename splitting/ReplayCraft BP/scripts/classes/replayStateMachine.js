@@ -1,9 +1,8 @@
-
-import { ReplayCraft2A } from "../functions/UI/ReplayCraft2A";
-import { ReplayCraft2B } from "../functions/UI/ReplayCraft2B";
-import { ReplayCraft2C } from "../functions/UI/ReplayCraft2C";
-import { ReplayCraft2D } from "../functions/UI/ReplayCraft2D";
-import { ReplayCraft2E } from "../functions/UI/ReplayCraft2E";
+import { ReplayCraft2A } from "../functions/ui/ReplayCraft2A";
+import { ReplayCraft2B } from "../functions/ui/ReplayCraft2B";
+import { ReplayCraft2C } from "../functions/ui/ReplayCraft2C";
+import { ReplayCraft2D } from "../functions/ui/ReplayCraft2D";
+import { ReplayCraft2E } from "../functions/ui/ReplayCraft2E";
 import { ReplayCraft2F } from "../functions/ui/ReplayCraft2F";
 
 
