@@ -37,6 +37,9 @@ export const SharedVariables = {
 	twoPartBlocks: ["minecraft:copper_door", "minecraft:exposed_copper_door", "minecraft:weathered_copper_door", "minecraft:oxidized_copper_door", "minecraft:waxed_copper_door", "minecraft:waxed_exposed_copper_door", "minecraft:waxed_weathered_copper_door", "minecraft:waxed_oxidized_copper_door", "minecraft:acacia_door", "minecraft:bamboo_door", "minecraft:birch_door", "minecraft:cherry_door", "minecraft:crimson_door", "minecraft:dark_oak_door", "minecraft:iron_door", "minecraft:jungle_door", "minecraft:mangrove_door", "minecraft:spruce_door", "minecraft:warped_door", "minecraft:wooden_door", "minecraft:sunflower", "minecraft:double_plant", "minecraft:tall_grass", "minecraft:large_fern"],
 	toggleSound: false,
 	selectedSound: 0,
+	wantLoadFrameTick: 0,
+	frameLoaded: false,
+	startingValueTick: 0,
 
 };
 let soundCue = true;
@@ -49,9 +52,7 @@ let settCameraType = 1;
 let replayCamEase = 0;
 let settCustomName = "Type Custom Name";
 
-let wantLoadFrameTick = 0;
-let frameLoaded = false;
-let startingValueTick = 0;
+
 let startingValueSecs = 0;
 let startingValueMins = 0;
 let startingValueHrs = 0;
@@ -263,259 +264,21 @@ system.runInterval(() => {
 
 
 
-async function clearStructure(player) {
-    const playerData = SharedVariables.replayBData1Map.get(player.id);
-    if (!playerData || !playerData.dbgBlockData1) return;
-
-    const ticks = Object.keys(playerData.dbgBlockData1).map(Number).sort((a, b) => b - a);
-    const visitedChunks = new Set();
-    const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
-
-    // Get the recording start position
-    const recordingStartPos = SharedVariables.SharedVariables.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
-	// Store original position before teleporting
-	const originalPos = player.location; 
-    if (!recordingStartPos) {
-        player.onScreenDisplay.setActionBar(`Error: Recording start position not found.`);
-        return;
-    }
-
-    let playerTeleported = false; // Track if the player was teleported
-
-    for (const tick of ticks) {
-        const data = playerData.dbgBlockData1[tick];
-        const blockPositions = [];
-
-        if (data.lowerPart) {
-            blockPositions.push(data.lowerPart.location, data.upperPart.location);
-        } else if (data.thisPart) {
-            blockPositions.push(data.thisPart.location, data.otherPart.location);
-        } else {
-            blockPositions.push(data.location);
-        }
-
-        for (const blockPos of blockPositions) {
-            const chunkKey = `${Math.floor(blockPos.x / 16)},${Math.floor(blockPos.z / 16)}`;
-
-            // Calculate if the player is within the 4-chunk radius of the target block
-            const dx = player.location.x - blockPos.x;
-            const dz = player.location.z - blockPos.z;
-            const distanceSquared = dx * dx + dz * dz;
-            const isFarAway = distanceSquared > CHUNK_RADIUS * CHUNK_RADIUS;
-
-            // Only load chunk if the player is far away
-            if (!visitedChunks.has(chunkKey) && isFarAway) {
-                visitedChunks.add(chunkKey);
-
-                // Attempt to teleport player to load chunk
-                let success = false;
-                if (isFarAway) {
-                    success = player.tryTeleport(blockPos, { checkForBlocks: false });
-
-                    // If teleport fails, try adjusting Y slightly to avoid collision
-                    if (!success) {
-                        success = player.tryTeleport({ x: blockPos.x, y: blockPos.y + 2, z: blockPos.z }, { checkForBlocks: false });
-                    }
-
-                    // Wait for chunk to load before modifying blocks
-                    if (success) {
-                        await new Promise(resolve => system.runTimeout(resolve, 5)); // Wait for ~5 game ticks
-                        playerTeleported = true; // Mark player as teleported
-                    }
-                }
-            }
-
-            // Ensure the chunk is loaded
-            const block = player.dimension.getBlock(blockPos);
-            if (block) {
-                // Log if the block is found
-                //console.log(`Clearing block at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
-                
-                // Clear the block
-                block.setPermutation(BlockPermutation.resolve(data.typeId, data.states));
-            } else {
-                console.log(`Block not found at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
-            }
-        }
-    }
-
-    // If the player was teleported, return them to the recording start position
-    if (playerTeleported) {
-        player.tryTeleport(originalPos, { checkForBlocks: false });
-        //player.onScreenDisplay.setActionBar(`You have been teleported back to the start of the recording.`);
-    }
-}
 
 
 
 
 
-function saveDoorParts1(block, player) {
-	const isUpper = block.permutation.getState("upper_block_bit");
-	if (!isUpper) {
-		const lowerPart = {
-			location: block.location,
-			typeId: block.typeId,
-			states: block.permutation.getAllStates()
-		};
-		const upperPartLocation = {
-			x: block.location.x,
-			y: block.location.y + 1,
-			z: block.location.z
-		};
-		const upperPartBlock = block.dimension.getBlock(upperPartLocation);
-		const upperPart = {
-			location: upperPartLocation,
-			typeId: upperPartBlock.typeId,
-			states: upperPartBlock.permutation.getAllStates()
-		};
-		const playerData = SharedVariables.replayBData1Map.get(player.id);
-		playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
-			lowerPart,
-			upperPart
-		};
-	}
-}
 
-function saveBedParts1(block, player) { //Calculate Orher Part Of Bed
-	const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
-	const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east =3', 'west = 1'
-	let otherPartLocation = {
-		x: block.location.x,
-		y: block.location.y,
-		z: block.location.z
-	};
-	if (isHead) {
-		if (direction === 2) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z + 1
-		};
-		else if (direction === 0) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z - 1
-		};
-		else if (direction === 3) otherPartLocation = {
-			x: block.location.x - 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-		else if (direction === 1) otherPartLocation = {
-			x: block.location.x + 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-	} else {
-		if (direction === 2) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z - 1
-		};
-		else if (direction === 0) otherPartLocation = {
-			x: block.location.x,
-			y: block.location.y,
-			z: block.location.z + 1
-		};
-		else if (direction === 3) otherPartLocation = {
-			x: block.location.x + 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-		else if (direction === 1) otherPartLocation = {
-			x: block.location.x - 1,
-			y: block.location.y,
-			z: block.location.z
-		};
-	}
-	const otherPartBlock = block.dimension.getBlock(otherPartLocation);
-	if (otherPartBlock && otherPartBlock.typeId !== "minecraft:air") {
-		const otherPart = {
-			location: otherPartLocation,
-			typeId: otherPartBlock.typeId,
-			states: otherPartBlock.permutation.getAllStates()
-		};
 
-		const playerData = SharedVariables.replayBData1Map.get(player.id);
-		playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
-			thisPart: {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			},
-			otherPart
-		};
-	}
-}
 
-world.beforeEvents.playerBreakBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (block.typeId === "minecraft:bed" || twoPartBlocks.includes(block.type.id)) {
-			if (block.typeId === "minecraft:bed") {
-				saveBedParts1(block, player);
-			} else {
-				saveDoorParts1(block, player);
-			}
-		} else {
-			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-			//dbgBlockData1[SharedVariables.dbgRecTime] = { location: block.location, typeId: block.typeId, states: block.permutation.getAllStates() };
-		}
-	}
-});
 
-world.beforeEvents.playerPlaceBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (block.typeId === "minecraft:bed" || twoPartBlocks.includes(block.type.id)) {
-			if (block.typeId === "minecraft:bed") {
-				saveBedParts1(block, player);
-			} else {
-				saveDoorParts1(block, player);
-			}
-		} else {
-			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-		}
-	}
-});
 
-world.beforeEvents.playerInteractWithBlock.subscribe(event => {
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-		const {
-			player,
-			block
-		} = event;
-		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (twoPartBlocks.includes(block.type.id)) {
-			saveDoorParts1(block, player);
-		} else {
-			const playerData = SharedVariables.replayBData1Map.get(player.id);
-			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
-				location: block.location,
-				typeId: block.typeId,
-				states: block.permutation.getAllStates()
-			};
-		}
-	}
-});
+
+
+
+
+
 
 //============================Pos Per Tick
 
@@ -533,27 +296,7 @@ system.runInterval(() => {
 	});
 }, 1);
 
-function summonReplayEntity(player) {
-	const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
-	const rotData = SharedVariables.replayRotDataMap.get(player.id);
-	let customEntity = undefined;
-	if (!posData) return;
 
-	if (settReplayType === 0) {
-		customEntity = player.dimension.spawnEntity("dbg:replayentity", posData.dbgRecPos[0]);
-		customEntity.setProperty("dbg:skin", choosenReplaySkin);
-
-		if (settNameType === 0) {
-			customEntity.nameTag = player.name;
-		} else if (settNameType === 1) {
-			customEntity.nameTag = player.name;
-		} else if (settNameType === 2) {
-			customEntity.nameTag = settCustomName;
-		}
-		SharedVariables.replayODataMap.set(player.id, customEntity);
-
-	}
-}
 
 system.runInterval(() => {
 	SharedVariables.multiPlayers.forEach((player) => {
@@ -631,147 +374,18 @@ system.runInterval(() => {
 
 //===================================================================================
 
-async function loadEntity(player) {
-    const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
-    const rotData = SharedVariables.replayRotDataMap.get(player.id);
-    if (!posData || !rotData || posData.dbgRecPos.length === 0) {
-        console.error(`Replay data missing for player ${player.name}`);
-        return;
-    }
 
-    let customEntity;
-    const maxIndex = Math.min(wantLoadFrameTick, posData.dbgRecPos.length - 1);
-    const summonPos = posData.dbgRecPos[maxIndex];
-
-    // Ensure chunk is loaded
-    if (!isChunkLoaded(summonPos, player)) {
-        console.log(`Chunk not loaded for ${player.name}, teleporting...`);
-
-        // Teleport player near the chunk to load it
-        const success = player.tryTeleport(summonPos, { checkForBlocks: false });
-
-        if (success) {
-            await waitForChunkLoad(summonPos, player);
-        } else {
-            console.error(`Failed to teleport ${player.name} to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
-            return;
-        }
-    }
-
-    // Now summon the entity
-    try {
-        customEntity = player.dimension.spawnEntity("dbg:replayentity", summonPos);
-        customEntity.setRotation(rotData.dbgRecRot[maxIndex]);
-    } catch (error) {
-        console.error(`Error spawning entity at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}:`, error);
-        return;
-    }
-
-    customEntity.nameTag = player.name;
-}
 
 // Function to check if a chunk is loaded
-function isChunkLoaded(position, player) {
-    try {
-        return !!player.dimension.getBlock(position);
-    } catch {
-        return false;
-    }
-}
+
 
 // Function to wait until a chunk is loaded
-async function waitForChunkLoad(position, player) {
-    let attempts = 10; // Max attempts to wait
-    while (!isChunkLoaded(position, player) && attempts > 0) {
-        console.log(`Waiting for chunk to load at ${position.x}, ${position.z}...`);
-        await new Promise(resolve => system.runTimeout(resolve, 5)); // Wait 5 ticks
-        attempts--;
-    }
-
-    if (attempts === 0) {
-        console.error(`Chunk failed to load at ${position.x}, ${position.z} after multiple attempts.`);
-    }
-}
 
 
-async function loadBlocksUpToTick(targetTick, player) {
-    const playerData = SharedVariables.replayBDataMap.get(player.id);
-    if (!playerData) {
-        console.warn(`No block replay data for player ${player.name}`);
-        return;
-    }
-
-    for (let tick = 0; tick <= targetTick; tick++) {
-        const blockData = playerData.dbgBlockData[tick];
-        if (!blockData) continue;
-
-        // Function to safely get and modify a block
-        async function setBlock(location, typeId, states) {
-            if (!isChunkLoaded(location, player)) {
-                console.warn(`Chunk not loaded for block at ${location.x}, ${location.y}, ${location.z}. Teleporting player...`);
-                
-                // Attempt to teleport player near the chunk
-                const success = player.tryTeleport({ x: location.x, y: location.y + 2, z: location.z }, { checkForBlocks: false });
-                
-                if (success) {
-                    await waitForChunkLoad(location, player); // Wait for chunk to load
-                } else {
-                    console.error(`Failed to teleport ${player.name} to load chunk at ${location.x}, ${location.y}, ${location.z}`);
-                    return;
-                }
-            }
-			console.log("dbgRecController:", dbgRecController);
-			console.log("Dimension ID:", dbgRecController?.dimension?.id);
-
-            const block = world.getDimension(dbgRecController.dimension.id).getBlock(location);
-            if (!block) {
-                console.error(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);
-                return;
-            }
-
-            block.setPermutation(BlockPermutation.resolve(typeId, states));
-        }
-
-        // Handle different block parts safely
-        if (blockData.lowerPart && blockData.upperPart) {
-            await setBlock(blockData.lowerPart.location, blockData.lowerPart.typeId, blockData.lowerPart.states);
-            await setBlock(blockData.upperPart.location, blockData.upperPart.typeId, blockData.upperPart.states);
-        } else if (blockData.thisPart && blockData.otherPart) {
-            await setBlock(blockData.thisPart.location, blockData.thisPart.typeId, blockData.thisPart.states);
-            await setBlock(blockData.otherPart.location, blockData.otherPart.typeId, blockData.otherPart.states);
-        } else if (blockData.location) {
-            await setBlock(blockData.location, blockData.typeId, blockData.states);
-        }
-    }
-}
 
 
-function loadFrameTicksForm(player) {
-	const replaySettingsForm = new ui.ModalFormData().title("Load Frames - Ticks");
-	replaySettingsForm.slider("This is most accurate way of loading frames.\n\nSelect Frame (Ticks)",
-		startingValueTick, SharedVariables.dbgRecTime, 1, wantLoadFrameTick);
-	replaySettingsForm.show(player).then(response => {
-		if (response.canceled || !response.formValues) {
-			return;
-		}
-		wantLoadFrameTick = response.formValues[0];
-		const entities1 = player.dimension.getEntities({
-			type: "dbg:replayentity"
-		});
-		entities1.forEach(entity1 => {
-			entity1.remove();
-		});
-		SharedVariables.multiPlayers.forEach((player) => {
-			clearStructure(player);
-		});
-		frameLoaded = true;
-		SharedVariables.multiPlayers.forEach((player) => {
-			loadEntity(player);
-			loadBlocksUpToTick(wantLoadFrameTick, player);
-		});
 
-	});
-}
+
 
 function loadFrameSecondsForm(player) {
     const maxFrameSeconds = Math.floor(SharedVariables.dbgRecTime / 20);
