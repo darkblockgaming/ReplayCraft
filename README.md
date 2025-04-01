@@ -35,7 +35,7 @@
 2. Open the file with Minecraft Bedrock Edition to install the add-on.
 
 3. In your world settings, enable Experimental Features, including:
-- **Beta APIs**
+    **Beta APIs**
 
 4. Make sure the Behavour pack and the resocue pack are appllied to your world. 
 
