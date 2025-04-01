@@ -25,7 +25,6 @@ function recordBlocks (event){
 
 
 const replaycraftInteractWithBlockBeforeEvent = () => {
-    world.beforeEvents.playerInteractWithBlock.subscribe(setController);
     world.beforeEvents.playerInteractWithBlock.subscribe(recordBlocks);
 };
 export { replaycraftInteractWithBlockBeforeEvent };
