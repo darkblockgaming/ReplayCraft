@@ -1,5 +1,3 @@
-//@ts-check
-
 import { world, system, BlockPermutation, EasingType } from "@minecraft/server";
 import './ReplayCraft.js';
 //------------------------------------------------
