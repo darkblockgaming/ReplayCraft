@@ -1,3 +1,4 @@
+//@ts-check
 import { system } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 import { summonReplayEntity } from "../summonReplayEntity";
@@ -28,15 +29,29 @@ export async function doViewReplay(player) {
 
         const summonPos = posData.dbgRecPos[0];
 
-        // Attempt to load the chunk by teleporting the player near it
-        const success = player.tryTeleport(summonPos, { checkForBlocks: false });
-        if (success) {
-            await new Promise(resolve => system.runTimeout(resolve, 5)); // Wait a few ticks
+        // Calculate distance between player and the target position (summonPos)
+        const dx = player.location.x - summonPos.x;
+        const dz = player.location.z - summonPos.z;
+        const distanceSquared = dx * dx + dz * dz;
+
+        // Define chunk radius for comparison
+        const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
+        const isFarAway = distanceSquared > CHUNK_RADIUS * CHUNK_RADIUS; // Player is outside the 4-chunk radius
+
+        if (isFarAway) {
+            const success = player.tryTeleport(summonPos, { checkForBlocks: false });
+            if (success) {
+                // Wait for the chunk to load before continuing
+                await new Promise(resolve => system.runTimeout(resolve, 5)); // Wait a few ticks
+            } else {
+                console.error(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
+            }
         }
 
-        // Now summon the entity
+        // Now summon the entity after ensuring the chunk is loaded
         summonReplayEntity(player);
     }
 
     SharedVariables.currentSwitch = true;
 }
+
