@@ -21,3 +21,6 @@ Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players
 4. Make sure the Behavour pack and the resocue pack are appllied to your world. 
 
 5. Type ?rc in chat to be given the control items. 
+
+
+More to follow 
