@@ -14,6 +14,7 @@ import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/playerB
 import {replaycraftPlaceBlockAfterEvent} from "./classes/subscriptions/playerPlaceBlockAfterEvent.js";
 import {replaycraftInteractWithBlockBeforeEvent} from "./classes/subscriptions/playerInteractWithBlockBeforeEvent.js";
 import {replaycraftInteractWithBlockAfterEvent} from "./classes/subscriptions/playerInteractWithBlockAfterEvent.js";
+import {replaycraftItemUseAfterEvent} from "classes/subscriptions/playerItemUseAfterEvent.js"
 //showParticle();
 
 
@@ -80,6 +81,7 @@ replaycraftPlaceBlockBeforeEvent();
 replaycraftPlaceBlockAfterEvent();
 replaycraftInteractWithBlockBeforeEvent();
 replaycraftInteractWithBlockAfterEvent();
+replaycraftItemUseAfterEvent();
 
 //========================Start (Increase Time Per Tick)
 
