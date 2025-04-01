@@ -2,7 +2,6 @@ import { world } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 
 function setController(eventData){
-	console.log(player.name);
     const player = eventData.player;
 	if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
 		if (player === SharedVariables.dbgRecController || !SharedVariables.dbgRecController) {
