@@ -1,3 +1,6 @@
+import { world } from "@minecraft/server";
+import { SharedVariables } from "../../main";
+
 function setController(eventData){
 	console.log(player.name);
     const player = eventData.player;
