@@ -49,7 +49,7 @@ function setController(eventData){
 
 
 const replaycraftItemUseAfterEvent = () => {
-world.afterEvents.playerInteractWithBlock.subscribe(setController);
+world.afterEvents.itemUse.subscribe(setController);
 };
 
 export { replaycraftItemUseAfterEvent }
