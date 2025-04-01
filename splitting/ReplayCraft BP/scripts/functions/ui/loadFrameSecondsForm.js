@@ -9,7 +9,7 @@ export function loadFrameSecondsForm(player) {
     const totalTicks = SharedVariables.dbgRecTime;
     const form = new ui.ModalFormData()
         .title("Load Frames - Seconds")
-        .slider(`These values are slightly rounded off.\n§bAccurate time: §r${(Math.round((SharedVariables.dbgRecTime / 20) * 100) / 100).toFixed(2)}\n\nSelect Frame (Secs)`, startingValueSecs, maxFrameSeconds, 1, Math.floor(wantLoadFrameTick / 20));
+        .slider(`These values are slightly rounded off.\n§bAccurate time: §r${(Math.round((SharedVariables.dbgRecTime / 20) * 100) / 100).toFixed(2)}\n\nSelect Frame (Secs)`, SharedVariables.startingValueSecs, maxFrameSeconds, 1, Math.floor(SharedVariables.wantLoadFrameTick / 20));
 
     form.show(player).then(async (response) => {
         if (response.canceled || !response.formValues) return;

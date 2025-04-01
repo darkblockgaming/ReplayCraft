@@ -50,7 +50,7 @@ export function replaySettings(player) {
         SharedVariables.settCustomName = response.formValues[3];
         SharedVariables.replayCamEase = response.formValues[4];
         SharedVariables.settCameraType = response.formValues[5];
-        focusPlayerSelection = response.formValues[6];
+        SharedVariables.focusPlayerSelection = response.formValues[6];
         SharedVariables.dbgCamFocusPlayer = SharedVariables.multiPlayers[SharedVariables.focusPlayerSelection];
         SharedVariables.affectCameraSelection = response.formValues[7];
         if (SharedVariables.affectCameraSelection === 0) {

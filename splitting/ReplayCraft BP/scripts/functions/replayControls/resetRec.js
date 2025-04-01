@@ -1,4 +1,4 @@
-
+//@ts-check
 import { SharedVariables } from "../../main";
 
 export function resetRec(player) {
@@ -16,7 +16,7 @@ export function resetRec(player) {
     SharedVariables.replayBData1Map.set(player.id, {
         dbgBlockData1: {}
     });
-    SharedVariables.SharedVariables.replayPosDataMap.set(player.id, {
+    SharedVariables.replayPosDataMap.set(player.id, {
         dbgRecPos: []
     });
     SharedVariables.replayRotDataMap.set(player.id, {

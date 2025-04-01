@@ -20,7 +20,7 @@ export async function doViewReplay(player) {
     SharedVariables.replayStateMachine.setState("viewStartRep");
 
     for (const player of SharedVariables.multiPlayers) {
-        const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
+        const posData = SharedVariables.replayPosDataMap.get(player.id);
         if (!posData || !posData.dbgRecPos) {
             console.error(`Replay position data not found for player ${player.name}`);
             continue;

@@ -5,7 +5,7 @@ import { waitForChunkLoad } from "./waitForChunkLoad.js";
 //@ts-check
 
 export async function loadEntity(player) {
-    const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
+    const posData = SharedVariables.replayPosDataMap.get(player.id);
     const rotData = SharedVariables.replayRotDataMap.get(player.id);
     if (!posData || !rotData || posData.dbgRecPos.length === 0) {
         console.error(`Replay data missing for player ${player.name}`);
@@ -13,7 +13,7 @@ export async function loadEntity(player) {
     }
 
     let customEntity;
-    const maxIndex = Math.min(wantLoadFrameTick, posData.dbgRecPos.length - 1);
+    const maxIndex = Math.min(SharedVariables.wantLoadFrameTick, posData.dbgRecPos.length - 1);
     const summonPos = posData.dbgRecPos[maxIndex];
 
     // Ensure chunk is loaded

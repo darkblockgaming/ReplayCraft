@@ -1,5 +1,5 @@
 //@ts-check
-import { system } from "@minecraft/server";
+import { EasingType, system } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 
 export function startReplayCam(player) {
@@ -55,7 +55,7 @@ export function startReplayCam(player) {
                     rotation: endRot.rotation,
                     easeOptions: {
                         easeTime: easetime,
-                        easeType: SharedVariables.EasingType[ease],
+                        easeType: EasingType[ease],
                     },
                 });
             

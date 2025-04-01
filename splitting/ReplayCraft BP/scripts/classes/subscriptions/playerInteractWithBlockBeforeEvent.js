@@ -20,7 +20,7 @@ function b (event){
 			block
 		} = event;
 		if (!SharedVariables.multiPlayers.includes(player)) return;
-		if (twoPartBlocks.includes(block.type.id)) {
+		if (SharedVariables.twoPartBlocks.includes(block.type.id)) {
 			saveDoorParts1(block, player);
 		} else {
 			const playerData = SharedVariables.replayBData1Map.get(player.id);

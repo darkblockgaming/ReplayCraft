@@ -1,6 +1,7 @@
+
+import { BlockPermutation, system } from "@minecraft/server";
 import { SharedVariables } from "../main";
 
-//@ts-check
 export async function clearStructure(player) {
     const playerData = SharedVariables.replayBData1Map.get(player.id);
     if (!playerData || !playerData.dbgBlockData1) return;
@@ -10,7 +11,7 @@ export async function clearStructure(player) {
     const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
 
     // Get the recording start position
-    const recordingStartPos = SharedVariables.SharedVariables.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
+    const recordingStartPos = SharedVariables.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
     // Store original position before teleporting
     const originalPos = player.location; 
     if (!recordingStartPos) {

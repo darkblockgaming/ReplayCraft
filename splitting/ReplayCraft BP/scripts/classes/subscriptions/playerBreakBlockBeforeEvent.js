@@ -8,7 +8,7 @@ function recordBlocks(event) {
             block
         } = event;
         if (!SharedVariables.multiPlayers.includes(player)) return;
-        if (block.typeId === "minecraft:bed" || twoPartBlocks.includes(block.type.id)) {
+        if (block.typeId === "minecraft:bed" || SharedVariables.twoPartBlocks.includes(block.type.id)) {
             if (block.typeId === "minecraft:bed") {
                 saveBedParts1(block, player);
             } else {

@@ -21,7 +21,7 @@ export async function doReplay(player) {
     SharedVariables.replayStateMachine.setState("recStartRep");
     SharedVariables.currentSwitch = true;
 
-    const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
+    const posData = SharedVariables.replayPosDataMap.get(player.id);
     if (!posData || !posData.dbgRecPos || posData.dbgRecPos.length === 0) {
         console.warn(`No recorded positions found for player ${player.name}`);
         return;

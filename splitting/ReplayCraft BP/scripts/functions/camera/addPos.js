@@ -42,13 +42,13 @@ export function addPos(player) {
         position: player.getHeadLocation(),
         tick: cameraPosTick
     });
-    SharedVariables. replayCamRot.push({
+    SharedVariables.replayCamRot.push({
         rotation: player.getRotation(),
         tick: cameraPosTick
     });
     const camPos1Entity = player.dimension.spawnEntity("dbg:rccampos", spawnLocation);
-    camPos1Entity.nameTag = `Camera Point ${replayCamPos.length}`;
-    if (textPrompt) {
+    camPos1Entity.nameTag = `Camera Point ${SharedVariables.replayCamPos.length}`;
+    if (SharedVariables.textPrompt) {
         player.onScreenDisplay.setActionBar(`Â§bCamera point added successfully at about ${Math.round(cameraPosTick/20)} second(s).`);
     }
 }

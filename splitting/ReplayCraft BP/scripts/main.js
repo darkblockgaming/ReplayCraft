@@ -235,7 +235,7 @@ system.runInterval(() => {
 system.runInterval(() => {
 	SharedVariables.multiPlayers.forEach((player) => {
 		if (SharedVariables.replayStateMachine.state !== "recPending") return;
-		const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
+		const posData = SharedVariables.replayPosDataMap.get(player.id);
 		const customEntity = SharedVariables.replayODataMap.get(player.id);
 		const rotData = SharedVariables.replayRotDataMap.get(player.id);
 		if (!posData) return;
@@ -252,7 +252,7 @@ system.runInterval(() => {
 	SharedVariables.multiPlayers.forEach((player) => {
 		if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
 			const customEntity = SharedVariables.replayODataMap.get(player.id);
-			const posData = SharedVariables.SharedVariables.replayPosDataMap.get(player.id);
+			const posData = SharedVariables.replayPosDataMap.get(player.id);
 			const rotData = SharedVariables.replayRotDataMap.get(player.id);
 			if (!posData) return;
 
