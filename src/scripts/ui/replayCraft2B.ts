@@ -1,8 +1,10 @@
+
 import * as ui from "@minecraft/server-ui";
+import { doSave } from "../replayControls/doSave";
+import { doPause } from "../replayControls/doPause";
+import { cancelRec } from "./cancelRec";
 import { Player } from "@minecraft/server";
-
-
-export function ReplayCraft2B(player: Player) { //if replayStateMachine.state = recPending 
+export function ReplayCraft2B(player: Player) { //if SharedVariables.replayStateMachine.state = recPending 
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")
         .button("dbg.rc1.button.save.recording") //0

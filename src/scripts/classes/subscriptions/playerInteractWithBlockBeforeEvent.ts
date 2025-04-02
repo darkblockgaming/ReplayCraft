@@ -1,20 +1,30 @@
-import { Player, PlayerInteractWithBlockBeforeEvent, world } from "@minecraft/server";
-
-function setController(eventData: PlayerInteractWithBlockBeforeEvent){
-    const player = eventData.player
-    if (eventData.itemStack?.typeId === 'minecraft:stick' && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
-        if (player === dbgRecController || !dbgRecController) {
-            if (multiToggle === false) {
-                multiPlayers = [];
-                multiPlayers.push(player);
-            }
-        }
-    }
-} 
+import { PlayerInteractWithBlockBeforeEvent, world } from "@minecraft/server";
+import { SharedVariables } from "../../main";
 
 
-const setdbgRecControllerBefore = () => {
-    world.beforeEvents.playerInteractWithBlock.subscribe(setController)
+
+function recordBlocks (event: PlayerInteractWithBlockBeforeEvent){
+    if (SharedVariables.replayStateMachine.state === "recPending") {
+		const {
+			player,
+			block
+		} = event;
+		if (!SharedVariables.multiPlayers.includes(player)) return;
+		if (SharedVariables.twoPartBlocks.includes(block.type.id)) {
+			saveDoorParts1(block, player);
+		} else {
+			const playerData = SharedVariables.replayBData1Map.get(player.id);
+			playerData.dbgBlockData1[SharedVariables.dbgRecTime] = {
+				location: block.location,
+				typeId: block.typeId,
+				states: block.permutation.getAllStates()
+			};
+		}
+	}
+}
+
+
+const replaycraftInteractWithBlockBeforeEvent = () => {
+    world.beforeEvents.playerInteractWithBlock.subscribe(recordBlocks);
 };
-
-export { setdbgRecControllerBefore };
+export { replaycraftInteractWithBlockBeforeEvent };

@@ -1,61 +1,80 @@
-import {Player} from "@minecraft/server";
-import { ReplayCraft2F } from "../ui/replayCraft2F";
-import { ReplayCraft2D } from "../ui/replayCraft2D";
-import { ReplayCraft2E } from "../ui/replayCraft2E";
-import { ReplayCraft2C } from "../ui/replayCraft2C";
-import { ReplayCraft2B } from "../ui/replayCraft2B";
-import { ReplayCraft2A } from "../ui/replayCraft2A";
+import { Player } from "@minecraft/server";
+import { ReplayCraft2A } from "../functions/ui/ReplayCraft2A";
+import { ReplayCraft2B } from "../functions/ui/ReplayCraft2B";
+import { ReplayCraft2C } from "../functions/ui/ReplayCraft2C";
+import { ReplayCraft2D } from "../functions/ui/ReplayCraft2D";
+import { ReplayCraft2E } from "../functions/ui/ReplayCraft2E";
+import { ReplayCraft2F } from "../functions/ui/ReplayCraft2F";
 
+type ReplayState = 
+    | "recStartRep"
+    | "viewStartRep"
+    | "recCompleted"
+    | "recCamSetup"
+    | "recSaved"
+    | "recPaused"
+    | "recPending"
+    | "default";
 
 export class ReplayStateMachine {
-    state: string;
-    states: { [key: string]: (player: Player) => void };
+    public state: ReplayState;
+    public states: Record<ReplayState, (player: Player) => void>;
 
     constructor() {
         this.state = "default";
         this.states = {
-            "recStartRep": this.handleRecStartRep.bind(this),
-            "viewStartRep": this.handleViewStartRep.bind(this),
-            "recCompleted": this.handleRecCompleted.bind(this),
-            "recCamSetup": this.handleRecCamSetup.bind(this),
-            "recSaved": this.handleRecSaved.bind(this),
-            "recPaused": this.handleRecPaused.bind(this),
-            "recPending": this.handleRecPending.bind(this),
-            "default": this.handleDefault.bind(this)
+            recStartRep: this.handleRecStartRep.bind(this),
+            viewStartRep: this.handleViewStartRep.bind(this),
+            recCompleted: this.handleRecCompleted.bind(this),
+            recCamSetup: this.handleRecCamSetup.bind(this),
+            recSaved: this.handleRecSaved.bind(this),
+            recPaused: this.handleRecPaused.bind(this),
+            recPending: this.handleRecPending.bind(this),
+            default: this.handleDefault.bind(this),
         };
     }
-    handleRecStartRep(player: Player) {
+
+    private handleRecStartRep(player: Player): void {
         ReplayCraft2F(player);
     }
-    handleViewStartRep(player: Player) {
+
+    private handleViewStartRep(player: Player): void {
         ReplayCraft2D(player);
     }
-    handleRecCompleted(player: Player) {
+
+    private handleRecCompleted(player: Player): void {
         ReplayCraft2F(player);
     }
-    handleRecCamSetup(player: Player) {
+
+    private handleRecCamSetup(player: Player): void {
         ReplayCraft2E(player);
     }
-    handleRecSaved(player: Player) {
+
+    private handleRecSaved(player: Player): void {
         ReplayCraft2D(player);
     }
-    handleRecPaused(player: Player) {
+
+    private handleRecPaused(player: Player): void {
         ReplayCraft2C(player);
     }
-    handleRecPending(player: Player) {
+
+    private handleRecPending(player: Player): void {
         ReplayCraft2B(player);
     }
-    handleDefault(player: Player) {
+
+    private handleDefault(player: Player): void {
         ReplayCraft2A(player);
     }
-    setState(newState: string) {
-        if (this.states[newState]) {
-            this.state = newState;
+
+    public setState(newState: string): void {
+        if (this.states[newState as ReplayState]) {
+            this.state = newState as ReplayState;
         } else {
             this.state = "default";
         }
     }
-    handleEvent(player: Player) {
+
+    public handleEvent(player: Player): void {
         if (this.states[this.state]) {
             this.states[this.state](player);
         } else {

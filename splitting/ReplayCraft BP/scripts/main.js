@@ -16,6 +16,7 @@ import {replaycraftInteractWithBlockBeforeEvent} from "./classes/subscriptions/p
 import {replaycraftInteractWithBlockAfterEvent} from "./classes/subscriptions/playerInteractWithBlockAfterEvent.js";
 import {replaycraftItemUseAfterEvent} from "classes/subscriptions/playerItemUseAfterEvent.js"
 import { replaycraftItemUseBeforeEvent } from "./classes/subscriptions/playerItemUseBeforeEvent.js";
+import { startDebug } from "./debug.js";
 //showParticle();
 
 
@@ -86,6 +87,8 @@ replaycraftInteractWithBlockAfterEvent();
 replaycraftItemUseAfterEvent();
 replaycraftItemUseBeforeEvent();
 
+//debug script
+startDebug();
 //========================Start (Increase Time Per Tick)
 
 system.runInterval(() => {

@@ -1,6 +1,6 @@
 import { SharedVariables } from "../main";
 
-function saveBedParts1(block, player) { //Calculate Orher Part Of Bed
+export function saveBedParts1(block, player) { //Calculate Orher Part Of Bed
     const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
     const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east =3', 'west = 1'
     let otherPartLocation = {
