@@ -432,7 +432,7 @@ function startPreview(player: Player) {
 				rotation: nextRot,
 				easeOptions: {
 					easeTime: easingTime,
-					easeType: EasingType[easeType ],
+					easeType: EasingType[easeType as keyof typeof EasingType],
 				},
 			});
 
