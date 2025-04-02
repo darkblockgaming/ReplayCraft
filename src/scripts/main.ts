@@ -1,0 +1,58 @@
+import { ReplayStateMachine } from "./classes/replayStateMachine";
+import {  SharedVariablesType } from "./classes/types/types";
+import { afterChatSend } from "./classes/subscriptions/chatSendAfterEvent";
+
+//Global variables
+export let SharedVariables: SharedVariablesType = {
+    soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', /* ... */],
+    easeTypes: ["Linear", "InBack", "InBounce", /* ... */],
+    skinTypes: ["Steve Skin", "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4"],
+    dbgRecController: undefined,
+    dbgRecTime: 0,
+    replayStateMachine: new ReplayStateMachine(),
+    multiPlayers: [],
+    multiToggle: false,
+    replayBDataMap: new Map(),
+    replayBDataBMap: new Map(),
+    replayBData1Map: new Map(),
+    replayPosDataMap: new Map(),
+    replayRotDataMap: new Map(),
+    replayMDataMap: new Map(),
+    replayODataMap: new Map(),
+    replaySDataMap: new Map(),
+    twoPartBlocks: ["minecraft:copper_door", "minecraft:exposed_copper_door", /* ... */],
+    toggleSound: false,
+    selectedSound: 0,
+    wantLoadFrameTick: 0,
+    frameLoaded: false,
+    startingValueTick: 0,
+    replayCamPos: [],
+    replayCamRot: [],
+    soundCue: true,
+    textPrompt: true,
+    startingValueSecs: 0,
+    startingValueMins: 0,
+    startingValueHrs: 0,
+    repCamTout1Map: new Map(),
+    repCamTout2Map: new Map(),
+    settCameraType: 1,
+    replayCamEase: 0,
+    settReplayType: 0,
+    followCamSwitch: false,
+    choosenReplaySkin: 0,
+    settNameType: 1,
+    settCustomName: "Type Custom Name",
+    currentSwitch: false,
+    lilTick: 0,
+    replaySpeed: 1,
+    dbgCamFocusPlayer: undefined,
+    dbgCamAffectPlayer: [],
+    topDownCamSwitch: false,
+    topDownCamSwitch2: false,
+    topDownCamHight: 8,
+    focusPlayerSelection: 0,
+    affectCameraSelection: 0,
+};
+
+//Events
+afterChatSend(); 
