@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="" alt="ReplayCraft">
+  <img src="https://darkblockgaming.github.io/images/dbg/replaycraft_text_logo2.webp" alt="ReplayCraft">
   <br><br>
   <p><b>Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Whether you want to capture your best builds, or create cinematic replays, Replay Craft makes it easy to record, play back, and analyze gameplay directly within Minecraft Bedrock.
   
