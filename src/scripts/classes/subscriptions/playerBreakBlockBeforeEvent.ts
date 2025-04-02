@@ -1,7 +1,7 @@
 import { SharedVariables } from "../../main";
-import { world } from "@minecraft/server";
+import { PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
 //@ts-check
-function recordBlocks(event) {
+function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
     if (SharedVariables.replayStateMachine.state === "recPending") {
         const {
             player,
