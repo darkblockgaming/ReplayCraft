@@ -1,9 +1,10 @@
 import { SharedVariables } from "../main";
 import * as ui from "@minecraft/server-ui";
-import { clearStructure } from "../clearStructure";
-import { loadEntity } from "../loadEntity";
-import { loadBlocksUpToTick } from "../loadBlocksUpToTick";
+
 import { Player } from "@minecraft/server";
+import { clearStructure } from "../functions/clearStructure";
+import { loadEntity } from "../functions/loadEntity";
+import { loadBlocksUpToTick } from "../functions/loadBlocksUpToTick";
 
 export function loadFrameSecondsForm(player: Player) {
     const maxFrameSeconds = Math.floor(SharedVariables.dbgRecTime / 20);

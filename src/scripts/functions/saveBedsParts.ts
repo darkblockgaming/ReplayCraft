@@ -1,55 +1,62 @@
 import { Block, Player, Vector3 } from "@minecraft/server";
 import { SharedVariables } from "../main";
+import { BlockData } from "../classes/types/types";
 
-type BlockState = Record<string, any>;
 
-type BlockData = {
-    location: Vector3;
-    typeId: string;
-    states: BlockState;
-};
 
-type PlayerReplayData = {
-    dbgBlockData: Record<number, { thisPart: BlockData; otherPart: BlockData }>;
-};
+export function saveBedParts(block: Block, player: Player) {
+    const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
+    const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east = 3', 'west = 1'
 
-export function saveBedParts(block: Block, player: Player): void {
-    const isHead: boolean = block.permutation.getState("head_piece_bit");
-    const direction: number = block.permutation.getState("direction");
+    // Ensure the location is in Vector3 format
+    let otherPartLocation: Vector3 = {
+        x: block.location.x,
+        y: block.location.y,
+        z: block.location.z
+    };
 
-    let otherPartLocation: Vector3 = { ...block.location };
-
+    // Adjust the other part location based on the head piece and direction
     if (isHead) {
-        if (direction === 2) otherPartLocation.z += 1;
-        else if (direction === 0) otherPartLocation.z -= 1;
-        else if (direction === 3) otherPartLocation.x -= 1;
-        else if (direction === 1) otherPartLocation.x += 1;
+        if (direction === 2) {
+            otherPartLocation = { x: block.location.x, y: block.location.y, z: block.location.z + 1 }; // North
+        } else if (direction === 0) {
+            otherPartLocation = { x: block.location.x, y: block.location.y, z: block.location.z - 1 }; // South
+        } else if (direction === 3) {
+            otherPartLocation = { x: block.location.x - 1, y: block.location.y, z: block.location.z }; // West
+        } else if (direction === 1) {
+            otherPartLocation = { x: block.location.x + 1, y: block.location.y, z: block.location.z }; // East
+        }
     } else {
-        if (direction === 2) otherPartLocation.z -= 1;
-        else if (direction === 0) otherPartLocation.z += 1;
-        else if (direction === 3) otherPartLocation.x += 1;
-        else if (direction === 1) otherPartLocation.x -= 1;
+        if (direction === 2) {
+            otherPartLocation = { x: block.location.x, y: block.location.y, z: block.location.z - 1 }; // North
+        } else if (direction === 0) {
+            otherPartLocation = { x: block.location.x, y: block.location.y, z: block.location.z + 1 }; // South
+        } else if (direction === 3) {
+            otherPartLocation = { x: block.location.x + 1, y: block.location.y, z: block.location.z }; // West
+        } else if (direction === 1) {
+            otherPartLocation = { x: block.location.x - 1, y: block.location.y, z: block.location.z }; // East
+        }
     }
 
     const otherPartBlock = block.dimension.getBlock(otherPartLocation);
-    if (!otherPartBlock || otherPartBlock.typeId === "minecraft:air") return;
+    if (otherPartBlock && otherPartBlock.typeId !== "minecraft:air") {
+        const otherPart: BlockData = {
+            location: otherPartLocation,
+            typeId: otherPartBlock.typeId,
+            states: otherPartBlock.permutation.getAllStates()
+        };
 
-    const otherPart: BlockData = {
-        location: otherPartLocation,
-        typeId: otherPartBlock.typeId,
-        states: otherPartBlock.permutation.getAllStates()
-    };
-
-  
-    let playerData = SharedVariables.replayBDataMap.get(player.id) as unknown as PlayerReplayData | undefined;
-    if (!playerData) return;
-
-    playerData.dbgBlockData[Number(SharedVariables.dbgRecTime)] = {
-        thisPart: {
+        const playerData = SharedVariables.replayBDataMap.get(player.id);
+        playerData.dbgBlockData[SharedVariables.dbgRecTime] = {
             location: block.location,
-            typeId: block.typeId,
-            states: block.permutation.getAllStates()
-        },
-        otherPart
-    };
+            typeId: block.typeId, 
+            states: block.permutation.getAllStates(), 
+            thisPart: {
+                location: block.location,
+                typeId: block.typeId,
+                states: block.permutation.getAllStates()
+            },
+            otherPart: otherPart 
+        };
+    }
 }

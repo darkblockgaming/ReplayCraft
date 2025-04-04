@@ -4,7 +4,7 @@ import { SharedVariables } from "../main";
 //@ts-check
 export function summonReplayEntity(player: Player) {
     const posData = SharedVariables.replayPosDataMap.get(player.id);
-    const rotData = SharedVariables.replayRotDataMap.get(player.id);
+   // const rotData = SharedVariables.replayRotDataMap.get(player.id);
     let customEntity = undefined;
     if (!posData) return;
 

@@ -1,7 +1,6 @@
-import { world, system, Player, EasingType, PlayerIterator } from '@minecraft/server';
-import { ModalFormData, MessageFormResponse, MessageFormData } from '@minecraft/server-ui';
+import { world, system, Player, EasingType } from '@minecraft/server';
 import * as ui from "@minecraft/server-ui";
-import { guideAbout } from './ui/guideabout.js';
+
 showParticle();
 
 
@@ -156,7 +155,7 @@ function ReplayCraft(player: Player) { //if replayStateMachine.state = recPendin
 function addPosFrame(player: Player) {
 	const pData = cinePDataMap.get(player.id);
 	const rData = cineRDataMap.get(player.id);
-	const eData = cineEDataMap.get(player.id);
+	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
@@ -465,8 +464,8 @@ function startPreview(player: Player) {
 //===============================================================
 
 function cineSettings(player: Player) {
-	const pData = cinePDataMap.get(player.id);
-	const rData = cineRDataMap.get(player.id);
+	//const pData = cinePDataMap.get(player.id);
+	//const rData = cineRDataMap.get(player.id);
 	const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
@@ -532,9 +531,9 @@ function cineSettings(player: Player) {
 //===============================================================
 
 function cineResetSett(player:Player) {
-	const pData = cinePDataMap.get(player.id);
-	const rData = cineRDataMap.get(player.id);
-	const eData = cineEDataMap.get(player.id);
+	//const pData = cinePDataMap.get(player.id);
+	//const rData = cineRDataMap.get(player.id);
+	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
 
 	if (cData.cineCamSwitch === true) {
@@ -572,8 +571,8 @@ function cineResetSett(player:Player) {
 
 function removeLastFrame(player:Player) {
 	const pData = cinePDataMap.get(player.id);
-	const rData = cineRDataMap.get(player.id);
-	const eData = cineEDataMap.get(player.id);
+	//const rData = cineRDataMap.get(player.id);
+	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
@@ -593,8 +592,8 @@ function removeLastFrame(player:Player) {
 		});
 		return;
 	}
-	const removedPos = pData.cineCamPos.pop();
-	const removedRot = rData.cineCamRot.pop();
+	//const removedPos = pData.cineCamPos.pop();
+	//const removedRot = rData.cineCamRot.pop();
 	saveFrameDataRC(player);
 	player.onScreenDisplay.setActionBar({
 		"rawtext": [{
@@ -608,7 +607,7 @@ function removeLastFrame(player:Player) {
 function removeAllFrames(player:Player) {
 	const pData = cinePDataMap.get(player.id);
 	const rData = cineRDataMap.get(player.id);
-	const eData = cineEDataMap.get(player.id);
+	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");

@@ -39,8 +39,6 @@ function buildProject() {
     console.log("Building the project");
     const tsConfigPath = path.resolve("./tsconfig.json");
     runCommand("node", ["./node_modules/typescript/bin/tsc", "-p", tsConfigPath]);
-    fs.copySync("src/blocks", path.join("build", "blocks"));
-    fs.copySync("src/recipes", path.join("build", "recipes"));
 }
 
 // Function to create the directory structure for the .mcaddon file
@@ -62,17 +60,6 @@ function copyScriptsAndBlocks(behaviorPacksDir) {
     if (fs.existsSync(scriptsDir)) {
         console.log("Copying scripts directory...");
         fs.copySync(scriptsDir, path.join(behaviorPacksDir, "scripts"));
-    }
-
-    const blockDir = path.join("build", "blocks");
-    if (fs.existsSync(blockDir)) {
-        console.log("Copying blocks directory...");
-        fs.copySync(blockDir, path.join(behaviorPacksDir, "blocks"));
-    }
-    const recipesDir = path.join("build", "recipes");
-    if (fs.existsSync(recipesDir)) {
-        console.log("Copying recipes directory...");
-        fs.copySync(recipesDir, path.join(behaviorPacksDir, "recipes"));
     }
 
     console.log("Copying assets to behavior_packs...");

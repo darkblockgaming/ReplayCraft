@@ -43,7 +43,7 @@ export function startReplayCam(player: Player) {
         for (let i = 0; i < SharedVariables.replayCamPos.length - 1; i++) {
             const startPoint = SharedVariables.replayCamPos[i];
             const endPoint = SharedVariables.replayCamPos[i + 1];
-            const startRot = SharedVariables.replayCamRot[i];
+            //const startRot = SharedVariables.replayCamRot[i];
             const endRot = SharedVariables.replayCamRot[i + 1];
             const tickDiff = endPoint.tick - startPoint.tick;
             const easetime = tickDiff / 20;
