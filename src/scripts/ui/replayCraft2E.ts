@@ -2,11 +2,11 @@
 import * as ui from "@minecraft/server-ui";
 import { loadFrameTicksForm } from "./loadFrameTicksForm";
 import { loadFrameSecondsForm } from "./loadFrameSecondsForm";
-import { addPos } from "../camera/addPos";
-import { doProceedFurther } from "../camera/doProceedFurther";
-import { resetCamSetup } from "../camera/resetCamSetup";
 import { cancelRec } from "./cancelRec";
 import { Player } from "@minecraft/server";
+import { addPos } from "../functions/camera/addPos";
+import { doProceedFurther } from "../functions/camera/doProceedFurther";
+import { resetCamSetup } from "../functions/camera/resetCamSetup";
 export function ReplayCraft2E(player: Player) { //if SharedVariables.replayStateMachine.state = recCamSetup
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")

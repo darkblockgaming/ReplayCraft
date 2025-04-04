@@ -1,4 +1,4 @@
-import { Player } from "@minecraft/server";
+import { Player, Vector3 } from "@minecraft/server";
 import { ReplayStateMachine } from "../replayStateMachine";
 
 // Define the structure for block data
@@ -6,6 +6,22 @@ export interface BlockData {
     location: { x: number; y: number; z: number };
     typeId: string;
     states: Record<string, any>;
+    thisPart?: {
+        location: Vector3;
+        typeId: string;
+        states: Record<string, any>;
+    };
+    lowerPart?: {
+        location: Vector3;
+        typeId: string;
+        states: Record<string, string | number | boolean>;
+    };
+    upperPart?: {
+        location:Vector3;
+        typeId: string;
+        states: Record<string, string | number | boolean>;
+    }
+    
   }
   
   // Define the structure stored under each player ID

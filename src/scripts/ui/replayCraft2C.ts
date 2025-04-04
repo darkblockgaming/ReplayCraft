@@ -1,9 +1,9 @@
 
 import * as ui from "@minecraft/server-ui";
-import { doSave } from "../replayControls/doSave";
-import { doResume } from "../replayControls/doResume";
 import { cancelRec } from "./cancelRec";
 import { Player } from "@minecraft/server";
+import { doSave } from "../functions/replayControls/doSave";
+import { doResume } from "../functions/replayControls/doResume";
 export function ReplayCraft2C(player: Player) { //if SharedVariables.replayStateMachine.state = recPaused
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")

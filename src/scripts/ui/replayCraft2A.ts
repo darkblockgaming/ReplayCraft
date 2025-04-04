@@ -2,9 +2,9 @@
 import * as ui from "@minecraft/server-ui";
 import { mainSettings } from "./settings/mainsettings";
 import { multiPlayersett } from "./settings/multiplayer";
-import { doStart } from "../replayControls/doStart";
-import { rcInfo } from "../../guideabout";
 import { Player } from "@minecraft/server";
+import { rcInfo } from "./guideabout";
+import { doStart } from "../functions/replayControls/doStart";
 export function ReplayCraft2A(player: Player) { //Default
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")

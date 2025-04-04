@@ -1,3 +1,5 @@
+import { saveBedParts1 } from "../../functions/saveBedParts1";
+import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
 import { SharedVariables } from "../../main";
 import { PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
 //@ts-check

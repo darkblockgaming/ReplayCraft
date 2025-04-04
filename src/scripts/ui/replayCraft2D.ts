@@ -1,11 +1,12 @@
 
 import * as ui from "@minecraft/server-ui";
 import { previewSettings } from "./settings/previewSettings";
-import { doCamSetup } from "../camera/doCamSetup";
-import { doStopPreview } from "../replayControls/doStopPreview";
-import { doViewReplay } from "../replayControls/doViewReplay";
+
 import { cancelRec } from "./cancelRec";
 import { Player } from "@minecraft/server";
+import { doViewReplay } from "../functions/replayControls/doViewReplay";
+import { doStopPreview } from "../functions/replayControls/doStopPreview";
+import { doCamSetup } from "../functions/camera/doCamSetup";
 export function ReplayCraft2D(player: Player) { //if SharedVariables.replayStateMachine.state = recSaved
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")

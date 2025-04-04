@@ -20,7 +20,8 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent){
             playerData.dbgBlockData[SharedVariables.dbgRecTime] = {
                 location: block.location,
                 typeId: block.typeId,
-                states: block.permutation.getAllStates()
+                states: block.permutation.getAllStates(),
+
             };
         }
     }

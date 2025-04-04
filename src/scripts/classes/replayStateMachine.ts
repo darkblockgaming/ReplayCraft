@@ -1,10 +1,11 @@
 import { Player } from "@minecraft/server";
-import { ReplayCraft2A } from "../functions/ui/ReplayCraft2A";
-import { ReplayCraft2B } from "../functions/ui/ReplayCraft2B";
-import { ReplayCraft2C } from "../functions/ui/ReplayCraft2C";
-import { ReplayCraft2D } from "../functions/ui/ReplayCraft2D";
-import { ReplayCraft2E } from "../functions/ui/ReplayCraft2E";
-import { ReplayCraft2F } from "../functions/ui/ReplayCraft2F";
+import { ReplayCraft2F } from "../ui/replayCraft2F";
+import { ReplayCraft2D } from "../ui/replayCraft2D";
+import { ReplayCraft2A } from "../ui/replayCraft2A";
+import { ReplayCraft2B } from "../ui/replayCraft2B";
+import { ReplayCraft2C } from "../ui/replayCraft2C";
+import { ReplayCraft2E } from "../ui/replayCraft2E";
+
 
 type ReplayState = 
     | "recStartRep"

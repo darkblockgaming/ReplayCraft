@@ -1,7 +1,7 @@
 import { world, system, Player, EasingType, PlayerIterator } from '@minecraft/server';
 import { ModalFormData, MessageFormResponse, MessageFormData } from '@minecraft/server-ui';
 import * as ui from "@minecraft/server-ui";
-import { guideAbout } from './guideabout.js';
+import { guideAbout } from './ui/guideabout.js';
 showParticle();
 
 
