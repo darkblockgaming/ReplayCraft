@@ -12,17 +12,6 @@ export interface BlockData {
     otherPart?: BlockData;
     
   }
-
-  // Define the structure for block data
-export interface BlockData {
-  location: { x: number; y: number; z: number };  // Top-level location
-  typeId: string; // Top-level typeId
-  states: Record<string, any>; // Top-level states
-  thisPart?: BlockData;  // Can be used for the part of the block (if any)
-  lowerPart?: BlockData; // Used for the lower part of the block (like a door's bottom)
-  upperPart?: BlockData; // Used for the upper part of the block (like a door's top)
-  otherPart?: BlockData; // Optional other parts if needed
-}
   
   // Define the structure stored under each player ID
   export interface PlayerBlockData {
