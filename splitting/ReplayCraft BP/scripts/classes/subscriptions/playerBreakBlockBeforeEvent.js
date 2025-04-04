@@ -1,4 +1,3 @@
-//@ts-check
 import { SharedVariables } from "../../main";
 import { world } from "@minecraft/server";
 import { saveBedParts1 } from "../../functions/saveBedParts1";
