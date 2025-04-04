@@ -1,9 +1,10 @@
 {
   "format_version": 2,
   "metadata": {
-    "description": "Type '?rc' in chat, Enable Beta APIs, 1.21.7× only. \nMade By §gDarkBlock Gaming",
+    "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Create by §gDarkBlock Gaming",
     "authors": [
-      "DarkBlock Gaming"
+      "DarkBlock Gaming",
+      "Pete9xi"
     ],
     "links": [
       {
@@ -25,11 +26,11 @@
     ]
   },
   "header": {
-    "name": "ReplayCraft BP v2.0.9-beta",
-    "description": "Type '?rc' in chat, Enable Beta APIs, 1.21.7× only. \nMade By §gDarkBlock Gaming",
+    "name": "ReplayCraft BP v2.1.0-beta",
+    "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Create by §gDarkBlock Gaming",
     "min_engine_version": [ 1, 21, 70 ],
     "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
-    "version": "2.0.9-beta"
+    "version": "2.1.0"
   },
   "modules": [
     {
