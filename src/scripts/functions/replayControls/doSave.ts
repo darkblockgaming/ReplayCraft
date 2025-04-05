@@ -1,6 +1,7 @@
 import { Player } from "@minecraft/server";
-import { replayCraftDB, SharedVariables } from "../../main";
+import {  SharedVariables } from "../../main";
 import { clearStructure } from "../clearStructure";
+import { replayCraftDB } from "../../classes/subscriptions/world-initialize";
 
 export function doSave(player: Player) {
 	replayCraftDB.set(player.id,SharedVariables.replayBDataMap);
