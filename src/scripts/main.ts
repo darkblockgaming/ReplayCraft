@@ -83,7 +83,7 @@ replaycraftItemUseBeforeEvent();
 onPlayerSpawn();
 
 //data-hive
-const replayCraftDB = new OptimizedDatabase("replaceCraftDatabase");
+const replayCraftDB = new OptimizedDatabase("replayCraftDatabase");
 export{ replayCraftDB };
 
 
