@@ -1,8 +1,9 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { replayCraftDB, SharedVariables } from "../../main";
 import { clearStructure } from "../clearStructure";
 
 export function doSave(player: Player) {
+	replayCraftDB.set(player.id,SharedVariables.replayBDataMap);
 	SharedVariables.replayStateMachine.setState("recSaved");
 	if (SharedVariables.textPrompt) {
 		player.onScreenDisplay.setActionBar({
@@ -14,5 +15,6 @@ export function doSave(player: Player) {
 	SharedVariables.multiPlayers.forEach((player) => {
 		clearStructure(player);
 	});
+	
 
 }

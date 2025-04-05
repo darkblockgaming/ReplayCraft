@@ -1,4 +1,5 @@
 import { ChatSendAfterEvent, world } from "@minecraft/server";
+import { replayCraftDB } from "../../main";
 
 function giveItems(event: ChatSendAfterEvent) {
 	const {sender, message} = event;
@@ -10,6 +11,10 @@ function giveItems(event: ChatSendAfterEvent) {
 			}]
 		});
 	}
+	if(message ==="listbd"){
+		sender.sendMessage(replayCraftDB.get(sender.id));
+	}
+
 }
 
 const afterChatSend = () => {
