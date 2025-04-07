@@ -42,12 +42,19 @@ export function loadFromDB(player: Player, buildName: string) {
             }
         }
 
-        // If dbgRecController is restored update it to reference the actual player object
+        // If dbgRecController must be updated and re assigned to the player object.
         if (SharedVariables.dbgRecController) {
             const actualPlayer = world.getPlayers().find(p => p.id === SharedVariables.dbgRecController.id);
             if (actualPlayer) {
                 SharedVariables.dbgRecController = actualPlayer; // Update the reference to the actual player object
             }
+        }
+        //dbgCamAffectPlayer must be updated and re assigned to the player object.
+        if (Array.isArray(SharedVariables.dbgCamAffectPlayer) && SharedVariables.dbgCamAffectPlayer.length > 0) {
+            const players = world.getPlayers();
+            SharedVariables.dbgCamAffectPlayer = SharedVariables.dbgCamAffectPlayer
+                .map(oldPlayer => players.find(p => p.id === oldPlayer.id))
+                .filter(Boolean);
         }
 
         console.warn(`[✅] Settings restored for ${player.id}`);
