@@ -9,7 +9,8 @@ export function replayMenuAfterLoad(player: Player) {
 const form = new ActionFormData()
     .title("How To Continue?")
     .button("Continue Recording")
-    .button("Continue Freecam Playback");
+    .button("Continue Freecam Playback")
+    .button("Camera Setup");
     form
     .show(player)
    .then(async (response: ActionFormResponse) => {
@@ -29,6 +30,12 @@ const form = new ActionFormData()
       }
       if (response.selection === 1) {
         SharedVariables.replayStateMachine.setState("recSaved");
+        player.sendMessage("§f§4[ReplayCraft]§f Replay has been loaded please open the menu.");
+        return;
+      }
+      if(response.selection === 2) {
+        SharedVariables.replayStateMachine.setState("recCamSetup");
+        player.sendMessage("§f§4[ReplayCraft]§f Replay has been loaded please open the menu.");
         return;
       }
 

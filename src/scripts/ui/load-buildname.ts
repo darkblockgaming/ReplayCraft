@@ -11,7 +11,7 @@ const form = new ModalFormData()
     .show(player)
     .then((formData) => {
         SharedVariables.buildName = formData.formValues[0] as string;
-        loadFromDB(player, SharedVariables.buildName);
+        loadFromDB(player, SharedVariables.buildName, true);
     })
     .catch((error: Error) => {
       player.sendMessage("Failed to show form: " + error);

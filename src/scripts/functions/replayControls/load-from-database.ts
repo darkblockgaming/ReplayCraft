@@ -3,7 +3,7 @@ import { replayCraftBeforeBlockInteractionsDB, replayCraftBlockDB, replayCraftBl
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 
-export function loadFromDB(player: Player, buildName: string) {
+export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     // Load the Map databases back into the maps in SharedVariables for the time being this is going to be removed as the database is faster than maos 
     SharedVariables.replayBDataMap.delete(player.id);
     SharedVariables.replayPosDataMap.delete(player.id);
@@ -63,5 +63,7 @@ export function loadFromDB(player: Player, buildName: string) {
     }
 
    // Call UI 
+   if(showUI) {
    replayMenuAfterLoad(player);
+   }
 }
