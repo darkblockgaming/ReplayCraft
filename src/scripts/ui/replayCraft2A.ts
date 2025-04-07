@@ -10,7 +10,7 @@ export function ReplayCraft2A(player: Player) { //Default
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu") 
         .button("dbg.rc1.button.start.recording") //0
-        .button("Load Session") //1
+        .button("dbg.rc1.button.load.session") //1
         .button("dbg.rc1.button.settings") //2
         .button("dbg.rc1.button.multiplayer.settings")//3
         .button("dbg.rc1.button.important.info") //4

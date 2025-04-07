@@ -7,10 +7,10 @@ import { removeEntities } from "../functions/removeEntities";
 
 export function replayMenuAfterLoad(player: Player) {
 const form = new ActionFormData()
-    .title("How To Continue?")
-    .button("Continue Recording")
-    .button("Continue Freecam Playback")
-    .button("Camera Setup");
+    .title("replaymenueafterload.title")
+    .button("replaymenueafterload.button1")
+    .button("replaymenueafterload.button1")
+    .button("replaymenueafterload.button1");
     form
     .show(player)
    .then(async (response: ActionFormResponse) => {

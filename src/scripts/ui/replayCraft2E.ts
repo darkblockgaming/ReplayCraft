@@ -18,8 +18,8 @@ export function ReplayCraft2E(player: Player) { //if SharedVariables.replayState
         .button("dbg.rc1.button.proceed.further") //3
         .button("dbg.rc1.button.reset.camera.setup") //4
         .button("dbg.rc1.button.cancel.recording") //5
-        .button("Load existing camera points") //6
-        .button("Save current camera points") //7
+        .button("dbg.rc1.button.load.existing.camera.points") //6
+        .button("dbg.rc1.button.save.current.camera.points") //7
         .body("dbg.rc1.body.2e");
     replayForm.show(player).then(result => {
         if (result.canceled) return;

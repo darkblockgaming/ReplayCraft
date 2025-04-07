@@ -5,8 +5,8 @@ import { loadFromDB } from "../functions/replayControls/load-from-database";
 
 export function loadBuildName(player: Player) {
 const form = new ModalFormData()
-    .title("Enter Replay Name") 
-    .textField("Replay name to be loaded?", "Enter your replay name here.")
+    .title("replaycraftloadbuildname.title") 
+    .textField("replaycraftloadbuildname.textField", "replaycraftloadbuildname.textField2")
     form
     .show(player)
     .then((formData) => {
