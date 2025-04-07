@@ -68,4 +68,5 @@ export interface BlockData {
       topDownCamHight: number;
       focusPlayerSelection: number;
       affectCameraSelection: number;
+      buildName: string;
   };

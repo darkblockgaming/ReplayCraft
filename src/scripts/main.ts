@@ -64,6 +64,7 @@ export let SharedVariables: SharedVariablesType = {
     topDownCamHight: 8,
     focusPlayerSelection: 0,
     affectCameraSelection: 0,
+    buildName: undefined,
 };
 
 //Chat events

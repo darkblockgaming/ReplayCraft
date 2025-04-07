@@ -1,10 +1,10 @@
 import { Player } from "@minecraft/server";
 import {  SharedVariables } from "../../main";
 import { clearStructure } from "../clearStructure";
-import { replayCraftDB } from "../../classes/subscriptions/world-initialize";
+import { saveToDB } from "./save-to-database";
 
 export function doSave(player: Player) {
-	replayCraftDB.set(player.id,SharedVariables.replayBDataMap);
+	
 	SharedVariables.replayStateMachine.setState("recSaved");
 	if (SharedVariables.textPrompt) {
 		player.onScreenDisplay.setActionBar({
@@ -17,5 +17,6 @@ export function doSave(player: Player) {
 		clearStructure(player);
 	});
 	
+	saveToDB(player);
 
 }
