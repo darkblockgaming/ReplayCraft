@@ -152,4 +152,5 @@ replaycraftloadbuildname.textField2=Enter Your Replay Name Here.
 replaycraftsetbuildname.title=Set Your Replay Name.
 replaycraftsetbuildname.textField=Replay Name:
 replaycraftsetbuildname.textField2=Enter Your Replay Name Here.
+replaycraft.welcome.message=§f§4[ReplayCraft]§f Type ?rc in chat to be given the ReplayCraft control sticks!
 
