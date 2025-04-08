@@ -159,7 +159,7 @@ function addPosFrame(player: Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion"
 			}]
@@ -219,7 +219,7 @@ function startCamera(player: Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.camera.is.already.moving"
 			}]
@@ -228,7 +228,7 @@ function startCamera(player: Player) {
 	}
 	if (cData.cinePrevSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.preview.camera.is.already.moving"
 			}]
@@ -333,7 +333,7 @@ function startCamera(player: Player) {
 				if (eData.hideHud === true) {
 				    player.onScreenDisplay.setHudVisibility(1);
 				}
-				player.onScreenDisplay.setActionBar({
+				player.sendMessage({
 					"rawtext": [{
 						"translate": "dbg.rc2.mes.camera.movement.complete"
 					}]
@@ -354,7 +354,7 @@ function startCamera(player: Player) {
 function stopCamera(player: Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === false) {
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.no.active.camera.movement.to.stop"
 			}]
@@ -377,12 +377,12 @@ function stopCamera(player: Player) {
 
 		player.camera.clear();
 		
-		player.onScreenDisplay.setActionBar(`Camera movement stopped`);
+		player.sendMessage(`Camera movement stopped`);
 		cameraIntervalMap.delete(player.id);
 		cData.cineCamSwitch = false;
 		cData.cinePrevSwitch = false;
 	} else {
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.no.active.camera.movement.to.stop"
 			}]
@@ -398,7 +398,7 @@ function startPreview(player: Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.camera.is.already.moving"
 			}]
@@ -449,7 +449,7 @@ function startPreview(player: Player) {
 			// At the last frame, clear the camera with no delay
 			player.camera.clear();
 			
-			player.onScreenDisplay.setActionBar(`§aPreview camera movement complete §r`);
+			player.sendMessage(`§aPreview camera movement complete §r`);
 			cData.cinePrevSwitch = false; // Reset the camera switch flag
 		}
 	}
@@ -459,7 +459,7 @@ function startPreview(player: Player) {
 	moveNextCameraFrame(); // Begin transitioning to the next frame
 }
 
-//player.onScreenDisplay.setActionBar({ "rawtext": [{ "translate": "dbg.rc1." }] });
+//player.sendMessage({ "rawtext": [{ "translate": "dbg.rc1." }] });
 
 //===============================================================
 
@@ -470,7 +470,7 @@ function cineSettings(player: Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion"
 			}]
@@ -494,7 +494,7 @@ function cineSettings(player: Player) {
 		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.blue.value" }] }, 0, 225, 1, eData.cineBlueValue);
 	replaySettingsForm.show(player).then(response => {
 		if (response.canceled) {
-			player.onScreenDisplay.setActionBar({
+			player.sendMessage({
 				"rawtext": [{
 					"translate": "dbg.rc2.mes.please.click.submit"
 				}]
@@ -520,7 +520,7 @@ function cineSettings(player: Player) {
 		eData.cineGreenValue = response.formValues[10];
 		eData.cineBlueValue = response.formValues[11];
 		saveSettDataRC(player);
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.settings.have.been.saved.successfully"
 			}]
@@ -538,7 +538,7 @@ function cineResetSett(player:Player) {
 
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion"
 			}]
@@ -560,7 +560,7 @@ function cineResetSett(player:Player) {
 		cineGreenValue: 128,
 		cineBlueValue: 27
 	});
-	player.onScreenDisplay.setActionBar({
+	player.sendMessage({
 		"rawtext": [{
 			"translate": "dbg.rc2.mes.all.settings.have.been.reset.to.default"
 		}]
@@ -576,7 +576,7 @@ function removeLastFrame(player:Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion"
 			}]
@@ -585,7 +585,7 @@ function removeLastFrame(player:Player) {
 	}
 	if (pData.cineCamPos.length === 0) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.no.frames.to.remove"
 			}]
@@ -595,7 +595,7 @@ function removeLastFrame(player:Player) {
 	//const removedPos = pData.cineCamPos.pop();
 	//const removedRot = rData.cineCamRot.pop();
 	saveFrameDataRC(player);
-	player.onScreenDisplay.setActionBar({
+	player.sendMessage({
 		"rawtext": [{
 			"translate": "dbg.rc2.mes.removed.last.frame"
 		}]
@@ -611,7 +611,7 @@ function removeAllFrames(player:Player) {
 	const cData = cineCDataMap.get(player.id);
 	if (cData.cineCamSwitch === true) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion"
 			}]
@@ -621,7 +621,7 @@ function removeAllFrames(player:Player) {
 
 	if (pData.cineCamPos.length === 0) {
 		player.playSound("note.bass");
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc2.mes.no.frames.to.remove"
 			}]
@@ -631,7 +631,7 @@ function removeAllFrames(player:Player) {
 	pData.cineCamPos = [];
 	rData.cineCamRot = [];
 	saveFrameDataRC(player);
-	player.onScreenDisplay.setActionBar({
+	player.sendMessage({
 		"rawtext": [{
 			"translate": "dbg.rc2.mes.all.frames.have.been.removed"
 		}]

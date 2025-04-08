@@ -5,7 +5,7 @@ import { summonReplayEntity } from "../summonReplayEntity";
 export async function doViewReplay(player: Player) {
     if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.replay.preview.is.already.on"
                 }]

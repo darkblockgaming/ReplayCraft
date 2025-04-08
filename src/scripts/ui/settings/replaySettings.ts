@@ -6,7 +6,7 @@ import { Player } from "@minecraft/server";
 export function replaySettings(player: Player) {
     if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.please.wait.for.replay.to.be.completed"
                 }]
@@ -34,7 +34,7 @@ export function replaySettings(player: Player) {
     replaySettingsForm.show(player).then(response => {
         if (response.canceled) {
             if (SharedVariables.textPrompt) {
-                player.onScreenDisplay.setActionBar({
+                player.sendMessage({
                     "rawtext": [{
                         "translate": "dbg.rc1.mes.please.click.submit"
                     }]

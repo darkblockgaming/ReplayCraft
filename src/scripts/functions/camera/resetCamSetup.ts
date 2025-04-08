@@ -14,7 +14,7 @@ export function resetCamSetup(player: Player) {
     SharedVariables.replayCamPos = [];
     SharedVariables.replayCamRot = [];
     SharedVariables.wantLoadFrameTick = 0;
-    player.onScreenDisplay.setActionBar({
+    player.sendMessage({
         "rawtext": [{
             "translate": "dbg.rc1.mes.interaction.successfull"
         }]

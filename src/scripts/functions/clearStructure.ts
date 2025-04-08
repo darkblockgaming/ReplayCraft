@@ -15,7 +15,7 @@ export async function clearStructure(player: Player) {
     // Store original position before teleporting
     const originalPos = player.location; 
     if (!recordingStartPos) {
-        player.onScreenDisplay.setActionBar(`Error: Recording start position not found.`);
+        player.sendMessage(`Error: Recording start position not found.`);
         return;
     }
 

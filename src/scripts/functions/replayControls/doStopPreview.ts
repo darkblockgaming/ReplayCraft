@@ -6,7 +6,7 @@ import { clearStructure } from "../clearStructure";
 export function doStopPreview(player: Player) {
     if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.replay.preview.has.stopped.successfully"
                 }]

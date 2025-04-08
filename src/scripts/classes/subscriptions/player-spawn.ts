@@ -32,7 +32,6 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
  * @param {PlayerSpawnAfterEvent} event - the event object containing information about player spawn.
  */
 function triggerMessage(event: PlayerSpawnAfterEvent) {
-    //event.player.sendMessage(`§f§4[ReplayCraft]§f Type ?rc in chat to be given the ReplayCraft control sticks!`);
     event.player.sendMessage({
         "rawtext": [{
             "translate": "replaycraft.welcome.message"

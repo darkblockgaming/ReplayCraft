@@ -14,7 +14,7 @@ export function mainSettings(player: Player) {
     replaySettingsForm.show(player).then(response => {
         if (response.canceled) {
             if (SharedVariables.textPrompt) {
-                player.onScreenDisplay.setActionBar({
+                player.sendMessage({
                     "rawtext": [{
                         "translate": "dbg.rc1.mes.please.click.submit"
                     }]

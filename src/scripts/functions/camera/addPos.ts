@@ -6,7 +6,7 @@ import { SharedVariables } from "../../main";
 export function addPos(player: Player) {
     if (SharedVariables.frameLoaded === false) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.please.load.a.frame.before.adding.camera.point"
                 }]
@@ -20,7 +20,7 @@ export function addPos(player: Player) {
     const existingCamPoint = SharedVariables.replayCamPos.find(cam => cam.tick === SharedVariables.wantLoadFrameTick);
     if (existingCamPoint) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.a.camera.point.already.exists.at.this.tick"
                 }]
@@ -50,6 +50,6 @@ export function addPos(player: Player) {
     const camPos1Entity = player.dimension.spawnEntity("dbg:rccampos", spawnLocation);
     camPos1Entity.nameTag = `Camera Point ${SharedVariables.replayCamPos.length}`;
     if (SharedVariables.textPrompt) {
-        player.onScreenDisplay.setActionBar(`Â§bCamera point added successfully at about ${Math.round(cameraPosTick/20)} second(s).`);
+        player.sendMessage(`§4[ReplayCraft] Â§bCamera point added successfully at about ${Math.round(cameraPosTick/20)} second(s).`);
     }
 }

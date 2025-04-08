@@ -10,7 +10,7 @@ import { resetRec } from "./resetRec";
 export async function doSaveReset(player: Player) {
     if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{ "translate": "dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed" }]
             });
         }

@@ -6,7 +6,7 @@ import { clearStructure } from "../clearStructure";
 export function doProceedFurther(player: Player) {
     if (SharedVariables.replayCamPos.length <= 1) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.at.least.two.camera.points.are.recommended"
                 }]

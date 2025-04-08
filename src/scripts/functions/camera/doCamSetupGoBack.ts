@@ -5,7 +5,7 @@ import { SharedVariables } from "../../main";
 export function doCamSetupGoBack(player: Player) {
 if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.please.wait.for.replay.to.be.completed"
                 }]
@@ -21,7 +21,7 @@ if (SharedVariables.currentSwitch === true) {
     SharedVariables.replayCamRot = [];
     SharedVariables.wantLoadFrameTick = 0;
     if (SharedVariables.textPrompt) {
-        player.onScreenDisplay.setActionBar({
+        player.sendMessage({
             "rawtext": [{
                 "translate": "dbg.rc1.mes.please.do.the.cinematic.camera.setup"
             }]

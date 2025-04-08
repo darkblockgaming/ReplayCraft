@@ -7,7 +7,7 @@ export function doSave(player: Player) {
 	
 	SharedVariables.replayStateMachine.setState("recSaved");
 	if (SharedVariables.textPrompt) {
-		player.onScreenDisplay.setActionBar({
+		player.sendMessage({
 			"rawtext": [{
 				"translate": "dbg.rc1.mes.rec.saved.successfully"
 			}]
