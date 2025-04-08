@@ -10,20 +10,26 @@ const form = new ModalFormData()
     form
     .show(player)
     .then((formData) => {
-      if(formData.formValues[0] == "") {
+      if (typeof formData.formValues[0] === "string" && formData.formValues[0].trim() === "") {
         player.sendMessage({
-          "rawtext": [{
-              "translate": "replaycraftsetbuildname.error.message"
-          }]
-      });
-      player.playSound("note.bass");
-      return 
-      }
+            rawtext: [{
+                translate: "replaycraftsetbuildname.error.message"
+            }]
+        });
+        player.playSound("note.bass");
+        return;
+    }
         SharedVariables.buildName = "rcData" + formData.formValues[0] as string;
         doStart(player);
     })
     .catch((error: Error) => {
-      player.sendMessage("Failed to show form: " + error);
+      console.error("Failed to show form: " + error);
+      player.sendMessage({
+        rawtext: [{
+            translate: "replaycraft.ui.error.message"
+        }]
+    });
+     
       return -1;
     });
 

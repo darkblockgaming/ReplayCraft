@@ -17,7 +17,8 @@ dbg.rc1.button.start.recording=Start Recording
 dbg.rc1.button.settings=Settings
 dbg.rc1.button.multiplayer.settings=Multiplayer Settings
 dbg.rc1.button.important.info=Important Info [Must Read]
-dbg.rc1.button.load.session=Load Replay
+dbg.rc1.button.load.session=Load A Replay
+dbg.rc1.button.delete.session=Delete A Replay
 
 dbg.rc1.button.save.recording=Save Recording
 dbg.rc1.button.pause.recording=Pause Recording
@@ -154,3 +155,6 @@ replaycraftsetbuildname.textField=Replay Name:
 replaycraftsetbuildname.textField2=Enter Your Replay Name Here.
 replaycraft.welcome.message=§f§4[ReplayCraft]§f Type ?rc in chat to be given the ReplayCraft control sticks!
 replaycraftsetbuildname.error.message=§f§4[ReplayCraft]§f You must provide a valid name to start a new replay session.
+replaycraftdeletebuild.title=Please choose a replay to delete.
+
+replaycraft.ui.error.message=§f§4[ReplayCraft]§f You did not select an option or closed the UI menu!.
