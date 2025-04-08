@@ -39,6 +39,9 @@ function buildProject() {
     console.log("Building the project");
     const tsConfigPath = path.resolve("./tsconfig.json");
     runCommand("node", ["./node_modules/typescript/bin/tsc", "-p", tsConfigPath]);
+    fs.copySync("src/entities", path.join("build", "entities"));
+    fs.copySync("src/functions", path.join("build", "functions"));
+    fs.copySync("src/loot_tables", path.join("build", "loot_tables"));
 }
 
 // Function to create the directory structure for the .mcaddon file
@@ -60,6 +63,21 @@ function copyScriptsAndBlocks(behaviorPacksDir) {
     if (fs.existsSync(scriptsDir)) {
         console.log("Copying scripts directory...");
         fs.copySync(scriptsDir, path.join(behaviorPacksDir, "scripts"));
+    }
+    const entitiesDir = path.join("build", "entities");
+    if (fs.existsSync(entitiesDir)) {
+        console.log("Copying entities directory...");
+        fs.copySync(entitiesDir, path.join(behaviorPacksDir, "entities"));
+    }
+    const functionsDir = path.join("build", "functions");
+    if (fs.existsSync(functionsDir)) {
+        console.log("Copying functions directory...");
+        fs.copySync(functionsDir, path.join(behaviorPacksDir, "functions"));
+    }
+    const loot_tablesDir = path.join("build", "loot_tables");
+    if (fs.existsSync(loot_tablesDir)) {
+        console.log("Copying loot_tables directory...");
+        fs.copySync(loot_tablesDir, path.join(behaviorPacksDir, "loot_tables"));
     }
 
     console.log("Copying assets to behavior_packs...");
