@@ -49,11 +49,11 @@ function createAddonStructure() {
     const addonDir = path.join("build", "addon");
     fs.mkdirSync(addonDir, { recursive: true });
 
-    const behaviorPacksDir = path.join(addonDir, "behavior_packs");
+    const behaviorPacksDir = path.join(addonDir, "ReplayCraft_BP");
     fs.mkdirSync(behaviorPacksDir, { recursive: true });
 
     // Copy resource packs and behavior packs
-    fs.copySync("ReplayCraft RP", path.join(addonDir, "resource_packs"));
+    fs.copySync("ReplayCraft RP", path.join(addonDir, "ReplayCraft_RP"));
     return behaviorPacksDir;
 }
 
@@ -98,7 +98,7 @@ function createDistributionArchive(outputFilePath, addonDir) {
 
     // Run the 7z command to create the archive
     const sevenZipPath = path7za;
-    const result = runCommand(sevenZipPath, ["a", `-tzip`, outputFilePath, "build/addon/resource_packs", "build/addon/behavior_packs"], { cwd: addonDir });
+    const result = runCommand(sevenZipPath, ["a", `-tzip`, outputFilePath, "build/addon/ReplayCraft_RP", "build/addon/ReplayCraft_BP"], { cwd: addonDir });
 
     // Check for system-level error
     if (result.error) {
@@ -117,7 +117,7 @@ function modifyZip(outputFilePath, addonDir) {
 
     // Filter out entries that are inside the 'addon' directory (resource_packs and behavior_packs)
     const filteredEntries = zipEntries.filter((entry) => {
-        return entry.entryName.startsWith("build/addon/") && !entry.entryName.startsWith("build/addon/resource_packs/") && !entry.entryName.startsWith("build/addon/behavior_packs/");
+        return entry.entryName.startsWith("build/addon/") && !entry.entryName.startsWith("build/addon/ReplayCraft_RP/") && !entry.entryName.startsWith("build/addon/ReplayCraft_BP/");
     });
 
     // Create a new zip file excluding the 'addon' directory itself
@@ -127,8 +127,8 @@ function modifyZip(outputFilePath, addonDir) {
     });
 
     // Now, add the 'resource_packs' and 'behavior_packs' folders directly (without the parent 'addon' directory)
-    newZip.addLocalFolder(path.join(addonDir, "resource_packs"), "resource_packs");
-    newZip.addLocalFolder(path.join(addonDir, "behavior_packs"), "behavior_packs");
+    newZip.addLocalFolder(path.join(addonDir, "ReplayCraft_RP"), "ReplayCraft_RP");
+    newZip.addLocalFolder(path.join(addonDir, "ReplayCraft_BP"), "ReplayCraft_BP");
 
     // Save the modified zip file
     newZip.writeZip(outputFilePath);
