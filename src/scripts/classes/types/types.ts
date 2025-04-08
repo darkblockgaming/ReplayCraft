@@ -6,6 +6,11 @@ export interface BlockData {
     location: { x: number; y: number; z: number };
     typeId: string;
     states: Record<string, any>;
+    thisPart?: BlockData;
+    lowerPart?: BlockData;
+    upperPart?: BlockData;
+    otherPart?: BlockData;
+    
   }
   
   // Define the structure stored under each player ID
@@ -63,4 +68,5 @@ export interface BlockData {
       topDownCamHight: number;
       focusPlayerSelection: number;
       affectCameraSelection: number;
+      buildName: string;
   };

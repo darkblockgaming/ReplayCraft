@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.0.9-beta§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.0-beta§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
 dbg.rc1.title.replaycraft.settings=§bReplayCraft Settings§r
@@ -17,6 +17,7 @@ dbg.rc1.button.start.recording=Start Recording
 dbg.rc1.button.settings=Settings
 dbg.rc1.button.multiplayer.settings=Multiplayer Settings
 dbg.rc1.button.important.info=Important Info [Must Read]
+dbg.rc1.button.load.session=Load Replay
 
 dbg.rc1.button.save.recording=Save Recording
 dbg.rc1.button.pause.recording=Pause Recording
@@ -29,6 +30,8 @@ dbg.rc1.button.stop.preview=Stop Preview
 dbg.rc1.button.preview.settings=Preview Settings
 dbg.rc1.button.start.camera.setup=Start Camera Setup
 dbg.rc1.button.cancel.recording=Cancel Recording
+dbg.rc1.button.load.existing.camera.points = Load Existing Camera Points
+dbg.rc1.button.save.current.camera.points = Save Current Camera Points
 
 dbg.rc1.button.load.frame.t=Load Frame (Ticks)
 dbg.rc1.button.load.frame.s=Load Frame (Seconds)
@@ -137,3 +140,16 @@ dbg.rc2.mes.removed.last.frame=Removed last frame
 dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§cCan't remove all frames while camera is in motion§r
 dbg.rc2.mes.no.frames.to.remove=§cNo frames to remove§r
 dbg.rc2.mes.all.frames.have.been.removed=All frames have been removed.
+
+replaymenueafterload.title= How To Continue?
+replaymenueafterload= How To Continue?
+replaymenueafterload.button1=Continue Recording 
+replaymenueafterload.button2=Continue Freecam Playback
+replaymenueafterload.button3= Camera Setup
+replaycraftloadbuildname.title=Enter Replay Name
+replaycraftloadbuildname.textField=Replay Name To Be Loaded?
+replaycraftloadbuildname.textField2=Enter Your Replay Name Here.
+replaycraftsetbuildname.title=Set Your Replay Name.
+replaycraftsetbuildname.textField=Replay Name:
+replaycraftsetbuildname.textField2=Enter Your Replay Name Here.
+

@@ -1,8 +1,9 @@
 
 import * as ui from "@minecraft/server-ui";
-import { doSaveReset } from "../replayControls/doSaveReset";
-import { deletePro } from "../replayControls/deletePro";
+
 import { Player } from "@minecraft/server";
+import { doSaveReset } from "../functions/replayControls/doSaveReset";
+import { deletePro } from "../functions/replayControls/deletePro";
 
 export function cancelRec(player: Player) {
 	const replayForm = new ui.ActionFormData()

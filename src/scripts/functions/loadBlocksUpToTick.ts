@@ -1,0 +1,67 @@
+import { BlockPermutation, Player, Vector3, world, Dimension } from "@minecraft/server";
+import { SharedVariables } from "../main";
+import { isChunkLoaded } from "./isChunkLoaded";
+import { waitForChunkLoad } from "./waitForChunkLoad";
+
+type BlockState = Record<string, any>; // Define block states as a record of key-value pairs
+
+type BlockData = {
+    location?: Vector3;
+    typeId: string;
+    states: BlockState;
+    lowerPart?: { location: Vector3; typeId: string; states: BlockState };
+    upperPart?: { location: Vector3; typeId: string; states: BlockState };
+    thisPart?: { location: Vector3; typeId: string; states: BlockState };
+    otherPart?: { location: Vector3; typeId: string; states: BlockState };
+};
+
+type PlayerReplayData = {
+    dbgBlockData: Record<number, BlockData>;
+};
+
+export async function loadBlocksUpToTick(targetTick: number, player: Player): Promise<void> {
+    const playerData: PlayerReplayData | undefined = SharedVariables.replayBDataMap.get(player.id);
+    if (!playerData) {
+        console.warn(`No block replay data for player ${player.name}`);
+        return;
+    }
+
+    for (let tick = 0; tick <= targetTick; tick++) {
+        const blockData: BlockData | undefined = playerData.dbgBlockData[tick];
+        if (!blockData) continue;
+
+        async function setBlock(location: Vector3, typeId: string, states: BlockState): Promise<void> {
+            if (!isChunkLoaded(location, player)) {
+                console.warn(`Chunk not loaded for block at ${location.x}, ${location.y}, ${location.z}. Teleporting player...`);
+                
+                const success = player.tryTeleport({ x: location.x, y: location.y + 2, z: location.z }, { checkForBlocks: false });
+                
+                if (success) {
+                    await waitForChunkLoad(location, player);
+                } else {
+                    console.error(`Failed to teleport ${player.name} to load chunk at ${location.x}, ${location.y}, ${location.z}`);
+                    return;
+                }
+            }
+            
+            const dimension: Dimension = world.getDimension(SharedVariables.dbgRecController.dimension.id);
+            const block = dimension.getBlock(location);
+            if (!block) {
+                console.error(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);
+                return;
+            }
+            
+            block.setPermutation(BlockPermutation.resolve(typeId, states));
+        }
+
+        if (blockData.lowerPart && blockData.upperPart) {
+            await setBlock(blockData.lowerPart.location, blockData.lowerPart.typeId, blockData.lowerPart.states);
+            await setBlock(blockData.upperPart.location, blockData.upperPart.typeId, blockData.upperPart.states);
+        } else if (blockData.thisPart && blockData.otherPart) {
+            await setBlock(blockData.thisPart.location, blockData.thisPart.typeId, blockData.thisPart.states);
+            await setBlock(blockData.otherPart.location, blockData.otherPart.typeId, blockData.otherPart.states);
+        } else if (blockData.location) {
+            await setBlock(blockData.location, blockData.typeId, blockData.states);
+        }
+    }
+}

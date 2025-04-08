@@ -1,8 +1,8 @@
-import { world } from "@minecraft/server";
+import { PlayerBreakBlockAfterEvent, world } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 import { saveBedParts } from "../../functions/saveBedsParts";
 import { saveDoorParts } from "../../functions/saveDoorParts";
-function recordBlocks(event){
+function recordBlocks(event: PlayerBreakBlockAfterEvent){
     if (SharedVariables.replayStateMachine.state === "recPending") {
         const {
             player,
@@ -20,7 +20,8 @@ function recordBlocks(event){
             playerData.dbgBlockData[SharedVariables.dbgRecTime] = {
                 location: block.location,
                 typeId: block.typeId,
-                states: block.permutation.getAllStates()
+                states: block.permutation.getAllStates(),
+
             };
         }
     }

@@ -10,6 +10,8 @@ function giveItems(event: ChatSendAfterEvent) {
 			}]
 		});
 	}
+	
+
 }
 
 const afterChatSend = () => {

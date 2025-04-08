@@ -1,5 +1,6 @@
 import { PlayerInteractWithBlockBeforeEvent, world } from "@minecraft/server";
 import { SharedVariables } from "../../main";
+import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
 
 
 
