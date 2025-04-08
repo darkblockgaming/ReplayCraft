@@ -5,12 +5,12 @@ import { Player } from "@minecraft/server";
 
 export function setBuildName(player: Player) {
 const form = new ModalFormData()
-    .title("Set Your Replay Name.")
-    .textField("Replay Name", "Enter your replay name here.")
+    .title("replaycraftsetbuildname.title")
+    .textField("replaycraftsetbuildname.textField", "replaycraftsetbuildname.textField2")
     form
     .show(player)
     .then((formData) => {
-        SharedVariables.buildName = formData.formValues[0] as string;
+        SharedVariables.buildName = "rcData" + formData.formValues[0] as string;
         doStart(player);
     })
     .catch((error: Error) => {

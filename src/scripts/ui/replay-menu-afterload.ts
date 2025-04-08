@@ -9,8 +9,8 @@ export function replayMenuAfterLoad(player: Player) {
 const form = new ActionFormData()
     .title("replaymenueafterload.title")
     .button("replaymenueafterload.button1")
-    .button("replaymenueafterload.button1")
-    .button("replaymenueafterload.button1");
+    .button("replaymenueafterload.button2")
+    .button("replaymenueafterload.button3");
     form
     .show(player)
    .then(async (response: ActionFormResponse) => {
