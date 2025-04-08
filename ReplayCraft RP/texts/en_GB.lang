@@ -153,4 +153,4 @@ replaycraftsetbuildname.title=Set Your Replay Name.
 replaycraftsetbuildname.textField=Replay Name:
 replaycraftsetbuildname.textField2=Enter Your Replay Name Here.
 replaycraft.welcome.message=§f§4[ReplayCraft]§f Type ?rc in chat to be given the ReplayCraft control sticks!
-
+replaycraftsetbuildname.error.message=§f§4[ReplayCraft]§f You must provide a valid name to start a new replay session.

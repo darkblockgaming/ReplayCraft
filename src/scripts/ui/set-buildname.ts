@@ -10,6 +10,14 @@ const form = new ModalFormData()
     form
     .show(player)
     .then((formData) => {
+      if(formData.formValues[0] == "") {
+        player.sendMessage({
+          "rawtext": [{
+              "translate": "replaycraftsetbuildname.error.message"
+          }]
+      });
+      return 
+      }
         SharedVariables.buildName = "rcData" + formData.formValues[0] as string;
         doStart(player);
     })
