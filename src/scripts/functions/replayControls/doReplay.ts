@@ -21,6 +21,25 @@ export async function doReplay(player: Player) {
 
     SharedVariables.replayStateMachine.setState("recStartRep");
     SharedVariables.currentSwitch = true;
+    /**
+     * We can hide the following hud elements 
+     * PaperDoll = 0
+     * Armor = 1
+     * ToolTips = 2
+     * TouchControls = 3
+     * Crosshair = 4
+     * Hotbar = 5
+     * Health = 6
+     * ProgressBar = 7
+     * Hunger = 8
+     * AirBubbles = 9
+     * HorseHealth = 10
+     * StatusEffects = 11ItemText = 12
+     */
+    if(SharedVariables.hideHUD === true){
+        player.onScreenDisplay.setHudVisibility(0,[0,1,2,3,4,5,6,7,8,9,10,11,12]);
+    }
+    
 
     const posData = SharedVariables.replayPosDataMap.get(player.id);
     if (!posData || !posData.dbgRecPos || posData.dbgRecPos.length === 0) {

@@ -83,4 +83,23 @@ export async function clearStructure(player: Player) {
         player.tryTeleport(originalPos, { checkForBlocks: false });
         //player.onScreenDisplay.setActionBar(`You have been teleported back to the start of the recording.`);
     }
+     /**
+     * We can re enable the following hud elements 
+     * PaperDoll = 0
+     * Armor = 1
+     * ToolTips = 2
+     * TouchControls = 3
+     * Crosshair = 4
+     * Hotbar = 5
+     * Health = 6
+     * ProgressBar = 7
+     * Hunger = 8
+     * AirBubbles = 9
+     * HorseHealth = 10
+     * StatusEffects = 11ItemText = 12
+     */
+    if(SharedVariables.hideHUD === true){
+        player.onScreenDisplay.setHudVisibility(1,[0,1,2,3,4,5,6,7,8,9,10,11,12]);
+    }
+    
 }

@@ -69,4 +69,5 @@ export interface BlockData {
       focusPlayerSelection: number;
       affectCameraSelection: number;
       buildName: string;
+      hideHUD: boolean;
   };

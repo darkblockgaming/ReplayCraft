@@ -67,6 +67,7 @@ export let SharedVariables: SharedVariablesType = {
     focusPlayerSelection: 0,
     affectCameraSelection: 0,
     buildName: undefined,
+    hideHUD: false,
 };
 
 //Chat events
