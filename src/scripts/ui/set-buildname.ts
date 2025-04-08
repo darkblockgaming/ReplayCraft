@@ -16,6 +16,7 @@ const form = new ModalFormData()
               "translate": "replaycraftsetbuildname.error.message"
           }]
       });
+      player.playSound("note.bass");
       return 
       }
         SharedVariables.buildName = "rcData" + formData.formValues[0] as string;
