@@ -21,7 +21,7 @@
     ]
   },
   "header": {
-    "name": "ReplayCraft RP v2.0.9-beta",
+    "name": "ReplayCraft RP v2.1.0-beta",
     "description": "Type '?rc' in chat, Enable Beta APIs, 1.21.7× only. \nMade By §gDarkBlock Gaming",
     "min_engine_version": [ 1, 21, 70 ],
     "uuid": "6aef535d-b1e7-4995-b4db-ddf24712fde2",
