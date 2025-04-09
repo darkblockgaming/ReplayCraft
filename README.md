@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="screenshots/replaycraft-text-logo.webp" alt="ReplayCraft Text & Icon Logo" />
+  <img src="assets/replaycraft-text-logo.webp" alt="ReplayCraft Text & Icon Logo" />
 </p>
 
 <p align="center">
