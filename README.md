@@ -153,7 +153,7 @@ Powerful features to enhance your cinematic experience:
   - Currently, only one skin shared across all.
   - Place custom skins inside:  
     `resource_pack/textures/entity/custom_skins`
-  - ![Custom Skins Screenshot](<assets/screenshots/custom-skins.webp>)
+  ![Custom Skins Screenshot](<assets/screenshots/custom-skins.webp>)
 
 > **Note:** This system is continuously evolving — stay tuned for updates and new features.
 
