@@ -33,14 +33,11 @@ ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-u
 After installing and activating the **ReplayCraft** add-on, open your Minecraft world and type `?rc` in the chat.  
 You will receive **two important tools**:
 
----
-
 ## 1. **Replay Stick** 🎬 
 Grants access to the full **Replay System**, including **recording**, **previewing**, and **camera setup**.
 
 This system is broken down into **four core menus** which themselves may contain multiple menus:
 
----
 
 ### 🎮 A. Replay Menu
 ![Replay Menu Screenshot](<assets/screenshots/replay-menu.webp>)
@@ -74,7 +71,6 @@ This is the **starting point** for every replay.
   - Cancel and **keep** all placed/broken blocks.  
   - Cancel and **revert** everything to its original state.
 
----
 
 ### 🔍 B. Preview Menu  
 ![Preview Menu Screenshot](<assets/screenshots/preview-menu.webp>)
@@ -86,7 +82,6 @@ After saving your recording:
   - **Cancel** the recording.  
   - **Load** a different saved recording.
 
----
 
 ### 🎥 C. Camera Setup Menu  
 ![Camera Setup Menu Screenshot](<assets/screenshots/camera-setup-menu.webp>)
@@ -110,7 +105,6 @@ Once satisfied with your preview:
 - **Load** a saved setup for the current recording.
 - Click **Proceed Further** once your camera path is ready.
 
----
 
 ### 🎞️ D. Final Replay Menu  
 ![Final Replay Menu Screenshot](<assets/screenshots/final-replay-menu.webp>)
@@ -138,7 +132,6 @@ After the replay:
 - You can **preserve** the build you made.
 - Or **clear** it completely and restore the original state.
 
----
 
 ### ⚙️ Replay Settings Overview  
 ![Replay Settings Screenshot](<assets/screenshots/replay-settings.webp>)
@@ -168,7 +161,6 @@ Powerful features to enhance your cinematic experience:
 ## 2. **Cinematic Stick** 📽️ 
 This tool gives you access to a **standalone cinematic system** that works during **live gameplay** — no recording required.
 
----
 
 ### 🎥 Cinematic Menu Overview  
 ![Cinematic Menu Screenshot](<assets/screenshots/cinematic-menu.webp>)
