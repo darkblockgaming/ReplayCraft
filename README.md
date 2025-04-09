@@ -3,9 +3,7 @@
 </p>
 
 <p align="center">
-<b>ReplayCraft</b> is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition.
-
-Whether you want to capture your best builds, or create cinematic replays, ReplayCraft makes it easy to record, play back, and analyze gameplay directly within Minecraft Bedrock Edition.
+<b>ReplayCraft</b> is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Whether you want to capture your best builds, or create cinematic replays, ReplayCraft makes it easy to record, play back, and analyze gameplay directly within Minecraft Bedrock Edition.
 
 ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-ui APIs</b>, enhancing compatibility and performance for Minecraft Bedrock.
 </p>
