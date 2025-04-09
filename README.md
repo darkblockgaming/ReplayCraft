@@ -10,9 +10,16 @@ ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-u
 
 ---
 
+## ⬇️ Download
+
+# [Download v2.1.0-beta](https://darkblockgaming.github.io/addons/replaycraft/)
+### For 1.21.7x only 
+
+---
+
 ## ✅ Installation
 
-1. Download the latest **ReplayCraft `.mcaddon`** file.  
+1. [Download](https://darkblockgaming.github.io/addons/replaycraft/) the latest **ReplayCraft `.mcaddon`** file.  
 2. Open the file with **Minecraft Bedrock Edition** to install the add-on.  
 3. In your world settings, enable **Experimental Features**, including:  
    - **Beta APIs**  
@@ -194,9 +201,5 @@ Use this when you just want to create stunning camera paths **on the fly** — g
 
 ---
 
-> Whether you're telling stories, making cinematic videos, or just showing off your builds—**ReplayCraft** gives you the tools to make it look amazing.
-
----
-
 ## 🌐 Community Discord  
-Need assistance or have questions? Join our community on [Discord](https://discord.gg/zdG9Xwzudt).
+### Need assistance or have questions? Join our community on [Discord](https://discord.gg/zdG9Xwzudt).
