@@ -42,7 +42,7 @@ function setController(eventData: ItemUseAfterEvent){
 			
 			//player.onScreenDisplay.setActionBar(${player.name} ${player.id});
 		} else {
-			player.onScreenDisplay.setActionBar(`${SharedVariables.dbgRecController.name} is controlling the replay.`);
+			player.sendMessage(`${SharedVariables.dbgRecController.name} is controlling the replay.`);
 		}
 	}
 }

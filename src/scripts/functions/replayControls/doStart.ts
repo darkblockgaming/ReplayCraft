@@ -19,8 +19,7 @@ export function doStart(player:Player) {
         SharedVariables.dbgCamAffectPlayer = SharedVariables.multiPlayers;
     }
     if (SharedVariables.textPrompt) {
-        //player.onScreenDisplay.setActionBar("dbg.rc1.message.recording.has.started");
-        player.onScreenDisplay.setActionBar({
+        player.sendMessage({
             "rawtext": [{
                 "translate": "dbg.rc1.mes.rec.has.started"
             }]

@@ -13,7 +13,7 @@ export function startReplayCam(player: Player) {
 
         if (SharedVariables.replayCamPos.length === 0) {
             if (SharedVariables.textPrompt) {
-                player.onScreenDisplay.setActionBar({
+                player.sendMessage({
                     "rawtext": [{
                         "translate": "dbg.rc1.mes.no.camera.points.found"
                     }]
@@ -68,7 +68,7 @@ export function startReplayCam(player: Player) {
         if (SharedVariables.settReplayType === 1) return;
         if (SharedVariables.replayCamPos.length === 0) {
             if (SharedVariables.textPrompt) {
-                player.onScreenDisplay.setActionBar({
+                player.sendMessage({
                     "rawtext": [{
                         "translate": "dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point"
                     }]

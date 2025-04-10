@@ -4,7 +4,7 @@ import { SharedVariables } from "../../main";
 export function doCamSetup(player: Player) {
     if (SharedVariables.currentSwitch === true) {
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed"
                 }]
@@ -17,7 +17,7 @@ export function doCamSetup(player: Player) {
     }
     SharedVariables.replayStateMachine.setState("recCamSetup");
     if (SharedVariables.textPrompt) {
-        player.onScreenDisplay.setActionBar({
+        player.sendMessage({
             "rawtext": [{
                 "translate": "dbg.rc1.mes.please.do.the.cinematic.camera.setup"
             }]

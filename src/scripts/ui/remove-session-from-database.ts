@@ -1,10 +1,9 @@
 import { ModalFormData } from "@minecraft/server-ui";
-import { SharedVariables } from "../main";
 import { Player } from "@minecraft/server";
-import { loadFromDB } from "../functions/replayControls/load-from-database";
 import { replayCraftSettingsDB } from "../classes/subscriptions/world-initialize";
+import { deleteFromDB } from "../functions/replayControls/delete-from-database";
 
-export function loadBuildName(player: Player) {
+export function deleteBuildUI(player: Player) {
 const entries = replayCraftSettingsDB.entries();
 const playerId = player.id;
 
@@ -17,7 +16,7 @@ const buildNames = entries
 });
 
 // Debug output (optional)
-console.warn(`[DEBUG] Build names for ${player.name}:`, buildNames);
+//console.warn(`[DEBUG] Build names for ${player.name}:`, buildNames);
 
 if (buildNames.length === 0) {
     player.sendMessage("No builds found for your ID.");
@@ -25,25 +24,27 @@ if (buildNames.length === 0) {
 }
 
 const form = new ModalFormData()
-    .title("replaycraftloadbuildname.title") 
+    .title("replaycraftdeletebuild.title") 
     .dropdown("Available Builds", buildNames, 0);
     form
     .show(player)
     .then((formData) => {
       
         const selectedBuild = buildNames[Number(formData.formValues[0])];
-        SharedVariables.buildName = "rcData" + selectedBuild as string;
-        loadFromDB(player, SharedVariables.buildName, true);
+        let buildName = "rcData" + selectedBuild as string;
 
-       
+        deleteFromDB(player, buildName);
     })
     .catch((error: Error) => {
-        console.error("Failed to show form: " + error);
-        player.sendMessage({
-          rawtext: [{
-              translate: "replaycraft.ui.error.message"
-          }]
-      });
+        
+      console.error("Failed to show form: " + error);
+      player.sendMessage({
+        rawtext: [{
+            translate: "replaycraft.ui.error.message"
+        }]
+    });
+      
+
       return -1;
     });
 

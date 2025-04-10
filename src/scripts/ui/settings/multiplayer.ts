@@ -10,7 +10,7 @@ export function multiPlayersett(player: Player) {
         SharedVariables.multiPlayers = [];
         SharedVariables.multiPlayers.push(player);
         if (SharedVariables.textPrompt) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.no.other.players.available"
                 }]
@@ -28,7 +28,7 @@ export function multiPlayersett(player: Player) {
 
     replaySettingsForm.show(player).then(response => {
         if (response.canceled) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.please.click.submit"
                 }]
@@ -37,7 +37,7 @@ export function multiPlayersett(player: Player) {
             return;
         }
         if (response.formValues[1] === 1) {
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.you.have.to.select.multiple.players"
                 }]
@@ -52,13 +52,13 @@ export function multiPlayersett(player: Player) {
             for (let i = 0; i < Number(selectedNumber); i++) {
                 SharedVariables.multiPlayers.push(availablePlayers[i]);
             }
-            player.onScreenDisplay.setActionBar(`Â§aAdded ${selectedNumber} players to multiplayer replay.`);
+            player.sendMessage(`§4[ReplayCraft] Â§aAdded ${selectedNumber} players to multiplayer replay.`);
             player.playSound("note.pling");
         }
         if (SharedVariables.multiToggle === false) {
             SharedVariables.multiPlayers = [];
             SharedVariables.multiPlayers.push(player);
-            player.onScreenDisplay.setActionBar({
+            player.sendMessage({
                 "rawtext": [{
                     "translate": "dbg.rc1.mes.multiplayer.replay.is.off"
                 }]
