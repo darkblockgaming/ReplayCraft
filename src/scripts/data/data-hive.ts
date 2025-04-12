@@ -64,16 +64,18 @@ export class OptimizedDatabase {
      * @example
      * db.set('key1', { name: 'item', value: 100 });
      */
-    public set(key: string, value: any): void {
+    public set(key: string, value: any): boolean {
         const serialized = JSON.stringify(value);
         const maxChunkSize = 30000; // Safe estimated size limit per chunk
 
         const pointers = this._getPointers();
         const dynamicKey = `${this.name}/${key}`;
+        let dataExists = false;
 
         // Remove existing chunks if the key already exists
         if (pointers.includes(dynamicKey)) {
             this.delete(key);
+            dataExists = true;
         }
 
         const chunkCount = Math.ceil(serialized.length / maxChunkSize);
@@ -92,6 +94,7 @@ export class OptimizedDatabase {
             pointers.push(dynamicKey);
             this._setPointers(pointers);
         }
+        return dataExists;
     }
 
     /**

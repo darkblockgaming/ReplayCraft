@@ -78,7 +78,16 @@ export function saveToDB(player: Player) {
     }
 
     // Save the filtered SharedVariables settings for all players
-    replayCraftSettingsDB.set(player.id + SharedVariables.buildName, JSON.stringify(filteredSettings));
+    const dataExists = replayCraftSettingsDB.set(player.id + SharedVariables.buildName, JSON.stringify(filteredSettings));
+    //Work around if the data is already present re save again to actually save it.
+
+    if (dataExists) {
+        saveToDB(player);
+        console.log('Data existed and was overwritten. Resaving is now complete.');
+    } else {
+        console.log('New data was saved.');
+    }
+    
 
     console.log(`[✅] Shared variables saved for all players.`);
 }
