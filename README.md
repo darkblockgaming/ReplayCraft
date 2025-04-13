@@ -11,6 +11,36 @@ ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-u
 
 ---
 
+## ⬇️ 2.1.0-beta Changelog
+
+## 🚀 Key Changes
+- Complete Codebase Restructure:
+We’ve restructured the entire codebase from a single large file into modular components. This not only improves performance but also makes future development and maintenance significantly easier.
+
+- Migration to TypeScript:
+ReplayCraft is now written in TypeScript, enabling better tooling, type safety, and reliability across the project.
+
+- Open Source under GPL-3.0:
+ReplayCraft is now open source! The project is licensed under the GPL-3.0, allowing the community to contribute and extend the project freely.
+
+## ✨ New Features
+- Big Build Mode:
+ReplayCraft can now record and replay structures that exceed the currently loaded chunk area. This is perfect for large-scale builds that span far beyond your visible range.
+
+- Persistent Storage:
+Replays are now saved in a database, enabling players to pause and resume replay sessions across multiple game sessions.
+
+- Multi-Session Support:
+Players can now manage multiple replays. When creating a new session, you’ll be prompted to name it. Later, you can browse and select any saved session to resume or playback.
+
+- HUD Toggle Setting:
+A new setting allows you to toggle HUD elements on or off during replay playback, giving more control over your visual experience.
+
+- Improved Compatibility:
+We've replaced actionbar feedback with chat-based messages. This change improves compatibility with other Minecraft Bedrock Add-Ons and ensures a smoother user experience.
+
+---
+
 ## ⬇️ Download
 
 # [Download v2.1.0-beta](https://darkblockgaming.github.io/addons/replaycraft/)
