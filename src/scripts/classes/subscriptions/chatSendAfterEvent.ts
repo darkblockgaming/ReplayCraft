@@ -1,4 +1,5 @@
-import { ChatSendAfterEvent, world } from "@minecraft/server";
+import { ChatSendAfterEvent,  world } from "@minecraft/server";
+import { setSkin } from "../../ui/settings/setSkin";
 
 function giveItems(event: ChatSendAfterEvent) {
 	const {sender, message} = event;
@@ -10,9 +11,15 @@ function giveItems(event: ChatSendAfterEvent) {
 			}]
 		});
 	}
+
+	//Chat command to show the settings UI 
+	if(message === "?skin"){
+		setSkin(sender);
+	}
 	
 
 }
+
 
 const afterChatSend = () => {
 	world.afterEvents.chatSend.subscribe(giveItems);

@@ -1,5 +1,6 @@
 import { Player } from "@minecraft/server";
 import { SharedVariables } from "../main";
+import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
 
 //@ts-check
 export function summonReplayEntity(player: Player) {
@@ -10,7 +11,12 @@ export function summonReplayEntity(player: Player) {
 
     if (SharedVariables.settReplayType === 0) {
         customEntity = player.dimension.spawnEntity("dbg:replayentity", posData.dbgRecPos[0]);
-        customEntity.setProperty("dbg:skin", SharedVariables.choosenReplaySkin);
+        //set the skin based on the skin database
+        let skinID = replayCraftSkinDB.get(player.id)
+        if(skinID === null){
+            skinID = 0 
+        }
+        customEntity.setProperty("dbg:skin", parseInt(skinID));
 
         if (SharedVariables.settNameType === 0) {
             customEntity.nameTag = player.name;

@@ -10,7 +10,8 @@ export function mainSettings(player: Player) {
         .toggle(`dbg.rc1.toggle.text.prompts`, SharedVariables.textPrompt)
         .dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, SharedVariables.soundIds, SharedVariables.selectedSound)
         .toggle(`dbg.rc1.toggle.block.placing.sound`, SharedVariables.toggleSound)
-        .toggle(`dbg.rc1.toggle.hide.hud.on.replay`,SharedVariables.hideHUD);
+        .toggle(`dbg.rc1.toggle.hide.hud.on.replay`,SharedVariables.hideHUD)
+
 
     replaySettingsForm.show(player).then(response => {
         if (response.canceled) {

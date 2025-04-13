@@ -20,7 +20,17 @@ import './ReplayCraft.js';
 export let SharedVariables: SharedVariablesType = {
     soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"],
 	easeTypes: ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"],
-	skinTypes: ["Steve Skin", "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4"],
+	skinTypes: [
+        "Steve Skin",
+        "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4", "Custom Skin5", "Custom Skin6", "Custom Skin7", "Custom Skin8", "Custom Skin9", "Custom Skin10",
+        "Custom Skin11", "Custom Skin12", "Custom Skin13", "Custom Skin14", "Custom Skin15", "Custom Skin16", "Custom Skin17", "Custom Skin18", "Custom Skin19", "Custom Skin20",
+        "Custom Skin21", "Custom Skin22", "Custom Skin23", "Custom Skin24", "Custom Skin25", "Custom Skin26", "Custom Skin27", "Custom Skin28", "Custom Skin29", "Custom Skin30",
+        "Custom Skin31", "Custom Skin32", "Custom Skin33", "Custom Skin34", "Custom Skin35", "Custom Skin36", "Custom Skin37", "Custom Skin38", "Custom Skin39", "Custom Skin40",
+        "Custom Skin41", "Custom Skin42", "Custom Skin43", "Custom Skin44", "Custom Skin45", "Custom Skin46", "Custom Skin47", "Custom Skin48", "Custom Skin49", "Custom Skin50",
+        "Custom Skin51", "Custom Skin52", "Custom Skin53", "Custom Skin54", "Custom Skin55", "Custom Skin56", "Custom Skin57", "Custom Skin58", "Custom Skin59", "Custom Skin60",
+        "Custom Skin61", "Custom Skin62", "Custom Skin63", "Custom Skin64"
+      ],
+      
     dbgRecController: undefined,
     dbgRecTime: 0,
     replayStateMachine: new ReplayStateMachine(),
