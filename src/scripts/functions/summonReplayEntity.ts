@@ -13,8 +13,8 @@ export function summonReplayEntity(player: Player) {
         customEntity = player.dimension.spawnEntity("dbg:replayentity", posData.dbgRecPos[0]);
         //set the skin based on the skin database
         let skinID = replayCraftSkinDB.get(player.id)
-        if(skinID === null){
-            skinID = 0 
+        if (skinID === undefined) {
+            skinID = "0";
         }
         customEntity.setProperty("dbg:skin", parseInt(skinID));
 
