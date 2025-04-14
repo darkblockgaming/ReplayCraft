@@ -226,3 +226,9 @@ Use this when you just want to create stunning camera paths **on the fly** — g
 
 ## 🌐 Community Discord  
 ### Need assistance or have questions? Join our community on [Discord](https://discord.gg/zdG9Xwzudt).
+
+---
+
+## 💸 Donate/Sponsor 
+
+### If you enjoy this project and would like to support its development—or simply show your appreciation with a donation—we’d be truly grateful. [Donate now...](https://darkblockgaming.github.io/donate-me/)
