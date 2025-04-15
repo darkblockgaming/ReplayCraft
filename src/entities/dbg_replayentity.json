@@ -6,14 +6,26 @@
       "is_spawnable": false,
       "is_summonable": true,
       "is_experimental": false,
-      "properties": {
+        "properties": {
         "dbg:skin": {
-        "type": "int",
-        "default": 0,
-        "client_sync": true,
-        "range": [0, 64]
+          "type": "int",
+          "default": 0,
+          "client_sync": true,
+          "range": [
+            0,
+            64
+          ]
+        },
+        "dbg:model": {
+          "type": "int",
+          "default": 0,
+          "client_sync": true,
+          "range": [
+            0,
+            1
+          ]
+        }
       }
-     }
     },
     "components": {
     "minecraft:tick_world": {
