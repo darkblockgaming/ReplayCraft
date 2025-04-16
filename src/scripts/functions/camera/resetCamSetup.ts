@@ -7,7 +7,7 @@ import { removeEntities } from "../removeEntities";
 export function resetCamSetup(player: Player) {
     SharedVariables.multiPlayers.forEach((player) => {
         clearStructure(player);
-        removeEntities(player);
+        removeEntities(player,false);
     });
     SharedVariables.currentSwitch = false;
     SharedVariables.frameLoaded = false;

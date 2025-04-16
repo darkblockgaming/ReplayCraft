@@ -23,7 +23,7 @@ export function deletePro(player: Player) {
     resetCamSetup(player);
     SharedVariables.replayStateMachine.setState("default");
     SharedVariables.multiPlayers.forEach((player) => {
-        removeEntities(player);
+        removeEntities(player,false);
         clearStructure(player);
         resetRec(player);
     });

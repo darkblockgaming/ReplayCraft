@@ -27,7 +27,7 @@ export async function doSaveReset(player: Player) {
     await clearStructure(player); 
 
     // Then remove entities
-    removeEntities(player);
+    removeEntities(player,false);
 
     // Now safely load blocks
     await loadBlocksUpToTick(SharedVariables.dbgRecTime, player);
