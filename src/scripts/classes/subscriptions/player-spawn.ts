@@ -1,4 +1,4 @@
-import { PlayerSpawnAfterEvent, world } from "@minecraft/server";
+import { PlayerSpawnAfterEvent, system, world } from "@minecraft/server";
 /**
  * Function to execute when a player spawns.
  * Initializes event handlers for player spawn events.
@@ -31,12 +31,17 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
  Trigger a message to the player after they spawn.
  * @param {PlayerSpawnAfterEvent} event - the event object containing information about player spawn.
  */
-function triggerMessage(event: PlayerSpawnAfterEvent) {
-    event.player.sendMessage({
-        "rawtext": [{
-            "translate": "replaycraft.welcome.message"
-        }]
-    });
+ function triggerMessage(event: PlayerSpawnAfterEvent) {
+    const player = event.player;
+
+    // Delay by 7 seconds (140 game ticks)
+    system.runTimeout(() => {
+        player.sendMessage({
+            rawtext: [{
+                translate: "replaycraft.welcome.message"
+            }]
+        });
+    }, 140); // 20 ticks = 1 second
 }
 
 }
