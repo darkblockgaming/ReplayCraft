@@ -6,7 +6,11 @@ import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     // Load SharedVariables from the database.
     const savedSettingsRaw = replayCraftSettingsDB.get(player.id + buildName);
-    if (!savedSettingsRaw) return;
+    if (!savedSettingsRaw){
+        console.error(`[❌] Failed to restore settings for ${player.id}:${savedSettingsRaw}`);
+        return;
+    } 
+       
 
     try {
         const savedSettings = JSON.parse(savedSettingsRaw);

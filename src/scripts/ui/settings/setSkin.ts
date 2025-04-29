@@ -16,13 +16,14 @@ export function setSkin(player: Player) {
         }
         
         //save the players chosen skin to the skins database.
-       let dataExists = replayCraftSkinDB.set(player.id,response.formValues[0].toString()+","+response.formValues[1].toString());
+       replayCraftSkinDB.set(player.id,response.formValues[0].toString()+","+response.formValues[1].toString());
        //Fix for saving issues 
-       if (dataExists) {
+       /*if (dataExists) {
         replayCraftSkinDB.set(player.id,response.formValues[0].toString()+","+response.formValues[1].toString());
         console.log('Data existed and was overwritten. Resaving is now complete.');
     } else {
         console.log('New data was saved.');
     }
+        */
     })
 }

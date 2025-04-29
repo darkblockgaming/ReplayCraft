@@ -1,5 +1,6 @@
 import { world } from "@minecraft/server";
 import { OptimizedDatabase } from "../../data/data-hive";
+import { migrateDatabase } from "../../data/migrate-database";
 
 let replayCraftBlockDB: OptimizedDatabase;
 let replayCraftPlayerPosDB: OptimizedDatabase;
@@ -30,7 +31,8 @@ function onWorldInitialize() {
 
     // stores the SharedVariables as a whole excluding the maps. 
     replayCraftSettingsDB = new OptimizedDatabase("replayCraftSettingsDatabase");
-    
+
+    migrateDatabase(); // Call the migration function to migrate all databases
 }
 
 /**
