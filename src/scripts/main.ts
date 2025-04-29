@@ -1,6 +1,6 @@
 import { ReplayStateMachine } from "./classes/replayStateMachine";
 import {  SharedVariablesType } from "./classes/types/types";
-import { afterChatSend } from "./classes/subscriptions/chatSendAfterEvent";
+import { beforeChatSend } from "./classes/subscriptions/chatSendBeforeEvent";
 import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/playerBreakBlockAfterEvent";
 import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/playerBreakBlockBeforeEvent";
 import { replaycraftInteractWithBlockAfterEvent } from "./classes/subscriptions/playerInteractWithBlockAfterEvent";
@@ -82,7 +82,7 @@ export let SharedVariables: SharedVariablesType = {
 };
 
 //Chat events
-afterChatSend();
+beforeChatSend();
 //Events
 replaycraftBreakBlockAfterEvent();
 replaycraftBreakBlockBeforeEvent();
