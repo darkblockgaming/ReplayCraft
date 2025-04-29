@@ -12,13 +12,14 @@ export function summonReplayEntity(player: Player) {
     if (SharedVariables.settReplayType === 0) {
         //set the skin based on the skin database
         let skinData = replayCraftSkinDB.get(player.id);
+        if (!skinData) {
+            console.error(`[ReplayCraft] Failed to retrieve skin data for ${player.id}, have they set a skin?`);
+           skinData = "0,0";
+        }
         const [skinIDStr, modelIDStr] = skinData.split(",");
         let skinID = parseInt(skinIDStr);
         let modelID = parseInt(modelIDStr);
-        if (skinData === undefined) {
-            skinID = 0;
-            modelID = 0;
-        }
+      
         if(modelID === 0){
             customEntity = player.dimension.spawnEntity("dbg:replayentity_steve", posData.dbgRecPos[0]);
         }
