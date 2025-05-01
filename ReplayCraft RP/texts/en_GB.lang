@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.0-beta§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.2-beta§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
 dbg.rc1.title.replaycraft.settings=§bReplayCraft Settings§r
@@ -47,7 +47,8 @@ dbg.rc1.button.goback.camsetup=Go Back (Cam Setup)
 dbg.rc1.button.load.structure.or.reset=Load Structure Or Reset
 
 dbg.rc1.dropdown.title.replay.type=Replay Type
-dbg.rc1.dropdown.title.replay.skin.type=The option to adjust replay/preview speed is temporarily unavailable in this version.\n\nReplay Player Skin
+dbg.rc1.dropdown.title.replay.skin.type=Choose Replay Player Skin
+dbg.rc1.dropdown.title.replay.skin.type.size=Choose Skin Type
 dbg.rc1.dropdown.title.name.of.replay.player=Name Of Replay Player
 dbg.rc1.textfield.custom.name=Custom Name
 dbg.rc1.dropdown.title.camera.ease.type=Camera Ease Type
@@ -57,7 +58,7 @@ dbg.rc1.dropdown.title.affect.camera.of.players=Affect Camera Of Players
 dbg.rc1.slider.title.topdown.cam.height=Top-down Cam Height 
 
 dbg.rc1.dropdown.title.preview.type=Preview Type
-dbg.rc1.dropdown.title.preview.skin.type=The option to adjust replay/preview speed is temporarily unavailable in this version.\n\nPreview Player Skin
+dbg.rc1.dropdown.title.preview.skin.type=Choose Preview Player Skin
 dbg.rc1.dropdown.title.name.of.preview.player=Name Of Preview Player
 dbg.rc1.textfield.title.custom.name=Custom Name
 

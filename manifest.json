@@ -9,49 +9,45 @@
     ],
     "links": [
       {
+        "name": "Official GitHub Page",
+        "url": "https://github.com/darkblockgaming/ReplayCraft"
+      },
+      {
         "name": "Official Page",
         "url": "https://darkblockgaming.github.io/addons/replaycraft/"
       },
       {
-        "name": "Mod Link On MCPEDL",
-        "url": "https://mcpedl.com/replaycraft/"
-      },
-      {
-        "name": "Mod Link On Modbay",
-        "url": "https://modbay.org/mods/1591-replaycraft.html"
-      },
-      {
-        "name": "YouTube Channel",
-        "url": "https://youtube.com/@darkblockgaming"
+        "name": "Curseforge",
+        "url": "https://www.curseforge.com/minecraft-bedrock/scripts/replaycraft"
       }
     ]
     
   },
   "header": {
-    "name": "ReplayCraft BP v2.1.0-beta",
+    "name": "ReplayCraft BP v2.1.2-Beta",
     "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Create by §gDarkBlock Gaming",
     "min_engine_version": [ 1, 21, 70 ],
     "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
-    "version": "2.1.0-beta"
+    "version": [2,1,2]
   },
   "modules": [
     {
       "type": "data",
       "uuid": "2edf142b-ad88-4403-bdf4-c1841da3ddc3",
-      "version": "2.1.0-beta"
+      "version": [1,0,0]
     },
     {
       "type": "script",
       "language": "javascript",
       "uuid": "024617b4-65df-42f7-a865-c9e1c47b0a33",
       "entry": "scripts/main.js",
-      "version": "2.1.0-beta"
+      "version": [0,0,1]
     }
   ],
   "dependencies": [
    {
 	 "uuid": "6aef535d-b1e7-4995-b4db-ddf24712fde2",
-	 "version": "2.1.0-beta"
+	 "version": [2,1,2]
 	},
     {
       "module_name": "@minecraft/server",
