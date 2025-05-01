@@ -224,4 +224,68 @@ export class OptimizedDatabase {
             world.setDynamicProperty(chunkKey, null);
         }
     }
+    /**
+ * Gets the size of a single entry in bytes and MB (approximate).
+ * Assumes UTF-16 (2 bytes per character).
+ */
+public getEntrySizeInBytes(key: string): number {
+    const dynamicKeyBase = `${this.name}/${key}`;
+    let size = 0;
+    for (let i = 0; ; i++) {
+        const chunk = world.getDynamicProperty(`${dynamicKeyBase}/${i}`) as string | null;
+        if (chunk === null || chunk === undefined) break;
+        size += chunk.length * 2; // 2 bytes per UTF-16 character
+    }
+    return size;
+}
+
+/**
+ * Same as getEntrySizes but returns size in MB.
+ */
+public getEntrySizesMB(): [string, number][] {
+    return this._getPointers().map((ptr) => {
+        const key = ptr.split("/").pop()!;
+        const sizeBytes = this.getEntrySizeInBytes(key);
+        const sizeMB = sizeBytes / (1024 * 1024);
+        return [key, parseFloat(sizeMB.toFixed(3))]; // round to 3 decimals
+    });
+}
+
+/**
+ * Gets total size of the database in MB.
+ */
+public getTotalSizeMB(): number {
+    const sizes = this.getEntrySizesMB();
+    return parseFloat(
+        sizes.reduce((sum, [, mb]) => sum + mb, 0).toFixed(3)
+    );
+}
+
+/**
+ * Rebuilds the pointer list by scanning existing dynamic properties.
+ * This is useful if the pointer list is lost or out of sync.
+ */
+public rebuildPointers(): void {
+    const basePrefix = `${this.name}/`;
+    const rawKeys = world.getDynamicPropertyIds(); // Get all keys
+    const pointerSet = new Set<string>();
+
+    for (const key of rawKeys) {
+        if (typeof key !== "string") continue;
+        if (!key.startsWith(basePrefix)) continue;
+
+        // Remove chunk index if present
+        const parts = key.split("/");
+        if (parts.length >= 3 && !isNaN(Number(parts[parts.length - 1]))) {
+            parts.pop(); // Remove chunk number
+        }
+
+        const baseKey = parts.join("/");
+        pointerSet.add(baseKey);
+    }
+
+    const rebuiltPointers = [...pointerSet];
+    this._setPointers(rebuiltPointers);
+    console.log(`[${this.name}] Rebuilt pointers. Total entries: ${rebuiltPointers.length}`);
+}
 }
