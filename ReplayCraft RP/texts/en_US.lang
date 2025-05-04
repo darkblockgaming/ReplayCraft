@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Text Prompts
 dbg.rc1.dropdown.select.block.placing.sound=Due to numerous suggestions and requests to add block-placing sounds during replay, I have implemented this feature. You can now enable it, and during replay or preview, blocks will produce sounds accordingly.\nCurrently, this feature is not automatic, and all blocks will use the same sound source selected here. However, I will make every effort to implement automatic block-specific sounds in future versions.\n\nSelect Block Placing Sound
 dbg.rc1.toggle.block.placing.sound=Block Placing Sound
 dbg.rc1.toggle.multiplayer.replay=Multiplayer Replay
-dbg.rc1.toggle.hide.hud.on.replay =Hide HUD During Replay? 
+dbg.rc1.toggle.hide.hud.on.replay=Hide HUD During Replay? 
 
 dbg.rc1.mes.thanks=§f§4[ReplayCraft] §f§gThanks for downloading ReplayCraft, I hope you'll enjoy it!
 
