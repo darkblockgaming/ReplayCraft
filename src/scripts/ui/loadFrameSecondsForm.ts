@@ -1,37 +1,49 @@
 import { SharedVariables } from "../main";
 import * as ui from "@minecraft/server-ui";
-
 import { Player } from "@minecraft/server";
 import { clearStructure } from "../functions/clearStructure";
 import { loadEntity } from "../functions/loadEntity";
 import { loadBlocksUpToTick } from "../functions/loadBlocksUpToTick";
+import { removeEntities } from "../functions/removeEntities";
 
 export function loadFrameSecondsForm(player: Player) {
     const maxFrameSeconds = Math.floor(SharedVariables.dbgRecTime / 20);
     const totalTicks = SharedVariables.dbgRecTime;
+    const currentSeconds = Math.floor(SharedVariables.wantLoadFrameTick / 20);
+
     const form = new ui.ModalFormData()
         .title("Load Frames - Seconds")
-        .slider(`These values are slightly rounded off.\n§bAccurate time: §r${(Math.round((SharedVariables.dbgRecTime / 20) * 100) / 100).toFixed(2)}\n\nSelect Frame (Secs)`, SharedVariables.startingValueSecs, maxFrameSeconds, 1, Math.floor(SharedVariables.wantLoadFrameTick / 20));
+        .slider(
+            `These values are slightly rounded off.\n§bAccurate time: §r${(SharedVariables.dbgRecTime / 20).toFixed(2)}\n\nSelect Frame (Secs)`,
+            SharedVariables.startingValueSecs,
+            maxFrameSeconds,
+            1,
+            currentSeconds
+        )
+        .textField("Enter Frame Seconds", "Enter Frame Seconds", `${currentSeconds}`);
 
     form.show(player).then(async (response) => {
         if (response.canceled || !response.formValues) return;
 
-        const selectedSeconds = response.formValues[0];
-        SharedVariables.wantLoadFrameTick = Math.round((Number(selectedSeconds) / Number(maxFrameSeconds)) * totalTicks);
+        const sliderVal = Number(response.formValues[0]);
+        const textVal = Number(response.formValues[1]);
 
-        const replayEntities = player.dimension.getEntities({ type: "dbg:replayentity" });
-        replayEntities.forEach((entity) => entity.remove());
+        // If the slider value is higher than the textbox or textbox is invalid, prefer slider
+        const selectedSeconds = isNaN(textVal) || sliderVal > textVal ? sliderVal : textVal;
 
-        // Step 1: Clear structures before loading new ones
+        SharedVariables.wantLoadFrameTick = Math.min(Math.round(selectedSeconds * 20), totalTicks);
+
+        removeEntities(player, true);
+
         SharedVariables.frameLoaded = true;
-        await Promise.all(SharedVariables.multiPlayers.map(async (player: Player) => {
-            await clearStructure(player);
+
+        await Promise.all(SharedVariables.multiPlayers.map(async (p) => {
+            await clearStructure(p);
         }));
 
-        // Step 2: Load entities and blocks after clearing structures
-        await Promise.all(SharedVariables.multiPlayers.map(async (player: Player) => {
-            await loadEntity(player);
-            await loadBlocksUpToTick(SharedVariables.wantLoadFrameTick, player);
+        await Promise.all(SharedVariables.multiPlayers.map(async (p) => {
+            await loadEntity(p);
+            await loadBlocksUpToTick(SharedVariables.wantLoadFrameTick, p);
         }));
     });
 }

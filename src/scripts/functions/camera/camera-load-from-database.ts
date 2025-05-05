@@ -15,8 +15,8 @@ export function respawnCameraEntities(player: Player) {
     /**
      * Now we can spawn the camera entities at the positions stored in the SharedVariables.replayCamPos array.
      */
-    
-    const dim = world.getDimension("overworld"); // or wherever your entities should go
+    const playerDim = player.dimension.id;
+    const dim = world.getDimension(playerDim); // or wherever your entities should go
 
     for (let i = 0; i < SharedVariables.replayCamPos.length; i++) {
         const cam = SharedVariables.replayCamPos[i];

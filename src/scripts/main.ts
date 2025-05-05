@@ -9,7 +9,7 @@ import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/playerItem
 import { replaycraftItemUseBeforeEvent } from "./classes/subscriptions/playerItemUseBeforeEvent";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/playerPlaceBlockBeforeEvent";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/playerPlaceBlockAfterEvent";
-import { BlockPermutation, EasingType, EquipmentSlot, system, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, EquipmentSlot, Player, system, world } from "@minecraft/server";
 import { clearStructure } from "./functions/clearStructure";
 import { playBlockSound } from "./functions/playBlockSound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn";
@@ -79,6 +79,8 @@ export let SharedVariables: SharedVariablesType = {
     affectCameraSelection: 0,
     buildName: undefined,
     hideHUD: false,
+    showCameraSetupUI: false,
+    currentEditingCamIndex: undefined
 };
 
 //Chat events
@@ -131,7 +133,13 @@ system.runInterval(() => {
 system.runInterval(() => {
     if (SharedVariables.replayStateMachine.state === "recStartRep") {
         if (SharedVariables.lilTick >= (SharedVariables.dbgRecTime - 1)) {
-            SharedVariables.replayStateMachine.setState("recCompleted");
+            if(SharedVariables.showCameraSetupUI === true){
+            SharedVariables.replayStateMachine.setState("recCompleted",true);
+            SharedVariables.showCameraSetupUI = false;
+            }else{
+                SharedVariables.replayStateMachine.setState("recCompleted");
+            }
+            
             SharedVariables.multiPlayers.forEach((player) => {
                 SharedVariables.followCamSwitch = false;
                 SharedVariables.topDownCamSwitch = false;
@@ -278,13 +286,28 @@ system.runInterval(() => {
     });
 }, 1);
 
-//Movement data
+/**Collect player sneak data based on the current tick time
+ * We can expand this to collect the following data:
+ * player.isClimbing
+ * player.isFalling
+ * player.isSwimming
+ * player.isFlying
+ * player.isGliding
+ * player.isSleeping
+ * */
 system.runInterval(() => {
     SharedVariables.multiPlayers.forEach((player) => {
         if (SharedVariables.replayStateMachine.state !== "recPending") return;
         const playerData = SharedVariables.replayMDataMap.get(player.id);
         if (!playerData) return;
         playerData.isSneaking.push(player.isSneaking ? 1 : 0);
+        playerData.isSwimming.push(player.isSwimming ? 1 : 0);
+        playerData.isClimbing.push(player.isClimbing ? 1 : 0);
+        playerData.isFalling.push(player.isFalling ? 1 : 0);
+        playerData.isFlying.push(player.isFlying ? 1 : 0);
+        playerData.isGliding.push(player.isGliding ? 1 : 0);
+        playerData.isSprinting.push(player.isSprinting ? 1 : 0);
+        playerData.isSleeping.push(player.isSleeping ? 1 : 0);
     });
 }, 1);
 
@@ -296,6 +319,13 @@ system.runInterval(() => {
             const customEntity = SharedVariables.replayODataMap.get(player.id);
             if (!playerData) return;
             customEntity.isSneaking = playerData.isSneaking[SharedVariables.lilTick] === 1;
+            customEntity.isSwimming = playerData.isSwimming[SharedVariables.lilTick] === 1;
+            customEntity.isClimbing = playerData.isClimbing[SharedVariables.lilTick] === 1;
+            customEntity.isFalling = playerData.isFalling[SharedVariables.lilTick] === 1;
+            customEntity.isFlying = playerData.isFlying[SharedVariables.lilTick] === 1;
+            customEntity.isGliding = playerData.isGliding[SharedVariables.lilTick] === 1;
+            customEntity.isSprinting = playerData.isSprinting[SharedVariables.lilTick] === 1;
+            customEntity.isSleeping = playerData.isSleeping[SharedVariables.lilTick] === 1;
         }
     });
 }, 1);
@@ -430,3 +460,12 @@ system.runInterval(() => {
     }
 }, 1);
 
+
+export function playerDataDisplay(player: Player) {
+    const playerData = SharedVariables.replayMDataMap.get(player.id);
+    try {
+        console.log("Player Data:", JSON.stringify(playerData, null, 2)); // pretty-print
+    } catch (err) {
+        console.warn("Failed to stringify playerData:", err);
+    }
+}
