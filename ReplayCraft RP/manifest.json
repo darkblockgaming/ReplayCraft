@@ -8,16 +8,16 @@
     ],
     "links": [
       {
-        "name": "Mod Link On MCPEDL",
-        "url": "https://mcpedl.com/replaycraft/"
+        "name": "Official GitHub Page",
+        "url": "https://github.com/darkblockgaming/ReplayCraft"
       },
       {
-        "name": "Mod Link On Modbay",
-        "url": "https://modbay.org/mods/1591-replaycraft.html"
+        "name": "Official Page",
+        "url": "https://darkblockgaming.github.io/addons/replaycraft/"
       },
       {
-        "name": "YouTube Channel",
-        "url": "https://youtube.com/@darkblockgaming"
+        "name": "Curseforge",
+        "url": "https://www.curseforge.com/minecraft-bedrock/scripts/replaycraft"
       }
     ]
   },
