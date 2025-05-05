@@ -24,7 +24,16 @@ export function resetRec(player: Player) {
         dbgRecRot: []
     });
     SharedVariables.replayMDataMap.set(player.id, {
-        isSneaking: []
+        isSneaking: [],
+        isSwimming: [],
+        isClimbing: [],
+        isFalling: [],
+        isFlying: [],
+        isGliding: [],
+        isRiding: [],
+        isSprinting: [],
+        isSleeping: []
+
     });
     SharedVariables.replayODataMap.set(player.id, {
         customEntity: undefined

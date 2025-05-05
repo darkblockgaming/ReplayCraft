@@ -15,6 +15,7 @@ import {ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world}
   } from "../../classes/subscriptions/world-initialize";
 
   import { OptimizedDatabase } from "../../data/data-hive";
+import { playerDataDisplay } from "../../main";
   
   function giveItems(event: ChatSendBeforeEvent) {
 	const { sender, message } = event;
@@ -82,6 +83,13 @@ import {ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world}
 	  event.cancel = true;
 	  return;
 	}
+	if (message === "?playerData") {
+		system.run(() => {
+		  playerDataDisplay(sender);
+		});
+		event.cancel = true;
+		return;
+	  }
   
 	// Logs all keys and values from replayCraftBlockDB
 	if (message === "?dblist") {
