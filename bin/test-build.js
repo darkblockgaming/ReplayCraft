@@ -89,39 +89,39 @@ async function checkAndBuild() {
         fse.copySync("new-world-beta-api", testWorldDir); // Copy 'new-world-beta-api' to the 'Bedrock level' subfolder
     }
 
-    // Define the BeatBox directory for behavior and resource packs
-    const beatBoxBehaviorDir = path.join(testWorldDir, "behavior_packs", "BeatBox");
-    const beatBoxResourceDir = path.join(testWorldDir, "resource_packs", "BeatBox");
+    // Define the replayCraft directory for behavior and resource packs
+    const replayCraftBehaviorDir = path.join(testWorldDir, "behavior_packs", "ReplayCraft_BP");
+    const replayCraftResourceDir = path.join(testWorldDir, "resource_packs", "ReplayCraft_RP");
 
     // Check if the behavior packs directory exists, create it if it doesn't
-    if (!fs.existsSync(path.dirname(beatBoxBehaviorDir))) {
-        console.log("> Creating 'behavior_packs/BeatBox' directory...\n");
-        fs.mkdirSync(path.dirname(beatBoxBehaviorDir), { recursive: true });
+    if (!fs.existsSync(path.dirname(replayCraftBehaviorDir))) {
+        console.log("> Creating 'behavior_packs/ReplayCraft_BP' directory...\n");
+        fs.mkdirSync(path.dirname(replayCraftBehaviorDir), { recursive: true });
     }
 
     // Check if the resource packs directory exists, create it if it doesn't
-    if (!fs.existsSync(path.dirname(beatBoxResourceDir))) {
-        console.log("> Creating 'resource_packs/BeatBox' directory...\n");
-        fs.mkdirSync(path.dirname(beatBoxResourceDir), { recursive: true });
+    if (!fs.existsSync(path.dirname(replayCraftResourceDir))) {
+        console.log("> Creating 'resource_packs/ReplayCraft_RP' directory...\n");
+        fs.mkdirSync(path.dirname(replayCraftResourceDir), { recursive: true });
     }
 
-    // Clean up the 'BeatBox' directory for behavior packs if it exists
-    if (fs.existsSync(beatBoxBehaviorDir)) {
-        fse.removeSync(beatBoxBehaviorDir);
-        console.log(`> Cleaned up the '${beatBoxBehaviorDir}' directory...\n`);
+    // Clean up the 'replayCraft' directory for behavior packs if it exists
+    if (fs.existsSync(replayCraftBehaviorDir)) {
+        fse.removeSync(replayCraftBehaviorDir);
+        console.log(`> Cleaned up the '${replayCraftBehaviorDir}' directory...\n`);
     }
 
-    // Clean up the 'BeatBox' directory for resource packs if it exists
-    if (fs.existsSync(beatBoxResourceDir)) {
-        fse.removeSync(beatBoxResourceDir);
-        console.log(`> Cleaned up the '${beatBoxResourceDir}' directory...\n`);
+    // Clean up the 'replayCraft' directory for resource packs if it exists
+    if (fs.existsSync(replayCraftResourceDir)) {
+        fse.removeSync(replayCraftResourceDir);
+        console.log(`> Cleaned up the '${replayCraftResourceDir}' directory...\n`);
     }
 
-    // Create the BeatBox directory again for behavior and resource packs
-    console.log("> Creating the 'BeatBox' directory for behavior packs...\n");
-    fs.mkdirSync(beatBoxBehaviorDir, { recursive: true });
-    console.log("> Creating the 'BeatBox' directory for resource packs...\n");
-    fs.mkdirSync(beatBoxResourceDir, { recursive: true });
+    // Create the replayCraft directory again for behavior and resource packs
+    console.log("> Creating the 'replayCraft' directory for behavior packs...\n");
+    fs.mkdirSync(replayCraftBehaviorDir, { recursive: true });
+    console.log("> Creating the 'replayCraft' directory for resource packs...\n");
+    fs.mkdirSync(replayCraftResourceDir, { recursive: true });
 
     // Commands for building packages
     const firstCommand = "node";
@@ -135,17 +135,17 @@ async function checkAndBuild() {
         process.exit(1); // Abort immediately if any command fails
     }
 
-    // Copy the build contents to BeatBox behavior pack directory
+    // Copy the build contents to replayCraft behavior pack directory
     const buildDir = "build";
-    fse.copySync(buildDir, beatBoxBehaviorDir);
-    // Copy resource pack files to the BeatBox resource pack directory
-    const buildResourceDir = path.join(`./`, "BlockBeats_RP");
-    fse.copySync(buildResourceDir, beatBoxResourceDir);
+    fse.copySync(buildDir, replayCraftBehaviorDir);
+    // Copy resource pack files to the replayCraft resource pack directory
+    const buildResourceDir = path.join(`./`, "ReplayCraft RP");
+    fse.copySync(buildResourceDir, replayCraftResourceDir);
 
-    console.log(`> Copied build contents to '${beatBoxBehaviorDir}' and '${beatBoxResourceDir}'...\n`);
+    console.log(`> Copied build contents to '${replayCraftBehaviorDir}' and '${replayCraftResourceDir}'...\n`);
 
     // Read and parse manifest.json for behavior packs
-    const manifestPath = path.join(beatBoxBehaviorDir, "manifest.json");
+    const manifestPath = path.join(replayCraftBehaviorDir, "manifest.json");
     if (fs.existsSync(manifestPath)) {
         const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 
@@ -163,7 +163,7 @@ async function checkAndBuild() {
         }
 
         // If there's a manifest.json for resource packs, handle it similarly
-        const resourceManifestPath = path.join(beatBoxResourceDir, "manifest.json");
+        const resourceManifestPath = path.join(replayCraftResourceDir, "manifest.json");
         console.log(resourceManifestPath);
         if (fs.existsSync(resourceManifestPath)) {
             const resourceManifest = JSON.parse(fs.readFileSync(resourceManifestPath, "utf8"));

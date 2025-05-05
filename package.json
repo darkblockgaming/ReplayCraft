@@ -43,6 +43,8 @@
         "test": "node bin/test-build.js",
         "check-naming": "node bin/tree-format.js",
         "build": "npm run check-naming & node bin/build-package.js",
-        "dist": "npm run check-naming & node bin/build-package.js --mcpack"
+        "build": "npm run check-naming & node bin/build-package.js --dev",
+        "dist": "npm run check-naming & node bin/build-package.js --mcaddon"
+        
     }
 }
