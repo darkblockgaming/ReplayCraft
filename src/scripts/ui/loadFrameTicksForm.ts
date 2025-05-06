@@ -16,10 +16,14 @@ export function loadFrameTicksForm(player: Player) {
             "This is the most accurate way of loading frames.\n\nSelect Frame (Ticks)",
             SharedVariables.startingValueTick,
             maxTick,
-            1,
-            currentTick
+            {
+                valueStep: 1,
+                defaultValue: currentTick
+            }
         )
-        .textField("Enter Frame Tick", "Enter Frame Tick", `${currentTick}`);
+        .textField("Enter Frame Tick", "Enter Frame Tick", {
+            defaultValue: `${currentTick}`
+          });
 
     replaySettingsForm.show(player).then(async (response) => {
         if (response.canceled || !response.formValues) return;
