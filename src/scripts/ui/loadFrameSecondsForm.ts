@@ -17,10 +17,16 @@ export function loadFrameSecondsForm(player: Player) {
             `These values are slightly rounded off.\n§bAccurate time: §r${(SharedVariables.dbgRecTime / 20).toFixed(2)}\n\nSelect Frame (Secs)`,
             SharedVariables.startingValueSecs,
             maxFrameSeconds,
-            1,
-            currentSeconds
-        )
-        .textField("Enter Frame Seconds", "Enter Frame Seconds", `${currentSeconds}`);
+            {
+              valueStep: 1,
+              defaultValue: currentSeconds
+            }
+          )
+          .textField("Enter Frame Seconds","Enter Frame Seconds",
+            {
+              defaultValue: `${currentSeconds}`
+            }
+          )
 
     form.show(player).then(async (response) => {
         if (response.canceled || !response.formValues) return;
