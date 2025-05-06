@@ -18,9 +18,9 @@ export function previewSettings(player: Player) {
     }
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.preview.settings")
-        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], SharedVariables.settReplayType)
-        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", SharedVariables.skinTypes, SharedVariables.choosenReplaySkin)
-        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], SharedVariables.settNameType)
+        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], {defaultValueIndex: SharedVariables.settReplayType})
+        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
+        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], {defaultValueIndex: SharedVariables.settNameType})
         .textField("dbg.rc1.textfield.title.custom.name", SharedVariables.settCustomName)
 
 

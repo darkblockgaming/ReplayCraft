@@ -6,11 +6,11 @@ import { Player } from "@minecraft/server";
 export function mainSettings(player: Player) {
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replaycraft.settings")
-        .toggle(`dbg.rc1.toggle.sound.cues`, SharedVariables.soundCue)
-        .toggle(`dbg.rc1.toggle.text.prompts`, SharedVariables.textPrompt)
-        .dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, SharedVariables.soundIds, SharedVariables.selectedSound)
-        .toggle(`dbg.rc1.toggle.block.placing.sound`, SharedVariables.toggleSound)
-        .toggle(`dbg.rc1.toggle.hide.hud.on.replay`,SharedVariables.hideHUD)
+        .toggle(`dbg.rc1.toggle.sound.cues`, {defaultValue: SharedVariables.soundCue})
+        .toggle(`dbg.rc1.toggle.text.prompts`, {defaultValue: SharedVariables.textPrompt})
+        .dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, SharedVariables.soundIds, {defaultValueIndex: SharedVariables.selectedSound})
+        .toggle(`dbg.rc1.toggle.block.placing.sound`, {defaultValue: SharedVariables.toggleSound})
+        .toggle(`dbg.rc1.toggle.hide.hud.on.replay`,{defaultValue: SharedVariables.hideHUD})
 
 
     replaySettingsForm.show(player).then(response => {

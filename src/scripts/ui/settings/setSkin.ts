@@ -7,8 +7,8 @@ import { replayCraftSkinDB } from "../../classes/subscriptions/world-initialize"
 export function setSkin(player: Player) {
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replaycraft.settings")
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, 0)
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type.size", ["Steve 4px", "Alex 3px"], 0);
+        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, {defaultValueIndex: 0})
+        .dropdown("dbg.rc1.dropdown.title.replay.skin.type.size", ["Steve 4px", "Alex 3px"], {defaultValueIndex: 0});
 
     replaySettingsForm.show(player).then(response => {
         if (response.canceled && response.cancelationReason === "UserBusy") {

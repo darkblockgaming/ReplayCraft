@@ -7,7 +7,10 @@ export async function editCameraPointSeconds(player: Player, index: number) {
 
     const form = new ui.ModalFormData()
         .title("Edit Camera Point")
-        .textField("Enter new time in seconds:", "e.g. 240", oldSeconds.toString());
+        .textField("Enter new time in seconds:", "e.g. 240", {
+            defaultValue: `${oldSeconds}`
+        }
+    );
 
     const response = await form.show(player);
     if (response.canceled) return;

@@ -20,15 +20,15 @@ export function replaySettings(player: Player) {
     const playerName = SharedVariables.multiPlayers.map((player: Player) => player.name);
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replay.settings")
-        .dropdown("dbg.rc1.dropdown.title.replay.type", ["Default Replay", "Ghost Replay"], SharedVariables.settReplayType)
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, SharedVariables.choosenReplaySkin)
-        .dropdown("dbg.rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], SharedVariables.settNameType)
+        .dropdown("dbg.rc1.dropdown.title.replay.type", ["Default Replay", "Ghost Replay"], {defaultValueIndex: SharedVariables.settReplayType})
+        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
+        .dropdown("dbg.rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], {defaultValueIndex: SharedVariables.settNameType})
         .textField("dbg.rc1.textfield.custom.name", SharedVariables.settCustomName)
-        .dropdown("dbg.rc1.dropdown.title.camera.ease.type", SharedVariables.easeTypes, SharedVariables.replayCamEase)
-        .dropdown("dbg.rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)"], SharedVariables.settCameraType)
-        .dropdown("dbg.rc1.dropdown.title.focus.on.player", playerName, SharedVariables.focusPlayerSelection)
-        .dropdown("dbg.rc1.dropdown.title.affect.camera.of.players", ["All Players", ...playerName], SharedVariables.affectCameraSelection)
-        .slider("drop.title.topdown.cam.height", 2, 20, 1, SharedVariables.topDownCamHight);
+        .dropdown("dbg.rc1.dropdown.title.camera.ease.type", SharedVariables.easeTypes, {defaultValueIndex: SharedVariables.replayCamEase})
+        .dropdown("dbg.rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)"], {defaultValueIndex: SharedVariables.settCameraType})
+        .dropdown("dbg.rc1.dropdown.title.focus.on.player", playerName, {defaultValueIndex: SharedVariables.focusPlayerSelection})
+        .dropdown("dbg.rc1.dropdown.title.affect.camera.of.players", ["All Players", ...playerName], {defaultValueIndex: SharedVariables.affectCameraSelection})
+        .slider("drop.title.topdown.cam.height", 2, 20, {valueStep: 1,defaultValue: SharedVariables.topDownCamHight});
 
 
     replaySettingsForm.show(player).then(response => {
