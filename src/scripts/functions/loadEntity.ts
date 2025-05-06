@@ -1,4 +1,4 @@
-import { Player } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { SharedVariables } from "../main";
 import {isChunkLoaded} from "./isChunkLoaded.js";
 import { waitForChunkLoad } from "./waitForChunkLoad.js";
@@ -45,11 +45,11 @@ export async function loadEntity(player: Player) {
         let modelID = parseInt(modelIDStr);
       
         if(modelID === 0){
-            customEntity = player.dimension.spawnEntity("dbg:replayentity_steve",  summonPos);
+            customEntity = player.dimension.spawnEntity("dbg:replayentity_steve" as VanillaEntityIdentifier,  summonPos);
             customEntity.setRotation(rotData.dbgRecRot[maxIndex]);
         }
         if(modelID === 1){
-            customEntity = player.dimension.spawnEntity("dbg:replayentity_alex",  summonPos);
+            customEntity = player.dimension.spawnEntity("dbg:replayentity_alex" as VanillaEntityIdentifier,  summonPos);
             customEntity.setRotation(rotData.dbgRecRot[maxIndex]); 
         }
         customEntity.setProperty("dbg:skin", skinID );

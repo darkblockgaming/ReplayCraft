@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 import { loadFromDB } from "../replayControls/load-from-database";
 
@@ -26,7 +26,7 @@ export function respawnCameraEntities(player: Player) {
             z: cam.position.z
         };
 
-        const entity = dim.spawnEntity("dbg:rccampos", spawnLocation);
+        const entity = dim.spawnEntity("dbg:rccampos" as VanillaEntityIdentifier, spawnLocation);
         entity.nameTag = `Camera Point ${i + 1}`;
     }
     SharedVariables.replayStateMachine.setState("recCamSetup");

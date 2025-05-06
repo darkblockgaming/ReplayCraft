@@ -1,4 +1,4 @@
-import { Player } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { SharedVariables } from "../main";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
 
@@ -36,8 +36,8 @@ export function summonReplayEntity(player: Player) {
         };
 
         const entityType = modelID === 0
-            ? "dbg:replayentity_steve"
-            : "dbg:replayentity_alexe";
+            ? "dbg:replayentity_steve" as VanillaEntityIdentifier
+            : "dbg:replayentity_alexe" as VanillaEntityIdentifier;
 
         customEntity = player.dimension.spawnEntity(entityType, spawnPos);
 
