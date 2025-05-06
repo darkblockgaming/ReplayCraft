@@ -1,5 +1,5 @@
 import { ReplayStateMachine } from "./classes/replayStateMachine";
-import {  SharedVariablesType } from "./classes/types/types";
+import { SharedVariablesType } from "./classes/types/types";
 import { beforeChatSend } from "./classes/subscriptions/chatSendBeforeEvent";
 import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/playerBreakBlockAfterEvent";
 import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/playerBreakBlockBeforeEvent";
@@ -20,8 +20,8 @@ import { removeEntities } from "./functions/removeEntities";
 //Global variables
 export let SharedVariables: SharedVariablesType = {
     soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"],
-	easeTypes: ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"],
-	skinTypes: [
+    easeTypes: ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"],
+    skinTypes: [
         "Default Skin",
         "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4", "Custom Skin5", "Custom Skin6", "Custom Skin7", "Custom Skin8", "Custom Skin9", "Custom Skin10",
         "Custom Skin11", "Custom Skin12", "Custom Skin13", "Custom Skin14", "Custom Skin15", "Custom Skin16", "Custom Skin17", "Custom Skin18", "Custom Skin19", "Custom Skin20",
@@ -30,8 +30,8 @@ export let SharedVariables: SharedVariablesType = {
         "Custom Skin41", "Custom Skin42", "Custom Skin43", "Custom Skin44", "Custom Skin45", "Custom Skin46", "Custom Skin47", "Custom Skin48", "Custom Skin49", "Custom Skin50",
         "Custom Skin51", "Custom Skin52", "Custom Skin53", "Custom Skin54", "Custom Skin55", "Custom Skin56", "Custom Skin57", "Custom Skin58", "Custom Skin59", "Custom Skin60",
         "Custom Skin61", "Custom Skin62", "Custom Skin63", "Custom Skin64"
-      ],
-      
+    ],
+
     dbgRecController: undefined,
     dbgRecTime: 0,
     replayStateMachine: new ReplayStateMachine(),
@@ -121,7 +121,7 @@ system.runInterval(() => {
             SharedVariables.multiPlayers.forEach((player) => {
                 SharedVariables.currentSwitch = false;
                 clearStructure(player);
-                removeEntities(player,true);
+                removeEntities(player, true);
             });
             SharedVariables.lilTick = 0;
             return;
@@ -133,13 +133,13 @@ system.runInterval(() => {
 system.runInterval(() => {
     if (SharedVariables.replayStateMachine.state === "recStartRep") {
         if (SharedVariables.lilTick >= (SharedVariables.dbgRecTime - 1)) {
-            if(SharedVariables.showCameraSetupUI === true){
-            SharedVariables.replayStateMachine.setState("recCompleted",true);
-            SharedVariables.showCameraSetupUI = false;
-            }else{
+            if (SharedVariables.showCameraSetupUI === true) {
+                SharedVariables.replayStateMachine.setState("recCompleted", true);
+                SharedVariables.showCameraSetupUI = false;
+            } else {
                 SharedVariables.replayStateMachine.setState("recCompleted");
             }
-            
+
             SharedVariables.multiPlayers.forEach((player) => {
                 SharedVariables.followCamSwitch = false;
                 SharedVariables.topDownCamSwitch = false;
@@ -147,7 +147,7 @@ system.runInterval(() => {
                 player.camera.clear();
                 SharedVariables.currentSwitch = false;
                 clearStructure(player);
-                removeEntities(player,true);
+                removeEntities(player, true);
             });
             SharedVariables.lilTick = 0;
             return;
@@ -301,13 +301,12 @@ system.runInterval(() => {
         const playerData = SharedVariables.replayMDataMap.get(player.id);
         if (!playerData) return;
         playerData.isSneaking.push(player.isSneaking ? 1 : 0);
-        playerData.isSwimming.push(player.isSwimming ? 1 : 0);
-        playerData.isClimbing.push(player.isClimbing ? 1 : 0);
-        playerData.isFalling.push(player.isFalling ? 1 : 0);
-        playerData.isFlying.push(player.isFlying ? 1 : 0);
-        playerData.isGliding.push(player.isGliding ? 1 : 0);
-        playerData.isSprinting.push(player.isSprinting ? 1 : 0);
-        playerData.isSleeping.push(player.isSleeping ? 1 : 0);
+        // playerData.isSwimming.push(player.isSwimming ? 1 : 0);
+        // playerData.isClimbing.push(player.isClimbing ? 1 : 0);
+        // playerData.isFalling.push(player.isFalling ? 1 : 0);
+        // playerData.isFlying.push(player.isFlying ? 1 : 0);
+        // playerData.isGliding.push(player.isGliding ? 1 : 0);
+        // playerData.isSleeping.push(player.isSleeping ? 1 : 0);
     });
 }, 1);
 
@@ -319,13 +318,12 @@ system.runInterval(() => {
             const customEntity = SharedVariables.replayODataMap.get(player.id);
             if (!playerData) return;
             customEntity.isSneaking = playerData.isSneaking[SharedVariables.lilTick] === 1;
-            customEntity.isSwimming = playerData.isSwimming[SharedVariables.lilTick] === 1;
-            customEntity.isClimbing = playerData.isClimbing[SharedVariables.lilTick] === 1;
-            customEntity.isFalling = playerData.isFalling[SharedVariables.lilTick] === 1;
-            customEntity.isFlying = playerData.isFlying[SharedVariables.lilTick] === 1;
-            customEntity.isGliding = playerData.isGliding[SharedVariables.lilTick] === 1;
-            customEntity.isSprinting = playerData.isSprinting[SharedVariables.lilTick] === 1;
-            customEntity.isSleeping = playerData.isSleeping[SharedVariables.lilTick] === 1;
+            // customEntity.setProperty("dbg:is_swimming", playerData.isSwimming[SharedVariables.lilTick] === 1);
+            // customEntity.setProperty("dbg:is_climbing", playerData.isClimbing[SharedVariables.lilTick] === 1);
+            // customEntity.setProperty("dbg:is_falling", playerData.isFalling[SharedVariables.lilTick] === 1);
+            // customEntity.setProperty("dbg:is_flying", playerData.isFlying[SharedVariables.lilTick] === 1);
+            // customEntity.setProperty("dbg:is_gliding", playerData.isGliding[SharedVariables.lilTick] === 1);
+            // customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[SharedVariables.lilTick] === 1);
         }
     });
 }, 1);
@@ -412,7 +410,7 @@ system.runInterval(() => {
                 z
             };
              */
-            
+
             player.camera.setCamera("minecraft:free", {
                 location: location,
                 //facingLocation: location2,
