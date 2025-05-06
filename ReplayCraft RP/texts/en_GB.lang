@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stop Preview
 dbg.rc1.button.preview.settings=Preview Settings
 dbg.rc1.button.start.camera.setup=Start Camera Setup
 dbg.rc1.button.cancel.recording=Cancel Recording
-dbg.rc1.button.load.existing.camera.points =Load Existing Camera Points
-dbg.rc1.button.save.current.camera.points =Save Current Camera Points
+dbg.rc1.button.load.existing.camera.points=Load Existing Camera Points
+dbg.rc1.button.save.current.camera.points=Save Current Camera Points
 
 dbg.rc1.button.load.frame.t=Load Frame (Ticks)
 dbg.rc1.button.load.frame.s=Load Frame (Seconds)
