@@ -119,6 +119,9 @@
           {
             "sneaking": "query.is_sneaking && !query.property('dbg:is_sleeping')"
           },
+          {
+            "sleeping": "query.property('dbg:is_sleeping') && query.is_alive"
+          },
           "bob",
           {
             "damage_nearby_mobs": "variable.damage_nearby_mobs"
