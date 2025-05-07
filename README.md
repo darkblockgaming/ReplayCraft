@@ -154,10 +154,16 @@ Powerful features to enhance your cinematic experience:
 
 - **Skins & Names:**
   - Set **custom skins and names** for replayed players.
-  - Currently, only one skin shared across all.
+  - The name of the replayed player can either be the actual name of the player or it can be customised or disabled.
+  - For skins firsty all the skins must be placed inside the ReplayCraft_RP,
+  - Maximum of 64 diffrent skins can be placed inside this directory, each can be named from `1.png` upto `64.png`
   - Place custom skins inside:  
-    `resource_pack/textures/entity/custom_skins`
-  ![Custom Skins Screenshot](<assets/screenshots/custom-skins.webp>)
+    `ReplayCraft_RP/textures/entity/custom_skins`
+  ![Custom Skins Screenshot](<assets/screenshots/custom-skins.jpg>)
+  - After this each player can just type `?skin` in the chat,
+  - And a menu will be presented, where they can choose what numbered skin is there skin,
+  - Player's also have options to choose their skin type, either thick hand skin model (steve type skin) or  thin hand skin model (alex type skin)
+  ![Custom Skins Screenshot](<assets/screenshots/custom-skins-menu.jpg>)
 
 > **Note:** This system is continuously evolving — stay tuned for updates and new features.
 
