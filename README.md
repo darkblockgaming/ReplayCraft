@@ -19,7 +19,7 @@ ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-u
 ---
 
 ## ⬇️ 2.1.3 Changelog
-# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v2.1.3)
+# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v2.1.2)
 
 ---
 
