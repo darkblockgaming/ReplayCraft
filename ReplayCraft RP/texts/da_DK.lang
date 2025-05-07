@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2§R
 dbg.rc1.title.replay.settings=Replay -indstillinger
 dbg.rc1.title.preview.settings=Preview -indstillinger
 dbg.rc1.title.replaycraft.settings=§BrePlayCraft -indstillinger§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stop preview
 dbg.rc1.button.preview.settings=Preview -indstillinger
 dbg.rc1.button.start.camera.setup=Start kameraopsætning
 dbg.rc1.button.cancel.recording=Annuller optagelse
-dbg.rc1.button.load.existing.camera.points = Indlæs eksisterende kamerapunkter
-dbg.rc1.button.save.current.camera.points = Gem aktuelle kamerapunkter
+dbg.rc1.button.load.existing.camera.points=Indlæs eksisterende kamerapunkter
+dbg.rc1.button.save.current.camera.points=Gem aktuelle kamerapunkter
 
 dbg.rc1.button.load.frame.t=Load Frame (flåter)
 dbg.rc1.button.load.frame.s=Belastningsramme (sekunder)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Tekst beder
 dbg.rc1.dropdown.select.block.placing.sound=På grund af adskillige forslag og anmodninger om at tilføje blokeringslyde under gentagelse, har jeg implementeret denne funktion. Du kan nu aktivere det, og under gentagelse eller forhåndsvisning vil blokke producere lyde i overensstemmelse hermed. \ Ncurrently er denne funktion ikke automatisk, og alle blokke bruger den samme lydkilde, der er valgt her. Jeg vil dog gøre alt for at implementere automatiske blokspecifikke lyde i fremtidige versioner. \ N \ nselect blokering af lyd
 dbg.rc1.toggle.block.placing.sound=Bloker placering af lyd
 dbg.rc1.toggle.multiplayer.replay=Multiplayer Replay
-dbg.rc1.toggle.hide.hud.on.replay =Skjul Hud under gentagelse? 
+dbg.rc1.toggle.hide.hud.on.replay=Skjul Hud under gentagelse? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §F§gthanks Til download af gentagelse, jeg håber, du vil nyde det!
 

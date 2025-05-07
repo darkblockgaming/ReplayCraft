@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY-meny] v2.1.2-beta§R
+dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY -meny] v2.1.2§R
 dbg.rc1.title.replay.settings=Spela in inställningar
 dbg.rc1.title.preview.settings=Förhandsgranskningsinställningar
 dbg.rc1.title.replaycraft.settings=§BREPLAYCROFTION SETOMS§R
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stoppförhandsvisning
 dbg.rc1.button.preview.settings=Förhandsgranskningsinställningar
 dbg.rc1.button.start.camera.setup=Startkamerainställning
 dbg.rc1.button.cancel.recording=Avbryt inspelning
-dbg.rc1.button.load.existing.camera.points = Ladda befintliga kamerapunkter
-dbg.rc1.button.save.current.camera.points = Spara aktuella kamerapunkter
+dbg.rc1.button.load.existing.camera.points=Ladda befintliga kamerapunkter
+dbg.rc1.button.save.current.camera.points=Spara aktuella kamerapunkter
 
 dbg.rc1.button.load.frame.t=Lastram (fästingar)
 dbg.rc1.button.load.frame.s=Lastram (sekunder)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Textuppmaningar
 dbg.rc1.dropdown.select.block.placing.sound=På grund av många förslag och förfrågningar om att lägga till blockeringsljud under replay har jag implementerat den här funktionen. Du kan nu aktivera det, och under uppspelning eller förhandsgranskning kommer block att producera ljud i enlighet därmed. Jag kommer emellertid att göra allt för att implementera automatiska blockspecifika ljud i framtida versioner. \ NSelect Block Placing Sound
 dbg.rc1.toggle.block.placing.sound=Blockplacering av ljud
 dbg.rc1.toggle.multiplayer.replay=Replayer Replayer
-dbg.rc1.toggle.hide.hud.on.replay =Dölj HUD under replay? 
+dbg.rc1.toggle.hide.hud.on.replay=Dölj HUD under replay? 
 
 dbg.rc1.mes.thanks=§F§4 [REPLAYCROFT] §F§GTHANKS för att ladda ner replaycraft, jag hoppas att du kommer att njuta av det!
 

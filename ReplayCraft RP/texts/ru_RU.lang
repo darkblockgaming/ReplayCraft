@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.1.2-бета
+dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.1.2§r
 dbg.rc1.title.replay.settings=Настройки воспроизведения
 dbg.rc1.title.preview.settings=Предварительные настройки
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft settings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Остановить предварительный 
 dbg.rc1.button.preview.settings=Предварительные настройки
 dbg.rc1.button.start.camera.setup=Начать настройку камеры
 dbg.rc1.button.cancel.recording=Отменить запись
-dbg.rc1.button.load.existing.camera.points = Загрузить существующие точки камеры
-dbg.rc1.button.save.current.camera.points = Сохранить текущие точки камеры
+dbg.rc1.button.load.existing.camera.points=Загрузить существующие точки камеры
+dbg.rc1.button.save.current.camera.points=Сохранить текущие точки камеры
 
 dbg.rc1.button.load.frame.t=Загрузка рама (клещи)
 dbg.rc1.button.load.frame.s=Рама загрузки (секунды)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Текстовые подсказки
 dbg.rc1.dropdown.select.block.placing.sound=Из-за многочисленных предложений и запросов на добавление звуков блокировки во время воспроизведения я реализовал эту функцию. Теперь вы можете включить его, а во время воспроизведения или предварительного просмотра блоки будут производить звуки соответственно. Тем не менее, я приложу все усилия для реализации автоматических блоков, специфичных для блоков в будущих версиях.
 dbg.rc1.toggle.block.placing.sound=Блок размещения звука
 dbg.rc1.toggle.multiplayer.replay=Многопользовательский воспроизведение
-dbg.rc1.toggle.hide.hud.on.replay =Скрыть HUD во время повторения? 
+dbg.rc1.toggle.hide.hud.on.replay=Скрыть HUD во время повторения? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks Для загрузки Replaycraft, я надеюсь, вам понравится!
 

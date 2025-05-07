@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.1.2§r
 dbg.rc1.title.replay.settings=재생 설정
 dbg.rc1.title.preview.settings=미리보기 설정
 dbg.rc1.title.replaycraft.settings=§breplaycraft settings§r
@@ -31,14 +31,14 @@ dbg.rc1.button.stop.preview=미리보기 중지
 dbg.rc1.button.preview.settings=미리보기 설정
 dbg.rc1.button.start.camera.setup=카메라 설정을 시작하십시오
 dbg.rc1.button.cancel.recording=녹음을 취소하십시오
-dbg.rc1.button.load.existing.camera.points = 기존 카메라 포인트를로드합니다
-dbg.rc1.button.save.current.camera.points = 현재 카메라 포인트를 저장하십시오
+dbg.rc1.button.load.existing.camera.points=기존 카메라 포인트를로드합니다
+dbg.rc1.button.save.current.camera.points=현재 카메라 포인트를 저장하십시오
 
 dbg.rc1.button.load.frame.t=로드 프레임 (진드기)
 dbg.rc1.button.load.frame.s=로드 프레임 (초)
 dbg.rc1.button.add.camera.point=카메라 포인트를 추가하십시오
 dbg.rc1.button.proceed.further=더 진행하십시오
-dbg.rc1.button.reset.camera.setup=카메라 설정을 재설정합니다
+dbg.rc1.button.reset.camera.setup=카메라 설정을 재설정하십시오
 
 dbg.rc1.button.start.replay=재생을 시작하십시오
 dbg.rc1.button.stop.replay=재생을 중지하십시오
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=텍스트 프롬프트
 dbg.rc1.dropdown.select.block.placing.sound=재생 중에 블록 배치 사운드를 추가하라는 수많은 제안과 요청으로 인해이 기능을 구현했습니다. 이제 그것을 활성화 할 수 있고 재생 또는 미리보기 중에 블록은 그에 따라 사운드를 생성합니다. 그러나 향후 버전에서 자동 블록 특정 사운드를 구현하기 위해 모든 노력을 기울일 것입니다. \ n \ nselect 블록 배치 소리
 dbg.rc1.toggle.block.placing.sound=블록 배치 소리
 dbg.rc1.toggle.multiplayer.replay=멀티 플레이어 리플레이
-dbg.rc1.toggle.hide.hud.on.replay =재생 중에 hud를 숨기시겠습니까? 
+dbg.rc1.toggle.hide.hud.on.replay=재생 중에 hud를 숨기시겠습니까? 
 
 dbg.rc1.mes.thanks=§f§4 [Replaycraft] §f§gtanks Replaycraft를 다운로드 할 수 있습니다. 즐길 수 있기를 바랍니다.
 

@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.1.2§r
 dbg.rc1.title.replay.settings=Tekrar Ayarları Tekrar
 dbg.rc1.title.preview.settings=Önizleme Ayarları
 dbg.rc1.title.replaycraft.settings=§BREPlayCraft Settings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Önizlemeyi Durdur
 dbg.rc1.button.preview.settings=Önizleme Ayarları
 dbg.rc1.button.start.camera.setup=Kamera Kurulumunu Başlat
 dbg.rc1.button.cancel.recording=Kaydı iptal et
-dbg.rc1.button.load.existing.camera.points = Mevcut kamera noktalarını yükleyin
-dbg.rc1.button.save.current.camera.points = Mevcut kamera noktalarını kaydedin
+dbg.rc1.button.load.existing.camera.points=Mevcut kamera noktalarını yükleyin
+dbg.rc1.button.save.current.camera.points=Mevcut kamera noktalarını kaydedin
 
 dbg.rc1.button.load.frame.t=Yük çerçevesi (keneler)
 dbg.rc1.button.load.frame.s=Yük çerçevesi (saniye)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Metin istemleri
 dbg.rc1.dropdown.select.block.placing.sound=Tekrar oynatma sırasında blok yerleştirme sesleri eklemek için sayısız öneri ve istek nedeniyle, bu özelliği uyguladım. Artık etkinleştirebilirsiniz ve tekrar veya önizleme sırasında bloklar buna göre sesler üretecektir. Ancak, gelecekteki sürümlerde otomatik bloka özgü sesler uygulamak için her türlü çabayı göstereceğim. \ N \ nselect Block yerleştirme sesi
 dbg.rc1.toggle.block.placing.sound=Blok yerleştirme sesi
 dbg.rc1.toggle.multiplayer.replay=Çok oyunculu tekrar
-dbg.rc1.toggle.hide.hud.on.replay =Tekrarlama sırasında Hud'u gizle? 
+dbg.rc1.toggle.hide.hud.on.replay=Tekrarlama sırasında Hud'u gizle? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §F§gthanks Replaycraft'ı indirmek için, umarım beğenirsiniz!
 

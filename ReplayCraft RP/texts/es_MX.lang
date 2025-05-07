@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menú de reproducción] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [menú de reproducción] v2.1.2§r
 dbg.rc1.title.replay.settings=Configuración de reproducción
 dbg.rc1.title.preview.settings=Configuración de vista previa
 dbg.rc1.title.replaycraft.settings=§ Configuración de BReplaycraft§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Detener la vista previa
 dbg.rc1.button.preview.settings=Configuración de vista previa
 dbg.rc1.button.start.camera.setup=Iniciar la configuración de la cámara
 dbg.rc1.button.cancel.recording=Cancelar grabación
-dbg.rc1.button.load.existing.camera.points = Cargue los puntos de cámara existentes
-dbg.rc1.button.save.current.camera.points = Guardar puntos de cámara actuales
+dbg.rc1.button.load.existing.camera.points=Cargue los puntos de cámara existentes
+dbg.rc1.button.save.current.camera.points=Guardar puntos de cámara actuales
 
 dbg.rc1.button.load.frame.t=Marco de carga (garrapatas)
 dbg.rc1.button.load.frame.s=Marco de carga (segundos)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Indicaciones de texto
 dbg.rc1.dropdown.select.block.placing.sound=Debido a numerosas sugerencias y solicitudes para agregar sonidos de placas de bloques durante la repetición, he implementado esta función. Ahora puede habilitarlo, y durante la repetición o la vista previa, los bloques producirán sonidos en consecuencia. Sin embargo, haré todo lo posible para implementar sonidos automáticos específicos de bloques en versiones futuras.
 dbg.rc1.toggle.block.placing.sound=Sonido de colocación de bloques
 dbg.rc1.toggle.multiplayer.replay=Repetición multijugador
-dbg.rc1.toggle.hide.hud.on.replay =¿Ocultar HUD durante la repetición? 
+dbg.rc1.toggle.hide.hud.on.replay=¿Ocultar HUD durante la repetición? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks para descargar replaycraft, ¡espero que lo disfruten!
 

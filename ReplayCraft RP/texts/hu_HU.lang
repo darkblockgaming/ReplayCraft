@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.1.2-béta§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.1.2§r
 dbg.rc1.title.replay.settings=Visszajátszási beállítások
 dbg.rc1.title.preview.settings=Előnézeti beállítások
 dbg.rc1.title.replaycraft.settings=§BREPLAYCraft Setsctings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stop Preview
 dbg.rc1.button.preview.settings=Előnézeti beállítások
 dbg.rc1.button.start.camera.setup=A kamera beállításának indítása
 dbg.rc1.button.cancel.recording=A felvétel törlése
-dbg.rc1.button.load.existing.camera.points = Töltse be a meglévő kamerapontokat
-dbg.rc1.button.save.current.camera.points = Mentse el az aktuális kamerapontokat
+dbg.rc1.button.load.existing.camera.points=Töltse be a meglévő kamerapontokat
+dbg.rc1.button.save.current.camera.points=Mentse el az aktuális kamerapontokat
 
 dbg.rc1.button.load.frame.t=Betöltési keret (kullancsok)
 dbg.rc1.button.load.frame.s=Betöltési keret (másodperc)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=A szöveges felszólítások
 dbg.rc1.dropdown.select.block.placing.sound=Számos javaslat és kérés miatt, amely a blokk-hely hangjainak hozzáadására szolgált a visszajátszás során, ezt a funkciót megvalósítottam. Most már engedélyezheti, és a visszajátszás vagy az előnézet során a blokkok ennek megfelelően hangot adnak. Mindazonáltal minden erőfeszítést megteszek az automatikus blokk-specifikus hangok megvalósításához a jövőbeli verziókban.
 dbg.rc1.toggle.block.placing.sound=Blokk elhelyező hang
 dbg.rc1.toggle.multiplayer.replay=Többjátékos visszajátszás
-dbg.rc1.toggle.hide.hud.on.replay =Elrejteni a HUD -t a visszajátszás során? 
+dbg.rc1.toggle.hide.hud.on.replay=Elrejteni a HUD -t a visszajátszás során? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gThanks a replaycraft letöltéséhez, remélem, élvezni fogja!
 

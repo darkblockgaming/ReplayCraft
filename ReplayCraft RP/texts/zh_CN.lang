@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [重播菜单] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [重播菜单]v2.1.2§r
 dbg.rc1.title.replay.settings=重播设置
 dbg.rc1.title.preview.settings=预览设置
 dbg.rc1.title.replaycraft.settings=§breplaycraft设置§R
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=停止预览
 dbg.rc1.button.preview.settings=预览设置
 dbg.rc1.button.start.camera.setup=启动相机设置
 dbg.rc1.button.cancel.recording=取消录制
-dbg.rc1.button.load.existing.camera.points = 加载现有的相机点
-dbg.rc1.button.save.current.camera.points = 保存当前的相机点
+dbg.rc1.button.load.existing.camera.points=加载现有的相机点
+dbg.rc1.button.save.current.camera.points=保存当前的相机点
 
 dbg.rc1.button.load.frame.t=负载框架（刻度）
 dbg.rc1.button.load.frame.s=负载框架（秒）
@@ -70,16 +70,16 @@ dbg.rc1.toggle.text.prompts=文本提示
 dbg.rc1.dropdown.select.block.placing.sound=由于在重播过程中提出了许多建议和要求添加块置换声音的要求，因此我实施了此功能。您现在可以启用它，并且在重播或预览期间，块将相应地产生声音。\ ncorry，此功能不是自动的，所有块将使用此处选择的相同声源。但是，我将尽一切努力在以后的版本中实现自动特定的声音。
 dbg.rc1.toggle.block.placing.sound=放置声音
 dbg.rc1.toggle.multiplayer.replay=多人游戏重播
-dbg.rc1.toggle.hide.hud.on.replay =在重播过程中隐藏HUD？ 
+dbg.rc1.toggle.hide.hud.on.replay=在重播过程中隐藏HUD？ 
 
 dbg.rc1.mes.thanks=§F§4[Replaycraft]§F§Gthanks用于下载Replaycraft，我希望您会喜欢的！
 
 dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§F§4[replaycraft]§F§Clease加载框架，然后再添加相机点
 dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§F§4[Replaycraft]§F§CA摄像机点已经存在于此刻度中！
 dbg.rc1.mes.no.camera.points.found=§F§4[ReplayCraft]§F§CNO相机点
-dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§F§4[Replaycraft]§F§CNO相机点，至少添加一个相机点
+dbg.rc1.mes.no.camera.points.found.add.atleast.one.camera.point=§F§4[replaycraft]§F§CNO相机点，添加至少一个相机点
 dbg.rc1.mes.rec.has.started=§F§4[Replaycraft]§F§Breting已经开始（在后台）
-dbg.rc1.mes.rec.resumed.successfully=§F§4[ReplayCraft]§F§BRETODING成功恢复了
+dbg.rc1.mes.rec.resumed.successfully=§F§4[Replaycraft]§F§Breding成功恢复了
 dbg.rc1.mes.rec.paused.successfully=§F§4[重播）§F§BREDING成功暂停了
 dbg.rc1.mes.rec.saved.successfully=§F§4[replaycraft]§F§Brecorted成功保存了
 dbg.rc1.mes.replay.preview.is.already.on=§F§4[Replaycraft]§F§Creplay预览已经开始，等待完成或停止它

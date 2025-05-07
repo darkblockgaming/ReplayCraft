@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [toistovalikko] v2.1.2-beeta§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [toistovalikko] v2.1.2§R
 dbg.rc1.title.replay.settings=Toista asetukset
 dbg.rc1.title.preview.settings=Esikatselun asetukset
 dbg.rc1.title.replaycraft.settings=§BreplayCraft Asetukset§R
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Lopeta esikatselu
 dbg.rc1.button.preview.settings=Esikatselun asetukset
 dbg.rc1.button.start.camera.setup=Käynnistä kameran asetukset
 dbg.rc1.button.cancel.recording=Peruuta tallennus
-dbg.rc1.button.load.existing.camera.points = Lataa olemassa olevat kamerapisteet
-dbg.rc1.button.save.current.camera.points = Tallenna nykyiset kamerapisteet
+dbg.rc1.button.load.existing.camera.points=Lataa olemassa olevat kamerapisteet
+dbg.rc1.button.save.current.camera.points=Tallenna nykyiset kamerapisteet
 
 dbg.rc1.button.load.frame.t=Latauskehys (punkit)
 dbg.rc1.button.load.frame.s=Kuormituskehys (sekunnit)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Tekstikehotteet
 dbg.rc1.dropdown.select.block.placing.sound=Koska olen ottanut käyttöön tämän ominaisuuden lukuisten ehdotusten ja pyyntöjen lisätä lohkojen sijoittamisääniä toiston aikana. Voit nyt ottaa sen käyttöön, ja toiston tai esikatselun aikana lohkot tuottavat ääniä vastaavasti. \ Ncurruurisesti tämä ominaisuus ei ole automaattinen, ja kaikki lohkot käyttävät samaa äänilähdettä, joka on valittu tässä. Pyrin kuitenkin kaikin tavoin automaattisten lohkokohtaisten äänien toteuttamiseksi tulevissa versioissa.
 dbg.rc1.toggle.block.placing.sound=Lohko sijoittaa äänen
 dbg.rc1.toggle.multiplayer.replay=Moninpeli
-dbg.rc1.toggle.hide.hud.on.replay =Piilottaa HUD toiston aikana? 
+dbg.rc1.toggle.hide.hud.on.replay=Piilottaa HUD toiston aikana? 
 
 dbg.rc1.mes.thanks=§F§4 [toistoa] §f§Gthanks toistomaaston lataamiseksi, toivottavasti nautit siitä!
 
@@ -112,7 +112,7 @@ dbg.rc2.dropdown.particle.Settings.frame.particle.type=\ n§l§g- hiukkasasetuks
 dbg.rc2.toggle.enable.position.frame.particles=Ota asemakehyksen hiukkaset käyttöön
 dbg.rc2.toggle.hide.hud=Piilota Hud elokuvan aikana
 dbg.rc2.slider.preview.settings.preview.speed.multiplier=\ n§l§g- esikatseluasetukset§r \ n \ npreview-nopeuskertoimet
-dbg.rc2.slider.fade.screen.settings.red.value=\ n§l§g- fade-näytön asetukset§r \ n \ n§ched arvo
+dbg.rc2.slider.fade.screen.settings.red.value=\ n§l§g- fade-näytön asetukset§r \ n \ n§ched-arvo
 dbg.rc2.slider.green.value=§Agreen -arvo
 dbg.rc2.slider.blue.value=§9BLUE -arvo
 

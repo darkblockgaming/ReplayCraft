@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2§r
 dbg.rc1.title.replay.settings=Replay -innstillinger
 dbg.rc1.title.preview.settings=Forhåndsvisningsinnstillinger
 dbg.rc1.title.replaycraft.settings=§BrePlaycraft Innstillinger§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stopp forhåndsvisning
 dbg.rc1.button.preview.settings=Forhåndsvisningsinnstillinger
 dbg.rc1.button.start.camera.setup=Start kameraoppsett
 dbg.rc1.button.cancel.recording=Avbryt opptak
-dbg.rc1.button.load.existing.camera.points = Last eksisterende kamerapunkter
-dbg.rc1.button.save.current.camera.points = Lagre gjeldende kamerapunkter
+dbg.rc1.button.load.existing.camera.points=Last eksisterende kamerapunkter
+dbg.rc1.button.save.current.camera.points=Lagre gjeldende kamerapunkter
 
 dbg.rc1.button.load.frame.t=Lastramme (flått)
 dbg.rc1.button.load.frame.s=Lastramme (sekunder)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Teksthjul
 dbg.rc1.dropdown.select.block.placing.sound=På grunn av mange forslag og forespørsler om å legge til blokkeringslyder under reprise, har jeg implementert denne funksjonen. Du kan nå aktivere det, og under gjenspill eller forhåndsvisning vil blokker produsere lyder deretter. Imidlertid vil jeg gjøre alt for å implementere automatiske blokkeringsspesifikke lyder i fremtidige versjoner. \ N \ nelect Block Plasser lyd
 dbg.rc1.toggle.block.placing.sound=Blokk plassering av lyd
 dbg.rc1.toggle.multiplayer.replay=Multiplayer Replay
-dbg.rc1.toggle.hide.hud.on.replay =Skjul HUD under reprise? 
+dbg.rc1.toggle.hide.hud.on.replay=Skjul HUD under reprise? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §F§Gthanks for nedlasting av replaycraft, jeg håper du vil glede deg over det!
 

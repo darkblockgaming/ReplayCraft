@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft[リプレイメニュー] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft[リプレイメニュー]v2.1.2§r
 dbg.rc1.title.replay.settings=再生設定
 dbg.rc1.title.preview.settings=プレビュー設定
 dbg.rc1.title.replaycraft.settings=§BreplaycraftSettings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=プレビューを停止します
 dbg.rc1.button.preview.settings=プレビュー設定
 dbg.rc1.button.start.camera.setup=カメラのセットアップを開始します
 dbg.rc1.button.cancel.recording=録音をキャンセルします
-dbg.rc1.button.load.existing.camera.points = 既存のカメラポイントをロードします
-dbg.rc1.button.save.current.camera.points = 現在のカメラポイントを保存します
+dbg.rc1.button.load.existing.camera.points=既存のカメラポイントをロードします
+dbg.rc1.button.save.current.camera.points=現在のカメラポイントを保存します
 
 dbg.rc1.button.load.frame.t=ロードフレーム（ティック）
 dbg.rc1.button.load.frame.s=ロードフレーム（秒）
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=テキストプロンプト
 dbg.rc1.dropdown.select.block.placing.sound=リプレイ中にブロック配置サウンドを追加するための多くの提案とリクエストにより、私はこの機能を実装しました。これで有効にすることができ、リプレイまたはプレビュー中にブロックはそれに応じてサウンドを生成します。ただし、将来のバージョンで自動ブロック固有のサウンドを実装するためにあらゆる努力をします。\ n \ nselectブロック配置音
 dbg.rc1.toggle.block.placing.sound=音の配置をブロックします
 dbg.rc1.toggle.multiplayer.replay=マルチプレイヤーリプレイ
-dbg.rc1.toggle.hide.hud.on.replay =リプレイ中にHUDを隠しますか？ 
+dbg.rc1.toggle.hide.hud.on.replay=リプレイ中にHUDを隠しますか？ 
 
 dbg.rc1.mes.thanks=§F§4[ReplayCraft]§F§GthanksReplayCraftをダウンロードしてください。お楽しみください。
 

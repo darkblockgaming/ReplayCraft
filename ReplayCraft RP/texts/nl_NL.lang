@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9REPLAYCRAFT [Menu opnieuw afspelen] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9replaycraft [Menu opnieuw afspelen] v2.1.2§r
 dbg.rc1.title.replay.settings=Replay -instellingen
 dbg.rc1.title.preview.settings=Voorbeeldinstellingen
 dbg.rc1.title.replaycraft.settings=§Breplaycraft -instellingen§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stop preview
 dbg.rc1.button.preview.settings=Voorbeeldinstellingen
 dbg.rc1.button.start.camera.setup=Start camera -instellingen
 dbg.rc1.button.cancel.recording=Annuleer de opname
-dbg.rc1.button.load.existing.camera.points = Laad bestaande camerapunten
-dbg.rc1.button.save.current.camera.points = Bewaar huidige camerapunten
+dbg.rc1.button.load.existing.camera.points=Laad bestaande camerapunten
+dbg.rc1.button.save.current.camera.points=Bewaar huidige camerapunten
 
 dbg.rc1.button.load.frame.t=Laadframe (teken)
 dbg.rc1.button.load.frame.s=Laadframe (seconden)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Tekstprompts
 dbg.rc1.dropdown.select.block.placing.sound=Vanwege talloze suggesties en verzoeken om blokkeringsgeluiden toe te voegen tijdens de herhaling, heb ik deze functie geïmplementeerd. U kunt het nu inschakelen, en tijdens het opnieuw afspelen of preview zullen blokken dienovereenkomstig geluiden produceren. \ NCurly is deze functie niet automatisch en alle blokken zullen dezelfde geluidsbron gebruiken die hier is geselecteerd. Ik zal echter alles in het werk stellen om automatische blokspecifieke geluiden te implementeren in toekomstige versies. \ N \ nselect blokkeringsgeluid
 dbg.rc1.toggle.block.placing.sound=Blokkeringsgeluid
 dbg.rc1.toggle.multiplayer.replay=Herhaling van multiplayer
-dbg.rc1.toggle.hide.hud.on.replay =HUD verbergen tijdens herhaling? 
+dbg.rc1.toggle.hide.hud.on.replay=HUD verbergen tijdens herhaling? 
 
 dbg.rc1.mes.thanks=§F§4 [replaycraft] §f§gthanks voor het downloaden van replaycraft, ik hoop dat je ervan geniet!
 

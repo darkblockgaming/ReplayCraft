@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.1.2§r
 dbg.rc1.title.replay.settings=Pengaturan Ulangi
 dbg.rc1.title.preview.settings=Pengaturan Pratinjau
 dbg.rc1.title.replaycraft.settings=§Dreplaycraft Settings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Hentikan pratinjau
 dbg.rc1.button.preview.settings=Pengaturan Pratinjau
 dbg.rc1.button.start.camera.setup=Mulai Pengaturan Kamera
 dbg.rc1.button.cancel.recording=Batalkan perekaman
-dbg.rc1.button.load.existing.camera.points = Muat titik kamera yang ada
-dbg.rc1.button.save.current.camera.points = Simpan titik kamera saat ini
+dbg.rc1.button.load.existing.camera.points=Muat titik kamera yang ada
+dbg.rc1.button.save.current.camera.points=Simpan titik kamera saat ini
 
 dbg.rc1.button.load.frame.t=Bingkai beban (kutu)
 dbg.rc1.button.load.frame.s=Bingkai beban (detik)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Permintaan teks
 dbg.rc1.dropdown.select.block.placing.sound=Karena banyak saran dan permintaan untuk menambahkan suara penempatan blok selama replay, saya telah menerapkan fitur ini. Anda sekarang dapat mengaktifkannya, dan selama replay atau pratinjau, blok akan menghasilkan suara yang sesuai. Namun, saya akan melakukan segala upaya untuk mengimplementasikan suara spesifik blok otomatis di versi mendatang.
 dbg.rc1.toggle.block.placing.sound=Blok penempatan suara
 dbg.rc1.toggle.multiplayer.replay=Putar ulang multipemain
-dbg.rc1.toggle.hide.hud.on.replay =Sembunyikan HUD saat replay? 
+dbg.rc1.toggle.hide.hud.on.replay=Sembunyikan HUD saat replay? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §F§gthanks untuk mengunduh replaycraft, saya harap Anda akan menikmatinya!
 

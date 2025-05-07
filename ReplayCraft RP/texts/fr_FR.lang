@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.1.2§r
 dbg.rc1.title.replay.settings=Paramètres de relecture
 dbg.rc1.title.preview.settings=Paramètres de prévisualisation
 dbg.rc1.title.replaycraft.settings=§BReplayCraft Settings§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Aperçu de l'arrêt
 dbg.rc1.button.preview.settings=Paramètres de prévisualisation
 dbg.rc1.button.start.camera.setup=Démarrer la configuration de la caméra
 dbg.rc1.button.cancel.recording=Annuler l'enregistrement
-dbg.rc1.button.load.existing.camera.points = Chargez des points de caméra existants
-dbg.rc1.button.save.current.camera.points = Enregistrer les points de caméra actuels
+dbg.rc1.button.load.existing.camera.points=Chargez des points de caméra existants
+dbg.rc1.button.save.current.camera.points=Enregistrer les points de caméra actuels
 
 dbg.rc1.button.load.frame.t=Cadre de chargement (tiques)
 dbg.rc1.button.load.frame.s=Crame de chargement (secondes)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Invites de texte
 dbg.rc1.dropdown.select.block.placing.sound=En raison de nombreuses suggestions et demandes d'ajouter des sons de placement en blocs pendant la relecture, j'ai implémenté cette fonctionnalité. Vous pouvez désormais l'activer, et pendant la relecture ou l'aperçu, les blocs produiront des sons en conséquence. \ NCURENCEMENT, cette fonctionnalité n'est pas automatique, et tous les blocs utiliseront la même source sonore sélectionnée ici. Cependant, je ferai tout ce qui mettra tout en œuvre pour mettre en œuvre des sons spécifiques au bloc automatique dans les futures versions. \ N \ nselect Block Placer son
 dbg.rc1.toggle.block.placing.sound=Block Placer le son
 dbg.rc1.toggle.multiplayer.replay=Relecture multijoueur
-dbg.rc1.toggle.hide.hud.on.replay =Casquer HUD pendant la relecture? 
+dbg.rc1.toggle.hide.hud.on.replay=Casquer HUD pendant la relecture? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks pour télécharger Replaycraft, j'espère que vous en profiterez!
 

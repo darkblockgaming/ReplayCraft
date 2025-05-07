@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Pery Menu] v2.1.2§r
 dbg.rc1.title.replay.settings=Nastavenia opakovania
 dbg.rc1.title.preview.settings=Nastavenia náhľadu
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Nastavenie
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Ukážka zastavenia
 dbg.rc1.button.preview.settings=Nastavenia náhľadu
 dbg.rc1.button.start.camera.setup=Začnite nastavenie fotoaparátu
 dbg.rc1.button.cancel.recording=Zrušiť nahrávanie
-dbg.rc1.button.load.existing.camera.points = Načítajte existujúce body fotoaparátu
-dbg.rc1.button.save.current.camera.points = Uložte aktuálne body fotoaparátu
+dbg.rc1.button.load.existing.camera.points=Načítajte existujúce body fotoaparátu
+dbg.rc1.button.save.current.camera.points=Uložte aktuálne body fotoaparátu
 
 dbg.rc1.button.load.frame.t=Načítať rám (kliešte)
 dbg.rc1.button.load.frame.s=Záťažový rám (sekundy)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Textové výzvy
 dbg.rc1.dropdown.select.block.placing.sound=Z dôvodu mnohých návrhov a požiadaviek na pridanie zvukov blokovania počas prehrávania som túto funkciu implementoval. Teraz to môžete povoliť a počas prehrávania alebo ukážky budú bloky produkovať zvuky podľa toho. V budúcich verziách však vynaložím všetko úsilie na implementáciu automatických zvukov špecifických pre blok.
 dbg.rc1.toggle.block.placing.sound=Blokovanie zvuku
 dbg.rc1.toggle.multiplayer.replay=Prehrávanie viacerých hráčov
-dbg.rc1.toggle.hide.hud.on.replay =Skryť HUD počas prehrávania? 
+dbg.rc1.toggle.hide.hud.on.replay=Skryť HUD počas prehrávania? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §F§gthanks na sťahovanie prehrávania, dúfam, že sa vám bude páčiť!
 

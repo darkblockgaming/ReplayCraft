@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menu Replay] V2.1.2-Beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Menu Replay] V2.1.2§r
 dbg.rc1.title.replay.settings=Replay Impostazioni
 dbg.rc1.title.preview.settings=Impostazioni di anteprima
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Impostas§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Stop anteprima
 dbg.rc1.button.preview.settings=Impostazioni di anteprima
 dbg.rc1.button.start.camera.setup=Avviare la configurazione della fotocamera
 dbg.rc1.button.cancel.recording=Annulla la registrazione
-dbg.rc1.button.load.existing.camera.points = Carica i punti della fotocamera esistenti
-dbg.rc1.button.save.current.camera.points = Salva i punti della fotocamera corrente
+dbg.rc1.button.load.existing.camera.points=Carica i punti della fotocamera esistenti
+dbg.rc1.button.save.current.camera.points=Salva i punti della fotocamera corrente
 
 dbg.rc1.button.load.frame.t=CARTA FRAMATURA (zecche)
 dbg.rc1.button.load.frame.s=Frame di carico (secondi)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Prost di testo
 dbg.rc1.dropdown.select.block.placing.sound=A causa di numerosi suggerimenti e richieste per aggiungere suoni di blocco durante il replay, ho implementato questa funzione. Ora puoi abilitarlo e durante il replay o l'anteprima, i blocchi produrranno suoni di conseguenza. \ Nurrently, questa funzione non è automatica e tutti i blocchi utilizzeranno la stessa fonte audio selezionata qui. Tuttavia, farò ogni sforzo per implementare i suoni automatici specifici del blocco nelle versioni future. \ N \ nselect blocco inseritura del suono
 dbg.rc1.toggle.block.placing.sound=Blocca il suono del suono
 dbg.rc1.toggle.multiplayer.replay=Replay multiplayer
-dbg.rc1.toggle.hide.hud.on.replay =Nascondere HUD durante il replay? 
+dbg.rc1.toggle.hide.hud.on.replay=Nascondere HUD durante il replay? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks per il download di Replaycraft, spero che ti piaccia!
 

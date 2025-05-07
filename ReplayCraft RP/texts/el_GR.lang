@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.1.2§r
 dbg.rc1.title.replay.settings=Ρυθμίσεις επανάληψης
 dbg.rc1.title.preview.settings=Ρυθμίσεις προεπισκόπησης
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Ρυθμίσεις
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Σταματήστε την προεπισκόπησ
 dbg.rc1.button.preview.settings=Ρυθμίσεις προεπισκόπησης
 dbg.rc1.button.start.camera.setup=Ξεκινήστε τη ρύθμιση της κάμερας
 dbg.rc1.button.cancel.recording=Ακύρωση εγγραφής
-dbg.rc1.button.load.existing.camera.points = Φορτώστε τα υπάρχοντα σημεία κάμερας
-dbg.rc1.button.save.current.camera.points = Αποθηκεύστε τα τρέχοντα σημεία κάμερας
+dbg.rc1.button.load.existing.camera.points=Φορτώστε τα υπάρχοντα σημεία κάμερας
+dbg.rc1.button.save.current.camera.points=Αποθηκεύστε τα τρέχοντα σημεία κάμερας
 
 dbg.rc1.button.load.frame.t=Πλαίσιο φόρτωσης (τσιμπούρια)
 dbg.rc1.button.load.frame.s=Πλαίσιο φόρτωσης (δευτερόλεπτα)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Προτροπές κειμένου
 dbg.rc1.dropdown.select.block.placing.sound=Λόγω πολυάριθμες προτάσεις και αιτήματα για την προσθήκη ήχων που βρισκόταν σε πλάκα κατά τη διάρκεια της επανάληψης, έχω εφαρμόσει αυτό το χαρακτηριστικό. Τώρα μπορείτε να το ενεργοποιήσετε, και κατά τη διάρκεια της επανάληψης ή της προεπισκόπησης, τα μπλοκ θα παράγουν ήχους ανάλογα. Ωστόσο, θα καταβάλω κάθε δυνατή προσπάθεια για την υλοποίηση των αυτόματων ήχων ειδικών για μπλοκ σε μελλοντικές εκδόσεις.
 dbg.rc1.toggle.block.placing.sound=Ήχος τοποθέτησης μπλοκ
 dbg.rc1.toggle.multiplayer.replay=Επανάληψη πολλών παικτών
-dbg.rc1.toggle.hide.hud.on.replay =Απόκρυψη HUD κατά τη διάρκεια της επανάληψης; 
+dbg.rc1.toggle.hide.hud.on.replay=Απόκρυψη HUD κατά τη διάρκεια της επανάληψης; 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks για τη λήψη του replaycraft, ελπίζω ότι θα το απολαύσετε!
 

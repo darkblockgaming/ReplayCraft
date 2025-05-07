@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu powtórki] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9replaycraft [Menu powtórki] v2.1.2§r
 dbg.rc1.title.replay.settings=Ustawienia powtórki
 dbg.rc1.title.preview.settings=Ustawienia podglądu
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft Ustawienia §r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Przestań podgląd
 dbg.rc1.button.preview.settings=Ustawienia podglądu
 dbg.rc1.button.start.camera.setup=Rozpocznij konfigurację aparatu
 dbg.rc1.button.cancel.recording=Anuluj nagrywanie
-dbg.rc1.button.load.existing.camera.points = Załaduj istniejące punkty aparatu
-dbg.rc1.button.save.current.camera.points = Zapisz aktualne punkty aparatu
+dbg.rc1.button.load.existing.camera.points=Załaduj istniejące punkty aparatu
+dbg.rc1.button.save.current.camera.points=Zapisz aktualne punkty aparatu
 
 dbg.rc1.button.load.frame.t=Rama ładowania (kleszcze)
 dbg.rc1.button.load.frame.s=Rama ładowania (sekundy)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Podpowiedzi tekstowe
 dbg.rc1.dropdown.select.block.placing.sound=Ze względu na liczne sugestie i żądania dodawania dźwięków w ramach bloków podczas powtórki, zaimplementowałem tę funkcję. Możesz teraz go włączyć, a podczas powtórki lub podglądu bloki będą odpowiednio wytworzyć dźwięki. \ Nawno ta funkcja nie jest automatyczna, a wszystkie bloki używają tego samego źródła dźwięku wybranego tutaj. Jednak dołożę wszelkich starań, aby wdrożyć automatyczne dźwięki specyficzne dla bloku w przyszłych wersjach.
 dbg.rc1.toggle.block.placing.sound=Blok umieszcza dźwięk
 dbg.rc1.toggle.multiplayer.replay=Powtórka dla wielu graczy
-dbg.rc1.toggle.hide.hud.on.replay =Ukryć HUD podczas powtórki? 
+dbg.rc1.toggle.hide.hud.on.replay=Ukryć HUD podczas powtórki? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks do pobierania Replaycraft, mam nadzieję, że ci się spodoba!
 

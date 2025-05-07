@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Меню повторення] v2.1.2-beta§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Меню повторення] v2.1.2§r
 dbg.rc1.title.replay.settings=Налаштування повторного відтворення
 dbg.rc1.title.preview.settings=Налаштування попереднього перегляду
 dbg.rc1.title.replaycraft.settings=§Breplaycraft налаштування MATR§r
@@ -31,8 +31,8 @@ dbg.rc1.button.stop.preview=Зупиніть попередній перегля
 dbg.rc1.button.preview.settings=Налаштування попереднього перегляду
 dbg.rc1.button.start.camera.setup=Запустіть налаштування камери
 dbg.rc1.button.cancel.recording=Скасувати запис
-dbg.rc1.button.load.existing.camera.points = Завантажте існуючі точки камери
-dbg.rc1.button.save.current.camera.points = Збережіть поточні точки камери
+dbg.rc1.button.load.existing.camera.points=Завантажте існуючі точки камери
+dbg.rc1.button.save.current.camera.points=Збережіть поточні точки камери
 
 dbg.rc1.button.load.frame.t=Рамка завантаження (кліщі)
 dbg.rc1.button.load.frame.s=Рамка завантаження (секунди)
@@ -70,7 +70,7 @@ dbg.rc1.toggle.text.prompts=Текстові підказки
 dbg.rc1.dropdown.select.block.placing.sound=Через численні пропозиції та прохання про додавання звуків, що розміщують блоки під час повторного відтворення, я реалізував цю функцію. Тепер ви можете ввімкнути це, і під час повторного перегляду або попереднього перегляду блоки видаватимуть звуки відповідно. Однак я докладу всіх зусиль, щоб реалізувати автоматичні звуки, що стосуються блоку в майбутніх версіях.
 dbg.rc1.toggle.block.placing.sound=Блок розміщення звуку
 dbg.rc1.toggle.multiplayer.replay=Багатокористувацька повтор
-dbg.rc1.toggle.hide.hud.on.replay =Сховати худа під час повторення? 
+dbg.rc1.toggle.hide.hud.on.replay=Сховати худа під час повторення? 
 
 dbg.rc1.mes.thanks=§F§4 [Replaycraft] §f§gthanks для завантаження Replaycraft, сподіваюся, вам сподобається!
 
