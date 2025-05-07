@@ -12,7 +12,7 @@
 
 
 
-
+-   <a href="#/SkinRPEditor/editor.md" title="Home" style="color: white; font-size: larger; font-weight: bolder">Resource Pack Editor</a>
 
 -   <a href="#" onclick="return false;" title="Contributing" style="color: white; font-size: larger; font-weight: bolder">Contributing</a>
 

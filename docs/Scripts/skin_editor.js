@@ -19,12 +19,14 @@ generateSkinPackButton.addEventListener('click', async () => {
     try {
         loadingElement.style.display = 'block'; // Show loading animation
 
-        await fetch(`https://osh01.oshosting.co.uk:4000/upload_skins/${userId}`, {
+       await fetch(`https://osh01.oshosting.co.uk:4000/upload_skins/${userId}`, {
             method: 'POST',
             body: formData,
         });
 
+ 
         const archiveResponse = await fetch(`https://osh01.oshosting.co.uk:4000/create_skin_pack/${userId}`);
+        
         const blob = await archiveResponse.blob();
         
         const url = URL.createObjectURL(blob);
@@ -36,6 +38,7 @@ generateSkinPackButton.addEventListener('click', async () => {
         link.remove();
 
         await fetch(`https://osh01.oshosting.co.uk:4000/cleanup/${userId}`);
+       
     } catch (error) {
         alert(`Error: ${error.message}`);
     } finally {
