@@ -479,9 +479,9 @@ function cineSettings(player: Player) {
 	}
 	const replaySettingsForm = new ui.ModalFormData()
 		.title("dbg.rc2.title.settings")
-		.dropdown("dbg.rc2.dropdown.camera.settings.ease.type", easeTypes, eData.easeType)
+		.dropdown("dbg.rc2.dropdown.camera.settings.ease.type", easeTypes, {defaultValueIndex: eData.easeType})
 		.textField("dbg.rc2.textfield.time", `${eData.easeTime}`)
-		.dropdown("dbg.rc2.dropdown.camera.facing", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], eData.camFacingType)
+		.dropdown("dbg.rc2.dropdown.camera.facing", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], {defaultValueIndex: eData.camFacingType})
 
 		.slider(
 			{ "rawtext": [{ "translate": "dbg.rc2.slider.pitch" }] },
@@ -501,9 +501,9 @@ function cineSettings(player: Player) {
 				defaultValue: eData.camFacingY
 			}
 		)
-		.dropdown("dbg.rc2.dropdown.particle.Settings.frame.particle.type", particlesName, eData.cineParType)
-		.toggle("dbg.rc2.toggle.enable.position.frame.particles", eData.cineParSwitch)
-		.toggle("dbg.rc2.toggle.hide.hud", eData.hideHud)
+		.dropdown("dbg.rc2.dropdown.particle.Settings.frame.particle.type", particlesName, {defaultValueIndex: eData.cineParType})
+		.toggle("dbg.rc2.toggle.enable.position.frame.particles", {defaultValue: eData.cineParSwitch})
+		.toggle("dbg.rc2.toggle.hide.hud", {defaultValue: eData.hideHud})
 
 		.slider(
 			{ "rawtext": [{ "translate": "dbg.rc2.slider.preview.settings.preview.speed.multiplier" }] },
