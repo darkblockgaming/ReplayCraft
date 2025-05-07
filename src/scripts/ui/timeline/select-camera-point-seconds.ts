@@ -71,6 +71,7 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
             SharedVariables.wantLoadFrameTick = tickToUse;
             SharedVariables.lilTick = tickToUse;
             SharedVariables.showCameraSetupUI = true;
+            removeEntities(player, false);
             await startReplay(player, pointIndex);
             return;
         case 1: // Edit Time
