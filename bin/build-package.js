@@ -109,14 +109,32 @@ function cleanUp() {
     const buildNumber = getAndUpdateBuildNumber();
     copyAssets();
     buildProject();
-    updateManifestName(buildNumber);
+
+    // Check for build mode based on passed flags
+    const isDevMode = process.argv.includes("--dev"); // for npm run build
+    const isDistMode = process.argv.includes("--mcaddon"); // for npm run dist
+
+    // Read the manifest file for version
+    const manifest = fs.readJsonSync(manifestPath);
+    const version = manifest.header.version.join(".");
+
+    // Update manifest only for dev mode
+    if (isDevMode) {
+        let newName = `ReplayCraft BP v${version}-Dev Build ${buildNumber}`;
+        manifest.header.name = newName; // Update name in the header
+        fs.writeJsonSync(path.join(buildDir, "manifest.json"), manifest, { spaces: 2 });
+    }
 
     const isServerMode = process.argv.includes("--server");
     if (!isServerMode) {
         createAddonStructure();
         copyScriptsAndBlocks();
 
-        const outputFileName = `ReplayCraft-Dev${buildNumber}.mcaddon`;
+        // For dev builds, the filename will include "-Dev"
+        const outputFileName = isDevMode
+            ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon`  // Dev build filename
+            : `ReplayCraft-v${version}.mcaddon`;  // Dist build filename (no '-dev' and no build number)
+
         const outputFilePath = path.resolve(buildDir, "build", outputFileName);
         fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
 
@@ -127,3 +145,5 @@ function cleanUp() {
 
     console.log(`Build ${buildNumber} completed successfully.`);
 })();
+
+
