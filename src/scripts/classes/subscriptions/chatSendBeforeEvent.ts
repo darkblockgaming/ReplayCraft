@@ -1,7 +1,7 @@
 import {ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world} from "@minecraft/server";
-  import { setSkin } from "../../ui/settings/setSkin";
-  import { showDatabaseListUI } from "../../ui/debug/db-size";
-  import {
+import { setSkin } from "../../ui/settings/setSkin";
+import { showDatabaseListUI } from "../../ui/debug/db-size";
+import {
 	replayCraftBeforeBlockInteractionsDB,
 	replayCraftBlockDB,
 	replayCraftBlockInteractionsDB,
@@ -14,8 +14,10 @@ import {ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world}
 	replayCraftSkinDB,
   } from "../../classes/subscriptions/world-initialize";
 
-  import { OptimizedDatabase } from "../../data/data-hive";
+import { OptimizedDatabase } from "../../data/data-hive";
 import { playerDataDisplay } from "../../main";
+import config from "../../data/config";
+
   
   function giveItems(event: ChatSendBeforeEvent) {
 	const { sender, message } = event;
@@ -74,7 +76,7 @@ import { playerDataDisplay } from "../../main";
 	  event.cancel = true;
 	  return;
 	}
-  
+if(config.devChatCommands === true) {
 	// Opens the database stats UI
 	if (message === "?dbstats") {
 	  system.run(() => {
@@ -133,6 +135,7 @@ import { playerDataDisplay } from "../../main";
 	  return;
 	}
   }
+}
   
   // Subscribe to chat commands
   const beforeChatSend = () => {
