@@ -17,6 +17,7 @@ import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initia
 //temp solution for the missing import this needs to be convered.
 import './ReplayCraft.js';
 import { removeEntities } from "./functions/removeEntities";
+import config from "./debug/config";
 //Global variables
 export let SharedVariables: SharedVariablesType = {
     soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"],
@@ -301,12 +302,14 @@ system.runInterval(() => {
         const playerData = SharedVariables.replayMDataMap.get(player.id);
         if (!playerData) return;
         playerData.isSneaking.push(player.isSneaking ? 1 : 0);
+        if(config.devAnimations === true) {
         // playerData.isSwimming.push(player.isSwimming ? 1 : 0);
         // playerData.isClimbing.push(player.isClimbing ? 1 : 0);
         // playerData.isFalling.push(player.isFalling ? 1 : 0);
         // playerData.isFlying.push(player.isFlying ? 1 : 0);
         // playerData.isGliding.push(player.isGliding ? 1 : 0);
-        // playerData.isSleeping.push(player.isSleeping ? 1 : 0);
+        playerData.isSleeping.push(player.isSleeping ? 1 : 0);
+        }
     });
 }, 1);
 
@@ -323,7 +326,7 @@ system.runInterval(() => {
             // customEntity.setProperty("dbg:is_falling", playerData.isFalling[SharedVariables.lilTick] === 1);
             // customEntity.setProperty("dbg:is_flying", playerData.isFlying[SharedVariables.lilTick] === 1);
             // customEntity.setProperty("dbg:is_gliding", playerData.isGliding[SharedVariables.lilTick] === 1);
-            // customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[SharedVariables.lilTick] === 1);
+            customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[SharedVariables.lilTick] === 1);
         }
     });
 }, 1);
