@@ -10,7 +10,8 @@
     -   [Chat Commands](commands.md "Chat Commands")
 
 
-
+-    <a href="#" onclick="return false;" title="Documentation" style="color: white; font-size: larger; font-weight: bolder">Video Tutorials</a>
+    -   [In-Depth Tutorial](tutorials/HowTo.md "Overview")
 
 -   <a href="#/SkinRPEditor/editor.md" title="Home" style="color: white; font-size: larger; font-weight: bolder">Resource Pack Editor</a>
 
