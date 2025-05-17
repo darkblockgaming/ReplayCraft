@@ -15,7 +15,7 @@ import {
   } from "../../classes/subscriptions/world-initialize";
 
 import { OptimizedDatabase } from "../../data/data-hive";
-import { playerDataDisplay } from "../../main";
+import { playerDataDisplay, SharedVariablesDisplay } from "../../main";
 import config from "../../data/config";
 
   
@@ -88,6 +88,13 @@ if(config.devChatCommands === true) {
 	if (message === "?playerData") {
 		system.run(() => {
 		  playerDataDisplay(sender);
+		});
+		event.cancel = true;
+		return;
+	  }
+	  if (message === "?snapshot") {
+		system.run(() => {
+		  SharedVariablesDisplay();
 		});
 		event.cancel = true;
 		return;

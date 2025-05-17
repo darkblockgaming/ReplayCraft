@@ -81,7 +81,8 @@ export let SharedVariables: SharedVariablesType = {
     buildName: undefined,
     hideHUD: false,
     showCameraSetupUI: false,
-    currentEditingCamIndex: undefined
+    currentEditingCamIndex: undefined,
+    useFullRecordingRange: true
 };
 
 //Chat events
@@ -470,3 +471,29 @@ export function playerDataDisplay(player: Player) {
         console.warn("Failed to stringify playerData:", err);
     }
 }
+
+
+
+export function SharedVariablesDisplay() {
+    
+    const snapshot = {
+        useFullRecordingRange: SharedVariables.useFullRecordingRange,
+        wantLoadFrameTick: SharedVariables.wantLoadFrameTick,
+        frameLoaded: SharedVariables.frameLoaded,
+        dbgRecTime: SharedVariables.dbgRecTime,
+        replayCamPosTicks: SharedVariables.replayCamPos.map(p => p.tick),
+        replayCamRotTicks: SharedVariables.replayCamRot.map(r => r.tick),
+        replayCamPosLength: SharedVariables.replayCamPos.length,
+        replayCamRotLength: SharedVariables.replayCamRot.length,
+        startingValueTick: SharedVariables.startingValueTick,
+        startingValueSecs: SharedVariables.startingValueSecs,
+    };
+
+    try {
+        console.log("=== SharedVariables Snapshot ===");
+        console.log(JSON.stringify(snapshot, null, 2));
+    } catch (err) {
+        console.warn("Failed to stringify SharedVariables snapshot:", err);
+    }
+}
+
