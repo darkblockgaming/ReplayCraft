@@ -8,7 +8,7 @@
 
     -   [Intro](docs.md "Overview")
     -   [Chat Commands](commands.md "Chat Commands")
-
+    -   [Supported Actions](supported-actions.md "Supported Actions")
 
 -    <a href="#" onclick="return false;" title="Documentation" style="color: white; font-size: larger; font-weight: bolder">Video Tutorials</a>
     -   [In-Depth Tutorial](tutorials/HowTo.md "Overview")

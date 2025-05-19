@@ -10,4 +10,4 @@ You can use the `?rc` command to obtain the control items to control ReplayCraft
 # Skins
 You can use the `?skin` command to set your preferred custom skin and model size for the playback entity. This is in place so that all players can set their skin even when ReplayCraft is being controlled by another player.
 
-!> NOTE: Please read the resource pack guide on how to add your custom skins to ReplayCraft.
+!> NOTE: Please read the resource pack guide on how to add your custom skins to ReplayCraft. Or please watch the [in-depth tutorial on ReplayCraft.](https://www.youtube.com/watch?v=YL8mn33LC84) 
