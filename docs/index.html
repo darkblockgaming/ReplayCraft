@@ -60,11 +60,18 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: 'Custom Audio Mod',
+      name: 'ReplayCraft',
       repo: 'https://github.com/darkblockgaming/ReplayCraft/',
 	  logo: './Media/logo.webp',
       loadSidebar: true,
 	  auto2top: true,
+	    // Chart render on route change
+    hooks: {
+      doneEach: function () {
+        window.renderEasingCharts?.();
+      }
+    },
+	
       coverpage: "cover.md",
 		  onlyCover: true,
 		  subMaxLevel: 2,
@@ -82,5 +89,8 @@
   <script src="./Scripts/docsify-sidebar-collapse.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4.13.1/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="charts/easingCharts.js"></script>
+  
 </body>
 </html>

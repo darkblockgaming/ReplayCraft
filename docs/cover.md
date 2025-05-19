@@ -3,3 +3,4 @@
 [GitHub](https://github.com/darkblockgaming/ReplayCraft)
 [Documentation](landing.md)
 [Resource Pack Editor](/SkinRPEditor/editor.md)
+[Download](https://darkblockgaming.github.io/addons/replaycraft/)
