@@ -60,6 +60,56 @@ starts by going backward a bit, then moves forward past the target, and finally 
   <iframe src="charts/inoutback.html" style="width: 100%; height: 100%; border: none;"></iframe>
 </div>
 
+## InOutBounce 
+starts by bouncing upward gently, quickly gaining momentum. It then mirrors that bounce in reverse on the second half — like dropping a ball that bounces down and then back up in reverse. It's great for effects that need a bouncy start and end.
 
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/inoutbounce.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+## InOutCirc
+Starts slowly, speeds up in the middle, then slows down again toward the end. It follows the shape of a full circle arc, giving the motion a smooth and natural “ease-in and ease-out” effect — like swinging forward and backward along a circular path.
+
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/inoutcirc.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+## InOutCubic
+Starts slowly, accelerates in the middle, then slows down again at the end. It creates a smooth, symmetrical motion that's great for transitions where you want a gentle start and finish.
+
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/inoutcubic.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+## InOutElastic
+Starts and ends with a springy bounce, accelerating and overshooting in both directions. It’s like stretching a rubber band and letting it go—it wobbles before settling.
+
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/inoutelastic.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+## InOutExpo
+This easing function starts very slow, then accelerates rapidly around the middle, and finally slows down again toward the end. It’s useful when you want a dramatic, fast movement in the middle of an animation, but smooth transitions at the start and end.
+
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/inoutexpo.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+
+
+
+
+
+
+
+<!---
+Further Out based easing types to be added.
+-->
+## OutBounce 
+mimics the motion of a ball dropping and bouncing several times before settling. It starts fast and finishes with smaller, slower bounces, giving a playful and dynamic ending to an animation.
+
+<div style="width: 800px; height: 400px; border: none;">
+  <iframe src="charts/outbounce.html" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
 
 

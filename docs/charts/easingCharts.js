@@ -51,6 +51,48 @@ function InOutBack(t, s = 1.70158) {
   }
 }
 
+function InOutBounce(t) {
+  return t < 0.5
+    ? (1 - bounceOut(1 - 2 * t)) / 2
+    : (1 + bounceOut(2 * t - 1)) / 2;
+}
+
+function InOutCirc(t) {
+  return t < 0.5
+    ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
+    : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2;
+}
+
+
+
+      function bounceOut(t) {
+        const n1 = 7.5625, d1 = 2.75;
+        if (t < 1 / d1) return n1 * t * t;
+        if (t < 2 / d1) return n1 * (t -= 1.5 / d1) * t + 0.75;
+        if (t < 2.5 / d1) return n1 * (t -= 2.25 / d1) * t + 0.9375;
+        return n1 * (t -= 2.625 / d1) * t + 0.984375;
+      }
+
+  function InOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  }
+  
+  function InOutElastic(t) {
+  return t === 0 ? 0 : t === 1 ? 1 :
+          t < 0.5
+            ? -(Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) / 2
+            : Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5)) / 2 + 1
+  }
+  
+function InOutExpo(t) {
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  return t < 0.5
+    ? Math.pow(2, 20 * t - 10) / 2
+    : (2 - Math.pow(2, -20 * t + 10)) / 2;
+}
+
+
 
   function buildChart(canvasId, label, data, color, yMin = -1, yMax = 1) {
   const ctx = document.getElementById(canvasId);
@@ -99,7 +141,7 @@ function InOutBack(t, s = 1.70158) {
   };
 
   window.renderLinearChart = function () {
-    buildChart("linearChart", "Linear", t, "gray", 0, 1);
+    buildChart("linearChart", "Linear", t, "White", 0, 1);
   };
 
   window.renderInBounceChart = function () {
@@ -121,4 +163,23 @@ function InOutBack(t, s = 1.70158) {
   window.renderInOutBackChart = function () {
     buildChart("inOutBackChart", "InOutBack", t.map(InOutBack), "green", -4, 8.6);
   };
+  window.renderInOutBounceChart = function () {
+    buildChart("inOutBounceChart", "InOutBounce", t.map(InOutBounce), "pink", 0, 1);
+  };
+  window.renderBounceOutChart = function () {
+    buildChart("bounceOutChart", "BounceOut", t.map(bounceOut), "gray", 0, 1);
+  };
+  window.renderInOutCircChart = function () {
+    buildChart("inOutCircChart", "InOutCirc", t.map(InOutCirc), "teal", 0, 1);
+  };
+  window.renderInOutCubicChart = function () {
+    buildChart("inOutCubicChart", "InOutCubic", t.map(InOutCubic), "purple", 0, 1);
+  };
+  window.renderInOutElasticChart = function () {
+    buildChart("inOutElasticChart", "InOutElastic", t.map(InOutElastic), "blue", -0.2, 1.2);
+  };
+  window.renderInOutExpoChart = function () {
+    buildChart("inOutExpoChart", "InOutExpo", t.map(InOutExpo), "yellow", 0, 1);
+  };
+
 })();
