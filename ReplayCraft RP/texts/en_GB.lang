@@ -161,3 +161,10 @@ replaycraftsetbuildname.error.message=§f§4[ReplayCraft]§f You must provide a 
 replaycraftdeletebuild.title=Please choose a replay to delete.
 
 replaycraft.ui.error.message=§f§4[ReplayCraft]§f You did not select an option or closed the UI menu!.
+replaycraft.TimelinePlaybackMenu.title=Timeline / Playback
+replaycraft.ui.back.button=Back
+replaycraft.saveloadmenue.title=Save / Load
+replaycraft.recodingcontrolsmenu.title=Recording Controls
+replaycraft.timelineticks.button=Timeline (Ticks)
+replaycraft.timelineseconds.button=Timeline (Seconds)
+replaycraft.cameramainmenu.body=Select a category below to continue:
