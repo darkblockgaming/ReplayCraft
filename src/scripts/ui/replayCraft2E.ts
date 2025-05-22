@@ -77,7 +77,7 @@ function showTimelineMenu(player: Player) {
         .button("dbg.rc1.button.add.camera.point","textures/ui/video-camera.png")       // 2
         .button("replaycraft.timelineticks.button","textures/ui/timeline.png")// 3
         .button("replaycraft.timelineseconds.button","textures/ui/timeline.png") // 4
-        .button("replaycraft.ui.back.button");                  // 5
+        .button("replaycraft.ui.back.button","textures/ui/back.png");                  // 5
 
     form.show(player).then(result => {
         if (result.canceled || result.selection === 5) return ReplayCraft2E(player);
@@ -98,10 +98,10 @@ function showTimelineMenu(player: Player) {
 function showRecordingMenu(player: Player) {
     const form = new ui.ActionFormData()
         .title("replaycraft.recodingcontrolsmenu.title")
-        .button("dbg.rc1.button.cancel.recording")        // 0
-        .button("dbg.rc1.button.reset.camera.setup")     // 1
-        .button("dbg.rc1.button.proceed.further")         // 2
-        .button("replaycraft.ui.back.button");                  // 3
+        .button("dbg.rc1.button.cancel.recording","textures/ui/cancel.png")        // 0
+        .button("dbg.rc1.button.reset.camera.setup","textures/ui/restart.png")     // 1
+        .button("dbg.rc1.button.proceed.further","textures/ui/go.png")         // 2
+       .button("replaycraft.ui.back.button","textures/ui/back.png");                 // 3
 
     form.show(player).then(result => {
         if (result.canceled || result.selection === 3) return ReplayCraft2E(player);
@@ -117,7 +117,7 @@ function showAdvancedMenu(player: Player) {
         .title("replaycraft.saveloadmenue.title")
         .button("dbg.rc1.button.save.current.camera.points")   // 0
         .button("dbg.rc1.button.load.existing.camera.points")  // 1
-        .button("replaycraft.ui.back.button");                        // 2
+        .button("replaycraft.ui.back.button","textures/ui/back.png");                      // 2
 
     form.show(player).then(result => {
         if (result.canceled || result.selection === 2) return ReplayCraft2E(player);
