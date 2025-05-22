@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.2§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.4§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
 dbg.rc1.title.replaycraft.settings=§bReplayCraft Settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§f§4[ReplayCraft] §fRepla
 dbg.rc1.mes.replay.preview.is.already.off=§f§4[ReplayCraft] §f§cReplay Preview Is Already Off
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§f§4[ReplayCraft] §f§cPlease Wait For Replay Preview To Be Completed or Click Stop Preview
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§f§4[ReplayCraft] §f§gPlease Do The Cinematic Camera Setup
+dbg.rc1.mes.cam.setup=§f§4[ReplayCraft] §f§gPlease use the replay stick to open the camera setup menu.
 dbg.rc1.mes.replay.stopped=§f§4[ReplayCraft] §fReplay Stopped
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§f§4[ReplayCraft] §f§cPlease Wait For Replay To Be Completed or Click Stop Replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§f§4[ReplayCraft] §f§cAt least two camera points are recommended

@@ -19,7 +19,7 @@ export function doCamSetup(player: Player) {
     if (SharedVariables.textPrompt) {
         player.sendMessage({
             "rawtext": [{
-                "translate": "dbg.rc1.mes.please.do.the.cinematic.camera.setup"
+                "translate": "dbg.rc1.mes.cam.setup"
             }]
         });
     }
