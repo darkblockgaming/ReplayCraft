@@ -6,7 +6,7 @@ import { doSave } from "../functions/replayControls/doSave";
 import { doResume } from "../functions/replayControls/doResume";
 export function ReplayCraft2C(player: Player) { //if SharedVariables.replayStateMachine.state = recPaused
     const replayForm = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
+        .title("replaycraft.recordingmenu.title")
         .button("dbg.rc1.button.save.recording") //0
         .button("dbg.rc1.button.resume.recording") //1
         .button("dbg.rc1.button.cancel.recording") //2

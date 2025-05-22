@@ -50,11 +50,11 @@ export function ReplayCraft2E(player: Player) {
 
     // New, categorized main menu
     const form = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
+        .title("replaycraft.cameramainmenu.title")
         .body("replaycraft.cameramainmenu.body")
-        .button("replaycraft.TimelinePlaybackMenu.title", "textures/ui/timeline.png") // 0
-        .button("replaycraft.recodingcontrolsmenu.title","textures/ui/recording.png")  // 1
-        .button("replaycraft.saveloadmenue.title","textures/ui/save.png");  // 2
+        .button("replaycraft.timelineplayback.button", "textures/ui/timeline.png") // 0
+        .button("replaycraft.recordingcontrols.button","textures/ui/recording.png")  // 1
+        .button("replaycraft.savaload.button","textures/ui/save.png");  // 2
 
     form.show(player).then(result => {
         if (result.canceled) return;

@@ -9,14 +9,14 @@ import { doCamSetupGoBack } from "../functions/camera/doCamSetupGoBack";
 import { loadBuildName } from "./load-buildname";
 export function ReplayCraft2F(player: Player) { //if SharedVariables.replayStateMachine.state = recSaved
     const replayForm = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
+        .title("replaycraft.replaymenu.title")
         .button("dbg.rc1.button.start.replay") //0
         .button("dbg.rc1.button.stop.replay") //1
         .button("dbg.rc1.button.settings") //2
         .button("dbg.rc1.button.goback.camsetup") //3
         .button("dbg.rc1.button.load.structure.or.reset") //4
         .button("dbg.rc1.button.load.session") //5
-        .body("dbg.rc1.body.2f");
+        .body("replaycraft.finalize.record.body");
     replayForm.show(player).then(result => {
         if (result.canceled) return;
         const actions = {
