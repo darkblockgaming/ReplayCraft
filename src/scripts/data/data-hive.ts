@@ -288,4 +288,14 @@ public rebuildPointers(): void {
     this._setPointers(rebuiltPointers);
     console.log(`[${this.name}] Rebuilt pointers. Total entries: ${rebuiltPointers.length}`);
 }
+
+// Add this method to get entry keys (user-visible keys)
+public getEntryKeys(): string[] {
+    return this._getPointers().map(ptr => ptr.split("/").pop()!);
+}
+
+// Alias for `get()`, clearer for data viewing
+public getData<T = any>(key: string): T | undefined {
+    return this.get<T>(key);
+}
 }
