@@ -1,5 +1,10 @@
 import { Player } from "@minecraft/server";
-
+/**
+     * Removes ReplayCraft Entities.
+     * @param {player} player - The player who initiated the function.
+     * @param {replayEntity} replayEntity - A boolean indicating whether to remove replay entities.
+	 * if true, removes only replay entities; if false, removes all replay entities and camera positions entities.
+     */
 export function removeEntities(player: Player, replayEntity:boolean,) {
 	const dimension = player.dimension;
 	let types: string[]

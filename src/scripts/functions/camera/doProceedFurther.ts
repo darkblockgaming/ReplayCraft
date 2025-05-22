@@ -2,6 +2,7 @@
 import { Player } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 import { clearStructure } from "../clearStructure";
+import { removeEntities } from "../removeEntities";
 
 export function doProceedFurther(player: Player) {
     if (SharedVariables.replayCamPos.length <= 1) {
@@ -21,16 +22,5 @@ export function doProceedFurther(player: Player) {
     SharedVariables.multiPlayers.forEach((player) => {
         clearStructure(player);
     });
-    const entities = player.dimension.getEntities({
-        type: "dbg:replayentity"
-    });
-    entities.forEach(entity => {
-        entity.remove();
-    });
-    const entities2 = player.dimension.getEntities({
-        type: "dbg:rccampos"
-    });
-    entities2.forEach(entity2 => {
-        entity2.remove();
-    });
+   removeEntities(player, false);
 }
