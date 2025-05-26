@@ -37,7 +37,7 @@ export function summonReplayEntity(player: Player) {
 
         const entityType = modelID === 0
             ? "dbg:replayentity_steve" as VanillaEntityIdentifier
-            : "dbg:replayentity_alexe" as VanillaEntityIdentifier;
+            : "dbg:replayentity_alex" as VanillaEntityIdentifier;
 
         customEntity = player.dimension.spawnEntity(entityType, spawnPos);
 
