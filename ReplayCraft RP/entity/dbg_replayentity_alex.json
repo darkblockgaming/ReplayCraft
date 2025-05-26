@@ -74,7 +74,7 @@
         "cus64": "textures/entity/custom_skins/64"
       },
       "geometry": {
-        "default": "geometry.replayentity_alex"
+        "default": "geometry.humanoid.customSlim"
       },
       "scripts": {
         "scale": "0.9375",

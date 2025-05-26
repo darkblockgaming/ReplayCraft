@@ -76,7 +76,7 @@
         "cus64": "textures/entity/custom_skins/64"
       },
       "geometry": {
-        "default": "geometry.replayentity_steve",
+        "default": "geometry.humanoid.custom",
         "cape": "geometry.cape"
       },
       "scripts": {
