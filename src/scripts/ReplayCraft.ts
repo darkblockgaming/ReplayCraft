@@ -620,6 +620,7 @@ function cineResetSett(player: Player) {
 
 function removeLastFrame(player: Player) {
 	const pData = cinePDataMap.get(player.id);
+    const rData = cineRDataMap.get(player.id);
 	//const rData = cineRDataMap.get(player.id);
 	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
@@ -641,8 +642,8 @@ function removeLastFrame(player: Player) {
 		});
 		return;
 	}
-	//const removedPos = pData.cineCamPos.pop();
-	//const removedRot = rData.cineCamRot.pop();
+	pData.cineCamPos = [];
+    rData.cineCamRot = [];
 	saveFrameDataRC(player);
 	player.sendMessage({
 		"rawtext": [{
