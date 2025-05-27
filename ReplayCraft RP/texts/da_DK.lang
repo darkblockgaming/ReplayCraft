@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.2§R
+dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.1.4§r
 dbg.rc1.title.replay.settings=Replay -indstillinger
 dbg.rc1.title.preview.settings=Preview -indstillinger
 dbg.rc1.title.replaycraft.settings=§BrePlayCraft -indstillinger§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §FrePl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [Replaycraft] §F§CrePlay Preview er allerede slukket
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §F§CPease Vent på, at forhåndsvisning af Replay er afsluttet, eller klik på Stop -forhåndsvisning
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [Replaycraft] §F§Glease Gør det filmatiske kameraopsætning
+dbg.rc1.mes.cam.setup=§F§4 [Replaycraft] §F§Glease Brug REPLAY -stick til at åbne menuen Kameraopsætning.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §frePlay stoppet
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [Replaycraft] §F§CPease Vent på, at Replay er afsluttet, eller klik på Stop Replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §F§Cat mindst to kamerapunkter anbefales
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [Replaycraft] §f Du skal give et g
 replaycraftdeletebuild.title=Vælg en gentagelse for at slette.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §f Du valgte ikke en mulighed eller lukkede UI -menuen!.
-
+replaycraft.TimelinePlaybackMenu.title=§9Replaycraft: Tidslinje / afspilning
+replaycraft.ui.back.button=Tilbage
+replaycraft.saveloadmenue.title=§9Replaycraft: Gem / indlæs
+replaycraft.recodingcontrolsmenu.title=§9Replaycraft: Optagelseskontrol
+replaycraft.timelineticks.button=Tidslinje (flåter)
+replaycraft.timelineseconds.button=Tidslinje (sekunder)
+replaycraft.cameramainmenu.body=Vælg en kategori nedenfor for at fortsætte:
+replaycraft.cameramainmenu.title=§9Replaycraft: Camera Main Menu
+replaycraft.savaload.button=Gem / belastning
+replaycraft.timelineplayback.button=Tidslinje / afspilning
+replaycraft.recordingcontrols.button=Optagelse af kontroller
+replaycraft.recordingmenu.title=§9Replaycraft: Optagelsesmenu
+replaycraft.previewmenu.title=§9Replaycraft: Preview -menu
+replaycraft.replaymenu.title=§9Replaycraft: Færdig og registrer og registrer
+replaycraft.Finalize.Record.body=Vælg indstillinger nedenfor for at afslutte din gentagelse og begynde at optage din skærm.

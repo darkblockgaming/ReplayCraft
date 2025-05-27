@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY -meny] v2.1.2§R
+dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY MENU] v2.1.4§R
 dbg.rc1.title.replay.settings=Spela in inställningar
 dbg.rc1.title.preview.settings=Förhandsgranskningsinställningar
 dbg.rc1.title.replaycraft.settings=§BREPLAYCROFTION SETOMS§R
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [REPLAYCRAFT] §FREPL
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [REPLAYCRAFT] §F§CREPLAY PREVIEW är redan av
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [REPLAYCRAFT] §F§Cplease Wait på att förhandsvisning av replay ska slutföras eller klicka på Stop Preview
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [REPLAYCRAFT] §F§gPlease gör den filmiska kamerainställningen
+dbg.rc1.mes.cam.setup=§F§4 [REPLAYCRAFT] §F§gPlease Använd replay -pinnen för att öppna kamerainställningsmenyn.
 dbg.rc1.mes.replay.stopped=§F§4 [REPLAYCRAFT] §FREPLAY STOPPED
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [REPLAYCRAFT] §F§CPLEASE WAIT FÖR REPLAY AV STOPLED ELLER KLICKA STOPPREPLAY
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [REPLAYCRAFT] §F§CAT minst två kamerapunkter rekommenderas
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [REPLAYCRAFT] §F Du måste ange et
 replaycraftdeletebuild.title=Välj en replay för att ta bort.
 
 replaycraft.ui.error.message=§F§4 [REPLAYCRAFT] §F Du valde inte ett alternativ eller stängde UI -menyn!.
-
+replaycraft.TimelinePlaybackMenu.title=§9Replaycraft: Tidslinje / uppspelning
+replaycraft.ui.back.button=Tillbaka
+replaycraft.saveloadmenue.title=§9Replaycraft: spara / last
+replaycraft.recodingcontrolsmenu.title=§9ReplayCraft: Inspelningskontroller
+replaycraft.timelineticks.button=Tidslinje (fästingar)
+replaycraft.timelineseconds.button=Tidslinje (sekunder)
+replaycraft.cameramainmenu.body=Välj en kategori nedan för att fortsätta:
+replaycraft.cameramainmenu.title=§9Replaycraft: Camera Main Menu
+replaycraft.savaload.button=Spara / ladda
+replaycraft.timelineplayback.button=Tidslinje / uppspelning
+replaycraft.recordingcontrols.button=Inspelningskontroller
+replaycraft.recordingmenu.title=§9Replaycraft: Inspelningsmeny
+replaycraft.previewmenu.title=§9ReplayCraft: Förhandsgranskningsmeny
+replaycraft.replaymenu.title=§9ReplayCraft: Slutför & Record
+replaycraft.Finalize.Record.body=Välj alternativ nedan för att slutföra din uppspelning och börja spela in skärmen.

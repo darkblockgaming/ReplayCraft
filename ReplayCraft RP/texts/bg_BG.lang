@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplaCraft [Меню за преиграване] v2.1.2§r
+dbg.rc1.title.replay.menu=§9ReplaCraft [Меню за преиграване] v2.1.4§r
 dbg.rc1.title.replay.settings=Настройки за повторение
 dbg.rc1.title.preview.settings=Настройки за визуализация
 dbg.rc1.title.replaycraft.settings=§BREPLACERCEARCE SETUNDINGS§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [replaycraft] §frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [replaycraft] §f§creplay preview вече е изключен
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [replaycraft] §f§clease изчакайте визуализацията за преиграване да бъде завършена или щракнете върху Преглед на стоп
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [replaycraft] §f§please направете настройката на кинематографичната камера
+dbg.rc1.mes.cam.setup=§F§4 [replaycraft] §f§please Използвайте пръчката за повторение, за да отворите менюто за настройка на камерата.
 dbg.rc1.mes.replay.stopped=§F§4 [replaycraft] §freplay спря
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [replaycraft] §f§clease изчакайте повторното преиграване или щракнете върху STOP Replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [replaycraft] §f§cat се препоръчват най -малко две точки на камерата
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [replaycraft] §f Трябва да
 replaycraftdeletebuild.title=Моля, изберете повторение, за да изтриете.
 
 replaycraft.ui.error.message=§F§4 [replaycraft] §f Не сте избрали опция или затворих менюто на потребителския интерфейс!.
-
+replaycraft.TimelinePlaybackMenu.title=§9ReplayCraft: Времева линия / възпроизвеждане
+replaycraft.ui.back.button=Назад
+replaycraft.saveloadmenue.title=§9ReplaCraft: Запазване / натоварване
+replaycraft.recodingcontrolsmenu.title=§9RepLajectre: Контроли за запис
+replaycraft.timelineticks.button=Времева линия (кърлежи)
+replaycraft.timelineseconds.button=Времева линия (секунди)
+replaycraft.cameramainmenu.body=Изберете категория по -долу, за да продължите:
+replaycraft.cameramainmenu.title=§9ReplaCraft: Главно меню на камерата
+replaycraft.savaload.button=Запазване / натоварване
+replaycraft.timelineplayback.button=Времева линия / възпроизвеждане
+replaycraft.recordingcontrols.button=Контроли за запис
+replaycraft.recordingmenu.title=§9RepLaylcraft: Меню за запис
+replaycraft.previewmenu.title=§9RepLajectre: Меню за визуализация
+replaycraft.replaymenu.title=§9ReplaCraft: Финализирайте и записа
+replaycraft.Finalize.Record.body=Изберете Опции по -долу, за да финализирате повторението си и започнете да записвате екрана си.

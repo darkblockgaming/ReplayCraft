@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.1.2§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.1.4§r
 dbg.rc1.title.replay.settings=Visszajátszási beállítások
 dbg.rc1.title.preview.settings=Előnézeti beállítások
 dbg.rc1.title.replaycraft.settings=§BREPLAYCraft Setsctings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §Frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [REPLAYCraft] §F§CREPlay Preview már ki van kapcsolva
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [REPLAYCraft] §F§Cplease Várja meg a lejátszás előnézetének befejezését, vagy kattintson a Stop Preview elemre
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [REPLAYCraft] §f§gPlease a filmművészeti kamera beállítását
+dbg.rc1.mes.cam.setup=§F§4 [REPLAYCraft] §F§GPLEASE A REPLAY bot segítségével nyissa meg a Kamera beállítási menüjét.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §Freplay leállt
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [REPLAYCraft] §F§Cplease Várja meg a visszajátszás befejezését, vagy kattintson a Stop Replay elemre
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §f§cat Legalább két kamerapont ajánlott
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [REPLAYCraft] §F érvényes nevet 
 replaycraftdeletebuild.title=Kérjük, válasszon egy törlési visszajátszást.
 
 replaycraft.ui.error.message=§F§4 [REPLAYCraft] §F Nem választotta ki az opciót, és nem zárta le a felhasználói felület menüt!.
-
+replaycraft.TimelinePlaybackMenu.title=§9ReplayCraft: Idővonal / lejátszás
+replaycraft.ui.back.button=Vissza
+replaycraft.saveloadmenue.title=§9ReplayCraft: Mentés / Betöltés
+replaycraft.recodingcontrolsmenu.title=§9ReplayCraft: A vezérlők rögzítése
+replaycraft.timelineticks.button=Idővonal (kullancsok)
+replaycraft.timelineseconds.button=Idővonal (másodperc)
+replaycraft.cameramainmenu.body=Válassza ki az alábbi kategóriát a folytatáshoz:
+replaycraft.cameramainmenu.title=§9ReplayCraft: Kamera főmenü
+replaycraft.savaload.button=Mentés / Betöltés
+replaycraft.timelineplayback.button=Idővonal / lejátszás
+replaycraft.recordingcontrols.button=A vezérlők felvétele
+replaycraft.recordingmenu.title=§9ReplayCraft: Felvételi menü
+replaycraft.previewmenu.title=§9ReplayCraft: Előnézet menü
+replaycraft.replaymenu.title=§9ReplayCraft: Finalize & Record
+replaycraft.Finalize.Record.body=Válassza ki az alábbi lehetőségeket az alábbiakba a visszajátszás véglegesítéséhez, és kezdje el a képernyő felvételét.

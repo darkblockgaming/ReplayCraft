@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.1.4§r
 dbg.rc1.title.replay.settings=Ρυθμίσεις επανάληψης
 dbg.rc1.title.preview.settings=Ρυθμίσεις προεπισκόπησης
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Ρυθμίσεις
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [ReplayCraft] § Η �
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [ReplayCraft] §f§creplay Η προεπισκόπηση είναι ήδη απενεργοποιημένη
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [ReplayCraft] §f§Cplease Wait για την ολοκλήρωση της προεπισκόπησης επανάληψης ή κάντε κλικ στην προεπισκόπηση STOP
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [ReplayCraft] §f§gplease κάνει την κινηματογραφική ρύθμιση κάμερας
+dbg.rc1.mes.cam.setup=§F§4 [ReplayCraft] §f§gplease Χρησιμοποιήστε το replay stick για να ανοίξετε το μενού ρύθμισης της κάμερας.
 dbg.rc1.mes.replay.stopped=§F§4 [replaycraft] § Freplay σταμάτησε
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [ReplayCraft] §f§cplease Περιμένετε την ολοκλήρωση της επανάληψης ή κάντε κλικ στο κουμπί STOP Replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [ReplayCraft] §f§cat Εξαιρετικά δύο σημεία κάμερας συνιστώνται
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [ReplayCraft] §f Πρέπει να
 replaycraftdeletebuild.title=Επιλέξτε μια επανάληψη για διαγραφή.
 
 replaycraft.ui.error.message=§F§4 [ReplayCraft] §f Δεν επιλέξατε μια επιλογή ή κλείστε το μενού UI!.
-
+replaycraft.TimelinePlaybackMenu.title=§9replaycraft: χρονοδιάγραμμα / αναπαραγωγή
+replaycraft.ui.back.button=Πίσω
+replaycraft.saveloadmenue.title=§9replaycraft: Αποθήκευση / φόρτωση
+replaycraft.recodingcontrolsmenu.title=§9replaycraft: Ελέγχοι εγγραφής
+replaycraft.timelineticks.button=Χρονοδιάγραμμα (τσιμπούρια)
+replaycraft.timelineseconds.button=Χρονοδιάγραμμα (δευτερόλεπτα)
+replaycraft.cameramainmenu.body=Επιλέξτε μια παρακάτω κατηγορία για να συνεχίσετε:
+replaycraft.cameramainmenu.title=§9replaycraft: Κύριο μενού κάμερας
+replaycraft.savaload.button=Αποθήκευση / φόρτωση
+replaycraft.timelineplayback.button=Χρονοδιάγραμμα / αναπαραγωγή
+replaycraft.recordingcontrols.button=Έλεγχοι εγγραφής
+replaycraft.recordingmenu.title=§9replaycraft: Μενού εγγραφής
+replaycraft.previewmenu.title=§9replaycraft: μενού προεπισκόπησης
+replaycraft.replaymenu.title=§9replaycraft: Ολοκληρώστε και ρεκόρ
+replaycraft.Finalize.Record.body=Επιλέξτε παρακάτω επιλογές για να ολοκληρώσετε την επανάληψη σας και να ξεκινήσετε την εγγραφή της οθόνης σας.

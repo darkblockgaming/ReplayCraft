@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.1.4§r
 dbg.rc1.title.replay.settings=재생 설정
 dbg.rc1.title.preview.settings=미리보기 설정
 dbg.rc1.title.replaycraft.settings=§breplaycraft settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§f§4 [Replaycraft] §frepl
 dbg.rc1.mes.replay.preview.is.already.off=§f§4 [Replaycraft] §f§Creplay 미리보기가 이미 꺼져 있습니다
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§f§4 [Replaycraft] §f§cplease Replay 미리보기가 완료 될 때까지 기다리거나 미리보기 중지를 클릭하십시오.
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§f§4 [Replaycraft] §f§gplease Cinematic 카메라 설정을 수행합니다
+dbg.rc1.mes.cam.setup=§f§4 [Replaycraft] §f§gplease Replay 스틱을 사용하여 카메라 설정 메뉴를 엽니 다.
 dbg.rc1.mes.replay.stopped=§f§4 [Replaycraft] §freplay가 중지되었습니다
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§f§4 [Replaycraft] §f§cplease replay가 완료 될 때까지 기다리거나 재생 중지를 클릭하십시오.
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§f§4 [ReplayCraft] §f§Cat 최소 2 개의 카메라 포인트가 권장됩니다
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§f§4 [Replaycraft] §f 새로운 재생 
 replaycraftdeletebuild.title=삭제하려면 리플레이를 선택하십시오.
 
 replaycraft.ui.error.message=§f§4 [Replaycraft] §f 옵션을 선택하지 않았거나 UI 메뉴를 닫았습니다!.
-
+replaycraft.TimelinePlaybackMenu.title=§9replaycraft : 타임 라인 / 재생
+replaycraft.ui.back.button=뒤쪽에
+replaycraft.saveloadmenue.title=§9replaycraft : 저장 /로드
+replaycraft.recodingcontrolsmenu.title=§9replaycraft : 녹음 제어
+replaycraft.timelineticks.button=타임 라인 (진드기)
+replaycraft.timelineseconds.button=타임 라인 (초)
+replaycraft.cameramainmenu.body=계속하려면 아래 카테고리를 선택하십시오.
+replaycraft.cameramainmenu.title=§9replaycraft : 카메라 메인 메뉴
+replaycraft.savaload.button=저장 /로드
+replaycraft.timelineplayback.button=타임 라인 / 재생
+replaycraft.recordingcontrols.button=녹음 컨트롤
+replaycraft.recordingmenu.title=§9replaycraft : 녹음 메뉴
+replaycraft.previewmenu.title=§9replaycraft : 미리보기 메뉴
+replaycraft.replaymenu.title=§9replaycraft : 마무리 및 기록
+replaycraft.Finalize.Record.body=아래 옵션을 선택하여 재생을 마무리하고 화면 기록을 시작하십시오.

@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu powtórki] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [Menu powtórki] v2.1.4§r
 dbg.rc1.title.replay.settings=Ustawienia powtórki
 dbg.rc1.title.preview.settings=Ustawienia podglądu
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft Ustawienia §r
@@ -67,7 +67,7 @@ dbg.rc1.button.delete.progress=Usuń postęp
 
 dbg.rc1.toggle.sound.cues=Dźwiękowe wskazówki
 dbg.rc1.toggle.text.prompts=Podpowiedzi tekstowe
-dbg.rc1.dropdown.select.block.placing.sound=Ze względu na liczne sugestie i żądania dodawania dźwięków w ramach bloków podczas powtórki, zaimplementowałem tę funkcję. Możesz teraz go włączyć, a podczas powtórki lub podglądu bloki będą odpowiednio wytworzyć dźwięki. \ Nawno ta funkcja nie jest automatyczna, a wszystkie bloki używają tego samego źródła dźwięku wybranego tutaj. Jednak dołożę wszelkich starań, aby wdrożyć automatyczne dźwięki specyficzne dla bloku w przyszłych wersjach.
+dbg.rc1.dropdown.select.block.placing.sound=Ze względu na liczne sugestie i żądania dodawania dźwięków w ramach bloków podczas powtórki, zaimplementowałem tę funkcję. Możesz teraz go włączyć, a podczas powtórki lub podglądu bloki będą odpowiednio wytworzyć dźwięki. \ Nawno ta funkcja nie jest automatyczna, a wszystkie bloki będą używać tego samego źródła dźwięku wybranego tutaj. Jednak dołożę wszelkich starań, aby wdrożyć automatyczne dźwięki specyficzne dla bloku w przyszłych wersjach.
 dbg.rc1.toggle.block.placing.sound=Blok umieszcza dźwięk
 dbg.rc1.toggle.multiplayer.replay=Powtórka dla wielu graczy
 dbg.rc1.toggle.hide.hud.on.replay=Ukryć HUD podczas powtórki? 
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] § Frep
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [ReplayCraft] §f§ Creplay Podgląd jest już wyłączony
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [ReplayCraft] §f§ Culase Poczekaj na zakończenie podglądu powtórki lub kliknij Przedstaw zapoznanie się z podglądem
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [ReplayCraft] §f§gplease wykonaj konfigurację kamery filmowej
+dbg.rc1.mes.cam.setup=§F§4 [ReplayCraft] §f§gplease Użyj drążka powtórki, aby otworzyć menu konfiguracji aparatu.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §Freplay zatrzymano
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [ReplayCraft] §f§ CPLEASE WZROTUJE NA REPLACJĘ lub kliknij
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §f§cat Zalecane są najmniej dwa punkty kamery
@@ -129,7 +130,7 @@ dbg.rc2.button.remove.all.frames=Usuń wszystkie ramki
 
 dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§F§4 [Replaycraft] §f§ ccię nie dodawać ramek, gdy kamera jest w ruchu §r
 dbg.rc2.mes.camera.is.already.moving=§F§4 [Replaycraft] §f§camera już się porusza §R
-dbg.rc2.mes.preview.camera.is.already.moving=§F§4 [ReplayCraft] §f§CPREVIEW Kamera już się porusza §r
+dbg.rc2.mes.preview.camera.is.already.moving=§F§4 [ReplayCraft] §f§CPREVIEW Kamera już się porusza §R
 dbg.rc2.mes.camera.movement.complete=§F§4 [Replaycraft] §f§Acamera Ruch Wypełnij §r
 dbg.rc2.mes.no.active.camera.movement.to.stop=§F§4 [Replaycraft] §f§cno Active Camera Ruch w celu zatrzymania §r
 dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§F§4 [Replaycraft] §f§ Conccin Ustawienia, gdy kamera jest w wniosku §r
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [ReplayCraft] §F musisz podać pra
 replaycraftdeletebuild.title=Wybierz powtórkę, aby usunąć.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §F nie wybrałeś opcji ani nie zamknęłeś menu interfejsu użytkownika!.
-
+replaycraft.TimelinePlaybackMenu.title=§9 Replaycraft: Oś czasu / odtwarzanie
+replaycraft.ui.back.button=Z powrotem
+replaycraft.saveloadmenue.title=§9 ReplayCraft: Zapisz / ładuj
+replaycraft.recodingcontrolsmenu.title=§9 Replaycraft: Rejestrowanie kontroli
+replaycraft.timelineticks.button=Oś czasu (kleszcze)
+replaycraft.timelineseconds.button=Oś czasu (sekundy)
+replaycraft.cameramainmenu.body=Wybierz kategorię poniżej, aby kontynuować:
+replaycraft.cameramainmenu.title=§9 Replaycraft: Menu główne aparatu
+replaycraft.savaload.button=Zapisz / załaduj
+replaycraft.timelineplayback.button=Oś czasu / odtwarzanie
+replaycraft.recordingcontrols.button=Kontrole rejestrowania
+replaycraft.recordingmenu.title=§9 Replaycraft: Menu nagrywania
+replaycraft.previewmenu.title=§9 Replaycraft: Menu podglądu
+replaycraft.replaymenu.title=§9 Replaycraft: finalizowanie i nagrywanie
+replaycraft.Finalize.Record.body=Wybierz opcje poniżej, aby sfinalizować powtórkę i rozpocząć nagrywanie ekranu.

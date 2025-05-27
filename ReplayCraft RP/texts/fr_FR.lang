@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.1.4§r
 dbg.rc1.title.replay.settings=Paramètres de relecture
 dbg.rc1.title.preview.settings=Paramètres de prévisualisation
 dbg.rc1.title.replaycraft.settings=§BReplayCraft Settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §Frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [Replaycraft] §f§Creplay L'aperçu est déjà désactivé
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §f§cplélez attendre la fin de l'aperçu de la relecture ou cliquez sur Aperçu de l'arrêt
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [Replaycraft] §f§gPlease faire la configuration de la caméra cinématographique
+dbg.rc1.mes.cam.setup=§F§4 [Replaycraft] §f§gPlease Utilisez le bâton de relecture pour ouvrir le menu de configuration de la caméra.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §freplay arrêté
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [Replaycraft] §f§cplélez attendre la relecture à terminer ou cliquez sur Arrêter la relecture
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §f§cat Au moins deux points de caméra sont recommandés
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [Replaycraft] §f Vous devez fourni
 replaycraftdeletebuild.title=Veuillez choisir une rediffusion à supprimer.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §f Vous n'avez pas sélectionné d'option ni fermé le menu d'interface utilisateur!.
-
+replaycraft.TimelinePlaybackMenu.title=§9replaycraft: chronologie / lecture
+replaycraft.ui.back.button=Dos
+replaycraft.saveloadmenue.title=§9replaycraft: Enregistrer / charger
+replaycraft.recodingcontrolsmenu.title=§9replaycraft: commandes d'enregistrement
+replaycraft.timelineticks.button=Chronologie (tiques)
+replaycraft.timelineseconds.button=Chronologie (secondes)
+replaycraft.cameramainmenu.body=Sélectionnez une catégorie ci-dessous pour continuer:
+replaycraft.cameramainmenu.title=§9replaycraft: menu principal de l'appareil photo
+replaycraft.savaload.button=Enregistrer / charger
+replaycraft.timelineplayback.button=Chronologie / lecture
+replaycraft.recordingcontrols.button=Contrôles d'enregistrement
+replaycraft.recordingmenu.title=§9replaycraft: menu d'enregistrement
+replaycraft.previewmenu.title=§9replaycraft: menu d'aperçu
+replaycraft.replaymenu.title=§9replaycraft: finaliser et enregistrer
+replaycraft.Finalize.Record.body=Sélectionnez les options ci-dessous pour finaliser votre rediffusion et commencer à enregistrer votre écran.

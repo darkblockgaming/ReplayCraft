@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Pery Menu] v2.1.2§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Pery Menu] v2.1.4§r
 dbg.rc1.title.replay.settings=Nastavenia opakovania
 dbg.rc1.title.preview.settings=Nastavenia náhľadu
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Nastavenie
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §Frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [Replaycraft] §F§Creplay Ukážka je už vypnutá
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §F§Cplease Počkajte na dokončenie ukážky prehrávania alebo kliknite na tlačidlo Stop Premiew
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [Replaycraft] §F§gplease vykonajte nastavenie filmovej kamery
+dbg.rc1.mes.cam.setup=§F§4 [ReplayCraft] §F§gplease Pomocou prehrávajúcu palicu otvorte ponuku nastavenia fotoaparátu.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §Freplay sa zastavil
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [Replaycraft] §F§cplease Počkajte na dokončenie prehrávania alebo kliknite na tlačidlo Stop Relay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §F§cat sa odporúča najmenej dva body fotoaparátu
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [ReplayCraft] §F musíte uviesť p
 replaycraftdeletebuild.title=Vyberte si opakovanie, ktoré sa chcete odstrániť.
 
 replaycraft.ui.error.message=§F§4 [ReplayCraft] §f Nevolili ste možnosť alebo zatvorili ponuku používateľského rozhrania!.
-
+replaycraft.TimelinePlaybackMenu.title=§9 Replaycraft: Časová os / prehrávanie
+replaycraft.ui.back.button=Chrbát
+replaycraft.saveloadmenue.title=§9Replaycraft: Uložiť / načítať
+replaycraft.recodingcontrolsmenu.title=§9 Replaycraft: Ovládacie prvky zaznamenávania
+replaycraft.timelineticks.button=Časová os (kliešte)
+replaycraft.timelineseconds.button=Časová os (sekundy)
+replaycraft.cameramainmenu.body=Ak chcete pokračovať, vyberte kategóriu nižšie:
+replaycraft.cameramainmenu.title=§9 Replaycraft: Hlavná ponuka fotoaparátu
+replaycraft.savaload.button=Uložiť / načítať
+replaycraft.timelineplayback.button=Časová os / prehrávanie
+replaycraft.recordingcontrols.button=Ovládacie prvky
+replaycraft.recordingmenu.title=§9 Replaycraft: Nahrávanie ponuky
+replaycraft.previewmenu.title=§9Replaycraft: Ukážka ponuky ukážky
+replaycraft.replaymenu.title=§9 Replaycraft: Finalize & Record
+replaycraft.Finalize.Record.body=Vyberte možnosti nižšie, aby ste dokončili svoje prehrávanie a začnite nahrať obrazovku.

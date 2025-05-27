@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.1.2§r
+dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.1.4§r
 dbg.rc1.title.replay.settings=Pengaturan Ulangi
 dbg.rc1.title.preview.settings=Pengaturan Pratinjau
 dbg.rc1.title.replaycraft.settings=§Dreplaycraft Settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] § Prat
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [replaycraft] §f§ pratinjau creplay sudah mati
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §F§ CLEASE Tunggu pratinjau replay selesai atau klik Pratinjau berhenti
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [replaycraft] §f§grease lakukan pengaturan kamera sinematik
+dbg.rc1.mes.cam.setup=§F§4 [Replaycraft] §F§gPlease Gunakan tongkat replay untuk membuka menu pengaturan kamera.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §Feplay berhenti
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [replaycraft] §f§ lease tunggu replay selesai atau klik berhenti replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [replaycraft] §f§cat setidaknya dua titik kamera direkomendasikan
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [Replaycraft] §F Anda harus member
 replaycraftdeletebuild.title=Pilih replay untuk menghapus.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §F Anda tidak memilih opsi atau menutup menu UI!.
-
+replaycraft.TimelinePlaybackMenu.title=§9Replaycraft: Timeline / Playback
+replaycraft.ui.back.button=Kembali
+replaycraft.saveloadmenue.title=§9Replaycraft: Simpan / muat
+replaycraft.recodingcontrolsmenu.title=§9Replaycraft: Kontrol perekaman
+replaycraft.timelineticks.button=Timeline (kutu)
+replaycraft.timelineseconds.button=Garis waktu (detik)
+replaycraft.cameramainmenu.body=Pilih kategori di bawah ini untuk melanjutkan:
+replaycraft.cameramainmenu.title=§9Replaycraft: menu utama kamera
+replaycraft.savaload.button=Simpan / Muat
+replaycraft.timelineplayback.button=Timeline / pemutaran
+replaycraft.recordingcontrols.button=Kontrol perekaman
+replaycraft.recordingmenu.title=§9Replaycraft: menu perekaman
+replaycraft.previewmenu.title=§9Replaycraft: menu pratinjau
+replaycraft.replaymenu.title=§9Replaycraft: Finalisasi & Catat
+replaycraft.Finalize.Record.body=Pilih opsi di bawah ini untuk menyelesaikan replay Anda dan mulai merekam layar Anda.

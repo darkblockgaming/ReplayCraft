@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu opnieuw afspelen] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [menu opnieuw afspelen] v2.1.4§r
 dbg.rc1.title.replay.settings=Replay -instellingen
 dbg.rc1.title.preview.settings=Voorbeeldinstellingen
 dbg.rc1.title.replaycraft.settings=§Breplaycraft -instellingen§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [replaycraft] §frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [replaycraft] §f§creplay preview is al uitgeschakeld
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [replaycraft] §f§Clease Wacht tot Replay Preview is voltooid of klik op Stop Preview
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [replaycraft] §f§gplease doe de filmcamera -instelling
+dbg.rc1.mes.cam.setup=§F§4 [replaycraft] §f§gplease Gebruik de herhalingstick om het camera -instellingenmenu te openen.
 dbg.rc1.mes.replay.stopped=§F§4 [replaycraft] §freplay gestopt
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [replaycraft] §f§Clease Wacht tot de herhaling is voltooid of klik op Stop Replay
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [replaycraft] §f§cat ten minste twee camerapunten worden aanbevolen
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [replaycraft] §f U moet een geldig
 replaycraftdeletebuild.title=Kies een herhaling om te verwijderen.
 
 replaycraft.ui.error.message=§F§4 [replaycraft] §f U hebt geen optie geselecteerd of het UI -menu gesloten!.
-
+replaycraft.TimelinePlaybackMenu.title=§9REPLAYCRAFT: Tijdlijn / afspelen
+replaycraft.ui.back.button=Rug
+replaycraft.saveloadmenue.title=§9replaycraft: opslaan / laden
+replaycraft.recodingcontrolsmenu.title=§9replaycraft: opnamebesturing
+replaycraft.timelineticks.button=Tijdlijn (teken)
+replaycraft.timelineseconds.button=Tijdlijn (seconden)
+replaycraft.cameramainmenu.body=Selecteer een onderstaande categorie om door te gaan:
+replaycraft.cameramainmenu.title=§9replaycraft: camera hoofdmenu
+replaycraft.savaload.button=Opslaan / laden
+replaycraft.timelineplayback.button=Tijdlijn / afspelen
+replaycraft.recordingcontrols.button=Opname -bedieningselementen
+replaycraft.recordingmenu.title=§9replaycraft: opnamemenu
+replaycraft.previewmenu.title=§9replaycraft: preview -menu
+replaycraft.replaymenu.title=§9replaycraft: voltooien en opnemen
+replaycraft.Finalize.Record.body=Selecteer Opties hieronder om uw herhaling af te ronden en begin met het opnemen van uw scherm.

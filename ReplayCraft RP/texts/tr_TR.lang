@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.1.2§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.1.4§r
 dbg.rc1.title.replay.settings=Tekrar Ayarları Tekrar
 dbg.rc1.title.preview.settings=Önizleme Ayarları
 dbg.rc1.title.replaycraft.settings=§BREPlayCraft Settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §FRePl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [Replaycraft] §F§CReplay Önizlemesi zaten kapalı
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §F§CLEase tekrar önizlemesinin tamamlanmasını bekleyin veya önizlemeyi durdurun
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [Replaycraft] §f§glease sinematik kamera kurulumunu yapın
+dbg.rc1.mes.cam.setup=§F§4 [Replaycraft] §f§glease Kamera kurulum menüsünü açmak için tekrar çubuğunu kullanın.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §FREplay Durdu
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [Replaycraft] §f§clease tekrarlamanın tamamlanmasını bekleyin veya tekrar oynatmayı tıklamayı tıklayın
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §f§cat en az iki kamera noktası önerilir
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [Replaycraft] §F Yeni bir tekrar o
 replaycraftdeletebuild.title=Lütfen silmek için bir tekrar seçin.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §F Bir seçenek seçmediniz veya UI menüsünü kapattınız!.
-
+replaycraft.TimelinePlaybackMenu.title=§9PlayCraft: Zaman Çizelgesi / Oynatma
+replaycraft.ui.back.button=Geri
+replaycraft.saveloadmenue.title=§9ReplayCraft: Kaydet / Yükleme
+replaycraft.recodingcontrolsmenu.title=§9PlayCraft: Kayıt Kontrolleri
+replaycraft.timelineticks.button=Zaman Çizelgesi (Keneler)
+replaycraft.timelineseconds.button=Zaman çizelgesi (saniye)
+replaycraft.cameramainmenu.body=Devam etmek için aşağıda bir kategori seçin:
+replaycraft.cameramainmenu.title=§9PlayCraft: Kamera Ana Menüsü
+replaycraft.savaload.button=Kaydet / Yükle
+replaycraft.timelineplayback.button=Zaman çizelgesi / oynatma
+replaycraft.recordingcontrols.button=Kayıt Kontrolleri
+replaycraft.recordingmenu.title=§9PlayCraft: Kayıt Menüsü
+replaycraft.previewmenu.title=§9ReplayCraft: Önizleme Menüsü
+replaycraft.replaymenu.title=§9ReplayCraft: Sonlandır ve Kayıt
+replaycraft.Finalize.Record.body=Tekrarınızı sonlandırmak için aşağıdaki seçenekleri seçin ve ekranınızı kaydetmeye başlayın.

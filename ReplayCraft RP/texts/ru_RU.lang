@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.1.2§r
+dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.1.4§r
 dbg.rc1.title.replay.settings=Настройки воспроизведения
 dbg.rc1.title.preview.settings=Предварительные настройки
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft settings§r
@@ -87,6 +87,7 @@ dbg.rc1.mes.replay.preview.has.stopped.successfully=§F§4 [Replaycraft] §frepl
 dbg.rc1.mes.replay.preview.is.already.off=§F§4 [Replaycraft] §f§creplay Предварительный просмотр уже выключен
 dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed=§F§4 [Replaycraft] §f§cplease ожидание повторного предварительного просмотра или нажмите «Стоп
 dbg.rc1.mes.please.do.the.cinematic.camera.setup=§F§4 [Replaycraft] §f§gplease Do
+dbg.rc1.mes.cam.setup=§F§4 [Replaycraft] §f§gplease Используйте палку для повторного воспроизведения, чтобы открыть меню настройки камеры.
 dbg.rc1.mes.replay.stopped=§F§4 [Replaycraft] §freplay остановился
 dbg.rc1.mes.please.wait.for.replay.to.be.completed=§F§4 [Replaycraft] §f§cplease ожидание повторного воспроизведения или нажмите «Остановить воспроизведение»
 dbg.rc1.mes.at.least.two.camera.points.are.recommended=§F§4 [Replaycraft] §f§cat Наименее две точки камеры рекомендуются
@@ -160,4 +161,18 @@ replaycraftsetbuildname.error.message=§F§4 [Replaycraft] §f Вы должны
 replaycraftdeletebuild.title=Пожалуйста, выберите повтор для удаления.
 
 replaycraft.ui.error.message=§F§4 [Replaycraft] §f Вы не выбрали опцию и не закрыли меню пользовательского интерфейса!.
-
+replaycraft.TimelinePlaybackMenu.title=§9replaycraft: временная шкала / воспроизведение
+replaycraft.ui.back.button=Назад
+replaycraft.saveloadmenue.title=§9Replaycraft: Сохранить / загрузить
+replaycraft.recodingcontrolsmenu.title=§9replaycraft: запись элементов управления
+replaycraft.timelineticks.button=Временная шкала (клещи)
+replaycraft.timelineseconds.button=Временная шкала (секунды)
+replaycraft.cameramainmenu.body=Выберите категорию ниже, чтобы продолжить:
+replaycraft.cameramainmenu.title=§9replaycraft: главное меню камеры
+replaycraft.savaload.button=Сохранить / загрузить
+replaycraft.timelineplayback.button=Временная шкала / воспроизведение
+replaycraft.recordingcontrols.button=Запись элементов управления
+replaycraft.recordingmenu.title=§9Replaycraft: меню записи
+replaycraft.previewmenu.title=§9replaycraft: меню предварительного просмотра
+replaycraft.replaymenu.title=§9replaycraft: завершить и записать
+replaycraft.Finalize.Record.body=Выберите параметры ниже, чтобы завершить воспроизведение и начать запись экрана.
