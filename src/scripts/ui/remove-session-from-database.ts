@@ -25,7 +25,10 @@ if (buildNames.length === 0) {
 
 const form = new ModalFormData()
     .title("replaycraftdeletebuild.title") 
-    .dropdown("Available Builds", buildNames, 0);
+    .dropdown("Available Builds", buildNames, {
+        defaultValueIndex: 0
+
+    });
     form
     .show(player)
     .then((formData) => {

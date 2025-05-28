@@ -1,5 +1,6 @@
 import { world } from "@minecraft/server";
 import { OptimizedDatabase } from "../../data/data-hive";
+import { migrateDatabase } from "../../data/migrate-database";
 
 let replayCraftBlockDB: OptimizedDatabase;
 let replayCraftPlayerPosDB: OptimizedDatabase;
@@ -10,7 +11,8 @@ let replayCraftBlockInteractionsDB: OptimizedDatabase;
 let replayCraftBeforeBlockInteractionsDB: OptimizedDatabase;
 let replayCraftPlaybackEntityDB: OptimizedDatabase;
 let replayCraftPlayerArmorWeaponsDB: OptimizedDatabase;
-export { replayCraftBlockDB, replayCraftPlayerPosDB, replayCraftPlayerRotDB, replayCraftPlayerActionsDB, replayCraftSettingsDB, replayCraftBlockInteractionsDB, replayCraftBeforeBlockInteractionsDB, replayCraftPlaybackEntityDB, replayCraftPlayerArmorWeaponsDB };
+let replayCraftSkinDB: OptimizedDatabase;
+export { replayCraftBlockDB, replayCraftPlayerPosDB, replayCraftPlayerRotDB, replayCraftPlayerActionsDB, replayCraftSettingsDB, replayCraftBlockInteractionsDB, replayCraftBeforeBlockInteractionsDB, replayCraftPlaybackEntityDB, replayCraftPlayerArmorWeaponsDB, replayCraftSkinDB };
 /**
  * Initializes define the database on world initialization.
  */
@@ -23,11 +25,14 @@ function onWorldInitialize() {
     replayCraftBeforeBlockInteractionsDB = new OptimizedDatabase("replayCraftBeforeBlockInteractionsDatabase");
     replayCraftPlaybackEntityDB = new OptimizedDatabase("replayCraftPlaybackEntityDatabase");
     replayCraftPlayerArmorWeaponsDB = new OptimizedDatabase("replayCraftPlayerArmorWeaponsDatabase");
+    //Skin Data for multiplayer recordings
+    replayCraftSkinDB = new OptimizedDatabase("replayCraftSkinDatabase");
 
 
     // stores the SharedVariables as a whole excluding the maps. 
     replayCraftSettingsDB = new OptimizedDatabase("replayCraftSettingsDatabase");
-    
+
+    migrateDatabase(); // Call the migration function to migrate all databases
 }
 
 /**

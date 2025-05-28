@@ -10,7 +10,7 @@ import { doCamSetup } from "../functions/camera/doCamSetup";
 import { loadBuildName } from "./load-buildname";
 export function ReplayCraft2D(player: Player) { //if SharedVariables.replayStateMachine.state = recSaved
     const replayForm = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
+        .title("replaycraft.previewmenu.title")
         .button("dbg.rc1.button.preview.replay") //0
         .button("dbg.rc1.button.stop.preview") //1
         .button("dbg.rc1.button.preview.settings") //2

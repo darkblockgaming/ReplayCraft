@@ -6,7 +6,7 @@ import { resetRec } from "./resetRec";
 
 export function doStart(player:Player) {
     SharedVariables.multiPlayers.forEach((player) => {
-        removeEntities(player);
+        removeEntities(player,false);
         resetRec(player);
     });
     SharedVariables.replayStateMachine.setState("recPending");

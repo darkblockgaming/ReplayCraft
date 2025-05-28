@@ -1,17 +1,25 @@
 import { Player } from "@minecraft/server";
-
-export function removeEntities(player: Player) {
+/**
+     * Removes ReplayCraft Entities.
+     * @param {player} player - The player who initiated the function.
+     * @param {replayEntity} replayEntity - A boolean indicating whether to remove replay entities.
+	 * if true, removes only replay entities; if false, removes all replay entities and camera positions entities.
+     */
+export function removeEntities(player: Player, replayEntity:boolean,) {
 	const dimension = player.dimension;
-	const entities1 = dimension.getEntities({
-		type: "dbg:replayentity"
-	});
-	entities1.forEach(entity1 => {
-		entity1.remove();
-	});
-	const entities2 = dimension.getEntities({
-		type: "dbg:rccampos"
-	});
-	entities2.forEach(entity2 => {
-		entity2.remove();
-	});
+	let types: string[]
+	if(replayEntity){
+		types = ["dbg:replayentity_steve", "dbg:replayentity_alex"];
+	}else
+	{
+		types = ["dbg:replayentity_steve", "dbg:replayentity_alex","dbg:rccampos"]
+	}
+	
+
+	for (const type of types) {
+		const entities = dimension.getEntities({ type });
+		for (const entity of entities) {
+			entity.remove();
+		}
+	}
 }

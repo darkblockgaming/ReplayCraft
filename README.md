@@ -1,54 +1,53 @@
-<div align="center">
-  <img src="https://darkblockgaming.github.io/images/dbg/rctextlogo.webp" alt="ReplayCraft Text & Icon Logo">
-  <br><br>
-  <p><b>ReplayCraft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Whether you want to capture your best builds, or create cinematic replays, ReplayCraft makes it easy to record, play back, and analyze gameplay directly within Minecraft Bedrock.
-  
-  ReplayCraft now utilizes the 2.0.0-Beta server and 2.0.0-Beta server-ui APIs, enhancing compatibility and performance for Minecraft Bedrock.</p>
-  <br><br>
-</div>
-<div align="center">
-  <blockquote>
-    <h3>Key Features:</h3>
-    <ul>
-      <li>
-        Record Player Actions – Capture your movements, block interactions, and other actions for future playback.
-      </li>
-      <li>
-        Replay System – Watch recorded replays with full control over playback.
-      </li>
-      <li>
-        Multi-Player Support – Record multiple players in the same session.
-      </li>
-      <li>
-        Chunk Loading Optimization – Ensures recorded areas remain loaded during playback.
-    </li>
-    <li>
-        Cinematic Camera Support – Enhance replays with cinematic movements and free camera controls.
-    </li>
-    </ul>
-  </blockquote>
-  <br>
-  
-## 🛠️ Installation
-1. Download the latest ReplayCraft .mcaddon file.
+<p align="center">
+  <img src="assets/replaycraft-text-logo.webp" alt="ReplayCraft Text & Icon Logo" />
+</p>
 
-2. Open the file with Minecraft Bedrock Edition to install the add-on.
+<p align="center">
+<b>ReplayCraft</b> is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Whether you want to capture your best builds, or create cinematic replays, ReplayCraft makes it easy to record, play back, and analyze gameplay directly within Minecraft Bedrock Edition.
+</p>
+<p align="center">
+ReplayCraft now utilizes the <b>2.0.0-Beta server</b> and <b>2.0.0-Beta server-ui APIs</b>, enhancing compatibility and performance for Minecraft Bedrock.
+</p>
 
-3. In your world settings, enable Experimental Features, including:
-    **Beta APIs**
+---
 
-4. Make sure the Behavour pack and the resocue pack are appllied to your world. 
+## ⬇️ Download
 
-5. Type ?rc in chat to be given the control items. 
+# [Download v2.1.3-beta](https://darkblockgaming.github.io/addons/replaycraft/)
+### For Minecraft Bedrock 1.21.8x only
 
-   <div align="center">
-  <h2>Documentation</h2>
-  See the full documentation 
-   <a href="">here</a>
-</div>
-    <div align="center">
-  <h2>Community Discord.</h2>
-   Need assistance or have questions? Join our community
-   <a href="https://discord.gg/zdG9Xwzudt">discord server</a>
-</div>
+---
 
+## ⬇️ 2.1.3 Changelog
+# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v2.1.2)
+
+---
+
+## ✅ Installation
+
+1. [Download](https://darkblockgaming.github.io/addons/replaycraft/) the latest **ReplayCraft `.mcaddon`** file.  
+2. Open the file with **Minecraft Bedrock Edition** to install the add-on.  
+3. In your world settings, enable **Experimental Features**, including:  
+   - **Beta APIs**  
+4. Make sure both the **Behavior Pack** and the **Resource Pack** are applied to your world.  
+
+---
+
+## 📚 ReplayCraft Documentation
+
+After installing and activating the **ReplayCraft** add-on you can start creating amazing cinematics and replays. But if you face any issues using it or have any questions about how it works then heres a very deatailed documentation for you. This inclueds all the basic to advanced details including tutorial videos in multiple languages!
+
+(All the custom skins related issues and solutions are mentioned as well.)
+
+# [View Documentation](https://darkblockgaming.github.io/ReplayCraft/#/)
+
+---
+
+## 🌐 Community Discord  
+### Need assistance or have questions? Join our community on [Discord](https://discord.gg/zdG9Xwzudt).
+
+---
+
+## 💸 Donate/Sponsor 
+
+### If you enjoy this project and would like to support its development—or simply show your appreciation with a donation—we’d be truly grateful. [Donate now...](https://darkblockgaming.github.io/donate-me/)

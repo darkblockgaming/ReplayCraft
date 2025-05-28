@@ -70,4 +70,7 @@ export interface BlockData {
       affectCameraSelection: number;
       buildName: string;
       hideHUD: boolean;
+      showCameraSetupUI: boolean;
+      currentEditingCamIndex: number;
+      useFullRecordingRange: boolean;
   };

@@ -1,43 +1,44 @@
 {
   "format_version": 2,
   "metadata": {
-    "description": "Type '?rc' in chat, Enable Beta APIs, 1.21.7× only. \nMade By §gDarkBlock Gaming",
+    "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Create by §gDarkBlock Gaming",
     "authors": [
-      "DarkBlock Gaming"
+      "DarkBlock Gaming",
+      "Pete9xi"
     ],
     "links": [
       {
-        "name": "Mod Link On MCPEDL",
-        "url": "https://mcpedl.com/replaycraft/"
+        "name": "Official GitHub Page",
+        "url": "https://github.com/darkblockgaming/ReplayCraft"
       },
       {
-        "name": "Mod Link On Modbay",
-        "url": "https://modbay.org/mods/1591-replaycraft.html"
+        "name": "Official Page",
+        "url": "https://darkblockgaming.github.io/addons/replaycraft/"
       },
       {
-        "name": "YouTube Channel",
-        "url": "https://youtube.com/@darkblockgaming"
+        "name": "Curseforge",
+        "url": "https://www.curseforge.com/minecraft-bedrock/scripts/replaycraft"
       }
     ]
   },
   "header": {
-    "name": "ReplayCraft RP v2.0.9-beta",
-    "description": "Type '?rc' in chat, Enable Beta APIs, 1.21.7× only. \nMade By §gDarkBlock Gaming",
-    "min_engine_version": [ 1, 21, 70 ],
+    "name": "ReplayCraft RP v2.1.4",
+    "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Create by §gDarkBlock Gaming",
+    "min_engine_version": [ 1, 21, 80 ],
     "uuid": "6aef535d-b1e7-4995-b4db-ddf24712fde2",
-    "version": "2.0.9-beta"
+    "version": [2,1,4]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "2aecb8fe-07ab-4efa-8f26-77a45aeac9d9",
-      "version": "2.0.9-beta"
+      "version": [2,1,4]
     }
   ],
   "dependencies": [
     {
       "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
-      "version": "2.0.9-beta"
+      "version": [2,1,4]
     }
   ]
 }

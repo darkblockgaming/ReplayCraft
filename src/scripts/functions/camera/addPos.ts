@@ -1,5 +1,5 @@
 
-import { Player } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 
 
@@ -47,7 +47,7 @@ export function addPos(player: Player) {
         rotation: player.getRotation(),
         tick: cameraPosTick
     });
-    const camPos1Entity = player.dimension.spawnEntity("dbg:rccampos", spawnLocation);
+    const camPos1Entity = player.dimension.spawnEntity("dbg:rccampos" as VanillaEntityIdentifier, spawnLocation);
     camPos1Entity.nameTag = `Camera Point ${SharedVariables.replayCamPos.length}`;
     if (SharedVariables.textPrompt) {
         player.sendMessage(`§4[ReplayCraft] Â§bCamera point added successfully at about ${Math.round(cameraPosTick/20)} second(s).`);

@@ -1,6 +1,33 @@
-
-import { BlockPermutation, Player, system } from "@minecraft/server";
+import { BlockPermutation, Player, system, Vector3 } from "@minecraft/server";
 import { SharedVariables } from "../main";
+
+// Helper to compare two locations
+function positionsEqual(a: Vector3, b: Vector3): boolean {
+    return a.x === b.x && a.y === b.y && a.z === b.z;
+}
+
+// Helper to select the correct part of a multi-block structure
+function getBlockPartData(data: any, blockPos: Vector3) {
+    switch (true) {
+        case !!data.lowerPart && positionsEqual(blockPos, data.lowerPart.location):
+            return data.lowerPart;
+
+        case !!data.upperPart && positionsEqual(blockPos, data.upperPart.location):
+            return data.upperPart;
+
+        case !!data.thisPart && positionsEqual(blockPos, data.thisPart.location):
+            return data.thisPart;
+
+        case !!data.otherPart && positionsEqual(blockPos, data.otherPart.location):
+            return data.otherPart;
+
+        case !!data.typeId:
+            return data;
+
+        default:
+            return null;
+    }
+}
 
 export async function clearStructure(player: Player) {
     const playerData = SharedVariables.replayBData1Map.get(player.id);
@@ -13,7 +40,7 @@ export async function clearStructure(player: Player) {
     // Get the recording start position
     const recordingStartPos = SharedVariables.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
     // Store original position before teleporting
-    const originalPos = player.location; 
+    const originalPos = player.location;
     if (!recordingStartPos) {
         player.sendMessage(`Error: Recording start position not found.`);
         return;
@@ -69,9 +96,19 @@ export async function clearStructure(player: Player) {
             if (block) {
                 // Log if the block is found
                 //console.log(`Clearing block at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
-                
+
                 // Clear the block
-                block.setPermutation(BlockPermutation.resolve(data.typeId, data.states));
+                const partData = getBlockPartData(data, block.location);
+                if (partData?.typeId) {
+                    try {
+                        const permutation = BlockPermutation.resolve(partData.typeId, partData.states || {});
+                        block.setPermutation(permutation);
+                    } catch (e) {
+                        console.error(`BlockPermutation failed for ${JSON.stringify(partData, null, 2)}: ${e}`);
+                    }
+                } else {
+                    console.error("Invalid block data:", JSON.stringify(data, null, 2));
+                }
             } else {
                 console.log(`Block not found at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
             }
@@ -83,8 +120,9 @@ export async function clearStructure(player: Player) {
         player.tryTeleport(originalPos, { checkForBlocks: false });
         //player.onScreenDisplay.setActionBar(`You have been teleported back to the start of the recording.`);
     }
-     /**
-     * We can re enable the following hud elements 
+
+    /**
+     * We can re enable the following hud elements
      * PaperDoll = 0
      * Armor = 1
      * ToolTips = 2
@@ -96,10 +134,10 @@ export async function clearStructure(player: Player) {
      * Hunger = 8
      * AirBubbles = 9
      * HorseHealth = 10
-     * StatusEffects = 11ItemText = 12
+     * StatusEffects = 11
+     * ItemText = 12
      */
-    if(SharedVariables.hideHUD === true){
-        player.onScreenDisplay.setHudVisibility(1,[0,1,2,3,4,5,6,7,8,9,10,11,12]);
+    if (SharedVariables.hideHUD === true) {
+        player.onScreenDisplay.setHudVisibility(1, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
-    
 }

@@ -26,7 +26,10 @@ if (buildNames.length === 0) {
 
 const form = new ModalFormData()
     .title("replaycraftloadbuildname.title") 
-    .dropdown("Available Builds", buildNames, 0);
+    .dropdown("Available Builds", buildNames, {
+        defaultValueIndex: 0,
+        tooltip: "Select a build to load"
+    })
     form
     .show(player)
     .then((formData) => {

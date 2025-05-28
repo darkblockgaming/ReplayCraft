@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { SharedVariables } from "../../main";
 import { loadFromDB } from "../replayControls/load-from-database";
 
@@ -15,8 +15,8 @@ export function respawnCameraEntities(player: Player) {
     /**
      * Now we can spawn the camera entities at the positions stored in the SharedVariables.replayCamPos array.
      */
-    
-    const dim = world.getDimension("overworld"); // or wherever your entities should go
+    const playerDim = player.dimension.id;
+    const dim = world.getDimension(playerDim); // or wherever your entities should go
 
     for (let i = 0; i < SharedVariables.replayCamPos.length; i++) {
         const cam = SharedVariables.replayCamPos[i];
@@ -26,7 +26,7 @@ export function respawnCameraEntities(player: Player) {
             z: cam.position.z
         };
 
-        const entity = dim.spawnEntity("dbg:rccampos", spawnLocation);
+        const entity = dim.spawnEntity("dbg:rccampos" as VanillaEntityIdentifier, spawnLocation);
         entity.nameTag = `Camera Point ${i + 1}`;
     }
     SharedVariables.replayStateMachine.setState("recCamSetup");

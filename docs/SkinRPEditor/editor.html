@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Pack Editor</title>
+    
+    <!-- Docsify Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0.9.0/dist/css/theme-simple-dark.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            text-align: left;
+        }
+
+        #jsonEditor {
+            height: 400px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        /* Loading Spinner */
+        #loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30,30,30,255);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #035fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="../Media/logo.webp" alt="ReplayCraft">
+
+        <h1>Welcome to the Skin Pack Editor</h1>
+        <p>
+            This tool enables you to upload and manage custom skin files for ReplayCraft. 
+            Once completed, you can download an updated skin pack, ready to be used in your Minecraft world.
+        </p>
+
+        <section>
+            <h2>Upload Skin Files</h2>
+            <form id="skinUploadForm" enctype="multipart/form-data">
+                <label for="skinFiles">Upload Skin Files (.png):</label>
+                <input type="file" id="skinFiles" accept=".png" multiple>
+            </form>
+        </section>
+
+        <section>
+            <h2>Generate Skin Pack</h2>
+            <button type="button" id="generateSkinPackButton">Generate Skin Pack</button>
+        </section>
+
+        <section>
+            <h2>Create and Download McPack</h2>
+            <button type="button" id="createArchiveButton">Download Pack</button>
+        </section>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading">
+        <p>Generating the skin pack...</p>
+        <div class="spinner"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"></script>
+    <script src="../Scripts/skin_editor.js"></script>
+
+</body>
+</html>

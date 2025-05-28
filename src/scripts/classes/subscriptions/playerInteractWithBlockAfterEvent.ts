@@ -21,6 +21,12 @@ function recordBlocks (event: PlayerInteractWithBlockAfterEvent){
 				};
 			}
 		}
+
+		if(event.itemStack.typeId === "minecraft:water_bucket"){
+			console.log("block loc: " + event.block.location);
+			console.log("block face: " + event.blockFace);
+			console.log("states: " + event.block.permutation.getAllStates)
+		}
 } 
 
 

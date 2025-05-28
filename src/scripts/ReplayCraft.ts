@@ -16,7 +16,7 @@ const cineEDataMap = new Map(); //Extra data
 const cineCDataMap = new Map(); //Map for camera switch
 
 
-function createObj(player:Player) {
+function createObj(player: Player) {
 	if (!cinePDataMap.has(player.id)) {
 		cinePDataMap.set(player.id, {
 			cineCamPos: []
@@ -188,16 +188,16 @@ function startCountdown(player: Player) {
 	let countdown = 3;
 	const intervalId = system.runInterval(() => {
 		const cData = cineCDataMap.get(player.id);
-	    if (cData.cineCamSwitch === false) {
-		    system.clearRun(intervalId);
-		    player.onScreenDisplay.setTitle('Stopped!', {
-		        stayDuration: 10,
-		        fadeInDuration: 0,
-		        fadeOutDuration: 0,
-		        subtitle: '-- -.-- ....... .. .-. .-.. ....... -. .- -- . ....... .. ... ....... ... .- - -.-- .- --', 
-	        });
-		    return;
-	    }
+		if (cData.cineCamSwitch === false) {
+			system.clearRun(intervalId);
+			player.onScreenDisplay.setTitle('Stopped!', {
+				stayDuration: 10,
+				fadeInDuration: 0,
+				fadeOutDuration: 0,
+				subtitle: '-- -.-- ....... .. .-. .-.. ....... -. .- -- . ....... .. ... ....... ... .- - -.-- .- --',
+			});
+			return;
+		}
 		countdown--;
 		player.onScreenDisplay.updateSubtitle(countdown.toString());
 		if (countdown !== 0) {
@@ -236,9 +236,9 @@ function startCamera(player: Player) {
 		return;
 	}
 	if (eData.hideHud === true) {
-        player.onScreenDisplay.setHudVisibility(0);
-    }
-	
+		player.onScreenDisplay.setHudVisibility(0);
+	}
+
 	const positions = pData.cineCamPos;
 	const rotations = rData.cineCamRot;
 	const easingTime = eData.easingTime || 1;
@@ -275,7 +275,7 @@ function startCamera(player: Player) {
 	let index = 1;
 	cameraIntervalMap.set(player.id, []);
 
-	
+
 	function moveNextCameraFrame() {
 		if (index < positions.length) {
 			const nextPos = positions[index];
@@ -331,7 +331,7 @@ function startCamera(player: Player) {
 			const intervalId = system.runTimeout(() => {
 				player.camera.clear();
 				if (eData.hideHud === true) {
-				    player.onScreenDisplay.setHudVisibility(1);
+					player.onScreenDisplay.setHudVisibility(1);
 				}
 				player.sendMessage({
 					"rawtext": [{
@@ -362,13 +362,13 @@ function stopCamera(player: Player) {
 		return;
 	}
 	cData.cineCamSwitch = false;
-    cData.cinePrevSwitch = false;
-    
-    const eData = cineEDataMap.get(player.id);
-    if (eData.hideHud === true) {
+	cData.cinePrevSwitch = false;
+
+	const eData = cineEDataMap.get(player.id);
+	if (eData.hideHud === true) {
 		player.onScreenDisplay.setHudVisibility(1);
 	}
-		
+
 	if (cameraIntervalMap.has(player.id)) {
 		const intervals = cameraIntervalMap.get(player.id);
 		intervals.forEach((intervalId: number) => {
@@ -376,7 +376,7 @@ function stopCamera(player: Player) {
 		});
 
 		player.camera.clear();
-		
+
 		player.sendMessage(`Camera movement stopped`);
 		cameraIntervalMap.delete(player.id);
 		cData.cineCamSwitch = false;
@@ -448,7 +448,7 @@ function startPreview(player: Player) {
 		} else {
 			// At the last frame, clear the camera with no delay
 			player.camera.clear();
-			
+
 			player.sendMessage(`§aPreview camera movement complete §r`);
 			cData.cinePrevSwitch = false; // Reset the camera switch flag
 		}
@@ -479,19 +479,70 @@ function cineSettings(player: Player) {
 	}
 	const replaySettingsForm = new ui.ModalFormData()
 		.title("dbg.rc2.title.settings")
-		.dropdown("dbg.rc2.dropdown.camera.settings.ease.type", easeTypes, eData.easeType)
+		.dropdown("dbg.rc2.dropdown.camera.settings.ease.type", easeTypes, {defaultValueIndex: eData.easeType})
 		.textField("dbg.rc2.textfield.time", `${eData.easeTime}`)
-		.dropdown("dbg.rc2.dropdown.camera.facing", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], eData.camFacingType)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.pitch" }] }, -90, 90, 1, eData.camFacingX)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.yaw" }] }, 0, 360, 1, eData.camFacingY)
-		.dropdown("dbg.rc2.dropdown.particle.Settings.frame.particle.type", particlesName, eData.cineParType)
-		.toggle("dbg.rc2.toggle.enable.position.frame.particles", eData.cineParSwitch)
-		.toggle("dbg.rc2.toggle.hide.hud", eData.hideHud)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.preview.settings.preview.speed.multiplier" }] }, 1, 10, 1, eData.cinePrevSpeedMult)
+		.dropdown("dbg.rc2.dropdown.camera.facing", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], {defaultValueIndex: eData.camFacingType})
+
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.pitch" }] },
+			-90,
+			90,
+			{
+				valueStep: 1,
+				defaultValue: eData.camFacingX
+			}
+		)
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.yaw" }] },
+			0,
+			360,
+			{
+				valueStep: 1,
+				defaultValue: eData.camFacingY
+			}
+		)
+		.dropdown("dbg.rc2.dropdown.particle.Settings.frame.particle.type", particlesName, {defaultValueIndex: eData.cineParType})
+		.toggle("dbg.rc2.toggle.enable.position.frame.particles", {defaultValue: eData.cineParSwitch})
+		.toggle("dbg.rc2.toggle.hide.hud", {defaultValue: eData.hideHud})
+
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.preview.settings.preview.speed.multiplier" }] },
+			1,
+			10,
+			{
+				valueStep: 1,
+				defaultValue: eData.cinePrevSpeedMult
+			}
+		)
 		//.toggle("\n§l§g- Fade Screen Settings§r\n\nFade Screen", eData.cineFadeSwitch)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.fade.screen.settings.red.value" }] }, 0, 225, 1, eData.cineRedValue)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.green.value" }] }, 0, 225, 1, eData.cineGreenValue)
-		.slider({ "rawtext": [{ "translate": "dbg.rc2.slider.blue.value" }] }, 0, 225, 1, eData.cineBlueValue);
+
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.fade.screen.settings.red.value" }] },
+			0,
+			255,
+			{
+				valueStep: 1,
+				defaultValue: eData.cineRedValue
+			}
+		)
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.green.value" }] },
+			0,
+			255,
+			{
+				valueStep: 1,
+				defaultValue: eData.cineGreenValue
+			}
+		)
+		.slider(
+			{ "rawtext": [{ "translate": "dbg.rc2.slider.blue.value" }] },
+			0,
+			255,
+			{
+				valueStep: 1,
+				defaultValue: eData.cineBlueValue
+			}
+		)
 	replaySettingsForm.show(player).then(response => {
 		if (response.canceled) {
 			player.sendMessage({
@@ -503,9 +554,7 @@ function cineSettings(player: Player) {
 			return;
 		}
 		eData.easeType = response.formValues[0];
-		
 		eData.easingTime = (response.formValues[1] as number) <= 0 ? 1 : Math.floor(response.formValues[1] as number);
-
 		//eData.easingTime = (response.formValues[1] != null && response.formValues[1] > 0) ? response.formValues[1] : 1;
 		eData.camFacingType = response.formValues[2];
 		eData.camFacingX = response.formValues[3];
@@ -530,7 +579,7 @@ function cineSettings(player: Player) {
 
 //===============================================================
 
-function cineResetSett(player:Player) {
+function cineResetSett(player: Player) {
 	//const pData = cinePDataMap.get(player.id);
 	//const rData = cineRDataMap.get(player.id);
 	//const eData = cineEDataMap.get(player.id);
@@ -569,8 +618,9 @@ function cineResetSett(player:Player) {
 
 //==============
 
-function removeLastFrame(player:Player) {
+function removeLastFrame(player: Player) {
 	const pData = cinePDataMap.get(player.id);
+    const rData = cineRDataMap.get(player.id);
 	//const rData = cineRDataMap.get(player.id);
 	//const eData = cineEDataMap.get(player.id);
 	const cData = cineCDataMap.get(player.id);
@@ -592,8 +642,8 @@ function removeLastFrame(player:Player) {
 		});
 		return;
 	}
-	//const removedPos = pData.cineCamPos.pop();
-	//const removedRot = rData.cineCamRot.pop();
+	pData.cineCamPos = [];
+    rData.cineCamRot = [];
 	saveFrameDataRC(player);
 	player.sendMessage({
 		"rawtext": [{
@@ -604,7 +654,7 @@ function removeLastFrame(player:Player) {
 
 //==============
 
-function removeAllFrames(player:Player) {
+function removeAllFrames(player: Player) {
 	const pData = cinePDataMap.get(player.id);
 	const rData = cineRDataMap.get(player.id);
 	//const eData = cineEDataMap.get(player.id);

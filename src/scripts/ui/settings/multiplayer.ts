@@ -23,8 +23,16 @@ export function multiPlayersett(player: Player) {
 
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.multiplayer.settings")
-        .toggle(`dbg.rc1.toggle.multiplayer.replay`, SharedVariables.multiToggle)
-        .slider(`\nAvailable Players\n${playerNames}\n\nSelected Players`, 1, availablePlayers.length, 1, 1);
+        .toggle(`dbg.rc1.toggle.multiplayer.replay`, {defaultValue: SharedVariables.multiToggle})
+        .slider(
+            `\nAvailable Players\n${playerNames}\n\nSelected Players`,
+            1,
+            availablePlayers.length,
+            {
+              valueStep: 1,
+              defaultValue: 1
+            }
+          )
 
     replaySettingsForm.show(player).then(response => {
         if (response.canceled) {
