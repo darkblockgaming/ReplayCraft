@@ -8,10 +8,13 @@ import { createPlayerSession } from "../data/create-session";
 export function loadBuildName(player: Player) {
     const entries = replayCraftSettingsDB.entries();
     const playerId = player.id;
-
-    // Find all keys starting with playerId and extract buildName suffixes
-    const buildNames = entries.filter(([key, _]) => key.startsWith(playerId)).map(([key, _]) => key.slice(playerId.length));
-
+    // Find and extract build names for this player
+    const buildNames = entries
+        .filter(([key, _]) => key.startsWith(playerId + "rcData"))
+        .map(([key, _]) => {
+            const parts = key.split("rcData");
+            return parts[1]; // This is the buildName
+        });
     console.warn(`[DEBUG] Build names for ${player.name}:`, buildNames);
 
     if (buildNames.length === 0) {
@@ -40,10 +43,12 @@ export function loadBuildName(player: Player) {
                 session = createPlayerSession(playerId);
                 SharedVariables.playerSessions.set(playerId, session);
             }
-            session.buildName = selectedBuild;
+
+            const fullBuildName = "rcData" + selectedBuild;
+            session.buildName = fullBuildName;
 
             // Load the build from DB; this updates the session data as needed
-            loadFromDB(player, selectedBuild, true);
+            loadFromDB(player, fullBuildName, true);
         })
         .catch((error: Error) => {
             console.error("Failed to show form: " + error);

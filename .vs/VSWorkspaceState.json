@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\scripts",
+    "\\src\\scripts\\data",
+    "\\src\\scripts\\functions",
+    "\\src\\scripts\\functions\\replayControls"
+  ],
+  "SelectedNode": "\\src\\scripts\\functions\\replayControls\\load-from-database.ts",
+  "PreviewInSolutionExplorer": false
+}

@@ -18,7 +18,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     // Load raw saved session settings from DB
     const savedSettingsRaw = replayCraftSettingsDB.get(player.id + buildName);
     if (!savedSettingsRaw) {
-        console.error(`[❌] Failed to restore settings for ${player.id}: No data found`);
+        console.error(`[❌] Failed to restore settings for ${player.id}: No data found using buildName: ${buildName}`);
         return;
     }
 
