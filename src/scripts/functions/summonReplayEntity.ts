@@ -50,6 +50,7 @@ export function summonReplayEntity(player: Player) {
         customEntity.setProperty("dbg:skin", skinID);
         switch (SharedVariables.settNameType) {
             case 0:
+                break;
             case 1:
                 customEntity.nameTag = player.name;
                 break;
