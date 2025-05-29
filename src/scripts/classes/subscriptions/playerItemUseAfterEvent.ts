@@ -12,6 +12,7 @@ function setController(eventData: ItemUseAfterEvent) {
             const session = createPlayerSession(player.id);
             initializePlayerMaps(session, player.id);
             session.playerName = player.name;
+            SharedVariables.playerSessions.set(player.id, session);
             replayCraftActiveSessionsDB.set(player.id, {
                 playerId: player.id,
                 playerName: player.name,
