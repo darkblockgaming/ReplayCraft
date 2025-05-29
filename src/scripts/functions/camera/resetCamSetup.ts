@@ -1,27 +1,34 @@
-
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { clearStructure } from "../clearStructure";
 import { removeEntities } from "../removeEntities";
 
 export function resetCamSetup(player: Player) {
-    SharedVariables.multiPlayers.forEach((player) => {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage("§c[ReplayCraft] Error: No replay session found for you.");
+        return;
+    }
+
+    session.multiPlayers.forEach((player) => {
         clearStructure(player);
-        removeEntities(player,false);
+        removeEntities(player, false);
     });
-    SharedVariables.currentSwitch = false;
-    SharedVariables.frameLoaded = false;
-    SharedVariables.replayCamPos = [];
-    SharedVariables.replayCamRot = [];
-    SharedVariables.wantLoadFrameTick = 0;
+    session.currentSwitch = false;
+    session.frameLoaded = false;
+    session.replayCamPos = [];
+    session.replayCamRot = [];
+    session.wantLoadFrameTick = 0;
     player.sendMessage({
-        "rawtext": [{
-            "translate": "dbg.rc1.mes.interaction.successfull"
-        }]
+        rawtext: [
+            {
+                translate: "dbg.rc1.mes.interaction.successfull",
+            },
+        ],
     });
-    SharedVariables.frameLoaded = false;
-    SharedVariables.startingValueTick = 0;
-    SharedVariables.startingValueSecs = 0;
-    SharedVariables.startingValueMins = 0;
-    SharedVariables.startingValueHrs = 0;
+    session.frameLoaded = false;
+    session.startingValueTick = 0;
+    session.startingValueSecs = 0;
+    session.startingValueMins = 0;
+    session.startingValueHrs = 0;
 }

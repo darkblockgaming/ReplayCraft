@@ -21,27 +21,29 @@ function initializeEventHandlers() {
  * @param {PlayerSpawnAfterEvent} event - The event object containing information about player spawn.
  */
 function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
-
     if (event.initialSpawn) {
-    
         triggerMessage(event);
-        
     }
-/**
+    /**
  Trigger a message to the player after they spawn.
  * @param {PlayerSpawnAfterEvent} event - the event object containing information about player spawn.
  */
- function triggerMessage(event: PlayerSpawnAfterEvent) {
-    const player = event.player;
+    function triggerMessage(event: PlayerSpawnAfterEvent) {
+        const player = event.player;
 
-    // Delay by 7 seconds (140 game ticks)
-    system.runTimeout(() => {
-        player.sendMessage({
-            rawtext: [{
-                translate: "replaycraft.welcome.message"
-            }]
-        });
-    }, 140); // 20 ticks = 1 second
-}
+        // Delay by 7 seconds (140 game ticks)
+        system.runTimeout(() => {
+            player.sendMessage({
+                rawtext: [
+                    {
+                        translate: "replaycraft.welcome.message",
+                    },
+                ],
+            });
+        }, 140); // 20 ticks = 1 second
 
+        system.runTimeout(() => {
+            player.sendMessage(`§f§4[ReplayCraft]§fV3.0.0 Dev Build`);
+        }, 145); // 20 ticks = 1 second
+    }
 }

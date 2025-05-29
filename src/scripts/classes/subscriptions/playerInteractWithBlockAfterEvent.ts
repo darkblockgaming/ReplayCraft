@@ -1,37 +1,37 @@
 import { PlayerInteractWithBlockAfterEvent, world } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { saveDoorPartsB } from "../../functions/saveDoorPartsB";
 
-// need a name for this
-function recordBlocks (event: PlayerInteractWithBlockAfterEvent){
-	if (SharedVariables.replayStateMachine.state === "recPending") {
-			const {
-				player,
-				block
-			} = event;
-			if (!SharedVariables.multiPlayers.includes(player)) return;
-			if (SharedVariables.twoPartBlocks.includes(block.type.id)) {
-				saveDoorPartsB(block, player);
-			} else {
-				const playerData = SharedVariables.replayBDataBMap.get(player.id);
-				playerData.dbgBlockDataB[SharedVariables.dbgRecTime] = {
-					location: block.location,
-					typeId: block.typeId,
-					states: block.permutation.getAllStates()
-				};
-			}
-		}
+// Suggested function name: handleBlockInteractionRecording
+function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
+    const { player, block, itemStack } = event;
 
-		if(event.itemStack.typeId === "minecraft:water_bucket"){
-			console.log("block loc: " + event.block.location);
-			console.log("block face: " + event.blockFace);
-			console.log("states: " + event.block.permutation.getAllStates)
-		}
-} 
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session || session.replayStateMachine.state !== "recPending") return;
+    if (!session.multiPlayers.includes(player)) return;
 
+    if (session.twoPartBlocks.includes(block.type.id)) {
+        saveDoorPartsB(block, player);
+    } else {
+        const playerBlockData = session.replayBDataBMap.get(player.id);
+        if (!playerBlockData) return;
+
+        playerBlockData.dbgBlockDataB[session.dbgRecTime] = {
+            location: block.location,
+            typeId: block.typeId,
+            states: block.permutation.getAllStates(),
+        };
+    }
+
+    if (itemStack?.typeId === "minecraft:water_bucket") {
+        console.log("block loc: " + block.location);
+        console.log("block face: " + event.blockFace);
+        console.log("states: ", block.permutation.getAllStates());
+    }
+}
 
 const replaycraftInteractWithBlockAfterEvent = () => {
-	world.afterEvents.playerInteractWithBlock.subscribe(recordBlocks);
+    world.afterEvents.playerInteractWithBlock.subscribe(recordBlocks);
 };
 
-export { replaycraftInteractWithBlockAfterEvent }
+export { replaycraftInteractWithBlockAfterEvent };

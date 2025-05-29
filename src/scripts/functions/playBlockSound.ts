@@ -1,5 +1,5 @@
-import { Vector3 } from "@minecraft/server";
-import { SharedVariables } from "../main";
+import { Player, Vector3 } from "@minecraft/server";
+import { SharedVariables } from "../data/replay-player-session";
 
 // Define the structure of the block data
 interface BlockData {
@@ -8,12 +8,17 @@ interface BlockData {
     states: Record<string, any>;
 }
 
-export function playBlockSound(blockData: BlockData): void {
-    if (!SharedVariables.toggleSound) return;
+export function playBlockSound(blockData: BlockData, player: Player): void {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        console.error(`No session found for player ${player.name}`);
+        return;
+    }
+    if (!session.toggleSound) return;
 
     const { location } = blockData;
 
-    SharedVariables.dbgRecController.playSound(SharedVariables.soundIds[SharedVariables.selectedSound], {
-        location: location
+    session.dbgRecController.playSound(session.soundIds[session.selectedSound], {
+        location: location,
     });
 }

@@ -1,5 +1,5 @@
 import { BlockPermutation, Player, system, Vector3 } from "@minecraft/server";
-import { SharedVariables } from "../main";
+import { SharedVariables } from "../data/replay-player-session";
 
 // Helper to compare two locations
 function positionsEqual(a: Vector3, b: Vector3): boolean {
@@ -30,15 +30,24 @@ function getBlockPartData(data: any, blockPos: Vector3) {
 }
 
 export async function clearStructure(player: Player) {
-    const playerData = SharedVariables.replayBData1Map.get(player.id);
+    const session = SharedVariables.playerSessions.get(player.id);
+
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+
+    const playerData = session.replayBData1Map.get(player.id);
     if (!playerData || !playerData.dbgBlockData1) return;
 
-    const ticks = Object.keys(playerData.dbgBlockData1).map(Number).sort((a, b) => b - a);
+    const ticks = Object.keys(playerData.dbgBlockData1)
+        .map(Number)
+        .sort((a, b) => b - a);
     const visitedChunks = new Set();
     const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
 
     // Get the recording start position
-    const recordingStartPos = SharedVariables.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
+    const recordingStartPos = session.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
     // Store original position before teleporting
     const originalPos = player.location;
     if (!recordingStartPos) {
@@ -85,7 +94,7 @@ export async function clearStructure(player: Player) {
 
                     // Wait for chunk to load before modifying blocks
                     if (success) {
-                        await new Promise<void>(resolve => system.runTimeout(() => resolve(), 5)); // Wait for ~5 game ticks
+                        await new Promise<void>((resolve) => system.runTimeout(() => resolve(), 5)); // Wait for ~5 game ticks
                         playerTeleported = true; // Mark player as teleported
                     }
                 }
@@ -137,7 +146,7 @@ export async function clearStructure(player: Player) {
      * StatusEffects = 11
      * ItemText = 12
      */
-    if (SharedVariables.hideHUD === true) {
+    if (session.hideHUD === true) {
         player.onScreenDisplay.setHudVisibility(1, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 }

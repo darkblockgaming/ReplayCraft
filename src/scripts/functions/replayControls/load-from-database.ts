@@ -1,95 +1,121 @@
-import { SharedVariables } from "../../main";
-import { replayCraftBeforeBlockInteractionsDB, replayCraftBlockDB, replayCraftBlockInteractionsDB, replayCraftPlaybackEntityDB, replayCraftPlayerActionsDB, replayCraftPlayerArmorWeaponsDB, replayCraftPlayerPosDB, replayCraftPlayerRotDB, replayCraftSettingsDB } from "../../classes/subscriptions/world-initialize";
+import {
+    replayCraftBeforeBlockInteractionsDB,
+    replayCraftBlockDB,
+    replayCraftBlockInteractionsDB,
+    replayCraftPlaybackEntityDB,
+    replayCraftPlayerActionsDB,
+    replayCraftPlayerArmorWeaponsDB,
+    replayCraftPlayerPosDB,
+    replayCraftPlayerRotDB,
+    replayCraftSettingsDB,
+} from "../../classes/subscriptions/world-initialize";
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
+import { createPlayerSession } from "../../data/create-session";
+import { SharedVariables } from "../../data/replay-player-session";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
-    // Load SharedVariables from the database.
+    // Load raw saved session settings from DB
     const savedSettingsRaw = replayCraftSettingsDB.get(player.id + buildName);
-    if (!savedSettingsRaw){
-        console.error(`[❌] Failed to restore settings for ${player.id}:${savedSettingsRaw}`);
+    if (!savedSettingsRaw) {
+        console.error(`[❌] Failed to restore settings for ${player.id}: No data found`);
         return;
-    } 
-       
+    }
 
     try {
         const savedSettings = JSON.parse(savedSettingsRaw);
 
+        // Get or create player session
+        let session = SharedVariables.playerSessions.get(player.id);
+        if (!session) {
+            session = createPlayerSession(player.id);
+            SharedVariables.playerSessions.set(player.id, session);
+        }
+
+        // Assign saved values to session, excluding functions, Maps, and state machine
         for (const [key, value] of Object.entries(savedSettings)) {
-            if (SharedVariables.hasOwnProperty(key)) {
-                // Only overwrite if it's a valid key in SharedVariables
-                (SharedVariables as Record<string, unknown>)[key] = value;
+            if (
+                typeof value !== "function" &&
+                !(value instanceof Object && "size" in value && typeof (value as any).get === "function") && // rough Map detection
+                key !== "replayStateMachine"
+            ) {
+                // Update session key if exists
+                if (key in session) {
+                    (session as any)[key] = value;
+                }
             }
         }
 
-        // If dbgRecController must be updated and re assigned to the player object.
-        if (SharedVariables.dbgRecController) {
-            const actualPlayer = world.getPlayers().find(p => p.id === SharedVariables.dbgRecController.id);
-            if (actualPlayer) {
-                SharedVariables.dbgRecController = actualPlayer; // Update the reference to the actual player object
-            }
-        }
-        //dbgCamAffectPlayer must be updated and re assigned to the player object.
-        if (Array.isArray(SharedVariables.dbgCamAffectPlayer) && SharedVariables.dbgCamAffectPlayer.length > 0) {
-            const players = world.getPlayers();
-            SharedVariables.dbgCamAffectPlayer = SharedVariables.dbgCamAffectPlayer
-                .map(oldPlayer => players.find(p => p.id === oldPlayer.id))
-                .filter(Boolean);
+        // Fix references to Player objects inside session arrays, e.g. dbgRecController, dbgCamAffectPlayer, multiPlayers
+        const players = world.getPlayers();
+
+        if (session.dbgRecController) {
+            const actualPlayer = players.find((p) => p.id === session.dbgRecController.id);
+            if (actualPlayer) session.dbgRecController = actualPlayer;
         }
 
-          //multiplayer array must be updated and re assigned to the player object.
-          if (Array.isArray(SharedVariables.multiPlayers) && SharedVariables.multiPlayers.length > 0) {
-            const players = world.getPlayers();
-            SharedVariables.multiPlayers = SharedVariables.multiPlayers
-                .map(oldPlayer => players.find(p => p.id === oldPlayer.id))
-                .filter(Boolean);
+        if (Array.isArray(session.dbgCamAffectPlayer) && session.dbgCamAffectPlayer.length > 0) {
+            session.dbgCamAffectPlayer = session.dbgCamAffectPlayer.map((oldPlayer) => players.find((p) => p.id === oldPlayer.id)).filter(Boolean);
         }
+
+        if (Array.isArray(session.multiPlayers) && session.multiPlayers.length > 0) {
+            session.multiPlayers = session.multiPlayers.map((oldPlayer) => players.find((p) => p.id === oldPlayer.id)).filter(Boolean);
+        }
+
+        // Clear old map data for each multiplayer player in session
+        session.multiPlayers.forEach((p) => {
+            session.replayBDataMap.delete(p.id);
+            session.replayPosDataMap.delete(p.id);
+            session.replayRotDataMap.delete(p.id);
+            session.replayMDataMap.delete(p.id);
+            session.replayBDataBMap.delete(p.id);
+            session.replayBData1Map.delete(p.id);
+            session.replayODataMap.delete(p.id);
+            session.replaySDataMap.delete(p.id);
+        });
+
+        // Load per-player data for each multiplayer player in session
+        session.multiPlayers.forEach((p) => {
+            const pidKey = p.id + buildName;
+
+            const savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
+            const savedPlayerPositionData = replayCraftPlayerPosDB.get(pidKey);
+            const savedPlayerRotationData = replayCraftPlayerRotDB.get(pidKey);
+            const savedPlayerActionsData = replayCraftPlayerActionsDB.get(pidKey);
+            const savedPlayerBlockInteractionsData = replayCraftBlockInteractionsDB.get(pidKey);
+            const savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(pidKey);
+            const savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
+            const savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
+
+            if (
+                !savedPlayerBlockData ||
+                !savedPlayerPositionData ||
+                !savedPlayerRotationData ||
+                !savedPlayerActionsData ||
+                !savedPlayerBlockInteractionsData ||
+                !savedPlayerBeforeBlockInteractionsData ||
+                !savedPlayBackEntityData ||
+                !savedPlayerArmorWeaponsData
+            ) {
+                console.warn(`[⚠️] Missing replay data for player ${p.name} (${p.id})`);
+            }
+
+            if (savedPlayerBlockData) session.replayBDataMap.set(p.id, savedPlayerBlockData);
+            if (savedPlayerPositionData) session.replayPosDataMap.set(p.id, savedPlayerPositionData);
+            if (savedPlayerRotationData) session.replayRotDataMap.set(p.id, savedPlayerRotationData);
+            if (savedPlayerActionsData) session.replayMDataMap.set(p.id, savedPlayerActionsData);
+            if (savedPlayerBlockInteractionsData) session.replayBDataBMap.set(p.id, savedPlayerBlockInteractionsData);
+            if (savedPlayerBeforeBlockInteractionsData) session.replayBData1Map.set(p.id, savedPlayerBeforeBlockInteractionsData);
+            if (savedPlayBackEntityData) session.replayODataMap.set(p.id, savedPlayBackEntityData);
+            if (savedPlayerArmorWeaponsData) session.replaySDataMap.set(p.id, savedPlayerArmorWeaponsData);
+        });
 
         console.warn(`[✅] Settings restored for ${player.id}`);
     } catch (err) {
         console.error(`[❌] Failed to restore settings for ${player.id}:`, err);
     }
-    for (const player of SharedVariables.multiPlayers) {
-        console.log(player.name, player.id);
-        
-        // Delete existing data maps for the player
-        SharedVariables.replayBDataMap.delete(player.id);
-        SharedVariables.replayPosDataMap.delete(player.id);
-        SharedVariables.replayRotDataMap.delete(player.id);
-        SharedVariables.replayMDataMap.delete(player.id);
-        SharedVariables.replayBDataBMap.delete(player.id);
-        SharedVariables.replayBData1Map.delete(player.id);
-        SharedVariables.replayODataMap.delete(player.id);
-        SharedVariables.replaySDataMap.delete(player.id);
-        
-        // Retrieve player data from DB
-        const savedPlayerBlockData = replayCraftBlockDB.get(player.id + buildName);
-        const savedPlayerPositionData = replayCraftPlayerPosDB.get(player.id + buildName);
-        const savedPlayerRotationDate = replayCraftPlayerRotDB.get(player.id + buildName);
-        const savedPlayerActionsData = replayCraftPlayerActionsDB.get(player.id + buildName);
-        const savedPlayerBlockInteractionsData = replayCraftBlockInteractionsDB.get(player.id + buildName);
-        const savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(player.id + buildName);
-        const savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(player.id + buildName);
-        const savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(player.id + buildName);
-    
-        // Check if any of the required data is missing and log a warning
-        if (!savedPlayerBlockData || !savedPlayerPositionData || !savedPlayerRotationDate || !savedPlayerActionsData || !savedPlayerBlockInteractionsData || !savedPlayerBeforeBlockInteractionsData || !savedPlayBackEntityData || !savedPlayerArmorWeaponsData) {
-            console.warn(`[⚠️] Missing replay data for player ${player.name} (${player.id})`);
-        }
-    
-        // Only set data if available
-        if (savedPlayerBlockData) SharedVariables.replayBDataMap.set(player.id, savedPlayerBlockData);
-        if (savedPlayerPositionData) SharedVariables.replayPosDataMap.set(player.id, savedPlayerPositionData);
-        if (savedPlayerRotationDate) SharedVariables.replayRotDataMap.set(player.id, savedPlayerRotationDate);
-        if (savedPlayerActionsData) SharedVariables.replayMDataMap.set(player.id, savedPlayerActionsData);
-        if (savedPlayerBlockInteractionsData) SharedVariables.replayBDataBMap.set(player.id, savedPlayerBlockInteractionsData);
-        if (savedPlayerBeforeBlockInteractionsData) SharedVariables.replayBData1Map.set(player.id, savedPlayerBeforeBlockInteractionsData);
-        if (savedPlayBackEntityData) SharedVariables.replayODataMap.set(player.id, savedPlayBackEntityData);
-        if (savedPlayerArmorWeaponsData) SharedVariables.replaySDataMap.set(player.id, savedPlayerArmorWeaponsData);
-    }
 
-   // Call UI 
-   if(showUI) {
-   replayMenuAfterLoad(player);
-   }
+    if (showUI) {
+        replayMenuAfterLoad(player);
+    }
 }

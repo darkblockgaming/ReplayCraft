@@ -1,5 +1,5 @@
 import { BlockPermutation, Player, Vector3, world, Dimension } from "@minecraft/server";
-import { SharedVariables } from "../main";
+import { SharedVariables } from "../data/replay-player-session";
 import { isChunkLoaded } from "./isChunkLoaded";
 import { waitForChunkLoad } from "./waitForChunkLoad";
 
@@ -20,7 +20,12 @@ type PlayerReplayData = {
 };
 
 export async function loadBlocksUpToTick(targetTick: number, player: Player): Promise<void> {
-    const playerData: PlayerReplayData | undefined = SharedVariables.replayBDataMap.get(player.id);
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        console.warn(`No replay session found for player ${player.name}`);
+        return;
+    }
+    const playerData: PlayerReplayData | undefined = session.replayBDataMap.get(player.id);
     if (!playerData) {
         console.warn(`No block replay data for player ${player.name}`);
         return;
@@ -33,9 +38,9 @@ export async function loadBlocksUpToTick(targetTick: number, player: Player): Pr
         async function setBlock(location: Vector3, typeId: string, states: BlockState): Promise<void> {
             if (!isChunkLoaded(location, player)) {
                 console.warn(`Chunk not loaded for block at ${location.x}, ${location.y}, ${location.z}. Teleporting player...`);
-                
+
                 const success = player.tryTeleport({ x: location.x, y: location.y + 2, z: location.z }, { checkForBlocks: false });
-                
+
                 if (success) {
                     await waitForChunkLoad(location, player);
                 } else {
@@ -43,14 +48,14 @@ export async function loadBlocksUpToTick(targetTick: number, player: Player): Pr
                     return;
                 }
             }
-            
-            const dimension: Dimension = world.getDimension(SharedVariables.dbgRecController.dimension.id);
+
+            const dimension: Dimension = world.getDimension(session.dbgRecController.dimension.id);
             const block = dimension.getBlock(location);
             if (!block) {
                 console.error(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);
                 return;
             }
-            
+
             block.setPermutation(BlockPermutation.resolve(typeId, states));
         }
 

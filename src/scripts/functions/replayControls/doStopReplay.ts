@@ -1,49 +1,55 @@
-
-
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { doStopCamera } from "../camera/doStopCamera";
 import { clearStructure } from "../clearStructure";
 
 export function doStopReplay(player: Player) {
-    if (SharedVariables.currentSwitch === false) {
-        if (SharedVariables.textPrompt) {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+    if (session.currentSwitch === false) {
+        if (session.textPrompt) {
             player.sendMessage({
-                "rawtext": [{
-                    "translate": "dbg.rc1.mes.replay.is.already.stopped"
-                }]
+                rawtext: [
+                    {
+                        translate: "dbg.rc1.mes.replay.is.already.stopped",
+                    },
+                ],
             });
         }
-        if (SharedVariables.soundCue) {
+        if (session.soundCue) {
             player.playSound("note.bass");
         }
         return;
     }
-    SharedVariables.replayStateMachine.setState("recCompleted");
-    if (SharedVariables.settReplayType === 0) {
-        SharedVariables.multiPlayers.forEach((player) => {
+    session.replayStateMachine.setState("recCompleted");
+    if (session.settReplayType === 0) {
+        session.multiPlayers.forEach((player) => {
+            session.followCamSwitch = false;
+            session.topDownCamSwitch = false;
+            session.topDownCamSwitch2 = false;
 
-            SharedVariables.followCamSwitch = false;
-            SharedVariables.topDownCamSwitch = false;
-            SharedVariables.topDownCamSwitch2 = false;
-
-            const customEntity = SharedVariables.replayODataMap.get(player.id);
+            const customEntity = session.replayODataMap.get(player.id);
             customEntity.remove();
             clearStructure(player);
 
             player.camera.clear();
-    //player.runCommand(`camera @s clear`);
+            //player.runCommand(`camera @s clear`);
             doStopCamera(player);
         });
     }
-    SharedVariables.lilTick = 0;
-    SharedVariables.currentSwitch = false;
+    session.lilTick = 0;
+    session.currentSwitch = false;
 
-    if (SharedVariables.textPrompt) {
+    if (session.textPrompt) {
         player.onScreenDisplay.setActionBar({
-            "rawtext": [{
-                "translate": "dbg.rc1.mes.replay.stopped"
-            }]
+            rawtext: [
+                {
+                    translate: "dbg.rc1.mes.replay.stopped",
+                },
+            ],
         });
     }
 }

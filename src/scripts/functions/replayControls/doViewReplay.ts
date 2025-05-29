@@ -1,26 +1,34 @@
 import { Player, system } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { summonReplayEntity } from "../summonReplayEntity";
 
 export async function doViewReplay(player: Player) {
-    if (SharedVariables.currentSwitch === true) {
-        if (SharedVariables.textPrompt) {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+
+    if (session.currentSwitch === true) {
+        if (session.textPrompt) {
             player.sendMessage({
-                "rawtext": [{
-                    "translate": "dbg.rc1.mes.replay.preview.is.already.on"
-                }]
+                rawtext: [
+                    {
+                        translate: "dbg.rc1.mes.replay.preview.is.already.on",
+                    },
+                ],
             });
         }
-        if (SharedVariables.soundCue) {
+        if (session.soundCue) {
             player.playSound("note.bass");
         }
         return;
     }
 
-    SharedVariables.replayStateMachine.setState("viewStartRep");
+    session.replayStateMachine.setState("viewStartRep");
 
-    for (const player of SharedVariables.multiPlayers) {
-        const posData = SharedVariables.replayPosDataMap.get(player.id);
+    for (const player of session.multiPlayers) {
+        const posData = session.replayPosDataMap.get(player.id);
         if (!posData || !posData.dbgRecPos) {
             console.error(`Replay position data not found for player ${player.name}`);
             continue;
@@ -41,7 +49,7 @@ export async function doViewReplay(player: Player) {
             const success = player.tryTeleport(summonPos, { checkForBlocks: false });
             if (success) {
                 // Wait for the chunk to load before continuing
-                await new Promise<void>(resolve => system.runTimeout(() => resolve(), 5)); // Wait a few ticks
+                await new Promise<void>((resolve) => system.runTimeout(() => resolve(), 5)); // Wait a few ticks
             } else {
                 console.error(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
             }
@@ -51,9 +59,9 @@ export async function doViewReplay(player: Player) {
         summonReplayEntity(player);
     }
 
-    SharedVariables.currentSwitch = true;
-     /**
-     * We can hide the following hud elements 
+    session.currentSwitch = true;
+    /**
+     * We can hide the following hud elements
      * PaperDoll = 0
      * Armor = 1
      * ToolTips = 2
@@ -67,9 +75,7 @@ export async function doViewReplay(player: Player) {
      * HorseHealth = 10
      * StatusEffects = 11ItemText = 12
      */
-    if(SharedVariables.hideHUD === true){
-        player.onScreenDisplay.setHudVisibility(0,[0,1,2,3,4,5,6,7,8,9,10,11,12]);
+    if (session.hideHUD === true) {
+        player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
-    
 }
-

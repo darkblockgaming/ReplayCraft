@@ -10,6 +10,7 @@ import { respawnCameraEntities } from "../functions/camera/camera-load-from-data
 import { saveToDB } from "../functions/replayControls/save-to-database";
 import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-ticks";
 import { openCameraReplaySelectFormSeconds } from "./timeline/select-camera-point-seconds";
+import { SharedVariables } from "../data/replay-player-session";
 
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
@@ -17,16 +18,19 @@ export function ReplayCraft2E(player: Player) {
         .title("replaycraft.cameramainmenu.title")
         .body("replaycraft.cameramainmenu.body")
         .button("replaycraft.timelineplayback.button") // 0
-        .button("replaycraft.recordingcontrols.button")  // 1
-        .button("replaycraft.savaload.button");  // 2
+        .button("replaycraft.recordingcontrols.button") // 1
+        .button("replaycraft.savaload.button"); // 2
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled) return;
 
         switch (result.selection) {
-            case 0: return showTimelineMenu(player);
-            case 1: return showRecordingMenu(player);
-            case 2: return showAdvancedMenu(player);
+            case 0:
+                return showTimelineMenu(player);
+            case 1:
+                return showRecordingMenu(player);
+            case 2:
+                return showAdvancedMenu(player);
         }
     });
 }
@@ -36,23 +40,17 @@ export function ReplayCraft2E(player: Player) {
 function showTimelineMenu(player: Player) {
     const form = new ui.ActionFormData()
         .title("replaycraft.TimelinePlaybackMenu.title")
-        .button("dbg.rc1.button.load.frame.t")     // 0
-        .button("dbg.rc1.button.load.frame.s")   // 1
-        .button("dbg.rc1.button.add.camera.point")       // 2
-        .button("replaycraft.timelineticks.button")// 3
+        .button("dbg.rc1.button.load.frame.t") // 0
+        .button("dbg.rc1.button.load.frame.s") // 1
+        .button("dbg.rc1.button.add.camera.point") // 2
+        .button("replaycraft.timelineticks.button") // 3
         .button("replaycraft.timelineseconds.button") // 4
-        .button("replaycraft.ui.back.button");                  // 5
+        .button("replaycraft.ui.back.button"); // 5
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled || result.selection === 5) return ReplayCraft2E(player);
 
-        const actions = [
-            loadFrameTicksForm,
-            loadFrameSecondsForm,
-            addPos,
-            openCameraReplaySelectFormTicks,
-            openCameraReplaySelectFormSeconds
-        ];
+        const actions = [loadFrameTicksForm, loadFrameSecondsForm, addPos, openCameraReplaySelectFormTicks, openCameraReplaySelectFormSeconds];
 
         const action = actions[result.selection];
         if (action) action(player);
@@ -62,12 +60,12 @@ function showTimelineMenu(player: Player) {
 function showRecordingMenu(player: Player) {
     const form = new ui.ActionFormData()
         .title("replaycraft.recodingcontrolsmenu.title")
-        .button("dbg.rc1.button.cancel.recording")        // 0
-        .button("dbg.rc1.button.reset.camera.setup")     // 1
-        .button("dbg.rc1.button.proceed.further")         // 2
-       .button("replaycraft.ui.back.button");                 // 3
+        .button("dbg.rc1.button.cancel.recording") // 0
+        .button("dbg.rc1.button.reset.camera.setup") // 1
+        .button("dbg.rc1.button.proceed.further") // 2
+        .button("replaycraft.ui.back.button"); // 3
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled || result.selection === 3) return ReplayCraft2E(player);
 
         const actions = [cancelRec, resetCamSetup, doProceedFurther];
@@ -79,15 +77,20 @@ function showRecordingMenu(player: Player) {
 function showAdvancedMenu(player: Player) {
     const form = new ui.ActionFormData()
         .title("replaycraft.saveloadmenue.title")
-        .button("dbg.rc1.button.save.current.camera.points")   // 0
-        .button("dbg.rc1.button.load.existing.camera.points")  // 1
-        .button("replaycraft.ui.back.button");                      // 2
+        .button("dbg.rc1.button.save.current.camera.points") // 0
+        .button("dbg.rc1.button.load.existing.camera.points") // 1
+        .button("replaycraft.ui.back.button"); // 2
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled || result.selection === 2) return ReplayCraft2E(player);
 
         const actions = [saveToDB, respawnCameraEntities];
         const action = actions[result.selection];
-        if (action) action(player);
+        const session = SharedVariables.playerSessions.get(player.id);
+        if (!session) {
+            player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+            return;
+        }
+        if (action) action(player, session);
     });
 }

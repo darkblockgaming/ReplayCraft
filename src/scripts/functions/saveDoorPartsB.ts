@@ -1,29 +1,34 @@
 import { Block, Player } from "@minecraft/server";
-import { SharedVariables } from "../main";
+import { SharedVariables } from "../data/replay-player-session";
 
 export function saveDoorPartsB(block: Block, player: Player) {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
     const isUpper = block.permutation.getState("upper_block_bit");
     if (!isUpper) {
         const lowerPart = {
             location: block.location,
             typeId: block.typeId,
-            states: block.permutation.getAllStates()
+            states: block.permutation.getAllStates(),
         };
         const upperPartLocation = {
             x: block.location.x,
             y: block.location.y + 1,
-            z: block.location.z
+            z: block.location.z,
         };
         const upperPartBlock = block.dimension.getBlock(upperPartLocation);
         const upperPart = {
             location: upperPartLocation,
             typeId: upperPartBlock.typeId,
-            states: upperPartBlock.permutation.getAllStates()
+            states: upperPartBlock.permutation.getAllStates(),
         };
-        const playerData = SharedVariables.replayBDataBMap.get(player.id);
-        playerData.dbgBlockDataB[SharedVariables.dbgRecTime] = {
+        const playerData = session.replayBDataBMap.get(player.id);
+        playerData.dbgBlockDataB[session.dbgRecTime] = {
             lowerPart,
-            upperPart
+            upperPart,
         };
     }
 }

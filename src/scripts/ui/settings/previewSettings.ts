@@ -1,46 +1,53 @@
-
 import * as ui from "@minecraft/server-ui";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 export function previewSettings(player: Player) {
-    if (SharedVariables.currentSwitch === true) {
-        if (SharedVariables.textPrompt) {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+    if (session.currentSwitch === true) {
+        if (session.textPrompt) {
             player.sendMessage({
-                "rawtext": [{
-                    "translate": "dbg.rc1.mes.wait.for.replay.preview.end"
-                }]
+                rawtext: [
+                    {
+                        translate: "dbg.rc1.mes.wait.for.replay.preview.end",
+                    },
+                ],
             });
         }
-        if (SharedVariables.soundCue) {
+        if (session.soundCue) {
             player.playSound("note.bass");
         }
         return;
     }
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.preview.settings")
-        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], {defaultValueIndex: SharedVariables.settReplayType})
-        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
-        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], {defaultValueIndex: SharedVariables.settNameType})
-        .textField("dbg.rc1.textfield.title.custom.name", SharedVariables.settCustomName)
+        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], { defaultValueIndex: session.settReplayType })
+        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
+        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settNameType })
+        .textField("dbg.rc1.textfield.title.custom.name", session.settCustomName);
 
-
-    replaySettingsForm.show(player).then(response => {
+    replaySettingsForm.show(player).then((response) => {
         if (response.canceled) {
-            if (SharedVariables.textPrompt) {
+            if (session.textPrompt) {
                 player.sendMessage({
-                    "rawtext": [{
-                        "translate": "dbg.rc1.mes.please.click.submit"
-                    }]
+                    rawtext: [
+                        {
+                            translate: "dbg.rc1.mes.please.click.submit",
+                        },
+                    ],
                 });
             }
-            if (SharedVariables.soundCue) {
+            if (session.soundCue) {
                 player.playSound("note.bass");
             }
             return;
         }
-        SharedVariables.settReplayType = Number(response.formValues[0]);
-        SharedVariables.choosenReplaySkin = Number(response.formValues[1]);
-        SharedVariables.settNameType = Number(response.formValues[2]);
-        SharedVariables.settCustomName = String(response.formValues[3]);
-    })
+        session.settReplayType = Number(response.formValues[0]);
+        session.chosenReplaySkin = Number(response.formValues[1]);
+        session.settNameType = Number(response.formValues[2]);
+        session.settCustomName = String(response.formValues[3]);
+    });
 }

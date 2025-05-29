@@ -1,6 +1,5 @@
-
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { isChunkLoaded } from "../isChunkLoaded";
 import { summonReplayEntity } from "../summonReplayEntity";
 import { waitForChunkLoad } from "../waitForChunkLoad";
@@ -8,22 +7,29 @@ import { startReplayCam } from "./startReplayCam";
 import { removeEntities } from "../removeEntities";
 
 export async function doReplay(player: Player, pointIndex?: number) {
-    if (SharedVariables.currentSwitch === true) {
-        if (SharedVariables.textPrompt) {
+    const session = SharedVariables.playerSessions.get(player.id);
+
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+
+    if (session.currentSwitch === true) {
+        if (session.textPrompt) {
             player.sendMessage({
-                "rawtext": [{ "translate": "dbg.rc1.mes.replay.is.already.in.progress" }]
+                rawtext: [{ translate: "dbg.rc1.mes.replay.is.already.in.progress" }],
             });
         }
-        if (SharedVariables.soundCue) {
+        if (session.soundCue) {
             player.playSound("note.bass");
         }
         return;
     }
 
-    SharedVariables.replayStateMachine.setState("recStartRep");
-    SharedVariables.currentSwitch = true;
+    session.replayStateMachine.setState("recStartRep");
+    session.currentSwitch = true;
     /**
-     * We can hide the following hud elements 
+     * We can hide the following hud elements
      * PaperDoll = 0
      * Armor = 1
      * ToolTips = 2
@@ -37,29 +43,28 @@ export async function doReplay(player: Player, pointIndex?: number) {
      * HorseHealth = 10
      * StatusEffects = 11ItemText = 12
      */
-    if(SharedVariables.hideHUD === true){
-        player.onScreenDisplay.setHudVisibility(0,[0,1,2,3,4,5,6,7,8,9,10,11,12]);
-    }
-    
-
-    // Hide HUD if needed
-    if (SharedVariables.hideHUD === true) {
+    if (session.hideHUD === true) {
         player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
-    const posData = SharedVariables.replayPosDataMap.get(player.id);
+    // Hide HUD if needed
+    if (session.hideHUD === true) {
+        player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    }
+
+    const posData = session.replayPosDataMap.get(player.id);
     if (!posData || !posData.dbgRecPos || posData.dbgRecPos.length === 0) {
         console.warn(`No recorded positions found for player ${player.name}`);
         return;
     }
 
-    const startTick = SharedVariables.wantLoadFrameTick;
-    const closestFrame = posData.dbgRecPos.reduce((prev: { tick: number; }, curr: { tick: number; }) => {
+    const startTick = session.wantLoadFrameTick;
+    const closestFrame = posData.dbgRecPos.reduce((prev: { tick: number }, curr: { tick: number }) => {
         return Math.abs(curr.tick - startTick) < Math.abs(prev.tick - startTick) ? curr : prev;
     }, posData.dbgRecPos[0]);
 
     const firstRecordedPos = closestFrame;
-    removeEntities(player, true);  // Remove any existing entities before proceeding
+    removeEntities(player, true); // Remove any existing entities before proceeding
 
     // Ensure chunk is loaded before proceeding
     if (!isChunkLoaded(firstRecordedPos, player)) {
@@ -76,11 +81,11 @@ export async function doReplay(player: Player, pointIndex?: number) {
     }
 
     // Proceed with replay: Start the camera and summon replay entities
-    SharedVariables.dbgCamAffectPlayer.forEach((player) => {
-        startReplayCam(player, pointIndex);  // Ensure camera starts from correct tick
+    session.dbgCamAffectPlayer.forEach((player) => {
+        startReplayCam(player, pointIndex); // Ensure camera starts from correct tick
     });
 
-    SharedVariables.multiPlayers.forEach((player) => {
-        summonReplayEntity(player);  // Ensure entities spawn from correct tick
+    session.multiPlayers.forEach((player) => {
+        summonReplayEntity(player); // Ensure entities spawn from correct tick
     });
 }

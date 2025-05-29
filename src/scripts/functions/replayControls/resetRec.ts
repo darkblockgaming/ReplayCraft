@@ -1,29 +1,35 @@
 //@ts-check
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 
 export function resetRec(player: Player) {
-    SharedVariables.dbgRecController = undefined;
-    SharedVariables.currentSwitch = false;
-    SharedVariables.dbgRecTime = 0;
-    SharedVariables.lilTick = 0;
-    SharedVariables.replaySpeed = 1;
-    SharedVariables.replayBDataMap.set(player.id, {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+
+    session.dbgRecController = undefined;
+    session.currentSwitch = false;
+    session.dbgRecTime = 0;
+    session.lilTick = 0;
+    session.replaySpeed = 1;
+    session.replayBDataMap.set(player.id, {
         dbgBlockData: {},
     });
-    SharedVariables.replayBDataBMap.set(player.id, {
-        dbgBlockDataB: {}
+    session.replayBDataBMap.set(player.id, {
+        dbgBlockDataB: {},
     });
-    SharedVariables.replayBData1Map.set(player.id, {
-        dbgBlockData1: {}
+    session.replayBData1Map.set(player.id, {
+        dbgBlockData1: {},
     });
-    SharedVariables.replayPosDataMap.set(player.id, {
-        dbgRecPos: []
+    session.replayPosDataMap.set(player.id, {
+        dbgRecPos: [],
     });
-    SharedVariables.replayRotDataMap.set(player.id, {
-        dbgRecRot: []
+    session.replayRotDataMap.set(player.id, {
+        dbgRecRot: [],
     });
-    SharedVariables.replayMDataMap.set(player.id, {
+    session.replayMDataMap.set(player.id, {
         isSneaking: [],
         isSwimming: [],
         isClimbing: [],
@@ -32,18 +38,17 @@ export function resetRec(player: Player) {
         isGliding: [],
         isRiding: [],
         isSprinting: [],
-        isSleeping: []
-
+        isSleeping: [],
     });
-    SharedVariables.replayODataMap.set(player.id, {
-        customEntity: undefined
+    session.replayODataMap.set(player.id, {
+        customEntity: undefined,
     });
-    SharedVariables.replaySDataMap.set(player.id, {
+    session.replaySDataMap.set(player.id, {
         weapon1: [],
         weapon2: [],
         armor1: [],
         armor2: [],
         armor3: [],
-        armor4: []
+        armor4: [],
     });
 }

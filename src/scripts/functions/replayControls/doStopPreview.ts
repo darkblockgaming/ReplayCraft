@@ -1,37 +1,45 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { clearStructure } from "../clearStructure";
 
-
 export function doStopPreview(player: Player) {
-    if (SharedVariables.currentSwitch === true) {
-        if (SharedVariables.textPrompt) {
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+    if (session.currentSwitch === true) {
+        if (session.textPrompt) {
             player.sendMessage({
-                "rawtext": [{
-                    "translate": "dbg.rc1.mes.replay.preview.has.stopped.successfully"
-                }]
+                rawtext: [
+                    {
+                        translate: "dbg.rc1.mes.replay.preview.has.stopped.successfully",
+                    },
+                ],
             });
         }
-        SharedVariables.replayStateMachine.setState("recSaved");
+        session.replayStateMachine.setState("recSaved");
 
-        SharedVariables.multiPlayers.forEach((player) => {
-            const customEntity = SharedVariables.replayODataMap.get(player.id);
+        session.multiPlayers.forEach((player) => {
+            const customEntity = session.replayODataMap.get(player.id);
             customEntity.remove();
             clearStructure(player);
         });
 
-        SharedVariables.lilTick = 0;
-        SharedVariables.currentSwitch = false;
+        session.lilTick = 0;
+        session.currentSwitch = false;
         return;
     } else {
-        if (SharedVariables.textPrompt) {
+        if (session.textPrompt) {
             player.onScreenDisplay.setActionBar({
-                "rawtext": [{
-                    "translate": "dbg.rc1.mes.replay.preview.is.already.off"
-                }]
+                rawtext: [
+                    {
+                        translate: "dbg.rc1.mes.replay.preview.is.already.off",
+                    },
+                ],
             });
         }
-        if (SharedVariables.soundCue) {
+        if (session.soundCue) {
             player.playSound("note.bass");
         }
     }

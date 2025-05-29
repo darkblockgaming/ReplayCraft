@@ -5,23 +5,13 @@ import { ReplayCraft2A } from "../ui/replayCraft2A";
 import { ReplayCraft2B } from "../ui/replayCraft2B";
 import { ReplayCraft2C } from "../ui/replayCraft2C";
 import { ReplayCraft2E } from "../ui/replayCraft2E";
-import { SharedVariables } from "../main";
 import { saveToDB } from "../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
 import { removeEntities } from "../functions/removeEntities";
+import { PlayerReplaySession } from "../data/replay-player-session";
 
-type ReplayState = 
-    | "recStartRep"
-    | "viewStartRep"
-    | "recCompleted"
-    | "recCamSetup"
-    | "recSaved"
-    | "recPaused"
-    | "recPending"
-    |"editingCameraPos"
-    | "default";
+type ReplayState = "recStartRep" | "viewStartRep" | "recCompleted" | "recCamSetup" | "recSaved" | "recPaused" | "recPending" | "editingCameraPos" | "default";
 
-// Updated function signature to support optional extra data
 type ReplayHandler = (player: Player, data?: unknown) => void;
 
 export class ReplayStateMachine {
@@ -29,7 +19,7 @@ export class ReplayStateMachine {
     private nextData?: unknown;
     public states: Record<ReplayState, ReplayHandler>;
 
-    constructor() {
+    constructor(private session: PlayerReplaySession) {
         this.state = "default";
         this.states = {
             recStartRep: this.handleRecStartRep.bind(this),
@@ -79,29 +69,30 @@ export class ReplayStateMachine {
     private handleDefault(player: Player): void {
         ReplayCraft2A(player);
     }
+
     private handleEditingCameraPos(player: Player): void {
-        const camIndex = SharedVariables.currentEditingCamIndex;
+        const camIndex = this.session.currentEditingCamIndex;
         if (camIndex === -1) {
             player.sendMessage("§cNo camera point selected to edit.");
-            if (SharedVariables.soundCue) {
+            if (this.session.soundCue) {
                 player.playSound("note.bass");
             }
             return;
         }
-    
-        SharedVariables.replayCamPos[camIndex].position = player.getHeadLocation();
-        SharedVariables.replayCamRot[camIndex].rotation = player.getRotation();
-        SharedVariables.currentEditingCamIndex = -1;
-        saveToDB(player);
+
+        this.session.replayCamPos[camIndex].position = player.getHeadLocation();
+        this.session.replayCamRot[camIndex].rotation = player.getRotation();
+        this.session.currentEditingCamIndex = -1;
+
+        saveToDB(player, this.session); // Optional: pass `this.session` if needed
         removeEntities(player, false);
         respawnCameraEntities(player);
-    
+
         player.sendMessage(`§4[ReplayCraft] §fCamera point ${camIndex + 1} updated successfully.`);
-        if (SharedVariables.soundCue) {
+        if (this.session.soundCue) {
             player.playSound("random.orb");
         }
-        
-        // Return to default UI or a setup state if needed
+
         this.setState("recCamSetup");
         this.handleEvent(player);
     }
@@ -120,7 +111,7 @@ export class ReplayStateMachine {
         const handler = this.states[this.state];
         if (handler) {
             handler(player, this.nextData);
-            this.nextData = undefined; // clear after use
+            this.nextData = undefined;
         } else {
             this.handleDefault(player);
         }

@@ -1,13 +1,16 @@
 import * as ui from "@minecraft/server-ui";
-import { SharedVariables } from "../../main";
+import { SharedVariables } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 
 export async function editCameraPointTick(player: Player, index: number) {
-    const oldTick = SharedVariables.replayCamPos[index].tick;
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+    const oldTick = session.replayCamPos[index].tick;
 
-    const form = new ui.ModalFormData()
-        .title("Edit Camera Point")
-        .textField("Enter new tick value:", "e.g. 240", oldTick.toString());
+    const form = new ui.ModalFormData().title("Edit Camera Point").textField("Enter new tick value:", "e.g. 240", oldTick.toString());
 
     const response = await form.show(player);
     if (response.canceled) return;
@@ -19,14 +22,14 @@ export async function editCameraPointTick(player: Player, index: number) {
         return;
     }
 
-    const existing = SharedVariables.replayCamPos.find((c, i) => i !== index && c.tick === newTick);
+    const existing = session.replayCamPos.find((c, i) => i !== index && c.tick === newTick);
     if (existing) {
         player.sendMessage("§cA camera point already exists at that tick.");
         return;
     }
 
-    SharedVariables.replayCamPos[index].tick = newTick;
-    SharedVariables.replayCamRot[index].tick = newTick;
+    session.replayCamPos[index].tick = newTick;
+    session.replayCamRot[index].tick = newTick;
 
     player.sendMessage(`§aCamera point updated to tick ${newTick}.`);
 }

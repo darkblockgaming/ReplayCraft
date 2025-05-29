@@ -1,18 +1,23 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
-import { SharedVariables } from "../main";
+import { SharedVariables } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
 
 //@ts-check
 export function summonReplayEntity(player: Player) {
-    const posData = SharedVariables.replayPosDataMap.get(player.id);
-    const rotData = SharedVariables.replayRotDataMap.get(player.id);
-    const pData = SharedVariables.replayMDataMap.get(player.id);
-    
+    const session = SharedVariables.playerSessions.get(player.id);
+    if (!session) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        return;
+    }
+    const posData = session.replayPosDataMap.get(player.id);
+    const rotData = session.replayRotDataMap.get(player.id);
+    const pData = session.replayMDataMap.get(player.id);
+
     if (!posData) return;
 
     let customEntity;
 
-    if (SharedVariables.settReplayType === 0) {
+    if (session.settReplayType === 0) {
         // Get skin and model data
         let skinData = replayCraftSkinDB.get(player.id);
         if (!skinData) {
@@ -24,20 +29,18 @@ export function summonReplayEntity(player: Player) {
         const skinID = parseInt(skinIDStr);
         const modelID = parseInt(modelIDStr);
 
-        const startTick = SharedVariables.wantLoadFrameTick ?? 0;
-        const closestFrame = posData.dbgRecPos.reduce((prev: { tick: number; }, curr: { tick: number; }) => {
+        const startTick = session.wantLoadFrameTick ?? 0;
+        const closestFrame = posData.dbgRecPos.reduce((prev: { tick: number }, curr: { tick: number }) => {
             return Math.abs(curr.tick - startTick) < Math.abs(prev.tick - startTick) ? curr : prev;
         }, posData.dbgRecPos[0]);
 
         const spawnPos = {
             x: closestFrame.x,
             y: closestFrame.y,
-            z: closestFrame.z
+            z: closestFrame.z,
         };
 
-        const entityType = modelID === 0
-            ? "dbg:replayentity_steve" as VanillaEntityIdentifier
-            : "dbg:replayentity_alex" as VanillaEntityIdentifier;
+        const entityType = modelID === 0 ? ("dbg:replayentity_steve" as VanillaEntityIdentifier) : ("dbg:replayentity_alex" as VanillaEntityIdentifier);
 
         customEntity = player.dimension.spawnEntity(entityType, spawnPos);
 
@@ -45,21 +48,22 @@ export function summonReplayEntity(player: Player) {
             console.error(`[ReplayCraft] Failed to spawn replay entity for ${player.name}`);
             return;
         }
+        customEntity.addTag("owner:" + player.id);
 
         // Set skin and name tag
         customEntity.setProperty("dbg:skin", skinID);
-        switch (SharedVariables.settNameType) {
+        switch (session.settNameType) {
             case 0:
             case 1:
                 customEntity.nameTag = player.name;
                 break;
             case 2:
-                customEntity.nameTag = SharedVariables.settCustomName;
+                customEntity.nameTag = session.settCustomName;
                 break;
         }
 
         // Store entity
-        SharedVariables.replayODataMap.set(player.id, customEntity);
+        session.replayODataMap.set(player.id, customEntity);
 
         // === Sync entity to exact start tick position/rotation ===
         const posAtTick = posData.dbgRecPos[startTick];
