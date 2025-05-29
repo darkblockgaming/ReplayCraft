@@ -2,6 +2,7 @@ import { ItemUseAfterEvent, world } from "@minecraft/server";
 import { createPlayerSession } from "../../data/create-session";
 import { initializePlayerMaps } from "../../data/initialize-player-maps";
 import { SharedVariables } from "../../data/replay-player-session";
+import { replayCraftActiveSessionsDB } from "./world-initialize";
 
 function setController(eventData: ItemUseAfterEvent) {
     const player = eventData.source;
@@ -10,7 +11,11 @@ function setController(eventData: ItemUseAfterEvent) {
         if (!SharedVariables.playerSessions.has(player.id)) {
             const session = createPlayerSession(player.id);
             initializePlayerMaps(session, player.id);
-            SharedVariables.playerSessions.set(player.id, session);
+            session.playerName = player.name;
+            replayCraftActiveSessionsDB.set(player.id, {
+                playerId: player.id,
+                playerName: player.name,
+            });
             console.log(`[Replay Init] Session created for ${player.name}`);
         } else {
             console.log(`[Replay Init] Session already exists for ${player.name}`);

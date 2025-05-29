@@ -1,8 +1,10 @@
 import { ReplayStateMachine } from "../classes/replayStateMachine";
 import { PlayerReplaySession } from "./replay-player-session";
+import { replayCraftActiveSessionsDB } from "../classes/subscriptions/world-initialize";
 
 export function createPlayerSession(_playerId: string): PlayerReplaySession {
     const session = {
+        playerName: "",
         soundIds: [
             "place.amethyst_block",
             "place.amethyst_cluster",
@@ -254,7 +256,8 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         currentEditingCamIndex: undefined,
         useFullRecordingRange: true,
     } as PlayerReplaySession;
-
+    // Add the session to the active sessions database?
+    replayCraftActiveSessionsDB.set(_playerId, session);
     // Now instantiate replayStateMachine passing the session itself
     session.replayStateMachine = new ReplayStateMachine(session);
 

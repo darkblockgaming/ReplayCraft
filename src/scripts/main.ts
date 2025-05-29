@@ -11,6 +11,7 @@ import { BlockPermutation, EasingType, EquipmentSlot, Player, system, world } fr
 import { clearStructure } from "./functions/clearStructure";
 import { playBlockSound } from "./functions/playBlockSound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn";
+import { onPlayerLeave } from "./classes/subscriptions/player-leave";
 import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initialize";
 //temp solution for the missing import this needs to be convered.
 import "./ReplayCraft.js";
@@ -33,6 +34,8 @@ replaycraftItemUseAfterEvent();
 
 //Show the player a useful message for the first time they join!
 onPlayerSpawn();
+//Handle player leaving the game
+onPlayerLeave();
 
 //data-hive
 subscribeToWorldInitialize();
