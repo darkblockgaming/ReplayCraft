@@ -21,7 +21,7 @@ export function replaySettings(player: Player) {
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replay.settings")
         .dropdown("dbg.rc1.dropdown.title.replay.type", ["Default Replay", "Ghost Replay"], {defaultValueIndex: SharedVariables.settReplayType})
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
+        //.dropdown("dbg.rc1.dropdown.title.replay.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
         .dropdown("dbg.rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], {defaultValueIndex: SharedVariables.settNameType})
         .textField("dbg.rc1.textfield.custom.name", SharedVariables.settCustomName)
         .dropdown("dbg.rc1.dropdown.title.camera.ease.type", SharedVariables.easeTypes, {defaultValueIndex: SharedVariables.replayCamEase})
@@ -46,20 +46,20 @@ export function replaySettings(player: Player) {
             return;
         }
         SharedVariables.settReplayType = Number(response.formValues[0]);
-        SharedVariables.choosenReplaySkin = Number (response.formValues[1]);
-        SharedVariables.settNameType = Number(response.formValues[2]);;
-        SharedVariables.settCustomName = String(response.formValues[3]);
-        SharedVariables.replayCamEase = Number(response.formValues[4]);
-        SharedVariables.settCameraType = Number(response.formValues[5]);
-        SharedVariables.focusPlayerSelection = Number(response.formValues[6]);
+        //SharedVariables.choosenReplaySkin = Number (response.formValues[1]);
+        SharedVariables.settNameType = Number(response.formValues[1]);;
+        SharedVariables.settCustomName = String(response.formValues[2]);
+        SharedVariables.replayCamEase = Number(response.formValues[3]);
+        SharedVariables.settCameraType = Number(response.formValues[4]);
+        SharedVariables.focusPlayerSelection = Number(response.formValues[5]);
         SharedVariables.dbgCamFocusPlayer = SharedVariables.multiPlayers[SharedVariables.focusPlayerSelection];
-        SharedVariables.affectCameraSelection = Number(response.formValues[7]);
+        SharedVariables.affectCameraSelection = Number(response.formValues[6]);
         if (SharedVariables.affectCameraSelection === 0) {
             SharedVariables.dbgCamAffectPlayer = SharedVariables.multiPlayers;
         } else {
             SharedVariables.dbgCamAffectPlayer = [];
             SharedVariables.dbgCamAffectPlayer[0] = SharedVariables.multiPlayers[SharedVariables.affectCameraSelection - 1];
         }
-        SharedVariables.topDownCamHight = Number(response.formValues[8]);
+        SharedVariables.topDownCamHight = Number(response.formValues[7]);
     })
 }

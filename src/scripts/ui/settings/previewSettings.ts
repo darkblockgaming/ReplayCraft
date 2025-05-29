@@ -19,7 +19,7 @@ export function previewSettings(player: Player) {
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.preview.settings")
         .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], {defaultValueIndex: SharedVariables.settReplayType})
-        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
+        //.dropdown("dbg.rc1.dropdown.title.preview.skin.type", SharedVariables.skinTypes, {defaultValueIndex: SharedVariables.choosenReplaySkin})
         .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], {defaultValueIndex: SharedVariables.settNameType})
         .textField("dbg.rc1.textfield.title.custom.name", SharedVariables.settCustomName)
 
@@ -39,8 +39,8 @@ export function previewSettings(player: Player) {
             return;
         }
         SharedVariables.settReplayType = Number(response.formValues[0]);
-        SharedVariables.choosenReplaySkin = Number(response.formValues[1]);
-        SharedVariables.settNameType = Number(response.formValues[2]);
-        SharedVariables.settCustomName = String(response.formValues[3]);
+       //SharedVariables.choosenReplaySkin = Number(response.formValues[1]);
+        SharedVariables.settNameType = Number(response.formValues[1]);
+        SharedVariables.settCustomName = String(response.formValues[2]);
     })
 }
