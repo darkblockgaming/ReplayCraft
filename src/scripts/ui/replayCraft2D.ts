@@ -1,7 +1,6 @@
 
 import * as ui from "@minecraft/server-ui";
 import { previewSettings } from "./settings/previewSettings";
-
 import { cancelRec } from "./cancelRec";
 import { Player } from "@minecraft/server";
 import { doViewReplay } from "../functions/replayControls/doViewReplay";
