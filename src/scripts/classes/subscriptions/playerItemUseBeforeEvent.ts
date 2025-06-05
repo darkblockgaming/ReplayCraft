@@ -9,10 +9,10 @@ function setController(eventData: ItemUseBeforeEvent) {
         return;
     }
     if (eventData.itemStack?.typeId === "minecraft:stick" && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
-        if (player === session.dbgRecController || !session.dbgRecController) {
-            if (session.multiToggle === false) {
-                session.multiPlayers = [];
-                session.multiPlayers.push(player);
+        if (player === session.replayController || !session.replayController) {
+            if (session.multiPlayerReplayEnabled === false) {
+                session.trackedPlayers = [];
+                session.trackedPlayers.push(player);
             }
         }
     }

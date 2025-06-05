@@ -9,7 +9,7 @@ export async function doViewReplay(player: Player) {
         return;
     }
 
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -27,14 +27,14 @@ export async function doViewReplay(player: Player) {
 
     session.replayStateMachine.setState("viewStartRep");
 
-    for (const player of session.multiPlayers) {
-        const posData = session.replayPosDataMap.get(player.id);
-        if (!posData || !posData.dbgRecPos) {
+    for (const player of session.trackedPlayers) {
+        const posData = session.replayPositionDataMap.get(player.id);
+        if (!posData || !posData.recordedPositions) {
             console.error(`Replay position data not found for player ${player.name}`);
             continue;
         }
 
-        const summonPos = posData.dbgRecPos[0];
+        const summonPos = posData.recordedPositions[0];
 
         // Calculate distance between player and the target position (summonPos)
         const dx = player.location.x - summonPos.x;
@@ -59,7 +59,7 @@ export async function doViewReplay(player: Player) {
         summonReplayEntity(player);
     }
 
-    session.currentSwitch = true;
+    session.isReplayActive = true;
     /**
      * We can hide the following hud elements
      * PaperDoll = 0

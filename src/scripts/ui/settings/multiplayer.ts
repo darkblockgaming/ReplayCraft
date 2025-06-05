@@ -10,8 +10,8 @@ export function multiPlayersett(player: Player) {
     }
     const availablePlayers = world.getPlayers();
     if (availablePlayers.length === 1) {
-        session.multiPlayers = [];
-        session.multiPlayers.push(player);
+        session.trackedPlayers = [];
+        session.trackedPlayers.push(player);
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -28,7 +28,7 @@ export function multiPlayersett(player: Player) {
 
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.multiplayer.settings")
-        .toggle(`dbg.rc1.toggle.multiplayer.replay`, { defaultValue: session.multiToggle })
+        .toggle(`dbg.rc1.toggle.multiplayer.replay`, { defaultValue: session.multiPlayerReplayEnabled })
         .slider(`\nAvailable Players\n${playerNames}\n\nSelected Players`, 1, availablePlayers.length, {
             valueStep: 1,
             defaultValue: 1,
@@ -57,19 +57,19 @@ export function multiPlayersett(player: Player) {
             player.playSound("note.bass");
             return;
         }
-        session.multiToggle = Boolean(response.formValues[0]);
-        if (session.multiToggle === true) {
-            session.multiPlayers = [];
+        session.multiPlayerReplayEnabled = Boolean(response.formValues[0]);
+        if (session.multiPlayerReplayEnabled === true) {
+            session.trackedPlayers = [];
             const selectedNumber = response.formValues[1];
             for (let i = 0; i < Number(selectedNumber); i++) {
-                session.multiPlayers.push(availablePlayers[i]);
+                session.trackedPlayers.push(availablePlayers[i]);
             }
             player.sendMessage(`§4[ReplayCraft] Â§aAdded ${selectedNumber} players to multiplayer replay.`);
             player.playSound("note.pling");
         }
-        if (session.multiToggle === false) {
-            session.multiPlayers = [];
-            session.multiPlayers.push(player);
+        if (session.multiPlayerReplayEnabled === false) {
+            session.trackedPlayers = [];
+            session.trackedPlayers.push(player);
             player.sendMessage({
                 rawtext: [
                     {

@@ -9,7 +9,7 @@ export function doStopReplay(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    if (session.currentSwitch === false) {
+    if (session.isReplayActive === false) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -25,13 +25,13 @@ export function doStopReplay(player: Player) {
         return;
     }
     session.replayStateMachine.setState("recCompleted");
-    if (session.settReplayType === 0) {
-        session.multiPlayers.forEach((player) => {
-            session.followCamSwitch = false;
-            session.topDownCamSwitch = false;
-            session.topDownCamSwitch2 = false;
+    if (session.settingReplayType === 0) {
+        session.trackedPlayers.forEach((player) => {
+            session.isFollowCamActive = false;
+            session.isTopDownFixedCamActive = false;
+            session.isTopDownDynamicCamActive = false;
 
-            const entityData = session.replayODataMap.get(player.id);
+            const entityData = session.replayEntityDataMap.get(player.id);
             entityData?.customEntity.remove();
             clearStructure(player);
 
@@ -40,8 +40,8 @@ export function doStopReplay(player: Player) {
             doStopCamera(player);
         });
     }
-    session.lilTick = 0;
-    session.currentSwitch = false;
+    session.currentTick = 0;
+    session.isReplayActive = false;
 
     if (session.textPrompt) {
         player.onScreenDisplay.setActionBar({

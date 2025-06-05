@@ -9,19 +9,19 @@ export function doStart(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    session.multiPlayers.forEach((player) => {
+    session.trackedPlayers.forEach((player) => {
         removeEntities(player, false);
         resetRec(player);
     });
     session.replayStateMachine.setState("recPending");
-    session.dbgRecController = player;
-    console.log(`dbgRecController: `, `${session.dbgRecController.id}`);
-    if (session.multiToggle === false) {
-        session.dbgCamFocusPlayer = session.dbgRecController;
-        session.dbgCamAffectPlayer[0] = session.dbgRecController;
+    session.replayController = player;
+    console.log(`dbgRecController: `, `${session.replayController.id}`);
+    if (session.multiPlayerReplayEnabled === false) {
+        session.cameraFocusPlayer = session.replayController;
+        session.cameraAffectedPlayers[0] = session.replayController;
     }
-    if (session.multiToggle === true) {
-        session.dbgCamAffectPlayer = session.multiPlayers;
+    if (session.multiPlayerReplayEnabled === true) {
+        session.cameraAffectedPlayers = session.trackedPlayers;
     }
     if (session.textPrompt) {
         player.sendMessage({

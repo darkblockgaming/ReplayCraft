@@ -29,11 +29,11 @@ function setController(eventData: ItemUseAfterEvent) {
         session.replayStateMachine.handleEvent(player);
 
         // Set controller logic (this used to be in beforeEvents)
-        if (!session.dbgRecController || session.dbgRecController === player) {
-            if (!session.multiToggle) {
-                session.multiPlayers = [player];
+        if (!session.replayController || session.replayController === player) {
+            if (!session.multiPlayerReplayEnabled) {
+                session.trackedPlayers = [player];
             }
-            session.dbgRecController = player;
+            session.replayController = player;
             console.log(`[Replay Init] Controller set to ${player.name}`);
         }
     }

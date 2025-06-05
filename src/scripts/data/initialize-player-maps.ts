@@ -2,11 +2,11 @@ import { PlayerReplaySession } from "./replay-player-session";
 
 export function initializePlayerMaps(session: PlayerReplaySession, playerId: string) {
     session.replayBlockStateMap.set(playerId, { blockStateChanges: {} });
-    session.replayBDataBMap.set(playerId, { blockSateAfterInteractions: {} });
-    session.replayBData1Map.set(playerId, { blockStateBeforeInteractions: {} });
-    session.replayPosDataMap.set(playerId, { dbgRecPos: [] });
-    session.replayRotDataMap.set(playerId, { dbgRecRot: [] });
-    session.replayMDataMap.set(playerId, {
+    session.replayBlockInteractionAfterMap.set(playerId, { blockSateAfterInteractions: {} });
+    session.replayBlockInteractionBeforeMap.set(playerId, { blockStateBeforeInteractions: {} });
+    session.replayPositionDataMap.set(playerId, { recordedPositions: [] });
+    session.replayRotationDataMap.set(playerId, { recordedRotations: [] });
+    session.replayActionDataMap.set(playerId, {
         isSneaking: [],
         isSwimming: [],
         isClimbing: [],
@@ -17,8 +17,8 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
         isSprinting: [],
         isSleeping: [],
     });
-    session.replayODataMap.set(playerId, { customEntity: undefined });
-    session.replaySDataMap.set(playerId, {
+    session.replayEntityDataMap.set(playerId, { customEntity: undefined });
+    session.replayEquipmentDataMap.set(playerId, {
         weapon1: [],
         weapon2: [],
         armor1: [],

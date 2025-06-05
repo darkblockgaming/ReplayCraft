@@ -8,7 +8,7 @@ export function doStopPreview(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -20,14 +20,14 @@ export function doStopPreview(player: Player) {
         }
         session.replayStateMachine.setState("recSaved");
 
-        session.multiPlayers.forEach((player) => {
-            const entityData = session.replayODataMap.get(player.id);
+        session.trackedPlayers.forEach((player) => {
+            const entityData = session.replayEntityDataMap.get(player.id);
             entityData?.customEntity.remove();
             clearStructure(player);
         });
 
-        session.lilTick = 0;
-        session.currentSwitch = false;
+        session.currentTick = 0;
+        session.isReplayActive = false;
         return;
     } else {
         if (session.textPrompt) {

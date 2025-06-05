@@ -12,7 +12,7 @@ export function deletePro(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -29,7 +29,7 @@ export function deletePro(player: Player) {
     }
     resetCamSetup(player);
     session.replayStateMachine.setState("default");
-    session.multiPlayers.forEach((player) => {
+    session.trackedPlayers.forEach((player) => {
         removeEntities(player, false);
         clearStructure(player);
         resetRec(player);

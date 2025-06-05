@@ -60,17 +60,17 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     try {
         const players = world.getPlayers();
 
-        if (session.dbgRecController) {
-            const actualPlayer = players.find((p) => p.id === session.dbgRecController.id);
-            if (actualPlayer) session.dbgRecController = actualPlayer;
+        if (session.replayController) {
+            const actualPlayer = players.find((p) => p.id === session.replayController.id);
+            if (actualPlayer) session.replayController = actualPlayer;
         }
 
-        if (Array.isArray(session.dbgCamAffectPlayer)) {
-            session.dbgCamAffectPlayer = session.dbgCamAffectPlayer.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+        if (Array.isArray(session.cameraAffectedPlayers)) {
+            session.cameraAffectedPlayers = session.cameraAffectedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
         }
 
-        if (Array.isArray(session.multiPlayers)) {
-            session.multiPlayers = session.multiPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+        if (Array.isArray(session.trackedPlayers)) {
+            session.trackedPlayers = session.trackedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
         }
     } catch (err) {
         debugError(`Error resolving player references for ${player.id}:`, err);
@@ -79,20 +79,30 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
 
     try {
         debugLog("Session maps before clearing:");
-        ["replayBlockStateMap", "replayPosDataMap", "replayRotDataMap", "replayMDataMap", "replayBDataBMap", "replayBData1Map", "replayODataMap", "replaySDataMap"].forEach((key) => {
+        [
+            "replayStateMachine",
+            "replayBlockStateMap",
+            "replayBlockInteractionAfterMap",
+            "replayBlockInteractionBeforeMap",
+            "replayPositionDataMap",
+            "replayRotationDataMap",
+            "replayActionDataMap",
+            "replayEntityDataMap",
+            "replayEquipmentDataMap",
+        ].forEach((key) => {
             const val = (session as any)[key];
             debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
         });
 
-        session.multiPlayers.forEach((p) => {
+        session.trackedPlayers.forEach((p) => {
             session.replayBlockStateMap.delete(p.id);
-            session.replayPosDataMap.delete(p.id);
-            session.replayRotDataMap.delete(p.id);
-            session.replayMDataMap.delete(p.id);
-            session.replayBDataBMap.delete(p.id);
-            session.replayBData1Map.delete(p.id);
-            session.replayODataMap.delete(p.id);
-            session.replaySDataMap.delete(p.id);
+            session.replayPositionDataMap.delete(p.id);
+            session.replayRotationDataMap.delete(p.id);
+            session.replayActionDataMap.delete(p.id);
+            session.replayBlockInteractionAfterMap.delete(p.id);
+            session.replayBlockInteractionBeforeMap.delete(p.id);
+            session.replayEntityDataMap.delete(p.id);
+            session.replayEquipmentDataMap.delete(p.id);
         });
     } catch (err) {
         debugError(`Error clearing map data for ${player.id}:`, err);
@@ -100,7 +110,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     }
 
     try {
-        session.multiPlayers.forEach((p) => {
+        session.trackedPlayers.forEach((p) => {
             const pidKey = p.id + buildName;
 
             let savedPlayerBlockData, savedPlayerPositionData, savedPlayerRotationData, savedPlayerActionsData, savedPlayerBlockInteractionsData, savedPlayerBeforeBlockInteractionsData, savedPlayBackEntityData, savedPlayerArmorWeaponsData;
@@ -136,13 +146,13 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
 
             try {
                 if (savedPlayerBlockData) session.replayBlockStateMap.set(p.id, savedPlayerBlockData);
-                if (savedPlayerPositionData) session.replayPosDataMap.set(p.id, savedPlayerPositionData);
-                if (savedPlayerRotationData) session.replayRotDataMap.set(p.id, savedPlayerRotationData);
-                if (savedPlayerActionsData) session.replayMDataMap.set(p.id, savedPlayerActionsData);
-                if (savedPlayerBlockInteractionsData) session.replayBDataBMap.set(p.id, savedPlayerBlockInteractionsData);
-                if (savedPlayerBeforeBlockInteractionsData) session.replayBData1Map.set(p.id, savedPlayerBeforeBlockInteractionsData);
-                if (savedPlayBackEntityData) session.replayODataMap.set(p.id, savedPlayBackEntityData);
-                if (savedPlayerArmorWeaponsData) session.replaySDataMap.set(p.id, savedPlayerArmorWeaponsData);
+                if (savedPlayerPositionData) session.replayPositionDataMap.set(p.id, savedPlayerPositionData);
+                if (savedPlayerRotationData) session.replayRotationDataMap.set(p.id, savedPlayerRotationData);
+                if (savedPlayerActionsData) session.replayActionDataMap.set(p.id, savedPlayerActionsData);
+                if (savedPlayerBlockInteractionsData) session.replayBlockInteractionAfterMap.set(p.id, savedPlayerBlockInteractionsData);
+                if (savedPlayerBeforeBlockInteractionsData) session.replayBlockInteractionBeforeMap.set(p.id, savedPlayerBeforeBlockInteractionsData);
+                if (savedPlayBackEntityData) session.replayEntityDataMap.set(p.id, savedPlayBackEntityData);
+                if (savedPlayerArmorWeaponsData) session.replayEquipmentDataMap.set(p.id, savedPlayerArmorWeaponsData);
             } catch (mapSetErr) {
                 debugError(`Error assigning replay maps for ${p.name} (${p.id}):`, mapSetErr);
             }

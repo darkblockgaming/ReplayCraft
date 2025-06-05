@@ -7,15 +7,15 @@ function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
 
     const session = replaySessions.playerSessions.get(player.id);
     if (!session || session.replayStateMachine.state !== "recPending") return;
-    if (!session.multiPlayers.includes(player)) return;
+    if (!session.trackedPlayers.includes(player)) return;
 
     if (session.twoPartBlocks.includes(block.type.id)) {
         saveDoorParts1(block, player);
     } else {
-        const playerData = session.replayBData1Map.get(player.id);
+        const playerData = session.replayBlockInteractionBeforeMap.get(player.id);
         if (!playerData) return;
 
-        playerData.blockStateBeforeInteractions[session.dbgRecTime] = {
+        playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

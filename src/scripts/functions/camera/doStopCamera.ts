@@ -9,15 +9,15 @@ export function doStopCamera(player: Player) {
     player.camera.clear();
     //player.runCommand(`camera @s clear`);
 
-    const timeOut1Id = session.repCamTout1Map.get(player.id);
+    const timeOut1Id = session.cameraInitTimeoutsMap.get(player.id);
     timeOut1Id.forEach((timeOut1Id: number) => {
         system.clearRun(timeOut1Id);
     });
-    session.repCamTout1Map.delete(player.id);
+    session.cameraInitTimeoutsMap.delete(player.id);
 
-    const timeOut2Id = session.repCamTout2Map.get(player.id);
+    const timeOut2Id = session.cameraTransitionTimeoutsMap.get(player.id);
     timeOut2Id.forEach((timeOut2Id: number) => {
         system.clearRun(timeOut2Id);
     });
-    session.repCamTout2Map.delete(player.id);
+    session.cameraTransitionTimeoutsMap.delete(player.id);
 }

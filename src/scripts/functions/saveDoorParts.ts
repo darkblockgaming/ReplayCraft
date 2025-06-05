@@ -40,7 +40,7 @@ export function saveDoorParts(block: Block, player: Player) {
         const playerData = session.replayBlockStateMap.get(player.id);
 
         // Save with a top-level structure
-        playerData.blockStateChanges[session.dbgRecTime] = {
+        playerData.blockStateChanges[session.recordingEndTick] = {
             location: lowerPart.location, // Use lowerPart location as base
             typeId: lowerPart.typeId, // Use lowerPart typeId as base
             states: lowerPart.states, // Use lowerPart states as base

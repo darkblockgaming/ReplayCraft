@@ -8,16 +8,16 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
         return;
     }
 
-    if (session.settCameraType === 0) return;
-    if (!(session.repCamTout1Map instanceof Map)) {
-        session.repCamTout1Map = new Map();
+    if (session.settingCameraType === 0) return;
+    if (!(session.cameraInitTimeoutsMap instanceof Map)) {
+        session.cameraInitTimeoutsMap = new Map();
     }
-    if (!(session.repCamTout2Map instanceof Map)) {
-        session.repCamTout2Map = new Map();
+    if (!(session.cameraTransitionTimeoutsMap instanceof Map)) {
+        session.cameraTransitionTimeoutsMap = new Map();
     }
 
-    session.repCamTout1Map.set(player.id, []);
-    session.repCamTout2Map.set(player.id, []);
+    session.cameraInitTimeoutsMap.set(player.id, []);
+    session.cameraTransitionTimeoutsMap.set(player.id, []);
 
     const camPos = session.replayCamPos;
     const camRot = session.replayCamRot;
@@ -33,7 +33,7 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
     const baseTick = camPos[startPoint].tick;
     const ease = session.easeTypes[session.replayCamEase] as keyof typeof EasingType;
 
-    if (session.settCameraType === 1) {
+    if (session.settingCameraType === 1) {
         const firstPoint = camPos[startPoint];
         const firstRot = camRot[startPoint];
         const timeOut1Id = system.runTimeout(() => {
@@ -42,7 +42,7 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
                 rotation: firstRot.rotation,
             });
         }, 0);
-        session.repCamTout1Map.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
 
         for (let i = startPoint; i < camPos.length - 1; i++) {
             const from = camPos[i];
@@ -63,12 +63,12 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
                     },
                 });
             }, relativeTick);
-            session.repCamTout2Map.get(player.id).push(timeOut2Id);
+            session.cameraTransitionTimeoutsMap.get(player.id).push(timeOut2Id);
         }
     }
 
     // Types 2, 3, 4 (non-eased) — adapt the same relative tick logic
-    if (session.settCameraType === 2) {
+    if (session.settingCameraType === 2) {
         const firstPoint = camPos[startPoint];
         const firstRot = camRot[startPoint];
         const timeOut1Id = system.runTimeout(() => {
@@ -76,22 +76,22 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
                 location: firstPoint.position,
                 rotation: firstRot.rotation,
             });
-            session.followCamSwitch = true;
+            session.isFollowCamActive = true;
         }, 0);
-        session.repCamTout1Map.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
     }
 
-    if (session.settCameraType === 3) {
+    if (session.settingCameraType === 3) {
         const timeOut1Id = system.runTimeout(() => {
-            session.topDownCamSwitch = true;
+            session.isTopDownFixedCamActive = true;
         }, 0);
-        session.repCamTout1Map.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
     }
 
-    if (session.settCameraType === 4) {
+    if (session.settingCameraType === 4) {
         const timeOut1Id = system.runTimeout(() => {
-            session.topDownCamSwitch2 = true;
+            session.isTopDownDynamicCamActive = true;
         }, 0);
-        session.repCamTout1Map.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
     }
 }

@@ -18,7 +18,7 @@ export function playBlockSound(blockData: BlockData, player: Player): void {
 
     const { location } = blockData;
 
-    session.dbgRecController.playSound(session.soundIds[session.selectedSound], {
+    session.replayController.playSound(session.soundIds[session.selectedSound], {
         location: location,
     });
 }

@@ -26,10 +26,10 @@ export interface PlayerBlockInteractionBeforeData {
     blockStateBeforeInteractions: Record<number, BlockInteractionEntry>;
 }
 export interface PlayerPositionData {
-    dbgRecPos: Vector3[];
+    recordedPositions: Vector3[];
 }
 export interface PlayerRotationData {
-    dbgRecRot: Vector2[];
+    recordedRotations: Vector2[];
 }
 export interface PlayerActionsData {
     isSneaking: number[];

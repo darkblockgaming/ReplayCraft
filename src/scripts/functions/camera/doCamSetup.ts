@@ -7,7 +7,7 @@ export function doCamSetup(player: Player) {
         player.sendMessage("§c[ReplayCraft] Error: No replay session found for you.");
         return;
     }
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [

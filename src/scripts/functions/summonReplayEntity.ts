@@ -9,15 +9,15 @@ export function summonReplayEntity(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    const posData = session.replayPosDataMap.get(player.id);
-    const rotData = session.replayRotDataMap.get(player.id);
-    const pData = session.replayMDataMap.get(player.id);
+    const posData = session.replayPositionDataMap.get(player.id);
+    const rotData = session.replayRotationDataMap.get(player.id);
+    const pData = session.replayActionDataMap.get(player.id);
 
     if (!posData) return;
 
     let customEntity;
 
-    if (session.settReplayType === 0) {
+    if (session.settingReplayType === 0) {
         // Get skin and model data
         let skinData = replayCraftSkinDB.get(player.id);
         if (!skinData) {
@@ -29,10 +29,10 @@ export function summonReplayEntity(player: Player) {
         const skinID = parseInt(skinIDStr);
         const modelID = parseInt(modelIDStr);
 
-        const startTick = session.wantLoadFrameTick;
-        const totalTicks = Math.min(posData.dbgRecPos.length, session.dbgRecTime);
+        const startTick = session.targetFrameTick;
+        const totalTicks = Math.min(posData.recordedPositions.length, session.recordingEndTick);
         const clampedTick = Math.min(Math.max(startTick, 0), totalTicks - 1);
-        const closestFrame = posData.dbgRecPos[clampedTick];
+        const closestFrame = posData.recordedPositions[clampedTick];
 
         const spawnPos = {
             x: closestFrame.x,
@@ -52,22 +52,22 @@ export function summonReplayEntity(player: Player) {
 
         // Set skin and name tag
         customEntity.setProperty("dbg:skin", skinID);
-        switch (session.settNameType) {
+        switch (session.settingNameType) {
             case 0:
             case 1:
                 customEntity.nameTag = player.name;
                 break;
             case 2:
-                customEntity.nameTag = session.settCustomName;
+                customEntity.nameTag = session.settingCustomName;
                 break;
         }
 
         // Store entity
-        session.replayODataMap.set(player.id, { customEntity });
+        session.replayEntityDataMap.set(player.id, { customEntity });
 
         // === Sync entity to exact start tick position/rotation ===
-        const posAtTick = posData.dbgRecPos[startTick];
-        const rotAtTick = rotData?.dbgRecRot?.[startTick];
+        const posAtTick = posData.recordedPositions[startTick];
+        const rotAtTick = rotData?.recordedRotations?.[startTick];
 
         if (posAtTick && rotAtTick) {
             customEntity.teleport(posAtTick, { rotation: rotAtTick });

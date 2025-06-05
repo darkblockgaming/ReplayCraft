@@ -24,7 +24,7 @@ export function addPos(player: Player) {
         return;
     }
 
-    const existingCamPoint = session.replayCamPos.find((cam) => cam.tick === session.wantLoadFrameTick);
+    const existingCamPoint = session.replayCamPos.find((cam) => cam.tick === session.targetFrameTick);
     if (existingCamPoint) {
         if (session.textPrompt) {
             player.sendMessage({
@@ -41,13 +41,13 @@ export function addPos(player: Player) {
         return;
     }
 
-    session.startingValueTick = session.wantLoadFrameTick;
-    session.startingValueSecs = Math.floor(session.wantLoadFrameTick / 20);
+    session.startingValueTick = session.targetFrameTick;
+    session.startingValueSecs = Math.floor(session.targetFrameTick / 20);
 
     const { x, y, z } = player.location;
     const spawnLocation = { x, y: y + 1.8, z };
 
-    const cameraPosTick = session.wantLoadFrameTick;
+    const cameraPosTick = session.targetFrameTick;
 
     session.replayCamPos.push({
         position: player.getHeadLocation(),

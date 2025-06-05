@@ -10,15 +10,15 @@ export function resetCamSetup(player: Player) {
         return;
     }
 
-    session.multiPlayers.forEach((player) => {
+    session.trackedPlayers.forEach((player) => {
         clearStructure(player);
         removeEntities(player, false);
     });
-    session.currentSwitch = false;
+    session.isReplayActive = false;
     session.frameLoaded = false;
     session.replayCamPos = [];
     session.replayCamRot = [];
-    session.wantLoadFrameTick = 0;
+    session.targetFrameTick = 0;
     player.sendMessage({
         rawtext: [
             {

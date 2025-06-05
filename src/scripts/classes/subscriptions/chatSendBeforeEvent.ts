@@ -17,7 +17,6 @@ import {
 } from "../../classes/subscriptions/world-initialize";
 
 import { OptimizedDatabase } from "../../data/data-hive";
-import { playerDataDisplay, SharedVariablesDisplay } from "../../main";
 import config from "../../data/config";
 
 function giveItems(event: ChatSendBeforeEvent) {
@@ -93,20 +92,6 @@ function giveItems(event: ChatSendBeforeEvent) {
         if (message === "?dbstats") {
             system.run(() => {
                 showDatabaseListUI(sender);
-            });
-            event.cancel = true;
-            return;
-        }
-        if (message === "?playerData") {
-            system.run(() => {
-                playerDataDisplay(sender);
-            });
-            event.cancel = true;
-            return;
-        }
-        if (message === "?snapshot") {
-            system.run(() => {
-                SharedVariablesDisplay();
             });
             event.cancel = true;
             return;

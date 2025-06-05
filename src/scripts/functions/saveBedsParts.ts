@@ -50,7 +50,7 @@ export function saveBedParts(block: Block, player: Player) {
         };
 
         const playerData = session.replayBlockStateMap.get(player.id);
-        playerData.blockStateChanges[session.dbgRecTime] = {
+        playerData.blockStateChanges[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

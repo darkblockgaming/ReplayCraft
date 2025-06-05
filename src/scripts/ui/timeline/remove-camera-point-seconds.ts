@@ -18,7 +18,7 @@ export function removeCameraPoint(player: Player, index: number) {
     const lastCamTick = camTicks.length > 0 ? Math.max(...camTicks) : 0;
 
     // Clamp wantLoadFrameTick to last camera point
-    session.wantLoadFrameTick = Math.min(session.wantLoadFrameTick, lastCamTick);
+    session.targetFrameTick = Math.min(session.targetFrameTick, lastCamTick);
 
     removeEntities(player, false);
     saveToDB(player, session);

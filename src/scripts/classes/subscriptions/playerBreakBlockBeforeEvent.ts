@@ -11,7 +11,7 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
     if (!session) return;
 
     if (session.replayStateMachine.state !== "recPending") return;
-    if (!session.multiPlayers.includes(player)) return;
+    if (!session.trackedPlayers.includes(player)) return;
 
     if (block.typeId === "minecraft:bed" || session.twoPartBlocks.includes(block.type.id)) {
         if (block.typeId === "minecraft:bed") {
@@ -20,7 +20,7 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
             saveDoorParts1(block, player);
         }
     } else {
-        session.dbgBlockData1[session.dbgRecTime] = {
+        session.blockBeforeEventData[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

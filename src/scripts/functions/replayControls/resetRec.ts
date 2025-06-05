@@ -9,27 +9,27 @@ export function resetRec(player: Player) {
         return;
     }
 
-    session.dbgRecController = undefined;
-    session.currentSwitch = false;
-    session.dbgRecTime = 0;
-    session.lilTick = 0;
+    session.replayController = undefined;
+    session.isReplayActive = false;
+    session.recordingEndTick = 0;
+    session.currentTick = 0;
     session.replaySpeed = 1;
     session.replayBlockStateMap.set(player.id, {
         blockStateChanges: {},
     });
-    session.replayBDataBMap.set(player.id, {
+    session.replayBlockInteractionAfterMap.set(player.id, {
         blockSateAfterInteractions: {},
     });
-    session.replayBData1Map.set(player.id, {
+    session.replayBlockInteractionBeforeMap.set(player.id, {
         blockStateBeforeInteractions: {},
     });
-    session.replayPosDataMap.set(player.id, {
-        dbgRecPos: [],
+    session.replayPositionDataMap.set(player.id, {
+        recordedPositions: [],
     });
-    session.replayRotDataMap.set(player.id, {
-        dbgRecRot: [],
+    session.replayRotationDataMap.set(player.id, {
+        recordedRotations: [],
     });
-    session.replayMDataMap.set(player.id, {
+    session.replayActionDataMap.set(player.id, {
         isSneaking: [],
         isSwimming: [],
         isClimbing: [],
@@ -40,10 +40,10 @@ export function resetRec(player: Player) {
         isSprinting: [],
         isSleeping: [],
     });
-    session.replayODataMap.set(player.id, {
+    session.replayEntityDataMap.set(player.id, {
         customEntity: undefined,
     });
-    session.replaySDataMap.set(player.id, {
+    session.replayEquipmentDataMap.set(player.id, {
         weapon1: [],
         weapon2: [],
         armor1: [],

@@ -14,23 +14,23 @@ import { PlayerReplaySession } from "../../data/replay-player-session";
 
 export function saveToDB(player: Player, session: PlayerReplaySession) {
     // Safety check for multiplayer array in session
-    if (!Array.isArray(session.multiPlayers) || session.multiPlayers.length === 0) {
-        console.warn("[⚠️] No players found in session.multiPlayers.");
+    if (!Array.isArray(session.trackedPlayers) || session.trackedPlayers.length === 0) {
+        console.warn("[⚠️] No players found in session.trackedPlayers.");
         return;
     }
 
     // Save per-player data from session maps
-    for (const currentPlayer of session.multiPlayers) {
+    for (const currentPlayer of session.trackedPlayers) {
         console.log(`Saving data for player: ${currentPlayer.name} (${currentPlayer.id})`);
 
         const PlayerBlockData = session.replayBlockStateMap.get(currentPlayer.id);
-        const playerPositionData = session.replayPosDataMap.get(currentPlayer.id);
-        const playerRotationData = session.replayRotDataMap.get(currentPlayer.id);
-        const playerActionsData = session.replayMDataMap.get(currentPlayer.id);
-        const playerBlockInteractionsData = session.replayBDataBMap.get(currentPlayer.id);
-        const playerBeforeBlockInteractionsData = session.replayBData1Map.get(currentPlayer.id);
-        const playBackEntityData = session.replayODataMap.get(currentPlayer.id);
-        const playerArmorWeaponsData = session.replaySDataMap.get(currentPlayer.id);
+        const playerPositionData = session.replayPositionDataMap.get(currentPlayer.id);
+        const playerRotationData = session.replayRotationDataMap.get(currentPlayer.id);
+        const playerActionsData = session.replayActionDataMap.get(currentPlayer.id);
+        const playerBlockInteractionsData = session.replayBlockInteractionAfterMap.get(currentPlayer.id);
+        const playerBeforeBlockInteractionsData = session.replayBlockInteractionBeforeMap.get(currentPlayer.id);
+        const playBackEntityData = session.replayEntityDataMap.get(currentPlayer.id);
+        const playerArmorWeaponsData = session.replayEquipmentDataMap.get(currentPlayer.id);
 
         if (!PlayerBlockData) console.warn(`[⚠️] Missing block data for player ${currentPlayer.id}`);
         if (!playerPositionData) console.warn(`[⚠️] Missing position data for player ${currentPlayer.id}`);
@@ -56,7 +56,17 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
     // Filter session object before saving general settings
     const filteredSettings: Record<string, any> = {};
 
-    const excludeKeys = new Set(["replayStateMachine", "replayBlockStateMap", "replayBDataBMap", "replayBData1Map", "replayPosDataMap", "replayRotDataMap", "replayMDataMap", "replayODataMap", "replaySDataMap"]);
+    const excludeKeys = new Set([
+        "replayStateMachine",
+        "replayBlockStateMap",
+        "replayBlockInteractionAfterMap",
+        "replayBlockInteractionBeforeMap",
+        "replayPositionDataMap",
+        "replayRotationDataMap",
+        "replayActionDataMap",
+        "replayEntityDataMap",
+        "replayEquipmentDataMap",
+    ]);
 
     for (const [key, value] of Object.entries(session)) {
         if (typeof value !== "function" && !excludeKeys.has(key)) {

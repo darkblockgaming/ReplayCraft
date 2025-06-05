@@ -46,7 +46,7 @@ export async function loadBlocksUpToTick(targetTick: number, player: Player): Pr
                 }
             }
 
-            const dimension: Dimension = world.getDimension(session.dbgRecController.dimension.id);
+            const dimension: Dimension = world.getDimension(session.replayController.dimension.id);
             const block = dimension.getBlock(location);
             if (!block) {
                 console.error(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);

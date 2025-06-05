@@ -25,8 +25,8 @@ export function saveDoorPartsB(block: Block, player: Player) {
             typeId: upperPartBlock.typeId,
             states: upperPartBlock.permutation.getAllStates(),
         };
-        const playerData = session.replayBDataBMap.get(player.id);
-        playerData.blockSateAfterInteractions[session.dbgRecTime] = {
+        const playerData = session.replayBlockInteractionAfterMap.get(player.id);
+        playerData.blockSateAfterInteractions[session.recordingEndTick] = {
             lowerPart,
             upperPart,
         };

@@ -3,27 +3,48 @@ import { ReplayStateMachine } from "../classes/replayStateMachine";
 import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData } from "../classes/types/types";
 
 export interface PlayerReplaySession {
+    /**
+     * @param playerName? - The name of the player who is controlling the replay session.
+     */
     playerName: string;
     soundIds: string[];
     easeTypes: string[];
     skinTypes: string[];
-    dbgRecController?: Player;
-    dbgRecTime: number;
+    /**
+     * @param replayController? - The player who is controlling the replay.
+     */
+    replayController?: Player;
+    /**
+     * @param recordingEndTick - The tick at which the recording ends. This is used to determine the duration of the replay.
+     */
+    recordingEndTick: number;
+    /**
+     * @param replayStateMachine - an instance of ReplayStateMachine that manages the state of the replay session.
+     */
     replayStateMachine: ReplayStateMachine;
-    multiPlayers: Player[];
-    multiToggle: boolean;
+    /**
+     * @param trackedPlayers - an array of Player objects that are being tracked in the replay session.
+     * This will always contain the replayController(Player), if multiPlayerReplayEnabled is set to false.
+     * If multiPlayerReplayEnabled is set to true, this will contain all players that were added to this replay session at the main menu.
+     */
+    trackedPlayers: Player[];
+    /**
+     * @param multiPlayerReplayEnabled - A boolean indicating whether the replay session is in multiplayer mode.
+     * If true, multiple players can be tracked in the replay session.
+     */
+    multiPlayerReplayEnabled: boolean;
     replayBlockStateMap: Map<string, PlayerBlockData>; //was replayBDataMap: Block Related Data (After placing/breaking)
-    replayBDataBMap: Map<string, PlayerBlockInteractionData>; //was replayBDataBMap: Block Interaction Data (AfterEvent)
-    replayBData1Map: Map<string, PlayerBlockInteractionBeforeData>; //was replayBData1Map: Block Interaction Data (BeforeEvent)
-    replayPosDataMap: Map<string, PlayerPositionData>; //was replayPosDataMap: Player Position Data
-    replayRotDataMap: Map<string, PlayerRotationData>; //was replayRotDataMap: Player Rotation Data
-    replayMDataMap: Map<string, PlayerActionsData>; //was replayMDataMap: Player Actions Data
-    replayODataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
-    replaySDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
+    replayBlockInteractionAfterMap: Map<string, PlayerBlockInteractionData>; //was replayBDataBMap: Block Interaction Data (AfterEvent)
+    replayBlockInteractionBeforeMap: Map<string, PlayerBlockInteractionBeforeData>; //was replayBData1Map: Block Interaction Data (BeforeEvent)
+    replayPositionDataMap: Map<string, PlayerPositionData>; //was replayPosDataMap: Player Position Data
+    replayRotationDataMap: Map<string, PlayerRotationData>; //was replayRotDataMap: Player Rotation Data
+    replayActionDataMap: Map<string, PlayerActionsData>; //was replayMDataMap: Player Actions Data
+    replayEntityDataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
+    replayEquipmentDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;
-    wantLoadFrameTick: number;
+    targetFrameTick: number;
     frameLoaded: boolean;
     startingValueTick: number;
     replayCamPos: any[];
@@ -33,22 +54,22 @@ export interface PlayerReplaySession {
     startingValueSecs: number;
     startingValueMins: number;
     startingValueHrs: number;
-    repCamTout1Map: Map<any, any>;
-    repCamTout2Map: Map<any, any>;
-    settCameraType: number;
+    cameraInitTimeoutsMap: Map<any, any>; //Temporary storage for camera initialization timeouts
+    cameraTransitionTimeoutsMap: Map<any, any>; //Temporary storage for camera transition timeouts
+    settingCameraType: number;
     replayCamEase: number;
-    settReplayType: number;
-    followCamSwitch: boolean;
+    settingReplayType: number;
+    isFollowCamActive: boolean;
     chosenReplaySkin: number;
-    settNameType: number;
-    settCustomName: string;
-    currentSwitch: boolean;
-    lilTick: number;
+    settingNameType: number;
+    settingCustomName: string;
+    isReplayActive: boolean;
+    currentTick: number;
     replaySpeed: number;
-    dbgCamFocusPlayer?: Player;
-    dbgCamAffectPlayer: Player[];
-    topDownCamSwitch: boolean;
-    topDownCamSwitch2: boolean;
+    cameraFocusPlayer?: Player;
+    cameraAffectedPlayers: Player[];
+    isTopDownFixedCamActive: boolean;
+    isTopDownDynamicCamActive: boolean;
     topDownCamHight: number;
     focusPlayerSelection: number;
     affectCameraSelection: number;
@@ -57,7 +78,7 @@ export interface PlayerReplaySession {
     showCameraSetupUI: boolean;
     currentEditingCamIndex: number;
     useFullRecordingRange: boolean;
-    dbgBlockData: Record<
+    blockAfterEventData: Record<
         number,
         {
             location: Vector3;
@@ -65,7 +86,7 @@ export interface PlayerReplaySession {
             states: Record<string, boolean | number | string>;
         }
     >;
-    dbgBlockData1: Record<
+    blockBeforeEventData: Record<
         number,
         {
             location: Vector3;

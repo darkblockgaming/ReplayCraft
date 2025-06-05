@@ -7,7 +7,7 @@ export function doResume(player: Player) {
         return;
     }
     session.replayStateMachine.setState("recPending");
-    session.dbgRecController = player;
+    session.replayController = player;
     if (session.textPrompt) {
         player.sendMessage({
             rawtext: [

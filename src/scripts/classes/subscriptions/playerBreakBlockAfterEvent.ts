@@ -17,7 +17,7 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
             saveDoorParts(block, player);
         }
     } else {
-        session.dbgBlockData[session.dbgRecTime] = {
+        session.blockAfterEventData[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

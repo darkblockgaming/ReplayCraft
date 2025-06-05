@@ -19,7 +19,7 @@ export function doSave(player: Player) {
             ],
         });
     }
-    session.multiPlayers.forEach((player) => {
+    session.trackedPlayers.forEach((player) => {
         clearStructure(player);
     });
 

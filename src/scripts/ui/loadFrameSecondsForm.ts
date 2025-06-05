@@ -12,9 +12,9 @@ export function loadFrameSecondsForm(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    const totalTicks = session.dbgRecTime;
+    const totalTicks = session.recordingEndTick;
     const totalSeconds = Math.floor(totalTicks / 20);
-    const currentSeconds = Math.floor(session.wantLoadFrameTick / 20);
+    const currentSeconds = Math.floor(session.targetFrameTick / 20);
 
     // Find last camera point tick or fallback to 0
     const lastCamTick = session.replayCamPos.length > 0 ? Math.max(...session.replayCamPos.map((c) => c.tick)) : 0;
@@ -28,7 +28,7 @@ export function loadFrameSecondsForm(player: Player) {
     const defaultSlider = Math.max(sliderMin, Math.min(currentSeconds, sliderMax));
 
     // Update wantLoadFrameTick accordingly
-    session.wantLoadFrameTick = Math.min(session.wantLoadFrameTick, totalTicks);
+    session.targetFrameTick = Math.min(session.targetFrameTick, totalTicks);
 
     const form = new ui.ModalFormData()
         .title("Load Frames - Seconds")
@@ -47,21 +47,21 @@ export function loadFrameSecondsForm(player: Player) {
         const textVal = Number(response.formValues[1]);
 
         const selectedSeconds = isNaN(textVal) || sliderVal > textVal ? sliderVal : textVal;
-        session.wantLoadFrameTick = Math.min(Math.round(selectedSeconds * 20), totalTicks);
+        session.targetFrameTick = Math.min(Math.round(selectedSeconds * 20), totalTicks);
         session.frameLoaded = true;
 
         removeEntities(player, true);
 
         await Promise.all(
-            session.multiPlayers.map(async (p) => {
+            session.trackedPlayers.map(async (p) => {
                 await clearStructure(p);
             })
         );
 
         await Promise.all(
-            session.multiPlayers.map(async (p) => {
+            session.trackedPlayers.map(async (p) => {
                 await loadEntity(p);
-                await loadBlocksUpToTick(session.wantLoadFrameTick, p);
+                await loadBlocksUpToTick(session.targetFrameTick, p);
             })
         );
     });

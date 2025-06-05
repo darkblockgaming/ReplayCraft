@@ -14,7 +14,7 @@ export async function doReplay(player: Player, pointIndex?: number) {
         return;
     }
 
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [{ translate: "dbg.rc1.mes.replay.is.already.in.progress" }],
@@ -27,7 +27,7 @@ export async function doReplay(player: Player, pointIndex?: number) {
     }
 
     session.replayStateMachine.setState("recStartRep");
-    session.currentSwitch = true;
+    session.isReplayActive = true;
     /**
      * We can hide the following hud elements
      * PaperDoll = 0
@@ -52,16 +52,16 @@ export async function doReplay(player: Player, pointIndex?: number) {
         player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
-    const posData = session.replayPosDataMap.get(player.id);
-    if (!posData || !posData.dbgRecPos || posData.dbgRecPos.length === 0) {
+    const posData = session.replayPositionDataMap.get(player.id);
+    if (!posData || !posData.recordedPositions || posData.recordedPositions.length === 0) {
         console.warn(`No recorded positions found for player ${player.name}`);
         return;
     }
 
-    const startTick = session.wantLoadFrameTick;
-    const totalTicks = Math.min(posData.dbgRecPos.length, session.dbgRecTime);
+    const startTick = session.targetFrameTick;
+    const totalTicks = Math.min(posData.recordedPositions.length, session.recordingEndTick);
     const clampedTick = Math.min(Math.max(startTick, 0), totalTicks - 1);
-    const closestFrame = posData.dbgRecPos[clampedTick];
+    const closestFrame = posData.recordedPositions[clampedTick];
 
     const firstRecordedPos = closestFrame;
     removeEntities(player, true); // Remove any existing entities before proceeding
@@ -81,11 +81,11 @@ export async function doReplay(player: Player, pointIndex?: number) {
     }
 
     // Proceed with replay: Start the camera and summon replay entities
-    session.dbgCamAffectPlayer.forEach((player) => {
+    session.cameraAffectedPlayers.forEach((player) => {
         startReplayCam(player, pointIndex); // Ensure camera starts from correct tick
     });
 
-    session.multiPlayers.forEach((player) => {
+    session.trackedPlayers.forEach((player) => {
         summonReplayEntity(player); // Ensure entities spawn from correct tick
     });
 }

@@ -13,7 +13,7 @@ export async function doSaveReset(player: Player) {
         return;
     }
 
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [{ translate: "dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed" }],
@@ -35,7 +35,7 @@ export async function doSaveReset(player: Player) {
     removeEntities(player, false);
 
     // Now safely load blocks
-    await loadBlocksUpToTick(session.dbgRecTime, player);
+    await loadBlocksUpToTick(session.recordingEndTick, player);
 
     // Final reset
     resetRec(player);

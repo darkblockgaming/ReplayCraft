@@ -7,7 +7,7 @@ export function previewSettings(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    if (session.currentSwitch === true) {
+    if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
                 rawtext: [
@@ -24,10 +24,10 @@ export function previewSettings(player: Player) {
     }
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.preview.settings")
-        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], { defaultValueIndex: session.settReplayType })
+        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], { defaultValueIndex: session.settingReplayType })
         .dropdown("dbg.rc1.dropdown.title.preview.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
-        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settNameType })
-        .textField("dbg.rc1.textfield.title.custom.name", session.settCustomName);
+        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
+        .textField("dbg.rc1.textfield.title.custom.name", session.settingCustomName);
 
     replaySettingsForm.show(player).then((response) => {
         if (response.canceled) {
@@ -45,9 +45,9 @@ export function previewSettings(player: Player) {
             }
             return;
         }
-        session.settReplayType = Number(response.formValues[0]);
+        session.settingReplayType = Number(response.formValues[0]);
         session.chosenReplaySkin = Number(response.formValues[1]);
-        session.settNameType = Number(response.formValues[2]);
-        session.settCustomName = String(response.formValues[3]);
+        session.settingNameType = Number(response.formValues[2]);
+        session.settingCustomName = String(response.formValues[3]);
     });
 }

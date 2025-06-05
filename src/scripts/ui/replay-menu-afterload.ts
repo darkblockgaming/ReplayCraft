@@ -16,7 +16,7 @@ export function replayMenuAfterLoad(player: Player) {
         .then(async (response: ActionFormResponse) => {
             if (response.selection === 0) {
                 session.replayStateMachine.setState("recPaused");
-                await loadBlocksUpToTick(session.dbgRecTime, player);
+                await loadBlocksUpToTick(session.recordingEndTick, player);
                 // Wait for `clearStructure()` to finish before proceeding
                 await clearStructure(player);
 
@@ -24,7 +24,7 @@ export function replayMenuAfterLoad(player: Player) {
                 removeEntities(player, false);
 
                 // Now safely load blocks
-                await loadBlocksUpToTick(session.dbgRecTime, player);
+                await loadBlocksUpToTick(session.recordingEndTick, player);
                 player.sendMessage("§f§4[ReplayCraft]§f Replay recording has been set to a paused state you will need to resume it.");
                 return;
             }

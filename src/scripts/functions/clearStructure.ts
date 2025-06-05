@@ -38,7 +38,7 @@ export async function clearStructure(player: Player) {
         return;
     }
 
-    const playerData = session.replayBData1Map.get(player.id);
+    const playerData = session.replayBlockInteractionBeforeMap.get(player.id);
     if (!playerData || !playerData.blockStateBeforeInteractions) return;
 
     const ticks = Object.keys(playerData.blockStateBeforeInteractions)
@@ -48,7 +48,7 @@ export async function clearStructure(player: Player) {
     const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
 
     // Get the recording start position
-    const recordingStartPos = session.replayPosDataMap.get(player.id)?.dbgRecPos?.[0];
+    const recordingStartPos = session.replayPositionDataMap.get(player.id)?.recordedPositions?.[0];
     // Store original position before teleporting
     const originalPos = player.location;
     if (!recordingStartPos) {

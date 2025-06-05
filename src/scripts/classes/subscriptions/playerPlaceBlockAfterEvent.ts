@@ -18,8 +18,8 @@ function recordBlocks(event: PlayerPlaceBlockAfterEvent) {
         return;
     }
 
-    if (!session.multiPlayers.includes(player)) {
-        debugWarn(`[ReplayCraft] ${player.name} is not in session.multiPlayers`);
+    if (!session.trackedPlayers.includes(player)) {
+        debugWarn(`[ReplayCraft] ${player.name} is not in session.trackedPlayers`);
         return;
     }
 
@@ -37,7 +37,7 @@ function recordBlocks(event: PlayerPlaceBlockAfterEvent) {
             return;
         }
 
-        const tick = session.dbgRecTime;
+        const tick = session.recordingEndTick;
         playerData.blockStateChanges[tick] = {
             location: block.location,
             typeId: block.typeId,

@@ -11,16 +11,16 @@ export async function loadEntity(player: Player) {
         console.error(`No session found for player ${player.name}`);
         return;
     }
-    const posData = session.replayPosDataMap.get(player.id);
-    const rotData = session.replayRotDataMap.get(player.id);
-    if (!posData || !rotData || posData.dbgRecPos.length === 0) {
+    const posData = session.replayPositionDataMap.get(player.id);
+    const rotData = session.replayRotationDataMap.get(player.id);
+    if (!posData || !rotData || posData.recordedPositions.length === 0) {
         console.error(`Replay data missing for player ${player.name}`);
         return;
     }
 
     let customEntity;
-    const maxIndex = Math.min(session.wantLoadFrameTick, posData.dbgRecPos.length - 1);
-    const summonPos = posData.dbgRecPos[maxIndex];
+    const maxIndex = Math.min(session.targetFrameTick, posData.recordedPositions.length - 1);
+    const summonPos = posData.recordedPositions[maxIndex];
 
     // Ensure chunk is loaded
     if (!isChunkLoaded(summonPos, player)) {
@@ -51,21 +51,21 @@ export async function loadEntity(player: Player) {
 
         if (modelID === 0) {
             customEntity = player.dimension.spawnEntity("dbg:replayentity_steve" as VanillaEntityIdentifier, summonPos);
-            customEntity.setRotation(rotData.dbgRecRot[maxIndex]);
+            customEntity.setRotation(rotData.recordedRotations[maxIndex]);
             customEntity.addTag("owner:" + player.id);
         }
         if (modelID === 1) {
             customEntity = player.dimension.spawnEntity("dbg:replayentity_alex" as VanillaEntityIdentifier, summonPos);
-            customEntity.setRotation(rotData.dbgRecRot[maxIndex]);
+            customEntity.setRotation(rotData.recordedRotations[maxIndex]);
             customEntity.addTag("owner:" + player.id);
         }
         customEntity.setProperty("dbg:skin", skinID);
-        if (session.settNameType === 0) {
+        if (session.settingNameType === 0) {
             customEntity.nameTag = player.name;
-        } else if (session.settNameType === 1) {
+        } else if (session.settingNameType === 1) {
             customEntity.nameTag = player.name;
-        } else if (session.settNameType === 2) {
-            customEntity.nameTag = session.settCustomName;
+        } else if (session.settingNameType === 2) {
+            customEntity.nameTag = session.settingCustomName;
         }
     } catch (error) {
         console.error(`Error spawning entity at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}:`, error);

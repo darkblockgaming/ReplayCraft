@@ -61,8 +61,8 @@ export async function openCameraReplaySelectFormTicks(player: Player) {
 
     switch (manageResponse.selection) {
         case 0: // Play
-            session.wantLoadFrameTick = tickToUse;
-            session.lilTick = tickToUse;
+            session.targetFrameTick = tickToUse;
+            session.currentTick = tickToUse;
             session.showCameraSetupUI = true;
             removeEntities(player, false);
             await startReplay(player, pointIndex);
@@ -97,18 +97,18 @@ async function startReplay(player: Player, pointIndex: number) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    session.multiPlayers.forEach((p) => {
+    session.trackedPlayers.forEach((p) => {
         removeEntities(p, true);
     });
 
     session.frameLoaded = true;
 
-    await Promise.all(session.multiPlayers.map(clearStructure));
+    await Promise.all(session.trackedPlayers.map(clearStructure));
 
     await Promise.all(
-        session.multiPlayers.map(async (p) => {
+        session.trackedPlayers.map(async (p) => {
             await loadEntity(p);
-            await loadBlocksUpToTick(session.wantLoadFrameTick, p);
+            await loadBlocksUpToTick(session.targetFrameTick, p);
         })
     );
     doReplay(player, pointIndex);

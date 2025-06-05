@@ -73,8 +73,8 @@ export function saveBedParts1(block: Block, player: Player) {
             states: otherPartBlock.permutation.getAllStates(),
         };
 
-        const playerData = session.replayBData1Map.get(player.id);
-        playerData.blockStateBeforeInteractions[session.dbgRecTime] = {
+        const playerData = session.replayBlockInteractionBeforeMap.get(player.id);
+        playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
             upperPart: {
                 location: block.location,
                 typeId: block.typeId,

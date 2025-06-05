@@ -12,8 +12,8 @@ export function loadFrameTicksForm(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    const currentTick = session.wantLoadFrameTick;
-    const maxTick = session.dbgRecTime;
+    const currentTick = session.targetFrameTick;
+    const maxTick = session.recordingEndTick;
 
     // Determine last camera point tick or fallback to 0
     const lastCamTick = session.replayCamPos.length > 0 ? Math.max(...session.replayCamPos.map((c) => c.tick)) : 0;
@@ -42,22 +42,22 @@ export function loadFrameTicksForm(player: Player) {
         const textTick = Number(response.formValues[1]);
 
         const selectedTick = isNaN(textTick) || sliderTick > textTick ? sliderTick : textTick;
-        session.wantLoadFrameTick = Math.min(Math.max(selectedTick, sliderMin), sliderMax);
+        session.targetFrameTick = Math.min(Math.max(selectedTick, sliderMin), sliderMax);
 
         removeEntities(player, true);
 
         session.frameLoaded = true;
 
         await Promise.all(
-            session.multiPlayers.map(async (p) => {
+            session.trackedPlayers.map(async (p) => {
                 await clearStructure(p);
             })
         );
 
         await Promise.all(
-            session.multiPlayers.map(async (p) => {
+            session.trackedPlayers.map(async (p) => {
                 await loadEntity(p);
-                await loadBlocksUpToTick(session.wantLoadFrameTick, p);
+                await loadBlocksUpToTick(session.targetFrameTick, p);
             })
         );
     });
