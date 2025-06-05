@@ -1,5 +1,5 @@
 import { ModalFormData } from "@minecraft/server-ui";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import { doStart } from "../functions/replayControls/doStart";
 import { Player } from "@minecraft/server";
 import { createPlayerSession } from "../data/create-session"; // make sure to import this
@@ -25,10 +25,10 @@ export function setBuildName(player: Player) {
             const playerId = player.id;
 
             // Get or create player session
-            let session = SharedVariables.playerSessions.get(playerId);
+            let session = replaySessions.playerSessions.get(playerId);
             if (!session) {
                 session = createPlayerSession(playerId);
-                SharedVariables.playerSessions.set(playerId, session);
+                replaySessions.playerSessions.set(playerId, session);
             }
 
             // Update the session's buildName

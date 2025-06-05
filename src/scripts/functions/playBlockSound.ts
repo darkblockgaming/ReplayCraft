@@ -1,5 +1,5 @@
 import { Player, Vector3 } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 
 // Define the structure of the block data
 interface BlockData {
@@ -9,7 +9,7 @@ interface BlockData {
 }
 
 export function playBlockSound(blockData: BlockData, player: Player): void {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         console.error(`No session found for player ${player.name}`);
         return;

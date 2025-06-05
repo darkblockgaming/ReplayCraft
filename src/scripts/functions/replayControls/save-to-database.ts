@@ -23,7 +23,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
     for (const currentPlayer of session.multiPlayers) {
         console.log(`Saving data for player: ${currentPlayer.name} (${currentPlayer.id})`);
 
-        const PlayerBlockData = session.replayBDataMap.get(currentPlayer.id);
+        const PlayerBlockData = session.replayBlockStateMap.get(currentPlayer.id);
         const playerPositionData = session.replayPosDataMap.get(currentPlayer.id);
         const playerRotationData = session.replayRotDataMap.get(currentPlayer.id);
         const playerActionsData = session.replayMDataMap.get(currentPlayer.id);
@@ -56,7 +56,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
     // Filter session object before saving general settings
     const filteredSettings: Record<string, any> = {};
 
-    const excludeKeys = new Set(["replayStateMachine", "replayBDataMap", "replayBDataBMap", "replayBData1Map", "replayPosDataMap", "replayRotDataMap", "replayMDataMap", "replayODataMap", "replaySDataMap"]);
+    const excludeKeys = new Set(["replayStateMachine", "replayBlockStateMap", "replayBDataBMap", "replayBData1Map", "replayPosDataMap", "replayRotDataMap", "replayMDataMap", "replayODataMap", "replaySDataMap"]);
 
     for (const [key, value] of Object.entries(session)) {
         if (typeof value !== "function" && !excludeKeys.has(key)) {

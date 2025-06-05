@@ -3,7 +3,7 @@ import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/playerB
 import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/playerBreakBlockBeforeEvent";
 import { replaycraftInteractWithBlockAfterEvent } from "./classes/subscriptions/playerInteractWithBlockAfterEvent";
 import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions/playerInteractWithBlockBeforeEvent";
-import { replaycraftItemUseBeforeEvent } from "./classes/subscriptions/playerItemUseBeforeEvent";
+//import { replaycraftItemUseBeforeEvent } from "./classes/subscriptions/playerItemUseBeforeEvent";
 import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/playerItemUseAfterEvent";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/playerPlaceBlockBeforeEvent";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/playerPlaceBlockAfterEvent";
@@ -17,7 +17,7 @@ import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initia
 import "./ReplayCraft.js";
 import { removeEntities } from "./functions/removeEntities";
 import config from "./data/config";
-import { SharedVariables } from "./data/replay-player-session";
+import { replaySessions } from "./data/replay-player-session";
 
 //Chat events
 beforeChatSend();
@@ -29,7 +29,7 @@ replaycraftPlaceBlockAfterEvent();
 replaycraftInteractWithBlockBeforeEvent();
 replaycraftInteractWithBlockAfterEvent();
 // soon to be removed from the API!
-replaycraftItemUseBeforeEvent();
+//replaycraftItemUseBeforeEvent();
 replaycraftItemUseAfterEvent();
 
 //Show the player a useful message for the first time they join!
@@ -43,7 +43,7 @@ subscribeToWorldInitialize();
 //Timer for each frame?
 system.runInterval(() => {
     // Iterate all player sessions
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.replayStateMachine.state === "recPending") {
             session.dbgRecTime += 1;
         }
@@ -57,7 +57,7 @@ system.runInterval(() => {
  * Resets the tick counter
  */
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.replayStateMachine.state === "viewStartRep") {
             if (session.lilTick >= session.dbgRecTime - 1) {
                 session.replayStateMachine.setState("recSaved");
@@ -82,7 +82,7 @@ system.runInterval(() => {
  * Resets the tick counter
  */
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.replayStateMachine.state === "recStartRep") {
             if (session.lilTick >= session.dbgRecTime - 1) {
                 if (session.showCameraSetupUI === true) {
@@ -116,15 +116,15 @@ system.runInterval(() => {
  * block data for the current replay tick.
  */
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
                 if (session.lilTick <= session.dbgRecTime) {
-                    const playerData = session.replayBDataMap.get(player.id);
+                    const playerData = session.replayBlockStateMap.get(player.id);
                     const customEntityWrapper = session.replayODataMap.get(player.id);
                     const customEntity = customEntityWrapper?.customEntity;
-                    if (playerData && playerData.dbgBlockData[session.lilTick]) {
-                        const blockData = playerData.dbgBlockData[session.lilTick];
+                    if (playerData && playerData.blockStateChanges[session.lilTick]) {
+                        const blockData = playerData.blockStateChanges[session.lilTick];
                         const dimension = world.getDimension(player.dimension.id);
 
                         if (blockData.lowerPart && blockData.upperPart) {
@@ -151,31 +151,34 @@ system.runInterval(() => {
 }, 1);
 
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
                 if (session.lilTick <= session.dbgRecTime) {
                     const playerData = session.replayBDataBMap.get(player.id);
-                    const customEntity = session.replayODataMap.get(player.id);
-                    const blockData = playerData.dbgBlockDataB[session.lilTick];
+                    const entityData = session.replayODataMap.get(player.id);
+                    const blockData = playerData.blockSateAfterInteractions[session.lilTick];
+
                     if (blockData) {
                         if (session.settReplayType === 0) {
-                            customEntity.playAnimation("animation.replayentity.attack");
+                            entityData.customEntity.playAnimation("animation.replayentity.attack");
                         }
+
                         const dimension = world.getDimension(session.dbgRecController.dimension.id);
-                        if (blockData.lowerPart && blockData.upperPart) {
+
+                        // Inline type guard to check if it's a two-part block
+                        if ("lowerPart" in blockData && "upperPart" in blockData) {
                             const { lowerPart, upperPart } = blockData;
+
                             const lowerBlock = dimension.getBlock(lowerPart.location);
-
                             lowerBlock.setPermutation(BlockPermutation.resolve(lowerPart.typeId, lowerPart.states));
-                            const upperBlock = dimension.getBlock(upperPart.location);
 
+                            const upperBlock = dimension.getBlock(upperPart.location);
                             upperBlock.setPermutation(BlockPermutation.resolve(upperPart.typeId, upperPart.states));
                         } else {
                             const { location, typeId, states } = blockData;
                             const block = dimension.getBlock(location);
-                            const permutation = BlockPermutation.resolve(typeId, states);
-                            block.setPermutation(permutation);
+                            block.setPermutation(BlockPermutation.resolve(typeId, states));
                         }
                     }
                 }
@@ -186,7 +189,7 @@ system.runInterval(() => {
 
 //Collect player position data based on the current tick time
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state !== "recPending") return;
             const posData = session.replayPosDataMap.get(player.id);
@@ -207,16 +210,16 @@ system.runInterval(() => {
 
 //entity? maybe play back ?
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                const customEntity = session.replayODataMap.get(player.id);
+                const entityData = session.replayODataMap.get(player.id);
                 const posData = session.replayPosDataMap.get(player.id);
                 const rotData = session.replayRotDataMap.get(player.id);
                 if (!posData) return;
 
                 if (session.settReplayType === 0) {
-                    customEntity.teleport(posData.dbgRecPos[session.lilTick], {
+                    entityData.customEntity.teleport(posData.dbgRecPos[session.lilTick], {
                         rotation: rotData.dbgRecRot[session.lilTick],
                     });
                 }
@@ -235,7 +238,7 @@ system.runInterval(() => {
  * player.isSleeping
  * */
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state !== "recPending") return;
             const playerData = session.replayMDataMap.get(player.id);
@@ -254,20 +257,20 @@ system.runInterval(() => {
 }, 1);
 
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.settReplayType !== 0) return;
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
                 const playerData = session.replayMDataMap.get(player.id);
-                const customEntity = session.replayODataMap.get(player.id);
+                const entityData = session.replayODataMap.get(player.id);
                 if (!playerData) return;
-                customEntity.isSneaking = playerData.isSneaking[session.lilTick] === 1;
+                entityData.customEntity.isSneaking = playerData.isSneaking[session.lilTick] === 1;
                 // customEntity.setProperty("dbg:is_swimming", playerData.isSwimming[session.lilTick] === 1);
                 // customEntity.setProperty("dbg:is_climbing", playerData.isClimbing[session.lilTick] === 1);
                 // customEntity.setProperty("dbg:is_falling", playerData.isFalling[session.lilTick] === 1);
                 // customEntity.setProperty("dbg:is_flying", playerData.isFlying[session.lilTick] === 1);
                 // customEntity.setProperty("dbg:is_gliding", playerData.isGliding[session.lilTick] === 1);
-                customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[session.lilTick] === 1);
+                entityData.customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[session.lilTick] === 1);
             }
         });
     }
@@ -276,7 +279,7 @@ system.runInterval(() => {
 //Items/Weapons/Armor Data
 
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state !== "recPending") return;
             const playerData = session.replaySDataMap.get(player.id);
@@ -294,19 +297,20 @@ system.runInterval(() => {
 //TODO This can be optimized to use native methods.
 
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.settReplayType !== 0) return;
         session.multiPlayers.forEach((player) => {
             if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
                 const playerData = session.replaySDataMap.get(player.id);
-                const customEntity = session.replayODataMap.get(player.id);
+                const entityData = session.replayODataMap.get(player.id);
+
                 if (!playerData) return;
-                customEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[session.lilTick]}`);
-                customEntity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[session.lilTick]}`);
-                customEntity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[session.lilTick]}`);
-                customEntity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[session.lilTick]}`);
-                customEntity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[session.lilTick]}`);
-                customEntity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[session.lilTick]}`);
+                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[session.lilTick]}`);
             }
         });
     }
@@ -314,12 +318,12 @@ system.runInterval(() => {
 
 //???
 system.runInterval(() => {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         if (session.followCamSwitch === true) {
             session.dbgCamAffectPlayer.forEach((player) => {
                 //const player = dbgRecController;
-                const customEntity = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
-                const { x, y, z } = customEntity.location;
+                const entityData = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
+                const { x, y, z } = entityData.customEntity.location;
                 const location = {
                     x,
                     y: y + 1.5,
@@ -337,8 +341,8 @@ system.runInterval(() => {
         if (session.topDownCamSwitch === true) {
             session.dbgCamAffectPlayer.forEach((player) => {
                 //const player = dbgRecController;
-                const customEntity = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
-                const { x, y, z } = customEntity.location;
+                const entityData = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
+                const { x, y, z } = entityData.customEntity.location;
                 const location = {
                     x,
                     y: y + session.topDownCamHight,
@@ -371,15 +375,15 @@ system.runInterval(() => {
         if (session.topDownCamSwitch2 === true) {
             session.dbgCamAffectPlayer.forEach((player) => {
                 //const player = dbgRecController;
-                const customEntity = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
-                const { x, y, z } = customEntity.location;
-                customEntity.getRotation();
+                const entityData = session.replayODataMap.get(session.dbgCamFocusPlayer.id);
+                const { x, y, z } = entityData.customEntity.location;
+                entityData.customEntity.getRotation();
                 const location = {
                     x,
                     y: y + session.topDownCamHight,
                     z,
                 };
-                const rotation = customEntity.getRotation();
+                const rotation = entityData.customEntity.getRotation();
                 const rotation2 = {
                     x: 90,
                     y: rotation.y,
@@ -398,7 +402,7 @@ system.runInterval(() => {
 }, 1);
 
 export function playerDataDisplay(player: Player) {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         const playerData = session.replayMDataMap.get(player.id);
         try {
             console.log("Player Data:", JSON.stringify(playerData, null, 2)); // pretty-print
@@ -409,7 +413,7 @@ export function playerDataDisplay(player: Player) {
 }
 
 export function SharedVariablesDisplay() {
-    for (const session of SharedVariables.playerSessions.values()) {
+    for (const session of replaySessions.playerSessions.values()) {
         const snapshot = {
             useFullRecordingRange: session.useFullRecordingRange,
             wantLoadFrameTick: session.wantLoadFrameTick,

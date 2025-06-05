@@ -1,13 +1,13 @@
 import { saveBedParts1 } from "../../functions/saveBedParts1";
 import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
 
 //@ts-check
 function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
     const { player, block } = event;
 
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) return;
 
     if (session.replayStateMachine.state !== "recPending") return;

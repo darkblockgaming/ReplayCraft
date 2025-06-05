@@ -1,8 +1,8 @@
 import { Block, Player } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 export function saveBedParts1(block: Block, player: Player) {
     //Calculate Orher Part Of Bed
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -67,20 +67,20 @@ export function saveBedParts1(block: Block, player: Player) {
     }
     const otherPartBlock = block.dimension.getBlock(otherPartLocation);
     if (otherPartBlock && otherPartBlock.typeId !== "minecraft:air") {
-        const otherPart = {
+        const lowerPart = {
             location: otherPartLocation,
             typeId: otherPartBlock.typeId,
             states: otherPartBlock.permutation.getAllStates(),
         };
 
         const playerData = session.replayBData1Map.get(player.id);
-        playerData.dbgBlockData1[session.dbgRecTime] = {
-            thisPart: {
+        playerData.blockStateBeforeInteractions[session.dbgRecTime] = {
+            upperPart: {
                 location: block.location,
                 typeId: block.typeId,
                 states: block.permutation.getAllStates(),
             },
-            otherPart,
+            lowerPart,
         };
     }
 }

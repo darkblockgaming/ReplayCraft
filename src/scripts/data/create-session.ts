@@ -185,7 +185,7 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         dbgRecTime: 0,
         multiPlayers: [],
         multiToggle: false,
-        replayBDataMap: new Map(),
+        replayBlockStateMap: new Map(),
         replayBDataBMap: new Map(),
         replayBData1Map: new Map(),
         replayPosDataMap: new Map(),

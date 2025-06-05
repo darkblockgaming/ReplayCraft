@@ -1,7 +1,8 @@
 import { BlockPermutation, Player, Vector3, world, Dimension } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import { isChunkLoaded } from "./isChunkLoaded";
 import { waitForChunkLoad } from "./waitForChunkLoad";
+import { PlayerBlockData } from "..//classes/types/types"; // Adjust the import path as necessary
 
 type BlockState = Record<string, any>; // Define block states as a record of key-value pairs
 
@@ -15,24 +16,20 @@ type BlockData = {
     otherPart?: { location: Vector3; typeId: string; states: BlockState };
 };
 
-type PlayerReplayData = {
-    dbgBlockData: Record<number, BlockData>;
-};
-
 export async function loadBlocksUpToTick(targetTick: number, player: Player): Promise<void> {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         console.warn(`No replay session found for player ${player.name}`);
         return;
     }
-    const playerData: PlayerReplayData | undefined = session.replayBDataMap.get(player.id);
+    const playerData: PlayerBlockData | undefined = session.replayBlockStateMap.get(player.id);
     if (!playerData) {
         console.warn(`No block replay data for player ${player.name}`);
         return;
     }
 
     for (let tick = 0; tick <= targetTick; tick++) {
-        const blockData: BlockData | undefined = playerData.dbgBlockData[tick];
+        const blockData: BlockData | undefined = playerData.blockStateChanges[tick];
         if (!blockData) continue;
 
         async function setBlock(location: Vector3, typeId: string, states: BlockState): Promise<void> {

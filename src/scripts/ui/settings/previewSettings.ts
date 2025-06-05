@@ -1,8 +1,8 @@
 import * as ui from "@minecraft/server-ui";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 export function previewSettings(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;

@@ -1,8 +1,8 @@
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import { Block, Player, Vector3 } from "@minecraft/server";
 
 export function saveDoorParts(block: Block, player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -37,10 +37,10 @@ export function saveDoorParts(block: Block, player: Player) {
         if (!upperPart) return; // Safety check in case the block doesn't exist
 
         // Get player data
-        const playerData = session.replayBDataMap.get(player.id);
+        const playerData = session.replayBlockStateMap.get(player.id);
 
         // Save with a top-level structure
-        playerData.dbgBlockData[session.dbgRecTime] = {
+        playerData.blockStateChanges[session.dbgRecTime] = {
             location: lowerPart.location, // Use lowerPart location as base
             typeId: lowerPart.typeId, // Use lowerPart typeId as base
             states: lowerPart.states, // Use lowerPart states as base

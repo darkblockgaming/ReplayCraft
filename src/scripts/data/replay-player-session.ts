@@ -1,6 +1,6 @@
 import { Player, Vector3 } from "@minecraft/server";
 import { ReplayStateMachine } from "../classes/replayStateMachine";
-import { PlayerBlockData } from "../classes/types/types";
+import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData } from "../classes/types/types";
 
 export interface PlayerReplaySession {
     playerName: string;
@@ -12,14 +12,14 @@ export interface PlayerReplaySession {
     replayStateMachine: ReplayStateMachine;
     multiPlayers: Player[];
     multiToggle: boolean;
-    replayBDataMap: Map<string, PlayerBlockData>; //Block Related Data (After placing/breaking)
-    replayBDataBMap: Map<any, any>;
-    replayBData1Map: Map<any, any>;
-    replayPosDataMap: Map<any, any>;
-    replayRotDataMap: Map<any, any>;
-    replayMDataMap: Map<any, any>;
-    replayODataMap: Map<any, any>;
-    replaySDataMap: Map<any, any>;
+    replayBlockStateMap: Map<string, PlayerBlockData>; //was replayBDataMap: Block Related Data (After placing/breaking)
+    replayBDataBMap: Map<string, PlayerBlockInteractionData>; //was replayBDataBMap: Block Interaction Data (AfterEvent)
+    replayBData1Map: Map<string, PlayerBlockInteractionBeforeData>; //was replayBData1Map: Block Interaction Data (BeforeEvent)
+    replayPosDataMap: Map<string, PlayerPositionData>; //was replayPosDataMap: Player Position Data
+    replayRotDataMap: Map<string, PlayerRotationData>; //was replayRotDataMap: Player Rotation Data
+    replayMDataMap: Map<string, PlayerActionsData>; //was replayMDataMap: Player Actions Data
+    replayODataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
+    replaySDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;
@@ -75,6 +75,6 @@ export interface PlayerReplaySession {
     >;
 }
 
-export let SharedVariables = {
+export let replaySessions = {
     playerSessions: new Map<string, PlayerReplaySession>(),
 };

@@ -1,5 +1,5 @@
 import { ModalFormData } from "@minecraft/server-ui";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import { Player } from "@minecraft/server";
 import { loadFromDB } from "../functions/replayControls/load-from-database";
 import { replayCraftSettingsDB } from "../classes/subscriptions/world-initialize";
@@ -37,11 +37,11 @@ export function loadBuildName(player: Player) {
             const selectedBuild = buildNames[Number(formData.formValues[0])];
 
             // Get or create the player session and update the buildName
-            let session = SharedVariables.playerSessions.get(playerId);
+            let session = replaySessions.playerSessions.get(playerId);
             if (!session) {
                 // You probably have a createPlayerSession function:
                 session = createPlayerSession(playerId);
-                SharedVariables.playerSessions.set(playerId, session);
+                replaySessions.playerSessions.set(playerId, session);
             }
 
             const fullBuildName = "rcData" + selectedBuild;

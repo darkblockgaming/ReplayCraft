@@ -1,9 +1,9 @@
 import { Block, Player, Vector3 } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import { BlockData } from "../classes/types/types";
 
 export function saveBedParts(block: Block, player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -49,8 +49,8 @@ export function saveBedParts(block: Block, player: Player) {
             states: otherPartBlock.permutation.getAllStates(),
         };
 
-        const playerData = session.replayBDataMap.get(player.id);
-        playerData.dbgBlockData[session.dbgRecTime] = {
+        const playerData = session.replayBlockStateMap.get(player.id);
+        playerData.blockStateChanges[session.dbgRecTime] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

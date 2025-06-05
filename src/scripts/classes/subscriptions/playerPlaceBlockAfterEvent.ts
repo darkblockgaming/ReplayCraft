@@ -1,30 +1,51 @@
 import { PlayerPlaceBlockAfterEvent, world } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { saveBedParts } from "../../functions/saveBedsParts";
 import { saveDoorParts } from "../../functions/saveDoorParts";
+import { debugLog, debugWarn } from "../../data/util/debug";
 
 function recordBlocks(event: PlayerPlaceBlockAfterEvent) {
     const { player, block } = event;
 
-    const session = SharedVariables.playerSessions.get(player.id);
-    if (!session || session.replayStateMachine.state !== "recPending") return;
-    if (!session.multiPlayers.includes(player)) return;
+    const session = replaySessions.playerSessions.get(player.id);
+    if (!session) {
+        debugWarn(`[ReplayCraft] No session found for ${player.name} (${player.id})`);
+        return;
+    }
+
+    if (session.replayStateMachine.state !== "recPending") {
+        debugWarn(`[ReplayCraft] Not in recPending state for ${player.name}, current state: ${session.replayStateMachine.state}`);
+        return;
+    }
+
+    if (!session.multiPlayers.includes(player)) {
+        debugWarn(`[ReplayCraft] ${player.name} is not in session.multiPlayers`);
+        return;
+    }
 
     if (block.typeId === "minecraft:bed" || session.twoPartBlocks.includes(block.type.id)) {
+        debugLog(`[ReplayCraft] Saving multi-block structure (${block.typeId}) for ${player.name}`);
         if (block.typeId === "minecraft:bed") {
             saveBedParts(block, player);
         } else {
             saveDoorParts(block, player);
         }
     } else {
-        const playerData = session.replayBDataMap.get(player.id);
-        if (!playerData) return;
+        const playerData = session.replayBlockStateMap.get(player.id);
+        if (!playerData) {
+            debugWarn(`[ReplayCraft] replayBlockStateMap not initialized for ${player.name}`);
+            return;
+        }
 
-        playerData.dbgBlockData[session.dbgRecTime] = {
+        const tick = session.dbgRecTime;
+        playerData.blockStateChanges[tick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),
         };
+
+        debugLog(`[ReplayCraft] Block recorded at tick ${tick} for ${player.name}`);
+        debugLog(`[ReplayCraft] Block type: ${block.typeId}, Location: ${block.location.x}, ${block.location.y}, ${block.location.z}`);
     }
 }
 

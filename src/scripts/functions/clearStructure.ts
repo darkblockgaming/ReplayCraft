@@ -1,5 +1,6 @@
 import { BlockPermutation, Player, system, Vector3 } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
+import { BlockInteractionEntry, twoPartBlocks } from "../classes/types/types";
 
 // Helper to compare two locations
 function positionsEqual(a: Vector3, b: Vector3): boolean {
@@ -30,7 +31,7 @@ function getBlockPartData(data: any, blockPos: Vector3) {
 }
 
 export async function clearStructure(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
 
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
@@ -38,9 +39,9 @@ export async function clearStructure(player: Player) {
     }
 
     const playerData = session.replayBData1Map.get(player.id);
-    if (!playerData || !playerData.dbgBlockData1) return;
+    if (!playerData || !playerData.blockStateBeforeInteractions) return;
 
-    const ticks = Object.keys(playerData.dbgBlockData1)
+    const ticks = Object.keys(playerData.blockStateBeforeInteractions)
         .map(Number)
         .sort((a, b) => b - a);
     const visitedChunks = new Set();
@@ -58,15 +59,24 @@ export async function clearStructure(player: Player) {
     let playerTeleported = false; // Track if the player was teleported
 
     for (const tick of ticks) {
-        const data = playerData.dbgBlockData1[tick];
-        const blockPositions = [];
+        const data = playerData.blockStateBeforeInteractions[tick];
+        const blockPositions: { x: number; y: number; z: number }[] = [];
 
-        if (data.lowerPart) {
+        // Type guard to check if data is twoPartBlocks
+        const isTwoPartBlocks = (obj: BlockInteractionEntry): obj is twoPartBlocks => {
+            return obj !== null && typeof obj === "object" && "lowerPart" in obj && "upperPart" in obj;
+        };
+
+        if (isTwoPartBlocks(data)) {
+            // twoPartBlocks: push both lowerPart and upperPart locations
             blockPositions.push(data.lowerPart.location, data.upperPart.location);
-        } else if (data.thisPart) {
-            blockPositions.push(data.thisPart.location, data.otherPart.location);
-        } else {
+        } else if ("location" in data && data.location) {
+            // BlockData: push its location
             blockPositions.push(data.location);
+        } else {
+            // Unexpected structure
+            console.error("Invalid block data:", JSON.stringify(data, null, 2));
+            continue;
         }
 
         for (const blockPos of blockPositions) {
@@ -107,6 +117,7 @@ export async function clearStructure(player: Player) {
                 //console.log(`Clearing block at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
 
                 // Clear the block
+                // Helper function to get the part data (returns a BlockData or undefined)
                 const partData = getBlockPartData(data, block.location);
                 if (partData?.typeId) {
                     try {

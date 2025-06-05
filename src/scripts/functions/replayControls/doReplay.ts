@@ -1,5 +1,5 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { isChunkLoaded } from "../isChunkLoaded";
 import { summonReplayEntity } from "../summonReplayEntity";
 import { waitForChunkLoad } from "../waitForChunkLoad";
@@ -7,7 +7,7 @@ import { startReplayCam } from "./startReplayCam";
 import { removeEntities } from "../removeEntities";
 
 export async function doReplay(player: Player, pointIndex?: number) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
 
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
@@ -59,9 +59,9 @@ export async function doReplay(player: Player, pointIndex?: number) {
     }
 
     const startTick = session.wantLoadFrameTick;
-    const closestFrame = posData.dbgRecPos.reduce((prev: { tick: number }, curr: { tick: number }) => {
-        return Math.abs(curr.tick - startTick) < Math.abs(prev.tick - startTick) ? curr : prev;
-    }, posData.dbgRecPos[0]);
+    const totalTicks = Math.min(posData.dbgRecPos.length, session.dbgRecTime);
+    const clampedTick = Math.min(Math.max(startTick, 0), totalTicks - 1);
+    const closestFrame = posData.dbgRecPos[clampedTick];
 
     const firstRecordedPos = closestFrame;
     removeEntities(player, true); // Remove any existing entities before proceeding

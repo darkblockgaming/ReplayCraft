@@ -1,12 +1,12 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
-import { SharedVariables } from "../data/replay-player-session.js";
+import { replaySessions } from "../data/replay-player-session.js";
 import { isChunkLoaded } from "./isChunkLoaded.js";
 import { waitForChunkLoad } from "./waitForChunkLoad.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
 import { removeEntities } from "./removeEntities";
 
 export async function loadEntity(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         console.error(`No session found for player ${player.name}`);
         return;

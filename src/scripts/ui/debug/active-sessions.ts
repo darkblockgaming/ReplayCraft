@@ -1,6 +1,6 @@
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 
 export function showActiveSessionsUI(player: Player, playerLabels: string[], playerIds: string[]) {
     if (playerLabels.length === 0) {
@@ -22,7 +22,7 @@ export function showActiveSessionsUI(player: Player, playerLabels: string[], pla
 
         const selectedIndex = response.formValues?.[0] as number;
         const selectedPlayerId = playerIds[selectedIndex];
-        const selectedSession = SharedVariables.playerSessions.get(selectedPlayerId);
+        const selectedSession = replaySessions.playerSessions.get(selectedPlayerId);
 
         if (!selectedSession) {
             player.sendMessage(`§cNo session found for ${selectedPlayerId}`);

@@ -1,9 +1,9 @@
 import { ItemUseBeforeEvent, world } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 
 function setController(eventData: ItemUseBeforeEvent) {
     const player = eventData.source;
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         console.log(`[Replay Init] No session found for ${player.name}`);
         return;

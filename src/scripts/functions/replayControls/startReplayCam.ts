@@ -1,8 +1,8 @@
 import { EasingType, Player, system } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 
 export function startReplayCam(player: Player, startPoint: number = 0) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage({ rawtext: [{ translate: "dbg.rc1.mes.no.replay.session.found" }] });
         return;

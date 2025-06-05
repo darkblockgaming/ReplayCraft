@@ -1,12 +1,12 @@
 import { PlayerInteractWithBlockAfterEvent, world } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { saveDoorPartsB } from "../../functions/saveDoorPartsB";
 
 // Suggested function name: handleBlockInteractionRecording
 function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
     const { player, block, itemStack } = event;
 
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session || session.replayStateMachine.state !== "recPending") return;
     if (!session.multiPlayers.includes(player)) return;
 
@@ -16,7 +16,7 @@ function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
         const playerBlockData = session.replayBDataBMap.get(player.id);
         if (!playerBlockData) return;
 
-        playerBlockData.dbgBlockDataB[session.dbgRecTime] = {
+        playerBlockData.blockSateAfterInteractions[session.dbgRecTime] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

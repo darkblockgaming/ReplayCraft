@@ -1,9 +1,9 @@
 //@ts-check
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 
 export function resetRec(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -14,14 +14,14 @@ export function resetRec(player: Player) {
     session.dbgRecTime = 0;
     session.lilTick = 0;
     session.replaySpeed = 1;
-    session.replayBDataMap.set(player.id, {
-        dbgBlockData: {},
+    session.replayBlockStateMap.set(player.id, {
+        blockStateChanges: {},
     });
     session.replayBDataBMap.set(player.id, {
-        dbgBlockDataB: {},
+        blockSateAfterInteractions: {},
     });
     session.replayBData1Map.set(player.id, {
-        dbgBlockData1: {},
+        blockStateBeforeInteractions: {},
     });
     session.replayPosDataMap.set(player.id, {
         dbgRecPos: [],

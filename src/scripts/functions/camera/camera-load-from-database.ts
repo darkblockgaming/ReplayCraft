@@ -1,5 +1,5 @@
 import { Player, VanillaEntityIdentifier, world } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { loadFromDB } from "../replayControls/load-from-database";
 
 export function respawnCameraEntities(player: Player) {
@@ -7,7 +7,7 @@ export function respawnCameraEntities(player: Player) {
      * Get the player's session from SharedVariables.playerSessions.
      * If the session does not exist, send an error message to the player.
      */
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage("§c[ReplayCraft] Error: No replay session found for you.");
         return;

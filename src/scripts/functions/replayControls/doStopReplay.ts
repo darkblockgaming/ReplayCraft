@@ -1,10 +1,10 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { doStopCamera } from "../camera/doStopCamera";
 import { clearStructure } from "../clearStructure";
 
 export function doStopReplay(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -31,8 +31,8 @@ export function doStopReplay(player: Player) {
             session.topDownCamSwitch = false;
             session.topDownCamSwitch2 = false;
 
-            const customEntity = session.replayODataMap.get(player.id);
-            customEntity.remove();
+            const entityData = session.replayODataMap.get(player.id);
+            entityData?.customEntity.remove();
             clearStructure(player);
 
             player.camera.clear();

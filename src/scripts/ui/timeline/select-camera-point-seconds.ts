@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 import * as ui from "@minecraft/server-ui";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { editCameraPointTick } from "../../ui/timeline/edit-camera-point-tick";
 import { removeCameraPoint } from "../../ui/timeline/remove-camera-point";
 import { clearStructure } from "../../functions/clearStructure";
@@ -12,7 +12,7 @@ import { saveToDB } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
 
 export async function openCameraReplaySelectFormSeconds(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -96,7 +96,7 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
 }
 
 async function startReplay(player: Player, pointIndex: number) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;

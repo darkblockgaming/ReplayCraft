@@ -1,5 +1,5 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { resetCamSetup } from "../camera/resetCamSetup";
 import { clearStructure } from "../clearStructure";
 import { loadBlocksUpToTick } from "../loadBlocksUpToTick";
@@ -7,7 +7,7 @@ import { removeEntities } from "../removeEntities";
 import { resetRec } from "./resetRec";
 
 export async function doSaveReset(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;

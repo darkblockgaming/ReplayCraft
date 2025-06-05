@@ -1,9 +1,9 @@
 import { PlayerReplaySession } from "./replay-player-session";
 
 export function initializePlayerMaps(session: PlayerReplaySession, playerId: string) {
-    session.replayBDataMap.set(playerId, { dbgBlockData: {} });
-    session.replayBDataBMap.set(playerId, { dbgBlockDataB: {} });
-    session.replayBData1Map.set(playerId, { dbgBlockData1: {} });
+    session.replayBlockStateMap.set(playerId, { blockStateChanges: {} });
+    session.replayBDataBMap.set(playerId, { blockSateAfterInteractions: {} });
+    session.replayBData1Map.set(playerId, { blockStateBeforeInteractions: {} });
     session.replayPosDataMap.set(playerId, { dbgRecPos: [] });
     session.replayRotDataMap.set(playerId, { dbgRecRot: [] });
     session.replayMDataMap.set(playerId, {

@@ -1,11 +1,11 @@
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 import { removeEntities } from "../../functions/removeEntities";
 import { saveToDB } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
 
 export function removeCameraPoint(player: Player, index: number) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;

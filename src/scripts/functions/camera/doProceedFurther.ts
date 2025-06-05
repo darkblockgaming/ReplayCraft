@@ -1,10 +1,10 @@
 import { Player } from "@minecraft/server";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { clearStructure } from "../clearStructure";
 import { removeEntities } from "../removeEntities";
 
 export function doProceedFurther(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage("§c[ReplayCraft] Error: No replay session found for you.");
         return;

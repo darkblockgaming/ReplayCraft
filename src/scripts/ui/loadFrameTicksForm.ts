@@ -1,4 +1,4 @@
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 import * as ui from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
 import { clearStructure } from "../functions/clearStructure";
@@ -7,7 +7,7 @@ import { loadBlocksUpToTick } from "../functions/loadBlocksUpToTick";
 import { removeEntities } from "../functions/removeEntities";
 
 export function loadFrameTicksForm(player: Player) {
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;

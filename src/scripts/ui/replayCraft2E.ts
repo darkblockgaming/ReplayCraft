@@ -10,7 +10,7 @@ import { respawnCameraEntities } from "../functions/camera/camera-load-from-data
 import { saveToDB } from "../functions/replayControls/save-to-database";
 import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-ticks";
 import { openCameraReplaySelectFormSeconds } from "./timeline/select-camera-point-seconds";
-import { SharedVariables } from "../data/replay-player-session";
+import { replaySessions } from "../data/replay-player-session";
 
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
@@ -86,7 +86,7 @@ function showAdvancedMenu(player: Player) {
 
         const actions = [saveToDB, respawnCameraEntities];
         const action = actions[result.selection];
-        const session = SharedVariables.playerSessions.get(player.id);
+        const session = replaySessions.playerSessions.get(player.id);
         if (!session) {
             player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
             return;

@@ -12,41 +12,52 @@ import {
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
+import { debugLog, debugWarn, debugError } from "../../data/util/debug";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
-    // Load raw saved session settings from DB
-    const savedSettingsRaw = replayCraftSettingsDB.get(player.id + buildName);
-    if (!savedSettingsRaw) {
-        console.error(`[❌] Failed to restore settings for ${player.id}: No data found using buildName: ${buildName}`);
+    const key = player.id + buildName;
+    let savedSettingsRaw: string;
+
+    try {
+        savedSettingsRaw = replayCraftSettingsDB.get(key);
+        if (!savedSettingsRaw) {
+            debugError(`Failed to restore settings for ${player.id}: No data found using buildName: ${buildName}`);
+            return;
+        }
+    } catch (err) {
+        debugError(`Error retrieving settings from DB for ${player.id}:`, err);
         return;
     }
 
+    let savedSettings: any;
     try {
-        const savedSettings = JSON.parse(savedSettingsRaw);
+        savedSettings = JSON.parse(savedSettingsRaw);
+    } catch (err) {
+        debugError(`Error parsing saved settings for ${player.id}:`, err);
+        return;
+    }
 
-        // Get or create player session
-        let session = SharedVariables.playerSessions.get(player.id);
+    let session = replaySessions.playerSessions.get(player.id);
+    try {
         if (!session) {
             session = createPlayerSession(player.id);
-            SharedVariables.playerSessions.set(player.id, session);
+            replaySessions.playerSessions.set(player.id, session);
         }
 
-        // Assign saved values to session, excluding functions, Maps, and state machine
         for (const [key, value] of Object.entries(savedSettings)) {
-            if (
-                typeof value !== "function" &&
-                !(value instanceof Object && "size" in value && typeof (value as any).get === "function") && // rough Map detection
-                key !== "replayStateMachine"
-            ) {
-                // Update session key if exists
+            if (typeof value !== "function" && !(value instanceof Object && "size" in value && typeof (value as any).get === "function") && key !== "replayStateMachine") {
                 if (key in session) {
                     (session as any)[key] = value;
                 }
             }
         }
+    } catch (err) {
+        debugError(`Error setting up session for ${player.id}:`, err);
+        return;
+    }
 
-        // Fix references to Player objects inside session arrays, e.g. dbgRecController, dbgCamAffectPlayer, multiPlayers
+    try {
         const players = world.getPlayers();
 
         if (session.dbgRecController) {
@@ -54,17 +65,27 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             if (actualPlayer) session.dbgRecController = actualPlayer;
         }
 
-        if (Array.isArray(session.dbgCamAffectPlayer) && session.dbgCamAffectPlayer.length > 0) {
-            session.dbgCamAffectPlayer = session.dbgCamAffectPlayer.map((oldPlayer) => players.find((p) => p.id === oldPlayer.id)).filter(Boolean);
+        if (Array.isArray(session.dbgCamAffectPlayer)) {
+            session.dbgCamAffectPlayer = session.dbgCamAffectPlayer.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
         }
 
-        if (Array.isArray(session.multiPlayers) && session.multiPlayers.length > 0) {
-            session.multiPlayers = session.multiPlayers.map((oldPlayer) => players.find((p) => p.id === oldPlayer.id)).filter(Boolean);
+        if (Array.isArray(session.multiPlayers)) {
+            session.multiPlayers = session.multiPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
         }
+    } catch (err) {
+        debugError(`Error resolving player references for ${player.id}:`, err);
+        return;
+    }
 
-        // Clear old map data for each multiplayer player in session
+    try {
+        debugLog("Session maps before clearing:");
+        ["replayBlockStateMap", "replayPosDataMap", "replayRotDataMap", "replayMDataMap", "replayBDataBMap", "replayBData1Map", "replayODataMap", "replaySDataMap"].forEach((key) => {
+            const val = (session as any)[key];
+            debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
+        });
+
         session.multiPlayers.forEach((p) => {
-            session.replayBDataMap.delete(p.id);
+            session.replayBlockStateMap.delete(p.id);
             session.replayPosDataMap.delete(p.id);
             session.replayRotDataMap.delete(p.id);
             session.replayMDataMap.delete(p.id);
@@ -73,19 +94,30 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             session.replayODataMap.delete(p.id);
             session.replaySDataMap.delete(p.id);
         });
+    } catch (err) {
+        debugError(`Error clearing map data for ${player.id}:`, err);
+        return;
+    }
 
-        // Load per-player data for each multiplayer player in session
+    try {
         session.multiPlayers.forEach((p) => {
             const pidKey = p.id + buildName;
 
-            const savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
-            const savedPlayerPositionData = replayCraftPlayerPosDB.get(pidKey);
-            const savedPlayerRotationData = replayCraftPlayerRotDB.get(pidKey);
-            const savedPlayerActionsData = replayCraftPlayerActionsDB.get(pidKey);
-            const savedPlayerBlockInteractionsData = replayCraftBlockInteractionsDB.get(pidKey);
-            const savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(pidKey);
-            const savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
-            const savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
+            let savedPlayerBlockData, savedPlayerPositionData, savedPlayerRotationData, savedPlayerActionsData, savedPlayerBlockInteractionsData, savedPlayerBeforeBlockInteractionsData, savedPlayBackEntityData, savedPlayerArmorWeaponsData;
+
+            try {
+                savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
+                savedPlayerPositionData = replayCraftPlayerPosDB.get(pidKey);
+                savedPlayerRotationData = replayCraftPlayerRotDB.get(pidKey);
+                savedPlayerActionsData = replayCraftPlayerActionsDB.get(pidKey);
+                savedPlayerBlockInteractionsData = replayCraftBlockInteractionsDB.get(pidKey);
+                savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(pidKey);
+                savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
+                savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
+            } catch (innerErr) {
+                debugError(`Error loading per-player DB for ${p.name} (${p.id}):`, innerErr);
+                return;
+            }
 
             if (
                 !savedPlayerBlockData ||
@@ -97,25 +129,34 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 !savedPlayBackEntityData ||
                 !savedPlayerArmorWeaponsData
             ) {
-                console.warn(`[⚠️] Missing replay data for player ${p.name} (${p.id})`);
+                debugWarn(`Missing replay data for player ${p.name} (${p.id})`);
             }
 
-            if (savedPlayerBlockData) session.replayBDataMap.set(p.id, savedPlayerBlockData);
-            if (savedPlayerPositionData) session.replayPosDataMap.set(p.id, savedPlayerPositionData);
-            if (savedPlayerRotationData) session.replayRotDataMap.set(p.id, savedPlayerRotationData);
-            if (savedPlayerActionsData) session.replayMDataMap.set(p.id, savedPlayerActionsData);
-            if (savedPlayerBlockInteractionsData) session.replayBDataBMap.set(p.id, savedPlayerBlockInteractionsData);
-            if (savedPlayerBeforeBlockInteractionsData) session.replayBData1Map.set(p.id, savedPlayerBeforeBlockInteractionsData);
-            if (savedPlayBackEntityData) session.replayODataMap.set(p.id, savedPlayBackEntityData);
-            if (savedPlayerArmorWeaponsData) session.replaySDataMap.set(p.id, savedPlayerArmorWeaponsData);
-        });
+            debugLog(`Block data for ${p.name} (${p.id}):`, JSON.stringify(savedPlayerBlockData, null, 2));
 
-        console.warn(`[✅] Settings restored for ${player.id}`);
+            try {
+                if (savedPlayerBlockData) session.replayBlockStateMap.set(p.id, savedPlayerBlockData);
+                if (savedPlayerPositionData) session.replayPosDataMap.set(p.id, savedPlayerPositionData);
+                if (savedPlayerRotationData) session.replayRotDataMap.set(p.id, savedPlayerRotationData);
+                if (savedPlayerActionsData) session.replayMDataMap.set(p.id, savedPlayerActionsData);
+                if (savedPlayerBlockInteractionsData) session.replayBDataBMap.set(p.id, savedPlayerBlockInteractionsData);
+                if (savedPlayerBeforeBlockInteractionsData) session.replayBData1Map.set(p.id, savedPlayerBeforeBlockInteractionsData);
+                if (savedPlayBackEntityData) session.replayODataMap.set(p.id, savedPlayBackEntityData);
+                if (savedPlayerArmorWeaponsData) session.replaySDataMap.set(p.id, savedPlayerArmorWeaponsData);
+            } catch (mapSetErr) {
+                debugError(`Error assigning replay maps for ${p.name} (${p.id}):`, mapSetErr);
+            }
+        });
     } catch (err) {
-        console.error(`[❌] Failed to restore settings for ${player.id}:`, err);
+        debugError(`Error processing multiplayer data for ${player.id}:`, err);
+        return;
     }
 
-    if (showUI) {
-        replayMenuAfterLoad(player);
+    debugWarn(`Settings restored for ${player.id}`);
+
+    try {
+        if (showUI) replayMenuAfterLoad(player);
+    } catch (err) {
+        debugError(`Error showing UI for ${player.id}:`, err);
     }
 }

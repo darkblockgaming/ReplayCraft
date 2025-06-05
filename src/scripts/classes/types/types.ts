@@ -1,8 +1,7 @@
-import { Player } from "@minecraft/server";
+import { Entity, Player, Vector2, Vector3 } from "@minecraft/server";
 import { ReplayStateMachine } from "../replayStateMachine";
 import { PlayerReplaySession } from "../../data/replay-player-session";
 
-// Define the structure for block data
 export interface BlockData {
     location: { x: number; y: number; z: number };
     typeId: string;
@@ -12,12 +11,51 @@ export interface BlockData {
     upperPart?: BlockData;
     otherPart?: BlockData;
 }
-
-// Define the structure stored under each player ID
 export interface PlayerBlockData {
-    dbgBlockData: Record<string, BlockData>;
+    blockStateChanges: Record<string, BlockData>;
 }
-
+export interface twoPartBlocks {
+    lowerPart: BlockData;
+    upperPart: BlockData;
+    thisPart?: BlockData;
+    otherPart?: BlockData;
+}
+export type BlockInteractionEntry = BlockData | twoPartBlocks;
+export interface PlayerBlockInteractionData {
+    blockSateAfterInteractions: Record<number, BlockInteractionEntry>;
+}
+export interface PlayerBlockInteractionBeforeData {
+    blockStateBeforeInteractions: Record<number, BlockInteractionEntry>;
+}
+export interface PlayerPositionData {
+    dbgRecPos: Vector3[];
+}
+export interface PlayerRotationData {
+    dbgRecRot: Vector2[];
+}
+export interface PlayerActionsData {
+    isSneaking: number[];
+    isSwimming: number[];
+    isClimbing: number[];
+    isFalling: number[];
+    isFlying: number[];
+    isGliding: number[];
+    isRiding: number[];
+    isSprinting: number[];
+    isSleeping: number[];
+}
+export interface PlaybackEntityData {
+    customEntity: Entity;
+}
+export interface PlayerEquipmentData {
+    weapon1: string[]; // Mainhand
+    weapon2: string[]; // Offhand
+    armor1: string[]; // Head
+    armor2: string[]; // Chest
+    armor3: string[]; // Legs
+    armor4: string[]; // Feet
+}
+//--------------------------------------------------------------------------------------------------------------//
 //Global variables types.
 export type SharedVariablesType = {
     soundIds: string[];

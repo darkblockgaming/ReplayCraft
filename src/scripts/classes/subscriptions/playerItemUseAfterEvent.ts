@@ -1,18 +1,23 @@
 import { ItemUseAfterEvent, world } from "@minecraft/server";
 import { createPlayerSession } from "../../data/create-session";
 import { initializePlayerMaps } from "../../data/initialize-player-maps";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { replayCraftActiveSessionsDB } from "./world-initialize";
 
 function setController(eventData: ItemUseAfterEvent) {
     const player = eventData.source;
+    const item = eventData.itemStack;
+    const nameTag = item?.nameTag ?? "";
 
-    if (eventData.itemStack?.typeId === "minecraft:stick" && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(eventData.itemStack.nameTag)) {
-        if (!SharedVariables.playerSessions.has(player.id)) {
-            const session = createPlayerSession(player.id);
+    // Only run if it's the correct stick
+    if (item?.typeId === "minecraft:stick" && /^(Replay|replay|REPLAY|ReplayCraft2|replaycraft2|REPLAYCRAFT2|Replaycraft2)$/.test(nameTag)) {
+        // Create session if missing otherwise things will go bad.
+        let session = replaySessions.playerSessions.get(player.id);
+        if (!session) {
+            session = createPlayerSession(player.id);
             initializePlayerMaps(session, player.id);
             session.playerName = player.name;
-            SharedVariables.playerSessions.set(player.id, session);
+            replaySessions.playerSessions.set(player.id, session);
             replayCraftActiveSessionsDB.set(player.id, {
                 playerId: player.id,
                 playerName: player.name,
@@ -21,9 +26,16 @@ function setController(eventData: ItemUseAfterEvent) {
         } else {
             console.log(`[Replay Init] Session already exists for ${player.name}`);
         }
-
-        const session = SharedVariables.playerSessions.get(player.id)!;
         session.replayStateMachine.handleEvent(player);
+
+        // Set controller logic (this used to be in beforeEvents)
+        if (!session.dbgRecController || session.dbgRecController === player) {
+            if (!session.multiToggle) {
+                session.multiPlayers = [player];
+            }
+            session.dbgRecController = player;
+            console.log(`[Replay Init] Controller set to ${player.name}`);
+        }
     }
 }
 

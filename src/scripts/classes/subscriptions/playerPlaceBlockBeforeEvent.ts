@@ -1,12 +1,12 @@
 import { saveBedParts1 } from "../../functions/saveBedParts1";
 import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
-import { SharedVariables } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { PlayerPlaceBlockBeforeEvent, world } from "@minecraft/server";
 
 function recordBlocks(event: PlayerPlaceBlockBeforeEvent) {
     const { player, block } = event;
 
-    const session = SharedVariables.playerSessions.get(player.id);
+    const session = replaySessions.playerSessions.get(player.id);
     if (!session || session.replayStateMachine.state !== "recPending") return;
     if (!session.multiPlayers.includes(player)) return;
 
@@ -20,7 +20,7 @@ function recordBlocks(event: PlayerPlaceBlockBeforeEvent) {
         const playerData = session.replayBData1Map.get(player.id);
         if (!playerData) return;
 
-        playerData.dbgBlockData1[session.dbgRecTime] = {
+        playerData.blockStateBeforeInteractions[session.dbgRecTime] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),
