@@ -12,23 +12,20 @@ import { removeEntities } from "../../functions/removeEntities";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
 
 export async function openCameraReplaySelectFormTicks(player: Player) {
-    //Clean up camera entities 
-    removeEntities(player, false); 
-    //reload the current data 
+    //Clean up camera entities
+    removeEntities(player, false);
+    //reload the current data
     respawnCameraEntities(player);
-    //save the current data 
+    //save the current data
     saveToDB(player);
     if (SharedVariables.replayCamPos.length === 0) {
         player.sendMessage({
-            "rawtext": [{ "translate": "dbg.rc1.mes.no.camera.points" }]
+            rawtext: [{ translate: "dbg.rc1.mes.no.camera.points" }],
         });
         return;
     }
 
-    const form = new ui.ActionFormData()
-        .title("Select Camera Point")
-        .body("Choose a camera point (by tick) to load, edit, or remove:")
-        .button("§2▶ Start from Beginning (Tick 0)");
+    const form = new ui.ActionFormData().title("Select Camera Point").body("Choose a camera point (by tick) to load, edit, or remove:").button("§2▶ Start from Beginning (Tick 0)");
 
     SharedVariables.replayCamPos.forEach((cam, index) => {
         form.button(`Point ${index + 1} - Tick ${cam.tick}`);
@@ -51,49 +48,50 @@ export async function openCameraReplaySelectFormTicks(player: Player) {
         .button("§a▶ Play from this Point");
 
     if (pointIndex !== -1) {
-        manageForm
-            .button("§e✏ Edit Tick")
-            .button("§6✏ Edit Position/Rotation")
-            .button("§c✘ Remove Point");
+        manageForm.button("§e✏ Edit Tick").button("§6✏ Edit Position/Rotation").button("§c✘ Remove Point");
     }
 
     const manageResponse = await manageForm.show(player);
     if (manageResponse.canceled) return;
 
-   switch (manageResponse.selection) {
-           case 0: // Play
-               SharedVariables.wantLoadFrameTick = tickToUse;
-               SharedVariables.lilTick = tickToUse;
-               SharedVariables.showCameraSetupUI = true;
-               removeEntities(player, false);
-               await startReplay(player, pointIndex);
-               return;
-           case 1: // Edit Time
-               if (pointIndex !== -1) {
-                   await editCameraPointTick(player, pointIndex);
-               }
-               return;
-           case 2: // Edit Position/Rotation
-           if (pointIndex !== -1) {
-               SharedVariables.currentEditingCamIndex = pointIndex;
-               const cam = SharedVariables.replayCamPos[pointIndex];
-               player.teleport(cam.position, { rotation: SharedVariables.replayCamRot[pointIndex].rotation });
-               player.sendMessage("§f§4[ReplayCraft]§fYou have been Teleported to camera point. Use the ReplayCraft stick to confirm the new location and rotation.");
-               
-               // Set the state so the next item use triggers confirmation
-               SharedVariables.replayStateMachine.setState("editingCameraPos");
-           }
-               return;
-           case 3: // Remove
-               if (pointIndex !== -1) {
-                   removeCameraPoint(player, pointIndex);
-               }
-               return;
-       }
-   
+    switch (manageResponse.selection) {
+        case 0: // Play
+            SharedVariables.wantLoadFrameTick = tickToUse;
+            SharedVariables.lilTick = tickToUse;
+            SharedVariables.showCameraSetupUI = true;
+            removeEntities(player, false);
+            await startReplay(player, pointIndex);
+            return;
+        case 1: // Edit Time
+            if (pointIndex !== -1) {
+                await editCameraPointTick(player, pointIndex);
+            }
+            return;
+        case 2: // Edit Position/Rotation
+            if (pointIndex !== -1) {
+                SharedVariables.currentEditingCamIndex = pointIndex;
+                const cam = SharedVariables.replayCamPos[pointIndex];
+                player.teleport(cam.position, { rotation: SharedVariables.replayCamRot[pointIndex].rotation });
+                player.sendMessage("§f§4[ReplayCraft]§fYou have been Teleported to camera point. Use the ReplayCraft stick to confirm the new location and rotation.");
+
+                // Set the state so the next item use triggers confirmation
+                SharedVariables.replayStateMachine.setState("editingCameraPos");
+            }
+            return;
+        case 3: // Remove
+            if (pointIndex !== -1) {
+                removeCameraPoint(player, pointIndex);
+            }
+            return;
+    }
 }
 
 async function startReplay(player: Player, pointIndex: number) {
+    //Check to make sure the pointIndex is valid as the first button play from the beginning will be -1.
+    if (pointIndex === -1) {
+        // Default to the first point if no valid index is provided as there will always be at least two points
+        pointIndex = 0;
+    }
     SharedVariables.multiPlayers.forEach((p) => {
         removeEntities(p, true);
     });
@@ -102,10 +100,11 @@ async function startReplay(player: Player, pointIndex: number) {
 
     await Promise.all(SharedVariables.multiPlayers.map(clearStructure));
 
-    await Promise.all(SharedVariables.multiPlayers.map(async (p) => {
-        await loadEntity(p);
-        await loadBlocksUpToTick(SharedVariables.wantLoadFrameTick, p);
-    }));
+    await Promise.all(
+        SharedVariables.multiPlayers.map(async (p) => {
+            await loadEntity(p);
+            await loadBlocksUpToTick(SharedVariables.wantLoadFrameTick, p);
+        })
+    );
     doReplay(player, pointIndex);
 }
-
