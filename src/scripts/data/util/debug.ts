@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "./config";
 
 /* * Debugging utility functions for ReplayCraft.
  * These functions log messages to the console only if debugging is enabled in the config.

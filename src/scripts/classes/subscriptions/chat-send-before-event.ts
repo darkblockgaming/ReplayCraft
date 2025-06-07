@@ -1,5 +1,5 @@
 import { ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world } from "@minecraft/server";
-import { setSkin } from "../../ui/settings/setSkin";
+import { setSkin } from "../../ui/settings/set-skin";
 import { showDatabaseListUI } from "../../ui/debug/db-size";
 import { showActiveSessionsUI } from "../../ui/debug/active-sessions";
 import {
@@ -14,10 +14,10 @@ import {
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
     replayCraftSkinDB,
-} from "../../classes/subscriptions/world-initialize";
+} from "./world-initialize";
 
 import { OptimizedDatabase } from "../../data/data-hive";
-import config from "../../data/config";
+import config from "../../data/util/config";
 
 function giveItems(event: ChatSendBeforeEvent) {
     const { sender, message } = event;

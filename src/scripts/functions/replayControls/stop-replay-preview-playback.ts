@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { clearStructure } from "../clearStructure";
+import { clearStructure } from "../clear-structure";
 
 export function doStopPreview(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

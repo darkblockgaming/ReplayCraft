@@ -1,11 +1,11 @@
 import * as ui from "@minecraft/server-ui";
-import { loadFrameTicksForm } from "./loadFrameTicksForm";
-import { loadFrameSecondsForm } from "./loadFrameSecondsForm";
-import { cancelRec } from "./cancelRec";
+import { loadFrameTicksForm } from "./load-frame-ticks-form";
+import { loadFrameSecondsForm } from "./load-frame-seconds-form";
+import { cancelRec } from "./cancel-recording";
 import { Player } from "@minecraft/server";
-import { addPos } from "../functions/camera/addPos";
-import { doProceedFurther } from "../functions/camera/doProceedFurther";
-import { resetCamSetup } from "../functions/camera/resetCamSetup";
+import { addPos } from "../functions/camera/add-camera-point";
+import { doProceedFurther } from "../functions/camera/complete-camera-setup";
+import { resetCamSetup } from "../functions/camera/reset-camera-setup";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
 import { saveToDB } from "../functions/replayControls/save-to-database";
 import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-ticks";

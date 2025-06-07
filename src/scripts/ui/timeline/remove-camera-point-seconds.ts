@@ -1,6 +1,6 @@
 import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
-import { removeEntities } from "../../functions/removeEntities";
+import { removeEntities } from "../../functions/remove-entities";
 import { saveToDB } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
 

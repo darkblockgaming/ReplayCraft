@@ -1,8 +1,8 @@
 import * as ui from "@minecraft/server-ui";
-import { mainSettings } from "./settings/mainsettings";
-import { multiPlayersett } from "./settings/multiplayer";
+import { mainSettings } from "./settings/main-settings";
+import { multiPlayersett } from "./settings/multi-player";
 import { Player } from "@minecraft/server";
-import { rcInfo } from "./guideabout";
+import { rcInfo } from "./guide-about";
 import { setBuildName } from "./set-buildname";
 import { loadBuildName } from "./load-buildname";
 import { deleteBuildUI } from "./remove-session-from-database";

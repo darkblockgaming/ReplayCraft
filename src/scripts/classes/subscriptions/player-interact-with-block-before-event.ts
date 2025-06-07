@@ -1,6 +1,6 @@
 import { PlayerInteractWithBlockBeforeEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
+import { saveDoorParts1 } from "../../functions/save-doors-parts1";
 
 function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
     const { player, block } = event;

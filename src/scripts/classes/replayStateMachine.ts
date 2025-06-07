@@ -1,13 +1,13 @@
 import { Player } from "@minecraft/server";
-import { ReplayCraft2F } from "../ui/replayCraft2F";
-import { ReplayCraft2D } from "../ui/replayCraft2D";
-import { ReplayCraft2A } from "../ui/replayCraft2A";
-import { ReplayCraft2B } from "../ui/replayCraft2B";
-import { ReplayCraft2C } from "../ui/replayCraft2C";
-import { ReplayCraft2E } from "../ui/replayCraft2E";
+import { ReplayCraft2F } from "../ui/replaycraft-replay-menu";
+import { ReplayCraft2D } from "../ui/replaycraft-preview-menu";
+import { ReplayCraft2A } from "../ui/replaycraft-main-menu";
+import { ReplayCraft2B } from "../ui/replaycraft-recording-menu";
+import { ReplayCraft2C } from "../ui/replaycraft-pause-menu";
+import { ReplayCraft2E } from "../ui/replaycraft-camera-menu";
 import { saveToDB } from "../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
-import { removeEntities } from "../functions/removeEntities";
+import { removeEntities } from "../functions/remove-entities";
 import { PlayerReplaySession } from "../data/replay-player-session";
 
 type ReplayState = "recStartRep" | "viewStartRep" | "recCompleted" | "recCamSetup" | "recSaved" | "recPaused" | "recPending" | "editingCameraPos" | "default";

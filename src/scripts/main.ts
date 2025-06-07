@@ -1,22 +1,21 @@
-import { beforeChatSend } from "./classes/subscriptions/chatSendBeforeEvent";
-import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/playerBreakBlockAfterEvent";
-import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/playerBreakBlockBeforeEvent";
-import { replaycraftInteractWithBlockAfterEvent } from "./classes/subscriptions/playerInteractWithBlockAfterEvent";
-import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions/playerInteractWithBlockBeforeEvent";
-//import { replaycraftItemUseBeforeEvent } from "./classes/subscriptions/playerItemUseBeforeEvent";
-import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/playerItemUseAfterEvent";
-import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/playerPlaceBlockBeforeEvent";
-import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/playerPlaceBlockAfterEvent";
-import { BlockPermutation, EasingType, EquipmentSlot, Player, system, world } from "@minecraft/server";
-import { clearStructure } from "./functions/clearStructure";
-import { playBlockSound } from "./functions/playBlockSound";
-import { onPlayerSpawn } from "./classes/subscriptions/player-spawn";
-import { onPlayerLeave } from "./classes/subscriptions/player-leave";
+import { beforeChatSend } from "./classes/subscriptions/chat-send-before-event";
+import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/player-break-block-after-event";
+import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/player-break-block-before-event";
+import { replaycraftInteractWithBlockAfterEvent } from "./classes/subscriptions/player-interact-with-block-after-event";
+import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions/player-interact-with-block-before-event";
+import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
+import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
+import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
+import { BlockPermutation, EasingType, EquipmentSlot, system, world } from "@minecraft/server";
+import { clearStructure } from "./functions/clear-structure";
+import { playBlockSound } from "./functions/play-block-sound";
+import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
+import { onPlayerLeave } from "./classes/subscriptions/player-leave-after-event";
 import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initialize";
 //temp solution for the missing import this needs to be convered.
 import "./ReplayCraft.js";
-import { removeEntities } from "./functions/removeEntities";
-import config from "./data/config";
+import { removeEntities } from "./functions/remove-entities";
+import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
 
 //Chat events
@@ -29,7 +28,6 @@ replaycraftPlaceBlockAfterEvent();
 replaycraftInteractWithBlockBeforeEvent();
 replaycraftInteractWithBlockAfterEvent();
 // soon to be removed from the API!
-//replaycraftItemUseBeforeEvent();
 replaycraftItemUseAfterEvent();
 
 //Show the player a useful message for the first time they join!

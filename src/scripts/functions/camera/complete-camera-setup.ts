@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { clearStructure } from "../clearStructure";
-import { removeEntities } from "../removeEntities";
+import { clearStructure } from "../clear-structure";
+import { removeEntities } from "../remove-entities";
 
 export function doProceedFurther(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

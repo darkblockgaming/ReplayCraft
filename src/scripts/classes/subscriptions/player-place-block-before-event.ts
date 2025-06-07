@@ -1,5 +1,5 @@
-import { saveBedParts1 } from "../../functions/saveBedParts1";
-import { saveDoorParts1 } from "../../functions/saveDoorsParts1";
+import { saveBedParts1 } from "../../functions/save-bed-parts1";
+import { saveDoorParts1 } from "../../functions/save-doors-parts1";
 import { replaySessions } from "../../data/replay-player-session";
 import { PlayerPlaceBlockBeforeEvent, world } from "@minecraft/server";
 

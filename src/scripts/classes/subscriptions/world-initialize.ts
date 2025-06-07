@@ -1,6 +1,5 @@
 import { world } from "@minecraft/server";
 import { OptimizedDatabase } from "../../data/data-hive";
-import { migrateDatabase } from "../../data/migrate-database";
 
 let replayCraftBlockDB: OptimizedDatabase;
 let replayCraftPlayerPosDB: OptimizedDatabase;
@@ -46,8 +45,6 @@ function onWorldInitialize() {
 
     //store active sessions
     replayCraftActiveSessionsDB = new OptimizedDatabase("replayCraftActiveSessionsDatabase");
-
-    migrateDatabase(); // Call the migration function to migrate all databases
 }
 
 /**

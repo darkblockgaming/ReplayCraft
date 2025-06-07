@@ -3,11 +3,11 @@ import * as ui from "@minecraft/server-ui";
 import { replaySessions } from "../../data/replay-player-session";
 import { editCameraPointTick } from "../../ui/timeline/edit-camera-point-tick";
 import { removeCameraPoint } from "../../ui/timeline/remove-camera-point";
-import { clearStructure } from "../../functions/clearStructure";
-import { loadBlocksUpToTick } from "../../functions/loadBlocksUpToTick";
-import { loadEntity } from "../../functions/loadEntity";
-import { removeEntities } from "../../functions/removeEntities";
-import { doReplay } from "../../functions/replayControls/doReplay";
+import { clearStructure } from "../../functions/clear-structure";
+import { loadBlocksUpToTick } from "../../functions/load-blocks-upto-tick";
+import { loadEntity } from "../../functions/load-entity";
+import { removeEntities } from "../../functions/remove-entities";
+import { doReplay } from "../../functions/replayControls/start-replay-playback";
 import { saveToDB } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
 
@@ -96,6 +96,11 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
 }
 
 async function startReplay(player: Player, pointIndex: number) {
+    //Check to make sure the pointIndex is valid as the first button play from the beginning will be -1.
+    if (pointIndex === -1) {
+        // Default to the first point if no valid index is provided as there will always be at least two points
+        pointIndex = 0;
+    }
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);

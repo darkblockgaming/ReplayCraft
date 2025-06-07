@@ -1,9 +1,9 @@
 import { ActionFormData, ActionFormResponse } from "@minecraft/server-ui";
 import { replaySessions } from "../data/replay-player-session";
 import { Player } from "@minecraft/server";
-import { loadBlocksUpToTick } from "../functions/loadBlocksUpToTick";
-import { clearStructure } from "../functions/clearStructure";
-import { removeEntities } from "../functions/removeEntities";
+import { loadBlocksUpToTick } from "../functions/load-blocks-upto-tick";
+import { clearStructure } from "../functions/clear-structure";
+import { removeEntities } from "../functions/remove-entities";
 
 export function replayMenuAfterLoad(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

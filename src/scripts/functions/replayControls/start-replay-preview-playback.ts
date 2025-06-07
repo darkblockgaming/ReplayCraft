@@ -1,6 +1,6 @@
 import { Player, system } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { summonReplayEntity } from "../summonReplayEntity";
+import { summonReplayEntity } from "../summon-replay-entity";
 
 export async function doViewReplay(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

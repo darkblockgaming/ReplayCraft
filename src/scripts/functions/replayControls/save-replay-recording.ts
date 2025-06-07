@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { clearStructure } from "../clearStructure";
+import { clearStructure } from "../clear-structure";
 import { saveToDB } from "./save-to-database";
 
 export function doSave(player: Player) {

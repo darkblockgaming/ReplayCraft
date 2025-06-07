@@ -1,7 +1,7 @@
 import { PlayerPlaceBlockAfterEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { saveBedParts } from "../../functions/saveBedsParts";
-import { saveDoorParts } from "../../functions/saveDoorParts";
+import { saveBedParts } from "../../functions/save-beds-parts";
+import { saveDoorParts } from "../../functions/save-door-parts";
 import { debugLog, debugWarn } from "../../data/util/debug";
 
 function recordBlocks(event: PlayerPlaceBlockAfterEvent) {

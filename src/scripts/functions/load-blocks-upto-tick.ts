@@ -1,8 +1,8 @@
 import { BlockPermutation, Player, Vector3, world, Dimension } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session";
-import { isChunkLoaded } from "./isChunkLoaded";
-import { waitForChunkLoad } from "./waitForChunkLoad";
-import { PlayerBlockData } from "..//classes/types/types"; // Adjust the import path as necessary
+import { isChunkLoaded } from "./is-chunk-loaded";
+import { waitForChunkLoad } from "./wait-for-chunk-load";
+import { PlayerBlockData } from "../classes/types/types"; // Adjust the import path as necessary
 
 type BlockState = Record<string, any>; // Define block states as a record of key-value pairs
 

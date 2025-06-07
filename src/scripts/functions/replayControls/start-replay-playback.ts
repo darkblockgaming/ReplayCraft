@@ -1,10 +1,10 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { isChunkLoaded } from "../isChunkLoaded";
-import { summonReplayEntity } from "../summonReplayEntity";
-import { waitForChunkLoad } from "../waitForChunkLoad";
-import { startReplayCam } from "./startReplayCam";
-import { removeEntities } from "../removeEntities";
+import { isChunkLoaded } from "../is-chunk-loaded";
+import { summonReplayEntity } from "../summon-replay-entity";
+import { waitForChunkLoad } from "../wait-for-chunk-load";
+import { startReplayCam } from "./start-replay-camera";
+import { removeEntities } from "../remove-entities";
 
 export async function doReplay(player: Player, pointIndex?: number) {
     const session = replaySessions.playerSessions.get(player.id);

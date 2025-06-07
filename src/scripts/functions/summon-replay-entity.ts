@@ -1,6 +1,6 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session.js";
-import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
+import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
 
 //@ts-check
 export function summonReplayEntity(player: Player) {

@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { doStopCamera } from "../camera/doStopCamera";
-import { clearStructure } from "../clearStructure";
+import { doStopCamera } from "../camera/stop-camera-setup";
+import { clearStructure } from "../clear-structure";
 
 export function doStopReplay(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

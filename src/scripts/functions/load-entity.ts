@@ -1,9 +1,9 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session.js";
-import { isChunkLoaded } from "./isChunkLoaded.js";
-import { waitForChunkLoad } from "./waitForChunkLoad.js";
-import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize";
-import { removeEntities } from "./removeEntities";
+import { isChunkLoaded } from "./is-chunk-loaded.js";
+import { waitForChunkLoad } from "./wait-for-chunk-load.js";
+import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
+import { removeEntities } from "./remove-entities.js";
 
 export async function loadEntity(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

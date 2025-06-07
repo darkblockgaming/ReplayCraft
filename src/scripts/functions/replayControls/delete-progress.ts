@@ -1,9 +1,9 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { resetCamSetup } from "../camera/resetCamSetup";
-import { clearStructure } from "../clearStructure";
-import { removeEntities } from "../removeEntities";
-import { resetRec } from "./resetRec";
+import { resetCamSetup } from "../camera/reset-camera-setup";
+import { clearStructure } from "../clear-structure";
+import { removeEntities } from "../remove-entities";
+import { resetRec } from "./reset-replay";
 
 export function deletePro(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);

@@ -1,10 +1,10 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { resetCamSetup } from "../camera/resetCamSetup";
-import { clearStructure } from "../clearStructure";
-import { loadBlocksUpToTick } from "../loadBlocksUpToTick";
-import { removeEntities } from "../removeEntities";
-import { resetRec } from "./resetRec";
+import { resetCamSetup } from "../camera/reset-camera-setup";
+import { clearStructure } from "../clear-structure";
+import { loadBlocksUpToTick } from "../load-blocks-upto-tick";
+import { removeEntities } from "../remove-entities";
+import { resetRec } from "./reset-replay";
 
 export async function doSaveReset(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
