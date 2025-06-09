@@ -1,7 +1,7 @@
 import { Player, Vector3 } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session";
+import { blockPlaceSounds } from "../data/util/sounds-place-map";
 
-// Define the structure of the block data
 interface BlockData {
     location: Vector3;
     typeId: string;
@@ -10,15 +10,17 @@ interface BlockData {
 
 export function playBlockSound(blockData: BlockData, player: Player): void {
     const session = replaySessions.playerSessions.get(player.id);
-    if (!session) {
-        console.error(`No session found for player ${player.name}`);
+    if (!session) return;
+
+    const { location, typeId } = blockData;
+    const blockId = typeId.replace("minecraft:", ""); // normalize block ID
+
+    const soundData = blockPlaceSounds[blockId];
+
+    if (!soundData) {
+        console.warn(`No place sound found for block: ${blockId}`);
         return;
     }
-    if (!session.toggleSound) return;
 
-    const { location } = blockData;
-
-    session.replayController.playSound(session.soundIds[session.selectedSound], {
-        location: location,
-    });
+    session.replayController.playSound(soundData.sound, { location, pitch: soundData.pitch });
 }
