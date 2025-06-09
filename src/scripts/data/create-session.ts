@@ -1,4 +1,4 @@
-import { ReplayStateMachine } from "../classes/replayStateMachine";
+import { ReplayStateMachine } from "../classes/replay-state-machine";
 import { PlayerReplaySession } from "./replay-player-session";
 import { replayCraftActiveSessionsDB } from "../classes/subscriptions/world-initialize";
 

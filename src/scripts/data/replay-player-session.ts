@@ -1,5 +1,5 @@
 import { Player, Vector3 } from "@minecraft/server";
-import { ReplayStateMachine } from "../classes/replayStateMachine";
+import { ReplayStateMachine } from "../classes/replay-state-machine";
 import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData } from "../classes/types/types";
 
 export interface PlayerReplaySession {

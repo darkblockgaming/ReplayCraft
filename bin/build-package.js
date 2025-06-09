@@ -25,9 +25,7 @@ function runCommand(command, args) {
 }
 
 function getAndUpdateBuildNumber() {
-    const buildInfo = fs.existsSync(buildInfoPath)
-        ? fs.readJsonSync(buildInfoPath)
-        : { build: 0 };
+    const buildInfo = fs.existsSync(buildInfoPath) ? fs.readJsonSync(buildInfoPath) : { build: 0 };
 
     buildInfo.build += 1;
     fs.writeJsonSync(buildInfoPath, buildInfo, { spaces: 2 });
@@ -55,11 +53,10 @@ function buildProject() {
 
     fs.copySync(path.join(projectRoot, "src", "entities"), path.join(buildDir, "entities"));
     fs.copySync(path.join(projectRoot, "src", "functions"), path.join(buildDir, "functions"));
-    fs.copySync(path.join(projectRoot, "src", "loot_tables"), path.join(buildDir, "loot_tables"));
 }
 
 function copyAssets() {
-    assets.forEach(asset => {
+    assets.forEach((asset) => {
         fs.copyFileSync(path.join(projectRoot, asset), path.join(buildDir, asset));
     });
 }
@@ -74,30 +71,27 @@ function copyScriptsAndBlocks() {
     if (fs.existsSync(scriptsDir)) {
         fs.copySync(scriptsDir, path.join(behaviorPacksDir, "scripts"));
     }
-    ["entities", "functions", "loot_tables"].forEach(dir => {
+    ["entities", "functions"].forEach((dir) => {
         const fullPath = path.join(buildDir, dir);
         if (fs.existsSync(fullPath)) {
             fs.copySync(fullPath, path.join(behaviorPacksDir, dir));
         }
     });
 
-    assets.forEach(asset => {
+    assets.forEach((asset) => {
         fs.copyFileSync(path.join(buildDir, asset), path.join(behaviorPacksDir, asset));
     });
 }
 
 function createDistributionArchive(outputFilePath) {
-    runCommand(path7za, [
-        "a", "-tzip", outputFilePath,
-        "build/addon/ReplayCraft_RP", "build/addon/ReplayCraft_BP"
-    ]);
+    runCommand(path7za, ["a", "-tzip", outputFilePath, "build/addon/ReplayCraft_RP", "build/addon/ReplayCraft_BP"]);
 }
 
 function modifyZip(outputFilePath) {
     const zip = new AdmZip(outputFilePath);
     const newZip = new AdmZip();
 
-    zip.getEntries().forEach(entry => {
+    zip.getEntries().forEach((entry) => {
         if (!entry.entryName.startsWith("build/addon/")) return;
         const newPath = entry.entryName.replace("build/addon/", "");
         newZip.addFile(newPath, entry.getData());
@@ -134,9 +128,7 @@ function cleanUp() {
         createAddonStructure();
         copyScriptsAndBlocks();
 
-        const outputFileName = isDevMode
-            ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon`
-            : `ReplayCraft-v${version}.mcaddon`;
+        const outputFileName = isDevMode ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon` : `ReplayCraft-v${version}.mcaddon`;
 
         const outputFilePath = path.resolve(buildDir, "build", outputFileName);
         fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
