@@ -1,7 +1,10 @@
 import { PlayerBreakBlockAfterEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { saveBedParts } from "../../functions/save-beds-parts";
-import { saveDoorParts } from "../../functions/save-door-parts";
+import { saveBedParts } from "../../functions/bed-parts-break-after-event";
+import { saveDoorParts } from "../../functions/door-parts-break-after-event";
+
+//saveBedParts = bed-parts-break-after-event
+//saveDoorParts = door-parts-break-after-event
 
 function recordBlocks(event: PlayerBreakBlockAfterEvent) {
     const { player, block } = event;

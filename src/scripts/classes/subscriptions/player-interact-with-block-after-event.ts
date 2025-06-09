@@ -1,6 +1,6 @@
 import { PlayerInteractWithBlockAfterEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { saveDoorPartsB } from "../../functions/save-door-partsb";
+import { saveDoorPartsB } from "../../functions/door-parts-interact-with-block-after-event";
 
 // Suggested function name: handleBlockInteractionRecording
 function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {

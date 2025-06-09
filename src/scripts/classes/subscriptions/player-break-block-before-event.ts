@@ -1,7 +1,9 @@
-import { saveBedParts1 } from "../../functions/save-bed-parts1";
-import { saveDoorParts1 } from "../../functions/save-doors-parts1";
+import { saveBedParts1 } from "../../functions/bed-parts-break-before-event";
+import { saveDoorParts1 } from "../../functions/door-parts-break-before-event";
 import { replaySessions } from "../../data/replay-player-session";
 import { PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
+//saveBedParts1 = bed-parts-break-before-event
+//saveDoorParts1 = door-parts-break-before-event
 
 //@ts-check
 function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
