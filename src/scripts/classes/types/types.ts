@@ -53,4 +53,17 @@ export interface PlayerEquipmentData {
     armor3: string[]; // Legs
     armor4: string[]; // Feet
 }
+
+export interface BuildOption {
+    name: string;
+    display: string;
+    isValid: boolean;
+}
+
+// Define the structure of parsed replay data
+export interface ReplayDataV3 {
+    playerName: string;
+    recordingEndTick: number;
+    [key: string]: any;
+}
 //--------------------------------------------------------------------------------------------------------------//

@@ -1,45 +1,97 @@
-import { ModalFormData } from "@minecraft/server-ui";
+import { ActionFormData } from "@minecraft/server-ui";
 import { replaySessions } from "../data/replay-player-session";
-import { Player } from "@minecraft/server";
+import { Player, system } from "@minecraft/server";
 import { loadFromDB } from "../functions/replayControls/load-from-database";
 import { replayCraftSettingsDB } from "../classes/subscriptions/world-initialize";
 import { createPlayerSession } from "../data/create-session";
+import { BuildOption, ReplayDataV3 } from "../classes/types/types";
 
-export function loadBuildName(player: Player) {
+const PAGE_SIZE = 7;
+
+export function loadBuildName(player: Player, page = 0): void {
     const entries = replayCraftSettingsDB.entries();
     const playerId = player.id;
-    // Find and extract build names for this player
-    const buildNames = entries
-        .filter(([key, _]) => key.startsWith(playerId + "rcData"))
-        .map(([key, _]) => {
-            const parts = key.split("rcData");
-            return parts[1]; // This is the buildName
-        });
-    console.warn(`[DEBUG] Build names for ${player.name}:`, buildNames);
 
-    if (buildNames.length === 0) {
+    const buildOptions: BuildOption[] = (entries as [string, string | ReplayDataV3][])
+        .filter(([key, _]) => key.startsWith(playerId + "rcData"))
+        .map(([key, value]) => {
+            const buildName = key.split("rcData")[1];
+            let parsedValue: ReplayDataV3 | null = null;
+
+            if (typeof value === "string") {
+                try {
+                    parsedValue = JSON.parse(value);
+                } catch {
+                    parsedValue = null;
+                }
+            } else if (typeof value === "object" && value !== null) {
+                parsedValue = value;
+            }
+
+            const isValid = parsedValue !== null && "playerName" in parsedValue && "recordingEndTick" in parsedValue;
+
+            return {
+                name: buildName,
+                display: isValid ? buildName : `§c${buildName} (Incompatible)`,
+                isValid,
+            };
+        });
+
+    if (buildOptions.length === 0) {
         player.sendMessage("No builds found for your ID.");
         return;
     }
 
-    const form = new ModalFormData().title("replaycraftloadbuildname.title").dropdown("Available Builds", buildNames, {
-        defaultValueIndex: 0,
-        tooltip: "Select a build to load",
+    const totalPages = Math.ceil(buildOptions.length / PAGE_SIZE);
+    page = Math.min(Math.max(page, 0), totalPages - 1);
+
+    const pageOptions = buildOptions.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+    const form = new ActionFormData().title("Select a Build to Load");
+
+    pageOptions.forEach((opt) => {
+        form.button(opt.display);
     });
 
+    const navButtons: string[] = [];
+    if (page > 0) navButtons.push("Back");
+    if (page < totalPages - 1) navButtons.push("Next");
+
+    navButtons.forEach((btn) => form.button(btn));
+
     form.show(player)
-        .then((formData) => {
-            if (!formData || !formData.formValues || formData.formValues.length === 0) {
-                player.sendMessage("No build selected.");
+        .then((result) => {
+            if (result.canceled) {
+                player.sendMessage("Build selection canceled.");
                 return;
             }
 
-            const selectedBuild = buildNames[Number(formData.formValues[0])];
+            const selection = result.selection;
+            if (selection === undefined) return;
 
-            // Get or create the player session and update the buildName
+            if (selection >= pageOptions.length) {
+                const navIndex = selection - pageOptions.length;
+                const isBack = page > 0 && navButtons[navIndex] === "Back";
+                const isNext = page < totalPages - 1 && navButtons[navIndex] === "Next";
+
+                if (isBack) {
+                    system.run(() => loadBuildName(player, page - 1));
+                } else if (isNext) {
+                    system.run(() => loadBuildName(player, page + 1));
+                }
+                return;
+            }
+
+            const selectedOption = pageOptions[selection];
+            if (!selectedOption.isValid) {
+                player.sendMessage("§cThis build is incompatible with the current version of ReplayCraft.");
+                system.run(() => loadBuildName(player, page)); // reload current page
+                return;
+            }
+
+            const selectedBuild = selectedOption.name;
             let session = replaySessions.playerSessions.get(playerId);
             if (!session) {
-                // You probably have a createPlayerSession function:
                 session = createPlayerSession(playerId);
                 replaySessions.playerSessions.set(playerId, session);
             }
@@ -47,17 +99,12 @@ export function loadBuildName(player: Player) {
             const fullBuildName = "rcData" + selectedBuild;
             session.buildName = fullBuildName;
 
-            // Load the build from DB; this updates the session data as needed
             loadFromDB(player, fullBuildName, true);
         })
-        .catch((error: Error) => {
-            console.error("Failed to show form: " + error);
+        .catch((error) => {
+            console.error("Failed to show form:", error);
             player.sendMessage({
-                rawtext: [
-                    {
-                        translate: "replaycraft.ui.error.message",
-                    },
-                ],
+                rawtext: [{ translate: "replaycraft.ui.error.message" }],
             });
         });
 }
