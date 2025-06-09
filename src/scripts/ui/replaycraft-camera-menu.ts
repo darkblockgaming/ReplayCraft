@@ -3,7 +3,7 @@ import { loadFrameTicksForm } from "./load-frame-ticks-form";
 import { loadFrameSecondsForm } from "./load-frame-seconds-form";
 import { cancelRec } from "./cancel-recording";
 import { Player } from "@minecraft/server";
-import { addPos } from "../functions/camera/add-camera-point";
+import { addCameraPoint } from "../functions/camera/add-camera-point";
 import { doProceedFurther } from "../functions/camera/complete-camera-setup";
 import { resetCamSetup } from "../functions/camera/reset-camera-setup";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
@@ -50,7 +50,7 @@ function showTimelineMenu(player: Player) {
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 5) return ReplayCraft2E(player);
 
-        const actions = [loadFrameTicksForm, loadFrameSecondsForm, addPos, openCameraReplaySelectFormTicks, openCameraReplaySelectFormSeconds];
+        const actions = [loadFrameTicksForm, loadFrameSecondsForm, addCameraPoint, openCameraReplaySelectFormTicks, openCameraReplaySelectFormSeconds];
 
         const action = actions[result.selection];
         if (action) action(player);

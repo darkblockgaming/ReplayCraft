@@ -1,7 +1,7 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-
-export function addPos(player: Player) {
+//addCameraPoint = addPos
+export function addCameraPoint(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage("No session found for player.");
