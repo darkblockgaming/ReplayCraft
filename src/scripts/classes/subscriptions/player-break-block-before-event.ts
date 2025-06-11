@@ -22,7 +22,10 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
             saveDoorParts1(block, player);
         }
     } else {
-        session.blockBeforeEventData[session.recordingEndTick] = {
+        const playerData = session.replayBlockInteractionBeforeMap.get(player.id);
+        if (!playerData) return;
+
+        playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),

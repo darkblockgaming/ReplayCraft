@@ -20,7 +20,9 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
             saveDoorParts(block, player);
         }
     } else {
-        session.blockAfterEventData[session.recordingEndTick] = {
+        const playerBlockData = session.replayBlockInteractionAfterMap.get(player.id);
+        if (!playerBlockData) return;
+        playerBlockData.blockSateAfterInteractions[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),
