@@ -1,4 +1,7 @@
 # Changelog
+## [v2.2.0](https://github.com/darkblockgaming/ReplayCraft/tree/v2.2.0 (2025-06-17)
+
+[Full Changelog](https://github.com/darkblockgaming/ReplayCraft/compare/v2.1.5...v2.2.0)
 
 ## [v2.1.5](https://github.com/darkblockgaming/ReplayCraft/tree/v2.1.5 (2025-05-28)
 
