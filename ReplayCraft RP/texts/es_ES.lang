@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menú de reproducción] v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [menú de repetición] v2.2.0§r
 dbg.rc1.title.replay.settings=Configuración de reproducción
 dbg.rc1.title.preview.settings=Configuración de vista previa
 dbg.rc1.title.replaycraft.settings=§ Configuración de BReplaycraft§r
@@ -176,3 +176,5 @@ replaycraft.recordingmenu.title=§9Replaycraft: menú de grabación
 replaycraft.previewmenu.title=§9Replaycraft: menú de vista previa
 replaycraft.replaymenu.title=§9Replaycraft: finalizar y registrar
 replaycraft.Finalize.Record.body=Seleccione las opciones a continuación para finalizar su repetición y comenzar a grabar su pantalla.
+replaycarft.setskin.button=Configuración de piel
+

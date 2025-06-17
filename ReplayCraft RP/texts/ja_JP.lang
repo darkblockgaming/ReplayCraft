@@ -176,3 +176,5 @@ replaycraft.recordingmenu.title=§9Replaycraft：メニューの記録
 replaycraft.previewmenu.title=§9Replaycraft：プレビューメニュー
 replaycraft.replaymenu.title=§9Replaycraft：ファイナライズとレコード
 replaycraft.Finalize.Record.body=以下のオプションを選択して、リプレイを完成させ、画面の記録を開始します。
+replaycarft.setskin.button=スキン設定
+

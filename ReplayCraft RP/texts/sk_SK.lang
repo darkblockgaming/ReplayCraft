@@ -67,7 +67,7 @@ dbg.rc1.button.delete.progress=Vymazať pokrok
 
 dbg.rc1.toggle.sound.cues=Zvukové narážky
 dbg.rc1.toggle.text.prompts=Textové výzvy
-dbg.rc1.dropdown.select.block.placing.sound=Z dôvodu mnohých návrhov a požiadaviek na pridanie zvukov blokovania počas prehrávania som túto funkciu implementoval. Teraz to môžete povoliť a počas prehrávania alebo ukážky budú bloky produkovať zvuky podľa toho. V budúcich verziách však vynaložím všetko úsilie na implementáciu automatických zvukov špecifických pre blok.
+dbg.rc1.dropdown.select.block.placing.sound=Z dôvodu mnohých návrhov a požiadaviek na pridanie zvukov blokovania počas prehrávania som túto funkciu implementoval. Teraz ho môžete povoliť a počas prehrávania alebo ukážky budú bloky produkovať zvuky. V budúcich verziách však vynaložím všetko úsilie na implementáciu automatických zvukov špecifických pre blok.
 dbg.rc1.toggle.block.placing.sound=Blokovanie zvuku
 dbg.rc1.toggle.multiplayer.replay=Prehrávanie viacerých hráčov
 dbg.rc1.toggle.hide.hud.on.replay=Skryť HUD počas prehrávania? 
@@ -176,3 +176,5 @@ replaycraft.recordingmenu.title=§9 Replaycraft: Nahrávanie ponuky
 replaycraft.previewmenu.title=§9Replaycraft: Ukážka ponuky ukážky
 replaycraft.replaymenu.title=§9 Replaycraft: Finalize & Record
 replaycraft.Finalize.Record.body=Vyberte možnosti nižšie, aby ste dokončili svoje prehrávanie a začnite nahrať obrazovku.
+replaycarft.setskin.button=Nastavenie kože
+

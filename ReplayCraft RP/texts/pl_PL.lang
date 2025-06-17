@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu powtórki] v2.2.0§r
+dbg.rc1.title.replay.menu=§9 Replaycraft [Menu powtórki] v2.2.0§r
 dbg.rc1.title.replay.settings=Ustawienia powtórki
 dbg.rc1.title.preview.settings=Ustawienia podglądu
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft Ustawienia §r
@@ -132,7 +132,7 @@ dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§F§4 [Replaycraft] §f
 dbg.rc2.mes.camera.is.already.moving=§F§4 [Replaycraft] §f§camera już się porusza §R
 dbg.rc2.mes.preview.camera.is.already.moving=§F§4 [ReplayCraft] §f§CPREVIEW Kamera już się porusza §R
 dbg.rc2.mes.camera.movement.complete=§F§4 [Replaycraft] §f§Acamera Ruch Wypełnij §r
-dbg.rc2.mes.no.active.camera.movement.to.stop=§F§4 [Replaycraft] §f§cno Active Camera Ruch w celu zatrzymania §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§F§4 [Replaycraft] §f§cno Active Camera Ruch w celu zatrzymania §R
 dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§F§4 [Replaycraft] §f§ Conccin Ustawienia, gdy kamera jest w wniosku §r
 dbg.rc2.mes.please.click.submit=§F§4 [ReplayCraft] §f§Cplease Kliknij Prześlij
 dbg.rc2.mes.settings.have.been.saved.successfully=§F§4 [replaycraft] § fsettings zostały pomyślnie zapisane
@@ -176,3 +176,5 @@ replaycraft.recordingmenu.title=§9 Replaycraft: Menu nagrywania
 replaycraft.previewmenu.title=§9 Replaycraft: Menu podglądu
 replaycraft.replaymenu.title=§9 Replaycraft: finalizowanie i nagrywanie
 replaycraft.Finalize.Record.body=Wybierz opcje poniżej, aby sfinalizować powtórkę i rozpocząć nagrywanie ekranu.
+replaycarft.setskin.button=Ustawienia skóry
+
