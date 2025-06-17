@@ -70,7 +70,7 @@ function giveItems(event: ChatSendBeforeEvent) {
     if (message === "?add") {
         system.run(() => {
             let gm = sender.getGameMode();
-            if (gm === GameMode.spectator && sender.hasTag("freecam")) {
+            if (gm === GameMode.Spectator && sender.hasTag("freecam")) {
                 addPos(sender);
             }
         });

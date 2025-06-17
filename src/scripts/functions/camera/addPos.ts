@@ -56,7 +56,7 @@ export function addPos(player: Player) {
         player.sendMessage(`§4[ReplayCraft] Â§bCamera point added successfully at about ${Math.round(cameraPosTick / 20)} second(s).`);
     }
     // If the player is playing in survival or adventure mode, they will be currently in spectator mode. we need to disable this and return them to their original game mode.
-    if (player.getGameMode() === "spectator") {
+    if (player.getGameMode() === "Spectator") {
         disableFlight(player);
     }
 }

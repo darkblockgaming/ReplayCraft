@@ -46,5 +46,8 @@
         "dev": "npm run check-naming & node bin/build-package.js --dev",
         "dist": "npm run check-naming & node bin/build-package.js --mcaddon"
         
-    }
+    },
+    "resolutions": {
+  "@minecraft/server": "2.1.0-beta.1.21.90-stable"
+}
 }

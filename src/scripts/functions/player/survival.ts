@@ -6,14 +6,14 @@ export function enableFlight(player: Player) {
     let coordsz = player.location.z;
     player.addTag("freecamcoords" + coordsx + " " + coordsy + " " + coordsz);
     player.addTag("freecam");
-    player.setGameMode(GameMode.spectator);
+    player.setGameMode(GameMode.Spectator);
     player.sendMessage(`§4[ReplayCraft] §fMove to the required position and then type ?add to add a camera point.`);
     return;
 }
 
 export function disableFlight(player: Player) {
     player.removeTag("freecam");
-    player.setGameMode(GameMode.survival);
+    player.setGameMode(GameMode.Survival);
     const tags = player.getTags();
     const tagsLength = tags.length;
     for (let i = 0; i < tagsLength; i++) {

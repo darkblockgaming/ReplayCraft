@@ -59,7 +59,7 @@ function showTimelineMenu(player: Player) {
                 return loadFrameSecondsForm(player);
             case 2:
                 //if the player is in survival or adventure mode, enable flight (freecam)
-                if (player.getGameMode() !== "creative") {
+                if (player.getGameMode() !== "Creative") {
                     return enableFlight(player);
                 }
                 return addPos(player);
