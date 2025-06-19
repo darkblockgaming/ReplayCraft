@@ -1,5 +1,6 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
+import { disableFlight } from "../player/survival";
 //addCameraPoint = addPos
 export function addCameraPoint(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -64,5 +65,9 @@ export function addCameraPoint(player: Player) {
 
     if (session.textPrompt) {
         player.sendMessage(`§4[ReplayCraft] §bCamera point added successfully at about ${Math.round(cameraPosTick / 20)} second(s).`);
+    }
+    // If the player is playing in survival or adventure mode, they will be currently in spectator mode. we need to disable this and return them to their original game mode.
+    if (player.getGameMode() === "Spectator") {
+        disableFlight(player);
     }
 }

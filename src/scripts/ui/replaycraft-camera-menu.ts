@@ -11,6 +11,7 @@ import { saveToDB } from "../functions/replayControls/save-to-database";
 import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-ticks";
 import { openCameraReplaySelectFormSeconds } from "./timeline/select-camera-point-seconds";
 import { replaySessions } from "../data/replay-player-session";
+import { enableFlight } from "../functions/player/survival";
 
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
@@ -50,10 +51,22 @@ function showTimelineMenu(player: Player) {
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 5) return ReplayCraft2E(player);
 
-        const actions = [loadFrameTicksForm, loadFrameSecondsForm, addCameraPoint, openCameraReplaySelectFormTicks, openCameraReplaySelectFormSeconds];
-
-        const action = actions[result.selection];
-        if (action) action(player);
+        switch (result.selection) {
+            case 0:
+                return loadFrameTicksForm(player);
+            case 1:
+                return loadFrameSecondsForm(player);
+            case 2:
+                //if the player is in survival or adventure mode, enable flight (freecam)
+                if (player.getGameMode() !== "Creative") {
+                    return enableFlight(player);
+                }
+                return addCameraPoint(player);
+            case 3:
+                return openCameraReplaySelectFormTicks(player);
+            case 4:
+                return openCameraReplaySelectFormSeconds(player);
+        }
     });
 }
 

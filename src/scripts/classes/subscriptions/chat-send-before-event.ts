@@ -1,4 +1,4 @@
-import { ChatSendBeforeEvent, EntityInventoryComponent, ItemStack, system, world } from "@minecraft/server";
+import { ChatSendBeforeEvent, EntityInventoryComponent, GameMode, ItemStack, system, world } from "@minecraft/server";
 import { setSkin } from "../../ui/settings/set-skin";
 import { showDatabaseListUI } from "../../ui/debug/db-size";
 import { showActiveSessionsUI } from "../../ui/debug/active-sessions";
@@ -18,6 +18,7 @@ import {
 
 import { OptimizedDatabase } from "../../data/data-hive";
 import config from "../../data/util/config";
+import { addCameraPoint } from "../../functions/camera/add-camera-point";
 
 function giveItems(event: ChatSendBeforeEvent) {
     const { sender, message } = event;
@@ -83,6 +84,16 @@ function giveItems(event: ChatSendBeforeEvent) {
             }
 
             showActiveSessionsUI(sender, playerLabels, playerIds);
+        });
+        event.cancel = true;
+        return;
+    }
+    if (message === "?add") {
+        system.run(() => {
+            let gm = sender.getGameMode();
+            if (gm === GameMode.Spectator && sender.hasTag("freecam")) {
+                addCameraPoint(sender);
+            }
         });
         event.cancel = true;
         return;
