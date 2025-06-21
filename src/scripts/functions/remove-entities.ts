@@ -1,4 +1,5 @@
 import { Player } from "@minecraft/server";
+import { replaySessions } from "../data/replay-player-session";
 /**
  * Removes ReplayCraft Entities.
  * @param {player} player - The player who initiated the function.
@@ -19,6 +20,13 @@ export function removeEntities(player: Player, replayEntity: boolean) {
         for (const entity of entities) {
             if (entity.hasTag("owner:" + player.id)) {
                 entity.remove();
+
+                // Clean up replayEntityDataMap reference:
+                const session = replaySessions.playerSessions.get(player.id);
+                if (session && session.replayEntityDataMap.has(player.id)) {
+                    session.replayEntityDataMap.delete(player.id);
+                    console.log(`[ReplayCraft] Removed replayEntityDataMap entry for player ${player.id}`);
+                }
             }
         }
     }
