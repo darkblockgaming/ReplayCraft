@@ -20,6 +20,7 @@ import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
 import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
+import { debugWarn } from "./data/util/debug";
 
 //Chat events
 beforeChatSend();
@@ -176,7 +177,7 @@ system.runInterval(() => {
                     entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
                 } catch (e) {
                     // Suppress the error if entity is invalid
-                    console.warn(`[Scripting] Skipped setting isSneaking on removed entity: ${entityData.customEntity.id}`);
+                    debugWarn(`Skipped setting isSneaking on removed entity: ${entityData.customEntity.id}`);
                 }
                 //read only
                 //entityData.customEntity.isFalling =playerData.isFalling[session.currentTick] ===1
@@ -255,7 +256,7 @@ system.runInterval(() => {
                             rotation: rot.recordedRotations[currentTick],
                         });
                     } catch (e) {
-                        console.warn(`[Scripting] Skipped teleport for removed entity: ${entity.id}`);
+                        debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
                     }
                 }
             });
@@ -285,7 +286,7 @@ system.runInterval(() => {
                             entity.addTag(`replay:${player.id}`);
                             data.replayEntity = entity;
                         } catch (err) {
-                            console.warn(`[Replay] Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
+                            debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
                         }
                     }
 
@@ -297,7 +298,7 @@ system.runInterval(() => {
                                 rotation: tickData.rotation,
                             });
                         } catch (err) {
-                            console.warn(`[Replay] Failed to move ambient entity ${id} for player ${player.name}:`, err);
+                            debugWarn(`Failed to move ambient entity ${id} for player ${player.name}:`, err);
                             data.replayEntity = undefined; // cleanup dead reference
                         }
                     }
@@ -314,7 +315,7 @@ system.runInterval(() => {
                                 data.replayEntity.applyDamage(damageAmount);
                             }
                         } catch (err) {
-                            console.warn(`[Replay] Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
+                            debugWarn(`Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
                             data.replayEntity = undefined;
                         }
                     }
@@ -324,7 +325,7 @@ system.runInterval(() => {
                             data.replayEntity.kill();
                             data.replayEntity = undefined;
                         } catch (err) {
-                            console.warn(`[Replay] Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
+                            debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
                         }
                     }
                 }
@@ -363,7 +364,7 @@ system.runInterval(() => {
                         entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tick]}`);
                         entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tick]}`);
                     } catch (e) {
-                        console.warn(`[Scripting] Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`);
+                        debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`);
                     }
                 }
             });
@@ -379,7 +380,7 @@ system.runInterval(() => {
                 baseLocation = entityData.customEntity.location;
                 baseRotation = entityData.customEntity.getRotation();
             } catch (e) {
-                console.warn(`[Scripting] Camera focus entity invalid or removed`);
+                debugWarn(`[Scripting] Camera focus entity invalid or removed`);
                 return;
             }
 
