@@ -6,7 +6,7 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions
 import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, Entity, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { clearStructure } from "./functions/clear-structure";
 import { playBlockSound } from "./functions/play-block-sound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
@@ -21,6 +21,7 @@ import { replaySessions } from "./data/replay-player-session";
 import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugWarn } from "./data/util/debug";
+import { isPlayerRiding } from "./entity/is-riding";
 
 //Chat events
 beforeChatSend();
@@ -159,6 +160,7 @@ system.runInterval(() => {
                     data.isGliding.push(player.isGliding ? 1 : 0);
                     data.isSprinting.push(player.isSprinting ? 1 : 0);
                     data.isSwimming.push(player.isSwimming ? 1 : 0);
+                    data.isRiding.push(isPlayerRiding(player) ? 1 : 0);
                 }
             });
         }
@@ -171,23 +173,15 @@ system.runInterval(() => {
                 if (!playerData || !entityData || !entityData.customEntity || typeof entityData.customEntity !== "object" || typeof playerData.isSneaking !== "object" || !(session.currentTick in playerData.isSneaking)) {
                     return;
                 }
-
-                // Entity might have been removed from the world
-                try {
-                    entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
-                } catch (e) {
-                    // Suppress the error if entity is invalid
-                    debugWarn(`Skipped setting isSneaking on removed entity: ${entityData.customEntity.id}`);
-                }
-                //read only
-                //entityData.customEntity.isFalling =playerData.isFalling[session.currentTick] ===1
-                //entityData.customEntity.isClimbing = playerData.isClimbing[session.currentTick] === 1;
-                //entityData.customEntity.isSleeping = playerData.isSleeping[session.currentTick] === 1;
-                //entityData.customEntity.isSprinting = playerData.isSprinting[session.currentTick] === 1;
-                //entityData.customEntity.isSwimming = playerData.isSwimming[session.currentTick] === 1;
-                //dont exist on entity
-                //entityData.customEntity.isFlying = playerData.isFlying[session.currentTick] === 1;
-                //entityData.customEntity.isGliding = playerData.isGliding[session.currentTick] === 1;
+                safeSet(entityData.customEntity, "isSneaking", playerData.isSneaking[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isSwimming", playerData.isSwimming[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isFalling", playerData.isFalling[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isClimbing", playerData.isClimbing[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isSleeping", playerData.isSleeping[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isSprinting", playerData.isSprinting[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isFlying", playerData.isFlying[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isGliding", playerData.isGliding[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:isRiding", playerData.isRiding[session.currentTick] === 1);
             });
         }
         // --- Ambient Entity Recording ---
@@ -434,3 +428,16 @@ system.runInterval(() => {
         if (isReplaying) session.currentTick++;
     }
 }, 1);
+
+function safeSet(entity: Entity & { setProperty?: (id: string, value: boolean | number | string) => void }, key: string, value: boolean | number | string): void {
+    try {
+        if (key === "isSneaking") {
+            // This cast is necessary since `isSneaking` may not be in the base Entity type
+            (entity as any).isSneaking = value;
+        } else {
+            entity.setProperty?.(key, value);
+        }
+    } catch (e) {
+        debugWarn(`Skipped setting ${key} on removed entity: ${(entity as any)?.id}`);
+    }
+}

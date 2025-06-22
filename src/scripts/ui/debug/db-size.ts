@@ -71,19 +71,41 @@ function showDatabaseEntryUI(player: Player, db: OptimizedDatabase) {
         });
 }
 
-function showEntryKeysUI(player: Player, db: OptimizedDatabase) {
+function showEntryKeysUI(player: Player, db: OptimizedDatabase, page: number = 0) {
     const keys = db.getEntryKeys();
-    const form = new ActionFormData().title(`Entries in ${db.name}`).body(`Select an entry to view full data:`);
+    const keysPerPage = 23; // Reserve 2 buttons for navigation
+    const start = page * keysPerPage;
+    const end = start + keysPerPage;
+    const pagedKeys = keys.slice(start, end);
 
-    for (const key of keys.slice(0, 25)) {
+    const form = new ActionFormData().title(`Entries in ${db.name} (Page ${page + 1})`).body("Select an entry:");
+
+    for (const key of pagedKeys) {
         form.button(key);
     }
 
+    // Navigation buttons
+    if (page > 0) form.button("Previous Page");
+    if (end < keys.length) form.button("Next Page");
+
     form.show(player).then((result) => {
         if (result.canceled || result.selection === undefined) return;
-        const selectedKey = keys[result.selection];
-        if (!selectedKey) return;
-        showEntryDataUI(player, db, selectedKey);
+
+        const totalButtons = pagedKeys.length + (page > 0 ? 1 : 0) + (end < keys.length ? 1 : 0);
+        const offset = page > 0 ? 1 : 0;
+
+        if (page > 0 && result.selection === pagedKeys.length) {
+            // "Previous Page" was selected
+            showEntryKeysUI(player, db, page - 1);
+        } else if (end < keys.length && result.selection === totalButtons - 1) {
+            // "Next Page" was selected
+            showEntryKeysUI(player, db, page + 1);
+        } else {
+            // Entry button was selected
+            const selectedKey = pagedKeys[result.selection - offset];
+            if (!selectedKey) return;
+            showEntryDataUI(player, db, selectedKey);
+        }
     });
 }
 

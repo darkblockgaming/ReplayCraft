@@ -21,6 +21,7 @@ import { OptimizedDatabase } from "../../data/data-hive";
 import config from "../../data/util/config";
 import { addCameraPoint } from "../../functions/camera/add-camera-point";
 import { replaySessions } from "../../data/replay-player-session";
+import { isPlayerRiding } from "../../entity/is-riding";
 
 function giveItems(event: ChatSendBeforeEvent) {
     const { sender, message } = event;
@@ -105,6 +106,14 @@ function giveItems(event: ChatSendBeforeEvent) {
         if (message === "?dbstats") {
             system.run(() => {
                 showDatabaseListUI(sender);
+            });
+            event.cancel = true;
+            return;
+        }
+
+        if (message === "?riding") {
+            system.run(() => {
+                console.log(isPlayerRiding(sender));
             });
             event.cancel = true;
             return;
