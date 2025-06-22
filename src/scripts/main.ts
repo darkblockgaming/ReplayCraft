@@ -167,8 +167,17 @@ system.runInterval(() => {
             trackedPlayers.forEach((player) => {
                 const playerData = session.replayActionDataMap.get(player.id);
                 const entityData = session.replayEntityDataMap.get(player.id);
-                if (!playerData || !entityData || !entityData.customEntity) return;
-                entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
+                if (!playerData || !entityData || !entityData.customEntity || typeof entityData.customEntity !== "object" || typeof playerData.isSneaking !== "object" || !(session.currentTick in playerData.isSneaking)) {
+                    return;
+                }
+
+                // Entity might have been removed from the world
+                try {
+                    entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
+                } catch (e) {
+                    // Suppress the error if entity is invalid
+                    console.warn(`[Scripting] Skipped setting isSneaking on removed entity: ${entityData.customEntity.id}`);
+                }
                 //read only
                 //entityData.customEntity.isFalling =playerData.isFalling[session.currentTick] ===1
                 //entityData.customEntity.isClimbing = playerData.isClimbing[session.currentTick] === 1;
@@ -241,9 +250,13 @@ system.runInterval(() => {
                 const rot = replayRotationDataMap.get(player.id);
                 const entity = replayEntityDataMap.get(player.id)?.customEntity;
                 if (pos && rot && entity) {
-                    entity.teleport(pos.recordedPositions[currentTick], {
-                        rotation: rot.recordedRotations[currentTick],
-                    });
+                    try {
+                        entity.teleport(pos.recordedPositions[currentTick], {
+                            rotation: rot.recordedRotations[currentTick],
+                        });
+                    } catch (e) {
+                        console.warn(`[Scripting] Skipped teleport for removed entity: ${entity.id}`);
+                    }
                 }
             });
         }
@@ -339,16 +352,19 @@ system.runInterval(() => {
                 if (isView || isPlayback) {
                     const playerData = replayEquipmentDataMap.get(player.id);
                     const entityData = replayEntityDataMap.get(player.id);
-                    if (!playerData || !entityData) return;
+                    try {
+                        const entity = entityData.customEntity;
+                        const tick = currentTick;
 
-                    const tick = currentTick;
-
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tick]}`);
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tick]}`);
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tick]}`);
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tick]}`);
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tick]}`);
-                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tick]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tick]}`);
+                    } catch (e) {
+                        console.warn(`[Scripting] Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`);
+                    }
                 }
             });
         }
@@ -356,54 +372,60 @@ system.runInterval(() => {
         // --- Camera Updates ---
         if (cameraFocusPlayer && isReplaying) {
             const entityData = replayEntityDataMap.get(cameraFocusPlayer.id);
-            if (entityData) {
-                const baseLocation = entityData.customEntity.location;
-                const baseRotation = entityData.customEntity.getRotation();
+            if (!entityData || !entityData.customEntity) return;
 
-                if (isFollowCamActive) {
-                    cameraAffectedPlayers.forEach((player) => {
-                        const location = {
-                            x: baseLocation.x,
-                            y: baseLocation.y + 1.5,
-                            z: baseLocation.z,
-                        };
-                        player.camera.setCamera("minecraft:free", {
-                            facingLocation: location,
-                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
-                        });
-                    });
-                }
+            let baseLocation, baseRotation;
+            try {
+                baseLocation = entityData.customEntity.location;
+                baseRotation = entityData.customEntity.getRotation();
+            } catch (e) {
+                console.warn(`[Scripting] Camera focus entity invalid or removed`);
+                return;
+            }
 
-                if (isTopDownFixedCamActive) {
-                    cameraAffectedPlayers.forEach((player) => {
-                        const location = {
-                            x: baseLocation.x,
-                            y: baseLocation.y + topDownCamHight,
-                            z: baseLocation.z,
-                        };
-                        player.camera.setCamera("minecraft:free", {
-                            location,
-                            rotation: { x: 90, y: 0 },
-                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
-                        });
+            if (isFollowCamActive) {
+                cameraAffectedPlayers.forEach((player) => {
+                    const location = {
+                        x: baseLocation.x,
+                        y: baseLocation.y + 1.5,
+                        z: baseLocation.z,
+                    };
+                    player.camera.setCamera("minecraft:free", {
+                        facingLocation: location,
+                        easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
                     });
-                }
+                });
+            }
 
-                if (isTopDownDynamicCamActive) {
-                    cameraAffectedPlayers.forEach((player) => {
-                        const location = {
-                            x: baseLocation.x,
-                            y: baseLocation.y + topDownCamHight,
-                            z: baseLocation.z,
-                        };
-                        const rotation = { x: 90, y: baseRotation.y };
-                        player.camera.setCamera("minecraft:free", {
-                            location,
-                            rotation,
-                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
-                        });
+            if (isTopDownFixedCamActive) {
+                cameraAffectedPlayers.forEach((player) => {
+                    const location = {
+                        x: baseLocation.x,
+                        y: baseLocation.y + topDownCamHight,
+                        z: baseLocation.z,
+                    };
+                    player.camera.setCamera("minecraft:free", {
+                        location,
+                        rotation: { x: 90, y: 0 },
+                        easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
                     });
-                }
+                });
+            }
+
+            if (isTopDownDynamicCamActive) {
+                cameraAffectedPlayers.forEach((player) => {
+                    const location = {
+                        x: baseLocation.x,
+                        y: baseLocation.y + topDownCamHight,
+                        z: baseLocation.z,
+                    };
+                    const rotation = { x: 90, y: baseRotation.y };
+                    player.camera.setCamera("minecraft:free", {
+                        location,
+                        rotation,
+                        easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
+                    });
+                });
             }
         }
 
