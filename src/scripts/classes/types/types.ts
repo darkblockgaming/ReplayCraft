@@ -45,6 +45,24 @@ export interface PlayerActionsData {
 export interface PlaybackEntityData {
     customEntity: Entity;
 }
+export interface AmbientEntityData {
+    typeId: string;
+    recordedData: {
+        [tick: number]: {
+            location: Vector3;
+            rotation: Vector2;
+        };
+    };
+    spawnTick: number;
+    despawnTick: number | null;
+    lastSeenTick: number;
+    replayEntity?: Entity; // created during playback
+    hurtTicks?: Map<number, number>;
+}
+export type AmbientEntityMap = Map<string, AmbientEntityData>; // entityId -> data
+
+export type ReplayAmbientEntityMap = Map<string, AmbientEntityMap>; // playerId -> entityMap
+
 export interface PlayerEquipmentData {
     weapon1: string[]; // Mainhand
     weapon2: string[]; // Offhand

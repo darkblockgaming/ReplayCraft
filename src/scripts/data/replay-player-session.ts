@@ -1,6 +1,6 @@
 import { Player, Vector3 } from "@minecraft/server";
 import { ReplayStateMachine } from "../classes/replay-state-machine";
-import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData } from "../classes/types/types";
+import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData, AmbientEntityData } from "../classes/types/types";
 
 export interface PlayerReplaySession {
     /**
@@ -41,6 +41,7 @@ export interface PlayerReplaySession {
     replayActionDataMap: Map<string, PlayerActionsData>; //was replayMDataMap: Player Actions Data
     replayEntityDataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
     replayEquipmentDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
+    replayAmbientEntityMap: Map<string, Map<string, AmbientEntityData>>;
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;

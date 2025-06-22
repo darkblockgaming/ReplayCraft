@@ -8,12 +8,14 @@ import {
     replayCraftPlayerPosDB,
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
+    replayAmbientEntityDB,
 } from "../../classes/subscriptions/world-initialize";
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog, debugWarn, debugError } from "../../data/util/debug";
+import { AmbientEntityData } from "../../classes/types/types";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     const key = player.id + buildName;
@@ -89,6 +91,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             "replayActionDataMap",
             "replayEntityDataMap",
             "replayEquipmentDataMap",
+            "replayAmbientEntityMap",
         ].forEach((key) => {
             const val = (session as any)[key];
             debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
@@ -103,6 +106,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             session.replayBlockInteractionBeforeMap.delete(p.id);
             session.replayEntityDataMap.delete(p.id);
             session.replayEquipmentDataMap.delete(p.id);
+            session.replayAmbientEntityMap.delete(p.id);
         });
     } catch (err) {
         debugError(`Error clearing map data for ${player.id}:`, err);
@@ -113,7 +117,15 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
         session.trackedPlayers.forEach((p) => {
             const pidKey = p.id + buildName;
 
-            let savedPlayerBlockData, savedPlayerPositionData, savedPlayerRotationData, savedPlayerActionsData, savedPlayerBlockInteractionsData, savedPlayerBeforeBlockInteractionsData, savedPlayBackEntityData, savedPlayerArmorWeaponsData;
+            let savedPlayerBlockData,
+                savedPlayerPositionData,
+                savedPlayerRotationData,
+                savedPlayerActionsData,
+                savedPlayerBlockInteractionsData,
+                savedPlayerBeforeBlockInteractionsData,
+                savedPlayBackEntityData,
+                savedPlayerArmorWeaponsData,
+                savedAmbientEntityData;
 
             try {
                 savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
@@ -124,6 +136,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(pidKey);
                 savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
                 savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
+                savedAmbientEntityData = replayAmbientEntityDB.get(pidKey);
             } catch (innerErr) {
                 debugError(`Error loading per-player DB for ${p.name} (${p.id}):`, innerErr);
                 return;
@@ -137,7 +150,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 !savedPlayerBlockInteractionsData ||
                 !savedPlayerBeforeBlockInteractionsData ||
                 !savedPlayBackEntityData ||
-                !savedPlayerArmorWeaponsData
+                !savedPlayerArmorWeaponsData ||
+                !savedAmbientEntityData
             ) {
                 debugWarn(`Missing replay data for player ${p.name} (${p.id})`);
             }
@@ -153,6 +167,48 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 if (savedPlayerBeforeBlockInteractionsData) session.replayBlockInteractionBeforeMap.set(p.id, savedPlayerBeforeBlockInteractionsData);
                 if (savedPlayBackEntityData) session.replayEntityDataMap.set(p.id, savedPlayBackEntityData);
                 if (savedPlayerArmorWeaponsData) session.replayEquipmentDataMap.set(p.id, savedPlayerArmorWeaponsData);
+                interface AmbientEntityDataRaw {
+                    typeId: string;
+                    recordedData: any;
+                    spawnTick: number;
+                    despawnTick: number;
+                    lastSeenTick: number;
+                    hurtTicks?: [number, number][] | Record<number, number>;
+                }
+                if (savedAmbientEntityData) {
+                    try {
+                        const obj = typeof savedAmbientEntityData === "string" ? JSON.parse(savedAmbientEntityData) : savedAmbientEntityData;
+                        const ambientMap = new Map<string, AmbientEntityData>();
+
+                        for (const [entityId, val] of Object.entries(obj)) {
+                            const data = val as AmbientEntityDataRaw;
+
+                            // Convert hurtTicks to Map
+                            let hurtTicksMap: Map<number, number> | undefined;
+                            if (Array.isArray(data.hurtTicks)) {
+                                // If stored as [tick, damage][]
+                                hurtTicksMap = new Map<number, number>(data.hurtTicks);
+                            } else if (typeof data.hurtTicks === "object") {
+                                // If stored as a plain object (Record<number, number>)
+                                hurtTicksMap = new Map<number, number>(Object.entries(data.hurtTicks).map(([tick, dmg]) => [parseInt(tick), dmg as number]));
+                            }
+
+                            ambientMap.set(entityId, {
+                                typeId: data.typeId,
+                                recordedData: data.recordedData,
+                                spawnTick: data.spawnTick,
+                                despawnTick: data.despawnTick,
+                                lastSeenTick: data.lastSeenTick,
+                                replayEntity: undefined,
+                                hurtTicks: hurtTicksMap,
+                            });
+                        }
+
+                        session.replayAmbientEntityMap.set(p.id, ambientMap);
+                    } catch (err) {
+                        debugError(`Error loading ambient entity map for player ${p.name} (${p.id}):`, err);
+                    }
+                }
             } catch (mapSetErr) {
                 debugError(`Error assigning replay maps for ${p.name} (${p.id}):`, mapSetErr);
             }

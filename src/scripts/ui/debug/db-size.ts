@@ -10,7 +10,8 @@ import {
     replayCraftPlayerPosDB,
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
-    replayCraftSkinDB
+    replayCraftSkinDB,
+    replayAmbientEntityDB,
 } from "../../classes/subscriptions/world-initialize";
 import { Player } from "@minecraft/server";
 
@@ -25,19 +26,18 @@ export function showDatabaseListUI(player: Player) {
         ["Playback Entities", replayCraftPlaybackEntityDB],
         ["Armor & Weapons", replayCraftPlayerArmorWeaponsDB],
         ["Player Skins", replayCraftSkinDB],
-        ["Settings", replayCraftSettingsDB]
+        ["Settings", replayCraftSettingsDB],
+        ["Ambient Entity's", replayAmbientEntityDB],
     ];
 
-    const form = new ActionFormData()
-        .title("ReplayCraft DB Overview")
-        .body("Select a database to view entry sizes:");
+    const form = new ActionFormData().title("ReplayCraft DB Overview").body("Select a database to view entry sizes:");
 
     for (const [label, db] of allDatabases) {
         const size = db ? db.getTotalSizeMB() : "N/A";
         form.button(`${label}\n§7${size} MB`);
     }
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled && result.cancelationReason === "UserBusy") {
             showDatabaseListUI(player);
             return;
@@ -54,13 +54,7 @@ function showDatabaseEntryUI(player: Player, db: OptimizedDatabase) {
     const sizes = db.getEntrySizesMB();
     const totalSize = db.getTotalSizeMB();
 
-    const body = [
-        `§l§e[${db.name}] Entries:§r`,
-        "",
-        ...sizes.map(([key, size]) => `§6${key}§r: §b${size} MB`),
-        "",
-        `§7Total size: §a${totalSize} MB`
-    ].join("\n");
+    const body = [`§l§e[${db.name}] Entries:§r`, "", ...sizes.map(([key, size]) => `§6${key}§r: §b${size} MB`), "", `§7Total size: §a${totalSize} MB`].join("\n");
 
     new MessageFormData()
         .title(`${db.name}`)
@@ -68,7 +62,7 @@ function showDatabaseEntryUI(player: Player, db: OptimizedDatabase) {
         .button1("Back")
         .button2("Explore Data")
         .show(player)
-        .then(result => {
+        .then((result) => {
             if (result.selection === 1) {
                 showEntryKeysUI(player, db);
             } else {
@@ -79,15 +73,13 @@ function showDatabaseEntryUI(player: Player, db: OptimizedDatabase) {
 
 function showEntryKeysUI(player: Player, db: OptimizedDatabase) {
     const keys = db.getEntryKeys();
-    const form = new ActionFormData()
-        .title(`Entries in ${db.name}`)
-        .body(`Select an entry to view full data:`);
+    const form = new ActionFormData().title(`Entries in ${db.name}`).body(`Select an entry to view full data:`);
 
     for (const key of keys.slice(0, 25)) {
         form.button(key);
     }
 
-    form.show(player).then(result => {
+    form.show(player).then((result) => {
         if (result.canceled || result.selection === undefined) return;
         const selectedKey = keys[result.selection];
         if (!selectedKey) return;
@@ -114,7 +106,7 @@ function showEntryDataUI(player: Player, db: OptimizedDatabase, key: string) {
             .button1("Back")
             .button2(page + 1 < pageCount ? "Next" : "Close")
             .show(player)
-            .then(result => {
+            .then((result) => {
                 if (result.selection === 0) {
                     showEntryKeysUI(player, db);
                 } else if (result.selection === 1 && page + 1 < pageCount) {

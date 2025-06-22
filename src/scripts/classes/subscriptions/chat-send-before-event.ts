@@ -3,6 +3,7 @@ import { setSkin } from "../../ui/settings/set-skin";
 import { showDatabaseListUI } from "../../ui/debug/db-size";
 import { showActiveSessionsUI } from "../../ui/debug/active-sessions";
 import {
+    replayAmbientEntityDB,
     replayCraftActiveSessionsDB,
     replayCraftBeforeBlockInteractionsDB,
     replayCraftBlockDB,
@@ -19,6 +20,7 @@ import {
 import { OptimizedDatabase } from "../../data/data-hive";
 import config from "../../data/util/config";
 import { addCameraPoint } from "../../functions/camera/add-camera-point";
+import { replaySessions } from "../../data/replay-player-session";
 
 function giveItems(event: ChatSendBeforeEvent) {
     const { sender, message } = event;
@@ -111,8 +113,54 @@ function giveItems(event: ChatSendBeforeEvent) {
         // Logs all keys and values from replayCraftBlockDB
         if (message === "?dblist") {
             system.run(() => {
-                for (const [key, value] of replayCraftBlockDB.entries()) {
-                    console.log(`[${key}]`, value);
+                for (const [key, value] of replayAmbientEntityDB.entries()) {
+                    console.log(`[${key}]`, JSON.stringify(value, null, 2));
+                }
+            });
+            event.cancel = true;
+            return;
+        }
+
+        if (message === "?map") {
+            system.run(() => {
+                if (!replaySessions || !replaySessions.playerSessions) {
+                    console.log("No replay sessions available.");
+                    return;
+                }
+                for (const [playerId, session] of replaySessions.playerSessions.entries()) {
+                    const ambientMap = session.replayAmbientEntityMap;
+                    if (!ambientMap || ambientMap.size === 0) {
+                        console.log(`Player ${playerId} has no ambient entity data.`);
+                        continue;
+                    }
+                    console.log(`Ambient entity maps tracked in session for ${playerId}:`);
+                    for (const [ownerPlayerId, entityMap] of ambientMap.entries()) {
+                        if (!entityMap || entityMap.size === 0) {
+                            console.log(`  No entities recorded for player ${ownerPlayerId}`);
+                            continue;
+                        }
+                        console.log(`  Entities recorded by ${ownerPlayerId}:`);
+                        for (const [entityId, data] of entityMap.entries()) {
+                            const despawn = data.despawnTick === null ? "still active" : `despawned at tick ${data.despawnTick}`;
+                            const hurtTicks = data.hurtTicks && data.hurtTicks.size > 0 ? `hurtTicks: [${[...data.hurtTicks.entries()].map(([tick, dmg]) => `${tick}:${dmg}`).join(", ")}]` : "no hurtTicks";
+
+                            console.log(`    Entity: ${entityId} | Type: ${data.typeId} | SpawnTick: ${data.spawnTick} | ${despawn} | ${hurtTicks}`);
+
+                            // Show position & rotation samples (first 5 entries or every 10th tick)
+                            const recordedTicks = Object.keys(data.recordedData)
+                                .map((t) => parseInt(t))
+                                .sort((a, b) => a - b);
+                            const sampleTicks = recordedTicks.filter((tick, index) => index < 5 || tick % 10 === 0);
+
+                            for (const tick of sampleTicks) {
+                                const rec = data.recordedData[tick];
+                                if (!rec) continue;
+                                const pos = rec.location;
+                                const rot = rec.rotation;
+                                console.log(`      Tick ${tick}: Position = (${pos.x.toFixed(2)}, ${pos.y.toFixed(2)}, ${pos.z.toFixed(2)}), Rotation = (x: ${rot.x.toFixed(2)}, y: ${rot.y.toFixed(2)}`);
+                            }
+                        }
+                    }
                 }
             });
             event.cancel = true;

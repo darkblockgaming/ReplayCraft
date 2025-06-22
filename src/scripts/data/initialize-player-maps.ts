@@ -18,6 +18,7 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
         isSleeping: [],
     });
     session.replayEntityDataMap.set(playerId, { customEntity: undefined });
+    session.replayAmbientEntityMap.set(playerId, new Map());
     session.replayEquipmentDataMap.set(playerId, {
         weapon1: [],
         weapon2: [],

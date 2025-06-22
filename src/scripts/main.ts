@@ -6,17 +6,20 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions
 import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, EquipmentSlot, system, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { clearStructure } from "./functions/clear-structure";
 import { playBlockSound } from "./functions/play-block-sound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
 import { onPlayerLeave } from "./classes/subscriptions/player-leave-after-event";
 import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initialize";
+import { onEntityHurt } from "./classes/subscriptions/entity-hurt";
 //temp solution for the missing import this needs to be convered.
 import "./ReplayCraft.js";
 import { removeEntities } from "./functions/remove-entities";
 import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
+import { BlockData } from "./classes/types/types";
+import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 
 //Chat events
 beforeChatSend();
@@ -38,358 +41,373 @@ onPlayerLeave();
 //data-hive
 subscribeToWorldInitialize();
 
-//Timer for each frame?
-system.runInterval(() => {
-    // Iterate all player sessions
-    for (const session of replaySessions.playerSessions.values()) {
-        if (session.replayStateMachine.state === "recPending") {
-            session.recordingEndTick += 1;
-        }
-    }
-}, 1);
+onEntityHurt();
 
-/*
- * Handles replay playback for all active sessions.
- * When the replay reaches the end, sets the replay state to "recSaved"
- * Clears replay-related structures and entities for each player in the session
- * Resets the tick counter
- */
+//Single loop this now handles the playback and recording logic.
 system.runInterval(() => {
     for (const session of replaySessions.playerSessions.values()) {
-        if (session.replayStateMachine.state === "viewStartRep") {
-            if (session.currentTick >= session.recordingEndTick - 1) {
-                session.replayStateMachine.setState("recSaved");
-                session.trackedPlayers.forEach((player) => {
-                    session.isReplayActive = false;
-                    clearStructure(player);
-                    removeEntities(player, true);
-                });
-                session.currentTick = 0;
-                continue; // Move to next session
-            }
-            session.currentTick++;
+        const {
+            replayStateMachine,
+            currentTick,
+            recordingEndTick,
+            trackedPlayers,
+            settingReplayType,
+            replayBlockStateMap,
+            replayPositionDataMap,
+            replayRotationDataMap,
+            replayActionDataMap,
+            replayEntityDataMap,
+            replayEquipmentDataMap,
+            isFollowCamActive,
+            isTopDownFixedCamActive,
+            isTopDownDynamicCamActive,
+            cameraFocusPlayer,
+            cameraAffectedPlayers,
+            topDownCamHight,
+        } = session;
+
+        const state = replayStateMachine.state;
+        const isView = state === "viewStartRep";
+        const isPlayback = state === "recStartRep";
+        const isRecording = state === "recPending";
+        const isReplaying = isView || isPlayback;
+
+        // --- Recording Timer ---
+        if (isRecording) session.recordingEndTick++;
+
+        // --- Handle End of Replay ---
+        if (isView && currentTick >= recordingEndTick - 1) {
+            replayStateMachine.setState("recSaved");
+            trackedPlayers.forEach((player) => {
+                session.isReplayActive = false;
+                clearStructure(player);
+                removeEntities(player, true);
+                removeOwnedAmbientEntities(player);
+            });
+            session.currentTick = 0;
+        } else if (isPlayback && currentTick >= recordingEndTick - 1) {
+            replayStateMachine.setState("recCompleted", session.showCameraSetupUI);
+            session.showCameraSetupUI = false;
+            trackedPlayers.forEach((player) => {
+                session.isReplayActive = false;
+                session.isFollowCamActive = false;
+                session.isTopDownFixedCamActive = false;
+                session.isTopDownDynamicCamActive = false;
+                player.camera.clear();
+                clearStructure(player);
+                removeEntities(player, true);
+                removeOwnedAmbientEntities(player);
+            });
+            session.currentTick = 0;
         }
-    }
-}, 1);
-/*
- * Manages active replay playback for all sessions in the "recStartRep" state.
- * When the replay reaches its end:
- * Finalizes the replay by setting state to "recCompleted" (optionally triggering UI update)
- * Resets various camera modes and clears player cameras
- * Cleans up replay structures and entities for each player
- * Resets the tick counter
- */
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        if (session.replayStateMachine.state === "recStartRep") {
-            if (session.currentTick >= session.recordingEndTick - 1) {
-                if (session.showCameraSetupUI === true) {
-                    session.replayStateMachine.setState("recCompleted", true);
-                    session.showCameraSetupUI = false;
+
+        // --- Block State Replay ---
+        if (isReplaying) {
+            trackedPlayers.forEach((player) => {
+                const playerData = replayBlockStateMap.get(player.id);
+                const blockData = playerData?.blockStateChanges[currentTick];
+                const dimension = world.getDimension(player.dimension.id);
+                const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
+
+                if (!blockData) return;
+
+                const applyPermutation = (part: BlockData) => {
+                    const block = dimension.getBlock(part.location);
+                    block.setPermutation(BlockPermutation.resolve(part.typeId, part.states));
+                };
+
+                if ("lowerPart" in blockData && "upperPart" in blockData) {
+                    applyPermutation(blockData.lowerPart);
+                    applyPermutation(blockData.upperPart);
+                } else if ("thisPart" in blockData && "otherPart" in blockData) {
+                    applyPermutation(blockData.thisPart);
+                    applyPermutation(blockData.otherPart);
                 } else {
-                    session.replayStateMachine.setState("recCompleted");
+                    applyPermutation(blockData);
+                    if (settingReplayType === 0 && customEntity) {
+                        customEntity.playAnimation("animation.replayentity.attack");
+                    }
+                    playBlockSound(blockData, player);
                 }
+            });
+        }
 
-                session.trackedPlayers.forEach((player) => {
-                    session.isFollowCamActive = false;
-                    session.isTopDownFixedCamActive = false;
-                    session.isTopDownDynamicCamActive = false;
-                    player.camera.clear();
-                    session.isReplayActive = false;
-                    clearStructure(player);
-                    removeEntities(player, true);
+        // --- Position and Rotation Recording ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                const pos = replayPositionDataMap.get(player.id);
+                const rot = replayRotationDataMap.get(player.id);
+                if (pos && rot) {
+                    pos.recordedPositions.push(player.location);
+                    rot.recordedRotations.push(player.getRotation());
+                }
+            });
+        }
+
+        // --- Action Recording ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                const data = replayActionDataMap.get(player.id);
+                if (!data) return;
+                data.isSneaking.push(player.isSneaking ? 1 : 0);
+                if (config.devAnimations === true) {
+                    data.isSleeping.push(player.isSleeping ? 1 : 0);
+                    data.isClimbing.push(player.isClimbing ? 1 : 0);
+                    data.isFalling.push(player.isFalling ? 1 : 0);
+                    data.isFlying.push(player.isFlying ? 1 : 0);
+                    data.isGliding.push(player.isGliding ? 1 : 0);
+                    data.isSprinting.push(player.isSprinting ? 1 : 0);
+                    data.isSwimming.push(player.isSwimming ? 1 : 0);
+                }
+            });
+        }
+
+        // --- Animation + Action Playback ---
+        if (isReplaying && settingReplayType === 0) {
+            trackedPlayers.forEach((player) => {
+                const playerData = session.replayActionDataMap.get(player.id);
+                const entityData = session.replayEntityDataMap.get(player.id);
+                if (!playerData || !entityData || !entityData.customEntity) return;
+                entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
+                //read only
+                //entityData.customEntity.isFalling =playerData.isFalling[session.currentTick] ===1
+                //entityData.customEntity.isClimbing = playerData.isClimbing[session.currentTick] === 1;
+                //entityData.customEntity.isSleeping = playerData.isSleeping[session.currentTick] === 1;
+                //entityData.customEntity.isSprinting = playerData.isSprinting[session.currentTick] === 1;
+                //entityData.customEntity.isSwimming = playerData.isSwimming[session.currentTick] === 1;
+                //dont exist on entity
+                //entityData.customEntity.isFlying = playerData.isFlying[session.currentTick] === 1;
+                //entityData.customEntity.isGliding = playerData.isGliding[session.currentTick] === 1;
+            });
+        }
+        // --- Ambient Entity Recording ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                const dimension = world.getDimension(player.dimension.id);
+                const nearbyEntities = dimension.getEntities({
+                    location: player.location,
+                    maxDistance: 32,
+                    excludeTypes: ["minecraft:player", "dbg:replayentity_steve", "dbg:replayentity_alex", "dbg:rccampos"],
                 });
 
-                session.currentTick = 0;
-                continue; // go to next session
-            }
-            session.currentTick++;
+                // Create per-player ambient entity map if missing
+                let playerMap = session.replayAmbientEntityMap.get(player.id);
+                if (!playerMap) {
+                    playerMap = new Map();
+                    session.replayAmbientEntityMap.set(player.id, playerMap);
+                }
+
+                const seenThisTick = new Set<string>();
+
+                for (const entity of nearbyEntities) {
+                    const id = entity.id;
+                    const key = `entity:${id}`;
+
+                    let entry = playerMap.get(key);
+                    if (!entry) {
+                        entry = {
+                            typeId: entity.typeId,
+                            recordedData: {},
+                            spawnTick: session.recordingEndTick,
+                            despawnTick: null,
+                            lastSeenTick: session.recordingEndTick,
+                        };
+                        playerMap.set(key, entry);
+                    }
+
+                    entry.recordedData[session.recordingEndTick] = {
+                        location: { ...entity.location },
+                        rotation: entity.getRotation(),
+                    };
+
+                    entry.lastSeenTick = session.recordingEndTick;
+                    seenThisTick.add(key);
+                }
+
+                for (const [key, data] of playerMap.entries()) {
+                    if (!seenThisTick.has(key) && data.despawnTick === null) {
+                        if (data.lastSeenTick !== session.recordingEndTick) {
+                            data.despawnTick = session.recordingEndTick;
+                        }
+                    }
+                }
+            });
         }
-    }
-}, 1);
-/**
- * Runs every tick and iterates through each replay session in
- * SharedVariables.playerSessions. For each session, it iterates through the
- * session's players (trackedPlayers) and updates blocks according to the recorded
- * block data for the current replay tick.
- */
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                if (session.currentTick <= session.recordingEndTick) {
-                    const playerData = session.replayBlockStateMap.get(player.id);
-                    const customEntityWrapper = session.replayEntityDataMap.get(player.id);
-                    const customEntity = customEntityWrapper?.customEntity;
-                    if (playerData && playerData.blockStateChanges[session.currentTick]) {
-                        const blockData = playerData.blockStateChanges[session.currentTick];
-                        const dimension = world.getDimension(player.dimension.id);
 
-                        if (blockData.lowerPart && blockData.upperPart) {
-                            const { lowerPart, upperPart } = blockData;
-                            dimension.getBlock(lowerPart.location).setPermutation(BlockPermutation.resolve(lowerPart.typeId, lowerPart.states));
-                            dimension.getBlock(upperPart.location).setPermutation(BlockPermutation.resolve(upperPart.typeId, upperPart.states));
-                        } else if (blockData.thisPart && blockData.otherPart) {
-                            const { thisPart, otherPart } = blockData;
-                            dimension.getBlock(thisPart.location).setPermutation(BlockPermutation.resolve(thisPart.typeId, thisPart.states));
-                            dimension.getBlock(otherPart.location).setPermutation(BlockPermutation.resolve(otherPart.typeId, otherPart.states));
-                        } else {
-                            const { location, typeId, states } = blockData;
-                            if (session.settingReplayType === 0 && customEntity) {
-                                customEntity.playAnimation("animation.replayentity.attack");
+        // --- Entity Positioning Playback ---
+        if (isReplaying && settingReplayType === 0) {
+            trackedPlayers.forEach((player) => {
+                const pos = replayPositionDataMap.get(player.id);
+                const rot = replayRotationDataMap.get(player.id);
+                const entity = replayEntityDataMap.get(player.id)?.customEntity;
+                if (pos && rot && entity) {
+                    entity.teleport(pos.recordedPositions[currentTick], {
+                        rotation: rot.recordedRotations[currentTick],
+                    });
+                }
+            });
+        }
+
+        // --- Ambient Entity Playback ---
+        if (isReplaying && settingReplayType === 0) {
+            trackedPlayers.forEach((player) => {
+                const dimension = player.dimension;
+                const playerId = player.id;
+                const ambientMap = session.replayAmbientEntityMap.get(playerId);
+                if (!ambientMap) return;
+
+                for (const [id, data] of ambientMap.entries()) {
+                    if (!id.startsWith("entity:")) continue;
+                    // Skip these specific entities
+                    if (data.typeId === "minecraft:item" || data.typeId === "minecraft:xp_orb") continue;
+
+                    const tickData = data.recordedData[currentTick];
+
+                    // Spawn
+                    if (currentTick >= data.spawnTick && !data.replayEntity && tickData) {
+                        try {
+                            const entity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
+                            entity.teleport(tickData.location, { rotation: tickData.rotation });
+                            // Tag with player ID to track ownership this is later used to despawn.
+                            entity.addTag(`replay:${player.id}`);
+                            data.replayEntity = entity;
+                        } catch (err) {
+                            console.warn(`[Replay] Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
+                        }
+                    }
+
+                    // Move
+                    if (data.replayEntity && tickData) {
+                        try {
+                            if (!data.replayEntity.isValid) throw new Error("Entity no longer valid");
+                            data.replayEntity.teleport(tickData.location, {
+                                rotation: tickData.rotation,
+                            });
+                        } catch (err) {
+                            console.warn(`[Replay] Failed to move ambient entity ${id} for player ${player.name}:`, err);
+                            data.replayEntity = undefined; // cleanup dead reference
+                        }
+                    }
+
+                    // Damage
+                    if (data.replayEntity && data.hurtTicks?.has(currentTick)) {
+                        try {
+                            if (!data.replayEntity.isValid) throw new Error("Entity no longer valid");
+
+                            const damageAmount = data.hurtTicks.get(currentTick);
+                            if (damageAmount !== undefined) {
+                                const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
+                                customEntity?.playAnimation("animation.replayentity.attack");
+                                data.replayEntity.applyDamage(damageAmount);
                             }
-                            playBlockSound(blockData, player);
-                            dimension.getBlock(location).setPermutation(BlockPermutation.resolve(typeId, states));
+                        } catch (err) {
+                            console.warn(`[Replay] Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
+                            data.replayEntity = undefined;
+                        }
+                    }
+                    // Despawn
+                    if (data.replayEntity && data.despawnTick === currentTick) {
+                        try {
+                            data.replayEntity.kill();
+                            data.replayEntity = undefined;
+                        } catch (err) {
+                            console.warn(`[Replay] Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
                         }
                     }
                 }
-            }
-        });
-    }
-}, 1);
+            });
+        }
 
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                if (session.currentTick <= session.recordingEndTick) {
-                    const playerData = session.replayBlockInteractionAfterMap.get(player.id);
-                    const entityData = session.replayEntityDataMap.get(player.id);
-                    const blockData = playerData.blockSateAfterInteractions[session.currentTick];
+        // --- Equipment Recording ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                const playerData = replayEquipmentDataMap.get(player.id);
+                if (!playerData) return;
+                const eqComp = player.getComponent("minecraft:equippable");
+                playerData.weapon1.push(eqComp.getEquipment(EquipmentSlot.Mainhand)?.typeId || "air");
+                playerData.weapon2.push(eqComp.getEquipment(EquipmentSlot.Offhand)?.typeId || "air");
+                playerData.armor1.push(eqComp.getEquipment(EquipmentSlot.Head)?.typeId || "air");
+                playerData.armor2.push(eqComp.getEquipment(EquipmentSlot.Chest)?.typeId || "air");
+                playerData.armor3.push(eqComp.getEquipment(EquipmentSlot.Legs)?.typeId || "air");
+                playerData.armor4.push(eqComp.getEquipment(EquipmentSlot.Feet)?.typeId || "air");
+            });
+        }
 
-                    if (blockData) {
-                        if (session.settingReplayType === 0) {
-                            entityData.customEntity.playAnimation("animation.replayentity.attack");
-                        }
+        // --- Equipment Playback ---
+        if (settingReplayType === 0) {
+            trackedPlayers.forEach((player) => {
+                if (isView || isPlayback) {
+                    const playerData = replayEquipmentDataMap.get(player.id);
+                    const entityData = replayEntityDataMap.get(player.id);
+                    if (!playerData || !entityData) return;
 
-                        const dimension = world.getDimension(session.replayController.dimension.id);
+                    const tick = currentTick;
 
-                        // Inline type guard to check if it's a two-part block
-                        if ("lowerPart" in blockData && "upperPart" in blockData) {
-                            const { lowerPart, upperPart } = blockData;
-
-                            const lowerBlock = dimension.getBlock(lowerPart.location);
-                            lowerBlock.setPermutation(BlockPermutation.resolve(lowerPart.typeId, lowerPart.states));
-
-                            const upperBlock = dimension.getBlock(upperPart.location);
-                            upperBlock.setPermutation(BlockPermutation.resolve(upperPart.typeId, upperPart.states));
-                        } else {
-                            const { location, typeId, states } = blockData;
-                            const block = dimension.getBlock(location);
-                            block.setPermutation(BlockPermutation.resolve(typeId, states));
-                        }
-                    }
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tick]}`);
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tick]}`);
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tick]}`);
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tick]}`);
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tick]}`);
+                    entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tick]}`);
                 }
-            }
-        });
-    }
-}, 1);
+            });
+        }
 
-//Collect player position data based on the current tick time
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state !== "recPending") return;
-            const posData = session.replayPositionDataMap.get(player.id);
-            const rotData = session.replayRotationDataMap.get(player.id);
-            if (!posData) return;
-            const ploc = player.location;
-            const rotxy = player.getRotation();
-            posData.recordedPositions.push(ploc);
-            rotData.recordedRotations.push(rotxy);
-        });
-    }
-}, 1);
+        // --- Camera Updates ---
+        if (cameraFocusPlayer && isReplaying) {
+            const entityData = replayEntityDataMap.get(cameraFocusPlayer.id);
+            if (entityData) {
+                const baseLocation = entityData.customEntity.location;
+                const baseRotation = entityData.customEntity.getRotation();
 
-//entity? maybe play back ?
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                const entityData = session.replayEntityDataMap.get(player.id);
-                const posData = session.replayPositionDataMap.get(player.id);
-                const rotData = session.replayRotationDataMap.get(player.id);
-                if (!posData) return;
+                if (isFollowCamActive) {
+                    cameraAffectedPlayers.forEach((player) => {
+                        const location = {
+                            x: baseLocation.x,
+                            y: baseLocation.y + 1.5,
+                            z: baseLocation.z,
+                        };
+                        player.camera.setCamera("minecraft:free", {
+                            facingLocation: location,
+                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
+                        });
+                    });
+                }
 
-                if (session.settingReplayType === 0) {
-                    entityData.customEntity.teleport(posData.recordedPositions[session.currentTick], {
-                        rotation: rotData.recordedRotations[session.currentTick],
+                if (isTopDownFixedCamActive) {
+                    cameraAffectedPlayers.forEach((player) => {
+                        const location = {
+                            x: baseLocation.x,
+                            y: baseLocation.y + topDownCamHight,
+                            z: baseLocation.z,
+                        };
+                        player.camera.setCamera("minecraft:free", {
+                            location,
+                            rotation: { x: 90, y: 0 },
+                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
+                        });
+                    });
+                }
+
+                if (isTopDownDynamicCamActive) {
+                    cameraAffectedPlayers.forEach((player) => {
+                        const location = {
+                            x: baseLocation.x,
+                            y: baseLocation.y + topDownCamHight,
+                            z: baseLocation.z,
+                        };
+                        const rotation = { x: 90, y: baseRotation.y };
+                        player.camera.setCamera("minecraft:free", {
+                            location,
+                            rotation,
+                            easeOptions: { easeTime: 0.4, easeType: EasingType.Linear },
+                        });
                     });
                 }
             }
-        });
-    }
-}, 1);
-
-/**Collect player sneak data based on the current tick time
- * We can expand this to collect the following data:
- * player.isClimbing
- * player.isFalling
- * player.isSwimming
- * player.isFlying
- * player.isGliding
- * player.isSleeping
- * */
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state !== "recPending") return;
-            const playerData = session.replayActionDataMap.get(player.id);
-            if (!playerData) return;
-            playerData.isSneaking.push(player.isSneaking ? 1 : 0);
-            if (config.devAnimations === true) {
-                // playerData.isSwimming.push(player.isSwimming ? 1 : 0);
-                // playerData.isClimbing.push(player.isClimbing ? 1 : 0);
-                // playerData.isFalling.push(player.isFalling ? 1 : 0);
-                // playerData.isFlying.push(player.isFlying ? 1 : 0);
-                // playerData.isGliding.push(player.isGliding ? 1 : 0);
-                playerData.isSleeping.push(player.isSleeping ? 1 : 0);
-            }
-        });
-    }
-}, 1);
-
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        if (session.settingReplayType !== 0) return;
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                const playerData = session.replayActionDataMap.get(player.id);
-                const entityData = session.replayEntityDataMap.get(player.id);
-                if (!playerData) return;
-                entityData.customEntity.isSneaking = playerData.isSneaking[session.currentTick] === 1;
-                // customEntity.setProperty("dbg:is_swimming", playerData.isSwimming[session.currentTick] === 1);
-                // customEntity.setProperty("dbg:is_climbing", playerData.isClimbing[session.currentTick] === 1);
-                // customEntity.setProperty("dbg:is_falling", playerData.isFalling[session.currentTick] === 1);
-                // customEntity.setProperty("dbg:is_flying", playerData.isFlying[session.currentTick] === 1);
-                // customEntity.setProperty("dbg:is_gliding", playerData.isGliding[session.currentTick] === 1);
-                entityData.customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
-            }
-        });
-    }
-}, 1);
-
-//Items/Weapons/Armor Data
-
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state !== "recPending") return;
-            const playerData = session.replayEquipmentDataMap.get(player.id);
-            if (!playerData) return;
-            playerData.weapon1.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Mainhand)?.typeId || "air");
-            playerData.weapon2.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Offhand)?.typeId || "air");
-            playerData.armor1.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Head)?.typeId || "air");
-            playerData.armor2.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Chest)?.typeId || "air");
-            playerData.armor3.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Legs)?.typeId || "air");
-            playerData.armor4.push(player.getComponent("minecraft:equippable").getEquipment(EquipmentSlot.Feet)?.typeId || "air");
-        });
-    }
-}, 1);
-
-//TODO This can be optimized to use native methods.
-
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        if (session.settingReplayType !== 0) return;
-        session.trackedPlayers.forEach((player) => {
-            if (session.replayStateMachine.state === "viewStartRep" || session.replayStateMachine.state === "recStartRep") {
-                const playerData = session.replayEquipmentDataMap.get(player.id);
-                const entityData = session.replayEntityDataMap.get(player.id);
-
-                if (!playerData) return;
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[session.currentTick]}`);
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[session.currentTick]}`);
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[session.currentTick]}`);
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[session.currentTick]}`);
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[session.currentTick]}`);
-                entityData.customEntity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[session.currentTick]}`);
-            }
-        });
-    }
-}, 1);
-
-//???
-system.runInterval(() => {
-    for (const session of replaySessions.playerSessions.values()) {
-        if (session.isFollowCamActive === true) {
-            session.cameraAffectedPlayers.forEach((player) => {
-                //const player = dbgRecController;
-                const entityData = session.replayEntityDataMap.get(session.cameraFocusPlayer.id);
-                const { x, y, z } = entityData.customEntity.location;
-                const location = {
-                    x,
-                    y: y + 1.5,
-                    z,
-                };
-                player.camera.setCamera("minecraft:free", {
-                    facingLocation: location,
-                    easeOptions: {
-                        easeTime: 0.4,
-                        easeType: EasingType.Linear,
-                    },
-                });
-            });
         }
-        if (session.isTopDownFixedCamActive === true) {
-            session.cameraAffectedPlayers.forEach((player) => {
-                //const player = dbgRecController;
-                const entityData = session.replayEntityDataMap.get(session.cameraFocusPlayer.id);
-                const { x, y, z } = entityData.customEntity.location;
-                const location = {
-                    x,
-                    y: y + session.topDownCamHight,
-                    z,
-                };
-                /**
-             * left over code can this ben removed?
-             * const location2 = {
-                x,
-                y,
-                z
-            };
-             */
 
-                player.camera.setCamera("minecraft:free", {
-                    location: location,
-                    //facingLocation: location2,
-                    //facingEntity: customEntity,
-                    rotation: {
-                        x: 90,
-                        y: 0,
-                    },
-                    easeOptions: {
-                        easeTime: 0.4,
-                        easeType: EasingType.Linear,
-                    },
-                });
-            });
-        }
-        if (session.isTopDownDynamicCamActive === true) {
-            session.cameraAffectedPlayers.forEach((player) => {
-                //const player = dbgRecController;
-                const entityData = session.replayEntityDataMap.get(session.cameraFocusPlayer.id);
-                const { x, y, z } = entityData.customEntity.location;
-                entityData.customEntity.getRotation();
-                const location = {
-                    x,
-                    y: y + session.topDownCamHight,
-                    z,
-                };
-                const rotation = entityData.customEntity.getRotation();
-                const rotation2 = {
-                    x: 90,
-                    y: rotation.y,
-                };
-                player.camera.setCamera("minecraft:free", {
-                    location: location,
-                    rotation: rotation2,
-                    easeOptions: {
-                        easeTime: 0.4,
-                        easeType: EasingType.Linear,
-                    },
-                });
-            });
-        }
+        // --- Advance Tick ---
+        if (isReplaying) session.currentTick++;
     }
 }, 1);

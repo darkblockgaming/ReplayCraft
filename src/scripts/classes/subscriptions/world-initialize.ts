@@ -12,6 +12,7 @@ let replayCraftPlaybackEntityDB: OptimizedDatabase;
 let replayCraftPlayerArmorWeaponsDB: OptimizedDatabase;
 let replayCraftSkinDB: OptimizedDatabase;
 let replayCraftActiveSessionsDB: OptimizedDatabase;
+let replayAmbientEntityDB: OptimizedDatabase;
 export {
     replayCraftBlockDB,
     replayCraftPlayerPosDB,
@@ -24,6 +25,7 @@ export {
     replayCraftPlayerArmorWeaponsDB,
     replayCraftSkinDB,
     replayCraftActiveSessionsDB,
+    replayAmbientEntityDB,
 };
 /**
  * Initializes define the database on world initialization.
@@ -37,6 +39,7 @@ function onWorldInitialize() {
     replayCraftBeforeBlockInteractionsDB = new OptimizedDatabase("replayCraftBeforeBlockInteractionsDatabase");
     replayCraftPlaybackEntityDB = new OptimizedDatabase("replayCraftPlaybackEntityDatabase");
     replayCraftPlayerArmorWeaponsDB = new OptimizedDatabase("replayCraftPlayerArmorWeaponsDatabase");
+    replayAmbientEntityDB = new OptimizedDatabase("replayAmbientEntityDatabase");
     //Skin Data for multiplayer recordings
     replayCraftSkinDB = new OptimizedDatabase("replayCraftSkinDatabase");
 
