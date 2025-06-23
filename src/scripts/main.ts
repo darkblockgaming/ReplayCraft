@@ -173,15 +173,41 @@ system.runInterval(() => {
                 if (!playerData || !entityData || !entityData.customEntity || typeof entityData.customEntity !== "object" || typeof playerData.isSneaking !== "object" || !(session.currentTick in playerData.isSneaking)) {
                     return;
                 }
+
                 safeSet(entityData.customEntity, "isSneaking", playerData.isSneaking[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isSwimming", playerData.isSwimming[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isFalling", playerData.isFalling[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isClimbing", playerData.isClimbing[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isSleeping", playerData.isSleeping[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isSprinting", playerData.isSprinting[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isFlying", playerData.isFlying[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isGliding", playerData.isGliding[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:isRiding", playerData.isRiding[session.currentTick] === 1);
+
+                safeSet(entityData.customEntity, "rc:is_falling", playerData.isFalling[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_climbing", playerData.isClimbing[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:swim_amt", 1);
+
+                safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
+                if (playerData.isSleeping[session.currentTick] === 1) {
+                    const bedBlock = entityData.customEntity.dimension.getBlock(entityData.customEntity.location);
+
+                    if (bedBlock && bedBlock.typeId.includes("bed")) {
+                        const direction = bedBlock.permutation.getState("direction");
+                        switch (direction) {
+                            case 0: //south
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 90); //north
+                                break;
+                            case 1: //west
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 0); //east
+                                break;
+                            case 2: //north
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 270); //south
+                                break;
+                            case 3: //east
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 180); //west
+                                break;
+                        }
+                    }
+                }
+
+                safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[session.currentTick] === 1);
             });
         }
         // --- Ambient Entity Recording ---
@@ -429,7 +455,7 @@ system.runInterval(() => {
     }
 }, 1);
 
-function safeSet(entity: Entity & { setProperty?: (id: string, value: boolean | number | string) => void }, key: string, value: boolean | number | string): void {
+export function safeSet(entity: Entity & { setProperty?: (id: string, value: boolean | number | string) => void }, key: string, value: boolean | number | string): void {
     try {
         if (key === "isSneaking") {
             // This cast is necessary since `isSneaking` may not be in the base Entity type

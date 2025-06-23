@@ -1,0 +1,22 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.rc.sleeping_dynamic": {
+      "loop": true,
+      "override_previous_animation": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "30.0 - this",
+            "-this",
+            "-this"
+          ]
+        },
+        "root": {
+          "position": [ "24.0 * math.cos(query.body_y_rotation) * math.cos(query.property('rc:sleep_dir')) - 24.0 * math.sin(query.body_y_rotation) * math.sin(query.property('rc:sleep_dir'))", 0.0, "24.0 * math.cos(query.body_y_rotation) * math.sin(query.property('rc:sleep_dir')) + 24.0 * math.sin(query.body_y_rotation) * math.cos(query.property('rc:sleep_dir'))" ],
+          "rotation": [ -90.0, "270.0 - query.property('rc:sleep_dir') - query.body_y_rotation", 0.0 ]
+        }
+      }
+    }
+  }
+}

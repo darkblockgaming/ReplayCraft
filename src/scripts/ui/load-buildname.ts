@@ -36,6 +36,7 @@ export function loadBuildName(player: Player, page = 0): void {
                 isValid,
             };
         });
+    buildOptions.reverse();
 
     if (buildOptions.length === 0) {
         player.sendMessage("No builds found for your ID.");

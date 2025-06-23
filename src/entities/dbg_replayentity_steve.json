@@ -16,32 +16,60 @@
             64
           ]
         },
-        "dbg:is_swimming": {
+        "rc:is_swimming": {
           "type": "bool",
           "default": false,
           "client_sync": true
         },
-        "dbg:is_sleeping": {
+        "rc:swim_amt": {
+          "type": "int",
+          "default": 0,
+          "client_sync": true,
+          "range": [
+            0,
+            1
+          ]
+        },
+        "rc:is_sleeping": {
+          "type": "bool",
+          "default": true,
+          "client_sync": true
+        },
+        "rc:sleep_dir": {
+          "type": "int",
+          "default": 270,
+          "client_sync": true,
+          "range": [
+            0,
+            360
+          ]
+        },
+        "rc:is_gliding": {
           "type": "bool",
           "default": false,
           "client_sync": true
         },
-        "dbg:is_gliding": {
+        "rc:is_climbing": {
           "type": "bool",
           "default": false,
           "client_sync": true
         },
-        "dbg:is_climbing": {
+        "rc:is_falling": {
           "type": "bool",
           "default": false,
           "client_sync": true
         },
-        "dbg:is_falling": {
+        "rc:is_flying": {
           "type": "bool",
           "default": false,
           "client_sync": true
         },
-        "dbg:is_flying": {
+        "rc:is_riding": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "rc:is_sprinting": {
           "type": "bool",
           "default": false,
           "client_sync": true
