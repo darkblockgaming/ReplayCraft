@@ -71,11 +71,11 @@
         },
         "rc:riding_y_offset": {
           "type": "int",
-          "default": 0.0,
+          "default": 0,
           "client_sync": true,
           "range": [
-            -5,
-            5
+            -10,
+            0
           ]
         },
         "rc:is_sprinting": {

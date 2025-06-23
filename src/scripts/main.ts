@@ -177,16 +177,20 @@ system.runInterval(() => {
                 }
 
                 safeSet(entityData.customEntity, "isSneaking", playerData.isSneaking[session.currentTick] === 1);
-
                 safeSet(entityData.customEntity, "rc:is_falling", playerData.isFalling[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_climbing", playerData.isClimbing[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
+
+                //Swimming
                 safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:swim_amt", 1);
 
+                //Sleeping
                 safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
                 if (playerData.isSleeping[session.currentTick] === 1) {
                     const bedBlock = entityData.customEntity.dimension.getBlock(entityData.customEntity.location);
-
                     if (bedBlock && bedBlock.typeId.includes("bed")) {
                         const direction = bedBlock.permutation.getState("direction");
                         switch (direction) {
@@ -206,13 +210,16 @@ system.runInterval(() => {
                     }
                 }
 
-                safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
+                //Riding
                 safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[session.currentTick] === 1);
-                if (playerData.isRiding[session.currentTick] === 1) {
+                if (playerData.isRiding[session.currentTick]) {
+                    const entArr = ['minecraft:minecart', 'minecraft:boat', 'minecraft:chest_boat', 'minecraft:strider'];
                     const ridingEntity = playerData.ridingTypeId[currentTick];
-                    debugLog(`${player.name} is riding ${ridingEntity}`);
+                    if (entArr.includes(ridingEntity)) {
+                        safeSet(entityData.customEntity, "rc:riding_y_offset", -10.0);
+                    } else {
+                        safeSet(entityData.customEntity, "rc:riding_y_offset", 0.0);
+                    }
                 }
             });
         }
