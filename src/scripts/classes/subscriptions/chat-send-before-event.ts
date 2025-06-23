@@ -143,110 +143,32 @@ function giveItems(event: ChatSendBeforeEvent) {
 
             system.run(() => {
                 const args = message.split(",");
-                const subcommand = args[1]?.trim();
-
-                // Helper to find the closest playback entity
-                const findExistingPlaybackEntity = () => {
-                    const nearby = sender.dimension.getEntities({
-                        location: sender.location,
-                        maxDistance: 8,
-                        type: "dbg:replayentity_steve",
-                    });
-                    return nearby.find((e) => e.isValid);
-                };
-
-                // Use or find existing playback entity
-                if (!playbackEntity || !playbackEntity.isValid) {
-                    playbackEntity = findExistingPlaybackEntity();
-                }
-
-                // Reset command
-                if (subcommand === "reset") {
-                    if (playbackEntity && playbackEntity.isValid) {
-                        const defaultProps = {
-                            "rc:is_swimming": 0,
-                            "rc:swim_amt": 0,
-                            "rc:is_sleeping": 0,
-                            "rc:sleep_dir": 0,
-                            "rc:is_falling": 0,
-                            "rc:is_climbing": 0,
-                            "rc:is_sprinting": 0,
-                            "rc:is_flying": 0,
-                            "rc:is_gliding": 0,
-                            "rc:is_riding": 0,
-                        };
-
-                        for (const [prop, value] of Object.entries(defaultProps)) {
-                            safeSet(playbackEntity, prop, value);
-                        }
-
-                        playbackEntity.kill();
-                        playbackEntity = undefined;
-                        sender.sendMessage("Playback entity reset and removed.");
-                    } else {
-                        sender.sendMessage("No playback entity to reset.");
-                    }
-                    return;
-                }
-
-                const propName = args[1]?.trim();
+                const prop = args[1]?.trim();
                 const rawValue = args[2]?.trim();
 
-                if (!propName || rawValue === undefined) {
-                    sender.sendMessage("Usage: ?playan,<prop>,<value> OR ?playan,reset");
+                if (!prop || rawValue === undefined) {
+                    sender.sendMessage("Usage: ?playan,<prop>,<value>");
                     return;
                 }
 
-                const value = isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
+                const fullProp = prop.startsWith("rc:") ? prop : `rc:${prop}`;
+                const isBoolProp = fullProp.startsWith("rc:is_");
 
-                // Spawn if none found
+                const value = isBoolProp ? rawValue === "1" || rawValue.toLowerCase() === "true" : isNaN(Number(rawValue)) ? rawValue : Number(rawValue);
+
                 if (!playbackEntity || !playbackEntity.isValid) {
                     playbackEntity = sender.dimension.spawnEntity("dbg:replayentity_steve" as VanillaEntityIdentifier, sender.location);
-
                     if (!playbackEntity) {
-                        sender.sendMessage("Error: Failed to spawn playback entity.");
-                        console.warn("Failed to spawn playback entity.");
+                        sender.sendMessage("Failed to spawn playback entity.");
                         return;
                     }
-
                     sender.sendMessage("Spawned new playback entity.");
                 }
 
-                // Special handling for auto-rotate sleep_dir from bed direction
-                if (propName === "rc:sleep_dir" && rawValue === "bed") {
-                    const bedBlock = sender.dimension.getBlock(playbackEntity.location);
-                    if (bedBlock && bedBlock.typeId.includes("bed")) {
-                        const direction = bedBlock.permutation.getState("direction");
-                        const directionToRotation: Record<number, number> = {
-                            0: 90,
-                            1: 0,
-                            2: 270,
-                            3: 180,
-                        };
-                        const rotation = directionToRotation[direction];
-                        if (rotation !== undefined) {
-                            safeSet(playbackEntity, "rc:sleep_dir", rotation);
-                            sender.sendMessage(`Set rc:sleep_dir = ${rotation}`);
-                        } else {
-                            sender.sendMessage(`Invalid bed direction: ${direction}`);
-                        }
-                    } else {
-                        sender.sendMessage(`No bed block at playback entity's location.`);
-                    }
-                    return;
-                }
-
-                const fullProp = propName.startsWith("rc:") ? propName : `rc:${propName}`;
-
-                // Bool props like rc:is_sleeping accept 1/0 → true/false
-                const isBoolProp = fullProp === "rc:is_sleeping" || fullProp.startsWith("rc:is_");
-                const parsedValue = isBoolProp ? rawValue === "1" || rawValue.toLowerCase() === "true" : value;
-
-                safeSet(playbackEntity, fullProp, parsedValue);
-                sender.sendMessage(`Set ${fullProp} to ${parsedValue}`);
+                safeSet(playbackEntity, fullProp, value);
+                sender.sendMessage(`Set ${fullProp} to ${value}`);
             });
         }
-
         // Logs all keys and values from replayCraftBlockDB
         if (message === "?dblist") {
             system.run(() => {

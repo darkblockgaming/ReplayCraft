@@ -17,6 +17,7 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
         isSprinting: [],
         isSleeping: [],
         ridingTypeId: [],
+        isCrawling: [],
     });
     session.replayEntityDataMap.set(playerId, { customEntity: undefined });
     session.replayAmbientEntityMap.set(playerId, new Map());

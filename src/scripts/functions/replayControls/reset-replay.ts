@@ -40,6 +40,7 @@ export function resetRec(player: Player) {
         isSprinting: [],
         isSleeping: [],
         ridingTypeId: [],
+        isCrawling: [],
     });
     session.replayEntityDataMap.set(player.id, {
         customEntity: undefined,

@@ -20,8 +20,9 @@ import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
 import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
-import { debugLog, debugWarn } from "./data/util/debug";
+import { debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
+import { isPlayerCrawling } from "./entity/is-crawling";
 
 //Chat events
 beforeChatSend();
@@ -163,6 +164,7 @@ system.runInterval(() => {
                     data.isRiding.push(isPlayerRiding(player) ? 1 : 0);
                     const ridden = getRiddenEntity(player);
                     data.ridingTypeId.push(ridden?.typeId ?? null);
+                    data.isCrawling.push(isPlayerCrawling(player) ? 1 : 0);
                 }
             });
         }
@@ -184,8 +186,7 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
 
                 //Swimming
-                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:swim_amt", 1);
+                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isGliding[session.currentTick] === 1);
 
                 //Sleeping
                 safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
