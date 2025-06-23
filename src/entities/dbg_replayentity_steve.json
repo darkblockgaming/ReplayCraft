@@ -44,6 +44,11 @@
             360
           ]
         },
+        "rc:is_crawling": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
         "rc:is_gliding": {
           "type": "bool",
           "default": false,
