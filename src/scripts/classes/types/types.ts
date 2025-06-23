@@ -41,6 +41,7 @@ export interface PlayerActionsData {
     isRiding: number[];
     isSprinting: number[];
     isSleeping: number[];
+    ridingTypeId: (string | null)[];
 }
 export interface PlaybackEntityData {
     customEntity: Entity;

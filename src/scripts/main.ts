@@ -20,8 +20,8 @@ import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
 import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
-import { debugWarn } from "./data/util/debug";
-import { isPlayerRiding } from "./entity/is-riding";
+import { debugLog, debugWarn } from "./data/util/debug";
+import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 
 //Chat events
 beforeChatSend();
@@ -161,6 +161,8 @@ system.runInterval(() => {
                     data.isSprinting.push(player.isSprinting ? 1 : 0);
                     data.isSwimming.push(player.isSwimming ? 1 : 0);
                     data.isRiding.push(isPlayerRiding(player) ? 1 : 0);
+                    const ridden = getRiddenEntity(player);
+                    data.ridingTypeId.push(ridden?.typeId ?? null);
                 }
             });
         }
@@ -208,6 +210,10 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[session.currentTick] === 1);
+                if (playerData.isRiding[session.currentTick] === 1) {
+                    const ridingEntity = playerData.ridingTypeId[currentTick];
+                    debugLog(`${player.name} is riding ${ridingEntity}`);
+                }
             });
         }
         // --- Ambient Entity Recording ---
