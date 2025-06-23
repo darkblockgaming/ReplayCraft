@@ -69,6 +69,15 @@
           "default": false,
           "client_sync": true
         },
+        "rc:riding_y_offset": {
+          "type": "int",
+          "default": 0.0,
+          "client_sync": true,
+          "range": [
+            -5,
+            5
+          ]
+        },
         "rc:is_sprinting": {
           "type": "bool",
           "default": false,
