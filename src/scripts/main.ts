@@ -213,9 +213,9 @@ system.runInterval(() => {
                 //Riding
                 safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[session.currentTick] === 1);
                 if (playerData.isRiding[session.currentTick]) {
-                    const entArr = ['minecraft:minecart', 'minecraft:boat', 'minecraft:chest_boat', 'minecraft:strider'];
+                    const entityTypeArray = ["minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:strider"];
                     const ridingEntity = playerData.ridingTypeId[currentTick];
-                    if (entArr.includes(ridingEntity)) {
+                    if (entityTypeArray.includes(ridingEntity)) {
                         safeSet(entityData.customEntity, "rc:riding_y_offset", -10.0);
                     } else {
                         safeSet(entityData.customEntity, "rc:riding_y_offset", 0.0);
