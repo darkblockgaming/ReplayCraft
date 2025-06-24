@@ -10,7 +10,7 @@ import os from "os";
  *
  * @returns {Promise<string>} - The latest version of BDS.
  */
-function getLatestVersion() {
+/*function getLatestVersion() {
     const apiURL = "https://ssk.taiyu.workers.dev/zh-hans/download/server/bedrock";
     return new Promise((resolve, reject) => {
         https
@@ -34,7 +34,11 @@ function getLatestVersion() {
             });
     });
 }
+**/
 
+function getLatestVersion() {
+    return "1.21.92.1";
+}
 /**
  * Downloads the specified version of the BDS server for the current operating system.
  *
