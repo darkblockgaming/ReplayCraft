@@ -23,6 +23,7 @@ import { addCameraPoint } from "../../functions/camera/add-camera-point";
 import { replaySessions } from "../../data/replay-player-session";
 import { isPlayerRiding } from "../../entity/is-riding";
 import { safeSet } from "../../main";
+import { toggle } from "../../ui/debug/debug-box";
 
 function findPlaybackEntityNear(sender: Entity): Entity | undefined {
     // Get all entities within a radius (e.g., 10 blocks)
@@ -118,6 +119,14 @@ function giveItems(event: ChatSendBeforeEvent) {
         event.cancel = true;
         return;
     }
+    if (message === "?debug") {
+        system.run(() => {
+            toggle(event.sender);
+        });
+        event.cancel = true;
+        return;
+    }
+
     if (config.devChatCommands === true) {
         // Opens the database stats UI
         if (message === "?dbstats") {
