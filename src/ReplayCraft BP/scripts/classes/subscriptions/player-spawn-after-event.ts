@@ -1,4 +1,5 @@
 import { PlayerSpawnAfterEvent, system, world } from "@minecraft/server";
+import { disableFlight } from "../../functions/player/survival";
 /**
  * Function to execute when a player spawns.
  * Initializes event handlers for player spawn events.
@@ -40,6 +41,9 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
                     },
                 ],
             });
+            if (player.hasTag("freecam")) {
+                disableFlight(player);
+            }
         }, 140); // 20 ticks = 1 second
 
         system.runTimeout(() => {
