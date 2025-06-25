@@ -1,4 +1,5 @@
 import { PlayerSpawnAfterEvent, system, world } from "@minecraft/server";
+import { disableFlight } from "../../functions/player/survival";
 /**
  * Function to execute when a player spawns.
  * Initializes event handlers for player spawn events.
@@ -21,27 +22,28 @@ function initializeEventHandlers() {
  * @param {PlayerSpawnAfterEvent} event - The event object containing information about player spawn.
  */
 function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
-
     if (event.initialSpawn) {
-    
         triggerMessage(event);
-        
     }
-/**
+    /**
  Trigger a message to the player after they spawn.
  * @param {PlayerSpawnAfterEvent} event - the event object containing information about player spawn.
  */
- function triggerMessage(event: PlayerSpawnAfterEvent) {
-    const player = event.player;
+    function triggerMessage(event: PlayerSpawnAfterEvent) {
+        const player = event.player;
 
-    // Delay by 7 seconds (140 game ticks)
-    system.runTimeout(() => {
-        player.sendMessage({
-            rawtext: [{
-                translate: "replaycraft.welcome.message"
-            }]
-        });
-    }, 140); // 20 ticks = 1 second
-}
-
+        // Delay by 7 seconds (140 game ticks)
+        system.runTimeout(() => {
+            player.sendMessage({
+                rawtext: [
+                    {
+                        translate: "replaycraft.welcome.message",
+                    },
+                ],
+            });
+            if (player.hasTag("freecam")) {
+                disableFlight(player);
+            }
+        }, 140); // 20 ticks = 1 second
+    }
 }
