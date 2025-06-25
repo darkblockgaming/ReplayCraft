@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Меню повторення] v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Меню повторення] v2.2.1§r
 dbg.rc1.title.replay.settings=Налаштування повторного відтворення
 dbg.rc1.title.preview.settings=Налаштування попереднього перегляду
 dbg.rc1.title.replaycraft.settings=§Breplaycraft налаштування MATR§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft: меню попереднього 
 replaycraft.replaymenu.title=§9replaycraft: доопрацювати та записувати
 replaycraft.Finalize.Record.body=Виберіть параметри нижче, щоб доопрацювати свій повтор та почати записувати екран.
 replaycarft.setskin.button=Налаштування шкіри
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §f Польот не може бути включений у Hardcore Mode.
 

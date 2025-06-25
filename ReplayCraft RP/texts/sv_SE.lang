@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY MENU] v2.2.0§R
+dbg.rc1.title.replay.menu=§9ReplayCraft [REPLAY MENU] v2.2.1§R
 dbg.rc1.title.replay.settings=Spela in inställningar
 dbg.rc1.title.preview.settings=Förhandsgranskningsinställningar
 dbg.rc1.title.replaycraft.settings=§BREPLAYCROFTION SETOMS§R
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9ReplayCraft: Förhandsgranskningsmeny
 replaycraft.replaymenu.title=§9ReplayCraft: Slutför & Record
 replaycraft.Finalize.Record.body=Välj alternativ nedan för att slutföra din uppspelning och börja spela in skärmen.
 replaycarft.setskin.button=Hudinställningar
+replaycraft.hardcore.mode.check = §F§4 [REPLAYCRAFT] §F Flight kan inte aktiveras i hardcore -läge.
 

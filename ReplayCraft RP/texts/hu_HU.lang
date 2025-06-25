@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.2.0§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay menü] v2.2.1§r
 dbg.rc1.title.replay.settings=Visszajátszási beállítások
 dbg.rc1.title.preview.settings=Előnézeti beállítások
 dbg.rc1.title.replaycraft.settings=§BREPLAYCraft Setsctings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9ReplayCraft: Előnézet menü
 replaycraft.replaymenu.title=§9ReplayCraft: Finalize & Record
 replaycraft.Finalize.Record.body=Válassza ki az alábbi lehetőségeket az alábbiakba a visszajátszás véglegesítéséhez, és kezdje el a képernyő felvételét.
 replaycarft.setskin.button=Bőrbeállítások
+replaycraft.hardcore.mode.check = §F§4 [REPLAYCraft] §F A repülés nem engedélyezhető hardcore módban.
 

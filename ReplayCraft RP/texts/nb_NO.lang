@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Replay Menu] v2.2.1§r
 dbg.rc1.title.replay.settings=Replay -innstillinger
 dbg.rc1.title.preview.settings=Forhåndsvisningsinnstillinger
 dbg.rc1.title.replaycraft.settings=§BrePlaycraft Innstillinger§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9ReplayCraft: Forhåndsvisningsmeny
 replaycraft.replaymenu.title=§9RePlaycraft: Fullfør og post
 replaycraft.Finalize.Record.body=Velg alternativer nedenfor for å fullføre reprise og begynn å spille inn skjermen.
 replaycarft.setskin.button=Hudinnstillinger
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §F -fly kan ikke aktiveres i hardcore -modus.
 

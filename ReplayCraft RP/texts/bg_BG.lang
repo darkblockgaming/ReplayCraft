@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplaCraft [Меню за повторение] v2.2.0§r
+dbg.rc1.title.replay.menu=§9ReplaCraft [Меню за повторение] v2.2.1§r
 dbg.rc1.title.replay.settings=Настройки за повторение
 dbg.rc1.title.preview.settings=Настройки за визуализация
 dbg.rc1.title.replaycraft.settings=§BREPLACERCEARCE SETUNDINGS§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9RepLajectre: Меню за визуализац
 replaycraft.replaymenu.title=§9ReplaCraft: Финализирайте и записа
 replaycraft.Finalize.Record.body=Изберете Опции по -долу, за да финализирате повторението си и започнете да записвате екрана си.
 replaycarft.setskin.button=Настройки на кожата
+replaycraft.hardcore.mode.check = §F§4 [replaycraft] §f полетът не може да бъде активиран в хардкор режим.
 

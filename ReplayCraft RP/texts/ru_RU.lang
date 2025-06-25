@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.2.0§r
+dbg.rc1.title.replay.menu=§9replaycraft [Menu Replay] v2.2.1§r
 dbg.rc1.title.replay.settings=Настройки воспроизведения
 dbg.rc1.title.preview.settings=Предварительные настройки
 dbg.rc1.title.replaycraft.settings=§ Breplaycraft settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9replaycraft: меню предваритель�
 replaycraft.replaymenu.title=§9replaycraft: завершить и записать
 replaycraft.Finalize.Record.body=Выберите параметры ниже, чтобы завершить воспроизведение и начать запись экрана.
 replaycarft.setskin.button=Настройки кожи
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §f Полет не может быть включен в хардкорном режиме.
 

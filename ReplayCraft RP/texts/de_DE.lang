@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Wiederholungsmenü] v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [Wiederholungsmenü] v2.2.1§r
 dbg.rc1.title.replay.settings=Wiederholungseinstellungen
 dbg.rc1.title.preview.settings=Vorschaueinstellungen
 dbg.rc1.title.replaycraft.settings=§Breplaycraft -Einstellungen§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft: Vorschau -Menü
 replaycraft.replaymenu.title=§9Replaycraft: Finalize & Record
 replaycraft.Finalize.Record.body=Wählen Sie unten die Optionen aus, um Ihre Wiederholung abzuschließen, und starten Sie die Aufzeichnung Ihres Bildschirms.
 replaycarft.setskin.button=Hauteinstellungen
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §F -Flug kann im Hardcore -Modus nicht aktiviert werden.
 

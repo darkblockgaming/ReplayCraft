@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [Menu Replay] V2.2.0§R
+dbg.rc1.title.replay.menu=§9Replaycraft [Menu Replay] V2.2.1§R
 dbg.rc1.title.replay.settings=Replay Impostazioni
 dbg.rc1.title.preview.settings=Impostazioni di anteprima
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Impostas§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft: menu di anteprima
 replaycraft.replaymenu.title=§9Replaycraft: finalizza e record
 replaycraft.Finalize.Record.body=Seleziona le opzioni di seguito per finalizzare il replay e iniziare a registrare lo schermo.
 replaycarft.setskin.button=Impostazioni della pelle
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §F Il volo non può essere abilitato in modalità hardcore.
 

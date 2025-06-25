@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [menu Replay] v2.2.0§R
+dbg.rc1.title.replay.menu=§9ReplayCraft [menu Replay] v2.2.1§R
 dbg.rc1.title.replay.settings=Replay Configurações
 dbg.rc1.title.preview.settings=Configurações de visualização
 dbg.rc1.title.replaycraft.settings=§BREPLAYCraft Settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft: menu de visualização
 replaycraft.replaymenu.title=§9ReplayCraft: Finalize & Record
 replaycraft.Finalize.Record.body=Selecione as opções abaixo para finalizar sua repetição e comece a gravar sua tela.
 replaycarft.setskin.button=Configurações da pele
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] O voo §f não pode ser ativado no modo hardcore.
 

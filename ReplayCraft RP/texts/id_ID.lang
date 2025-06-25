@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [menu replay] v2.2.1§r
 dbg.rc1.title.replay.settings=Pengaturan Ulangi
 dbg.rc1.title.preview.settings=Pengaturan Pratinjau
 dbg.rc1.title.replaycraft.settings=§Dreplaycraft Settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft: menu pratinjau
 replaycraft.replaymenu.title=§9Replaycraft: Finalisasi & Catat
 replaycraft.Finalize.Record.body=Pilih opsi di bawah ini untuk menyelesaikan replay Anda dan mulai merekam layar Anda.
 replaycarft.setskin.button=Pengaturan kulit
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §F penerbangan tidak dapat diaktifkan dalam mode hardcore.
 

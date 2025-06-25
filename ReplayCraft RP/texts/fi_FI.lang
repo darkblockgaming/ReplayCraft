@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [toistovalikko] v2.2.0§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [toistovalikko] v2.2.1§r
 dbg.rc1.title.replay.settings=Toista asetukset
 dbg.rc1.title.preview.settings=Esikatselun asetukset
 dbg.rc1.title.replaycraft.settings=§BreplayCraft Asetukset§R
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9ReplayCraft: Preview -valikko
 replaycraft.replaymenu.title=§9ReplayCraft: Viimeistely ja tietue
 replaycraft.Finalize.Record.body=Valitse Alla olevat vaihtoehdot viimeistelläksesi toisto ja aloita näytön tallentaminen.
 replaycarft.setskin.button=Iho -asetukset
+replaycraft.hardcore.mode.check = §F§4 [toistotuotanto] §F -lentoa ei voida ottaa käyttöön hardcore -tilassa.
 

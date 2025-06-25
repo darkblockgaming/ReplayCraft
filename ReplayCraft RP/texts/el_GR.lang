@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.2.0§r
+dbg.rc1.title.replay.menu=§9replaycraft [μενού επανάληψης] v2.2.1§r
 dbg.rc1.title.replay.settings=Ρυθμίσεις επανάληψης
 dbg.rc1.title.preview.settings=Ρυθμίσεις προεπισκόπησης
 dbg.rc1.title.replaycraft.settings=§Breplaycraft Ρυθμίσεις
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9replaycraft: μενού προεπισκόπη�
 replaycraft.replaymenu.title=§9replaycraft: Ολοκληρώστε και ρεκόρ
 replaycraft.Finalize.Record.body=Επιλέξτε παρακάτω επιλογές για να ολοκληρώσετε την επανάληψη σας και να ξεκινήσετε την εγγραφή της οθόνης σας.
 replaycarft.setskin.button=Επιδερμίδα
+replaycraft.hardcore.mode.check = §F§4 [ReplayCraft] §F Η πτήση δεν μπορεί να ενεργοποιηθεί σε λειτουργία hardcore.
 

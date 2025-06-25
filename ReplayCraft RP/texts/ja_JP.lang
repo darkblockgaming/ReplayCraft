@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft[リプレイメニュー]v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft[リプレイメニュー]v2.2.1§r
 dbg.rc1.title.replay.settings=再生設定
 dbg.rc1.title.preview.settings=プレビュー設定
 dbg.rc1.title.replaycraft.settings=§BreplaycraftSettings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft：プレビューメニュー
 replaycraft.replaymenu.title=§9Replaycraft：ファイナライズとレコード
 replaycraft.Finalize.Record.body=以下のオプションを選択して、リプレイを完成させ、画面の記録を開始します。
 replaycarft.setskin.button=スキン設定
+replaycraft.hardcore.mode.check = §F§4[ReplayCraft]§Fハードコアモードでは飛行を有効にすることはできません。
 

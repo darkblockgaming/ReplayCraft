@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.2.0§r
+dbg.rc1.title.replay.menu=§9replaycraft [menu de relecture] v2.2.1§r
 dbg.rc1.title.replay.settings=Paramètres de relecture
 dbg.rc1.title.preview.settings=Paramètres de prévisualisation
 dbg.rc1.title.replaycraft.settings=§BReplayCraft Settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9replaycraft: menu d'aperçu
 replaycraft.replaymenu.title=§9replaycraft: finaliser et enregistrer
 replaycraft.Finalize.Record.body=Sélectionnez les options ci-dessous pour finaliser votre rediffusion et commencer à enregistrer votre écran.
 replaycarft.setskin.button=Réglages de la peau
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] Le vol §f ne peut pas être activé en mode hardcore.
 

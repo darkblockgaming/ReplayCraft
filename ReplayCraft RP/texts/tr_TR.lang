@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.2.0§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Tekrar Menüsü] v2.2.1§r
 dbg.rc1.title.replay.settings=Tekrar Ayarları Tekrar
 dbg.rc1.title.preview.settings=Önizleme Ayarları
 dbg.rc1.title.replaycraft.settings=§BREPlayCraft Settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9ReplayCraft: Önizleme Menüsü
 replaycraft.replaymenu.title=§9ReplayCraft: Sonlandır ve Kayıt
 replaycraft.Finalize.Record.body=Tekrarınızı sonlandırmak için aşağıdaki seçenekleri seçin ve ekranınızı kaydetmeye başlayın.
 replaycarft.setskin.button=Cilt Ayarları
+replaycraft.hardcore.mode.check = §F§4 [Replaycraft] §F Uçuş hardcore modunda etkinleştirilemez.
 

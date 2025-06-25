@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9Replaycraft [重播菜单]v2.2.0§r
+dbg.rc1.title.replay.menu=§9Replaycraft [重播菜单]v2.2.1§r
 dbg.rc1.title.replay.settings=重播设置
 dbg.rc1.title.preview.settings=预览设置
 dbg.rc1.title.replaycraft.settings=§breplaycraft设置§R
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9Replaycraft：预览菜单
 replaycraft.replaymenu.title=§9Replaycraft：最终确定和记录
 replaycraft.Finalize.Record.body=选择下面的选项以最终确定重播并开始录制屏幕。
 replaycarft.setskin.button=皮肤设置
+replaycraft.hardcore.mode.check = §F§4[Replaycraft]§F不能在铁杆模式下启用。
 

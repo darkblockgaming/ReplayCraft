@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.2.0§r
+dbg.rc1.title.replay.menu=§9replaycraft [재생 메뉴] v2.2.1§r
 dbg.rc1.title.replay.settings=재생 설정
 dbg.rc1.title.preview.settings=미리보기 설정
 dbg.rc1.title.replaycraft.settings=§breplaycraft settings§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9replaycraft : 미리보기 메뉴
 replaycraft.replaymenu.title=§9replaycraft : 마무리 및 기록
 replaycraft.Finalize.Record.body=아래 옵션을 선택하여 재생을 마무리하고 화면 기록을 시작하십시오.
 replaycarft.setskin.button=피부 설정
+replaycraft.hardcore.mode.check = §f§4 [Replaycraft] §f 비행은 하드 코어 모드에서 활성화 될 수 없습니다.
 

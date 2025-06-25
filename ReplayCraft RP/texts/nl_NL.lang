@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9replaycraft [menu opnieuw afspelen] v2.2.0§r
+dbg.rc1.title.replay.menu=§9replaycraft [menu opnieuw afspelen] v2.2.1§r
 dbg.rc1.title.replay.settings=Replay -instellingen
 dbg.rc1.title.preview.settings=Voorbeeldinstellingen
 dbg.rc1.title.replaycraft.settings=§Breplaycraft -instellingen§r
@@ -177,4 +177,5 @@ replaycraft.previewmenu.title=§9replaycraft: preview -menu
 replaycraft.replaymenu.title=§9replaycraft: voltooien en opnemen
 replaycraft.Finalize.Record.body=Selecteer Opties hieronder om uw herhaling af te ronden en begin met het opnemen van uw scherm.
 replaycarft.setskin.button=Huidinstellingen
+replaycraft.hardcore.mode.check = §F§4 [replaycraft] §f vlucht kan niet worden ingeschakeld in de hardcore -modus.
 
