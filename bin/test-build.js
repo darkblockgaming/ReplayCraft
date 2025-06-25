@@ -125,7 +125,7 @@ async function checkAndBuild() {
 
     // Commands for building packages
     const firstCommand = "node";
-    const firstArgs = ["bin/build-package.js", "--server"];
+    const firstArgs = ["bin/build-package.js"];
 
     try {
         // Run the first build command
@@ -136,10 +136,10 @@ async function checkAndBuild() {
     }
 
     // Copy the build contents to replayCraft behavior pack directory
-    const buildDir = "build";
+    const buildDir = path.join("build", "addon", "ReplayCraft_BP");
     fse.copySync(buildDir, replayCraftBehaviorDir);
     // Copy resource pack files to the replayCraft resource pack directory
-    const buildResourceDir = path.join(`./`, "ReplayCraft RP");
+    const buildResourceDir = path.join("build", "addon", "ReplayCraft_RP");
     fse.copySync(buildResourceDir, replayCraftResourceDir);
 
     console.log(`> Copied build contents to '${replayCraftBehaviorDir}' and '${replayCraftResourceDir}'...\n`);

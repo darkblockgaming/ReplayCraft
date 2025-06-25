@@ -45,6 +45,5 @@
         "build": "npm run check-naming & node bin/build-package.js",
         "dev": "npm run check-naming & node bin/build-package.js --dev",
         "dist": "npm run check-naming & node bin/build-package.js --mcaddon"
-        
     }
 }

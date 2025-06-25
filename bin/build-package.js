@@ -7,14 +7,22 @@ import AdmZip from "adm-zip";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
+
 const buildInfoPath = path.join(projectRoot, "build-info.json");
-const manifestPath = path.join(projectRoot, "manifest.json");
-const resourceManifestPath = path.join(projectRoot, "ReplayCraft RP", "manifest.json");
+
+// Updated paths to reflect new location inside `src`
+const bpSourcePath = path.join(projectRoot, "src", "ReplayCraft BP");
+const rpSourcePath = path.join(projectRoot, "src", "ReplayCraft RP");
+
+const bpManifestPath = path.join(bpSourcePath, "manifest.json");
+const rpManifestPath = path.join(rpSourcePath, "manifest.json");
 
 const buildDir = path.join(projectRoot, "build");
 const addonDir = path.join(buildDir, "addon");
 const behaviorPacksDir = path.join(addonDir, "ReplayCraft_BP");
-const assets = ["CHANGELOG.md", "LICENSE", "manifest.json", "pack_icon.png", "README.md"];
+
+// These are still in the project root
+const projectDocs = ["CHANGELOG.md", "LICENSE", "README.md"];
 
 function runCommand(command, args) {
     const result = spawnSync(command, args, { stdio: "inherit" });
@@ -33,9 +41,27 @@ function getAndUpdateBuildNumber() {
     return buildInfo.build;
 }
 
+function createAddonStructure() {
+    fs.mkdirSync(addonDir, { recursive: true });
+
+    // Copy RP folder as-is
+    fs.copySync(rpSourcePath, path.join(addonDir, "ReplayCraft_RP"));
+
+    // Copy BP folder but exclude the scripts folder (to avoid raw .ts files)
+    fs.copySync(bpSourcePath, path.join(addonDir, "ReplayCraft_BP"), {
+        filter: (src) => {
+            // Skip the scripts folder
+            if (src.includes(path.join("ReplayCraft BP", "scripts"))) {
+                return false;
+            }
+            return true;
+        },
+    });
+}
+
 function updateManifestNames(buildNumber, isDevMode) {
-    const manifest = fs.readJsonSync(manifestPath);
-    const resourceManifest = fs.readJsonSync(resourceManifestPath);
+    const manifest = fs.readJsonSync(bpManifestPath);
+    const resourceManifest = fs.readJsonSync(rpManifestPath);
     const version = manifest.header.version.join(".");
 
     if (isDevMode) {
@@ -43,43 +69,25 @@ function updateManifestNames(buildNumber, isDevMode) {
         resourceManifest.header.name = `ReplayCraft RP v${version}-Dev Build ${buildNumber}`;
     }
 
-    fs.writeJsonSync(path.join(buildDir, "manifest.json"), manifest, { spaces: 2 });
-    fs.writeJsonSync(resourceManifestPath, resourceManifest, { spaces: 2 });
+    fs.writeJsonSync(bpManifestPath, manifest, { spaces: 2 });
+    fs.writeJsonSync(rpManifestPath, resourceManifest, { spaces: 2 });
 }
 
 function buildProject() {
     const tsConfigPath = path.resolve(projectRoot, "tsconfig.json");
     runCommand("node", ["./node_modules/typescript/bin/tsc", "-p", tsConfigPath]);
-
-    fs.copySync(path.join(projectRoot, "src", "entities"), path.join(buildDir, "entities"));
-    fs.copySync(path.join(projectRoot, "src", "functions"), path.join(buildDir, "functions"));
 }
 
-function copyAssets() {
-    assets.forEach((asset) => {
-        fs.copyFileSync(path.join(projectRoot, asset), path.join(buildDir, asset));
-    });
-}
+function copyProjectDocs() {
+    const bpDest = path.join(addonDir, "ReplayCraft_BP");
+    const rpDest = path.join(addonDir, "ReplayCraft_RP");
 
-function createAddonStructure() {
-    fs.mkdirSync(behaviorPacksDir, { recursive: true });
-    fs.copySync(path.join(projectRoot, "ReplayCraft RP"), path.join(addonDir, "ReplayCraft_RP"));
-}
-
-function copyScriptsAndBlocks() {
-    const scriptsDir = path.join(buildDir, "scripts");
-    if (fs.existsSync(scriptsDir)) {
-        fs.copySync(scriptsDir, path.join(behaviorPacksDir, "scripts"));
-    }
-    ["entities", "functions"].forEach((dir) => {
-        const fullPath = path.join(buildDir, dir);
-        if (fs.existsSync(fullPath)) {
-            fs.copySync(fullPath, path.join(behaviorPacksDir, dir));
+    projectDocs.forEach((projectDoc) => {
+        const sourcePath = path.join(projectRoot, projectDoc);
+        if (fs.existsSync(sourcePath)) {
+            fs.copyFileSync(sourcePath, path.join(bpDest, projectDoc));
+            fs.copyFileSync(sourcePath, path.join(rpDest, projectDoc));
         }
-    });
-
-    assets.forEach((asset) => {
-        fs.copyFileSync(path.join(buildDir, asset), path.join(behaviorPacksDir, asset));
     });
 }
 
@@ -110,14 +118,12 @@ function cleanUp() {
     fs.mkdirSync(buildDir, { recursive: true });
 
     const buildNumber = getAndUpdateBuildNumber();
-    copyAssets();
-    buildProject();
 
     const isDevMode = process.argv.includes("--dev");
     const isDistMode = process.argv.includes("--mcaddon");
     const isServerMode = process.argv.includes("--server");
 
-    const manifest = fs.readJsonSync(manifestPath);
+    const manifest = fs.readJsonSync(bpManifestPath);
     const version = manifest.header.version.join(".");
 
     if (isDevMode) {
@@ -126,8 +132,8 @@ function cleanUp() {
 
     if (!isServerMode) {
         createAddonStructure();
-        copyScriptsAndBlocks();
-
+        copyProjectDocs();
+        buildProject();
         const outputFileName = isDevMode ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon` : `ReplayCraft-v${version}.mcaddon`;
 
         const outputFilePath = path.resolve(buildDir, "build", outputFileName);
@@ -135,7 +141,7 @@ function cleanUp() {
 
         createDistributionArchive(outputFilePath);
         modifyZip(outputFilePath);
-        cleanUp();
+        //cleanUp();
     }
 
     console.log(`Build ${buildNumber} completed successfully.`);
