@@ -15,22 +15,185 @@ import { playBlockSound } from "./functions/playBlockSound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn";
 import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initialize";
 //temp solution for the missing import this needs to be convered.
-import './ReplayCraft.js';
+import "./ReplayCraft.js";
 import { removeEntities } from "./functions/removeEntities";
 import config from "./data/config";
 //Global variables
 export let SharedVariables: SharedVariablesType = {
-    soundIds: ['place.amethyst_block', 'place.amethyst_cluster', 'place.azalea', 'place.azalea_leaves', 'place.bamboo_wood', 'place.big_dripleaf', 'place.calcite', 'place.cherry_leaves', 'place.cherry_wood', 'place.chiseled_bookshelf', 'place.copper', 'place.copper_bulb', 'place.deepslate', 'place.deepslate_bricks', 'place.dirt_with_roots', 'place.dripstone_block', 'place.hanging_roots', 'place.large_amethyst_bud', 'place.medium_amethyst_bud', 'place.moss', 'place.nether_wood', 'place.pink_petals', 'place.pointed_dripstone', 'place.powder_snow', 'place.sculk', 'place.sculk_catalyst', 'place.sculk_sensor', 'place.sculk_shrieker', 'place.small_amethyst_bud', 'place.spore_blossom', 'place.tuff', 'place.tuff_bricks', "use.ancient_debris", "use.basalt", "use.bone_block", "use.candle", "use.cave_vines", "use.chain", "use.cloth", "use.copper", "use.coral", "use.deepslate", "use.deepslate_bricks", "use.dirt_with_roots", "use.dripstone_block", "use.grass", "use.gravel", "use.hanging_roots", "use.honey_block", "use.ladder", "use.moss", "use.nether_brick", "use.nether_gold_ore", "use.nether_sprouts", "use.nether_wart", "use.netherite", "use.netherrack", "use.nylium", "use.pointed_dripstone", "use.roots", "use.sand", "use.sculk_sensor", "use.shroomlight", "use.slime", "use.snow", "use.soul_sand", "use.soul_soil", "use.spore_blossom", "use.stem", "use.stone", "use.vines", "use.wood"],
-    easeTypes: ["Linear", "InBack", "InBounce", "InCirc", "InCubic", "InElastic", "InExpo", "InOutBack", "InOutBounce", "InOutCirc", "InOutCubic", "InOutElastic", "InOutExpo", "InOutQuad", "InOutQuart", "InOutQuint", "InOutSine", "InQuad", "InQuart", "InQuint", "InSine", "OutBack", "OutBounce", "OutCirc", "OutCubic", "OutElastic", "OutExpo", "OutQuad", "OutQuart", "OutQuint", "OutSine", "Spring"],
+    soundIds: [
+        "place.amethyst_block",
+        "place.amethyst_cluster",
+        "place.azalea",
+        "place.azalea_leaves",
+        "place.bamboo_wood",
+        "place.big_dripleaf",
+        "place.calcite",
+        "place.cherry_leaves",
+        "place.cherry_wood",
+        "place.chiseled_bookshelf",
+        "place.copper",
+        "place.copper_bulb",
+        "place.deepslate",
+        "place.deepslate_bricks",
+        "place.dirt_with_roots",
+        "place.dripstone_block",
+        "place.hanging_roots",
+        "place.large_amethyst_bud",
+        "place.medium_amethyst_bud",
+        "place.moss",
+        "place.nether_wood",
+        "place.pink_petals",
+        "place.pointed_dripstone",
+        "place.powder_snow",
+        "place.sculk",
+        "place.sculk_catalyst",
+        "place.sculk_sensor",
+        "place.sculk_shrieker",
+        "place.small_amethyst_bud",
+        "place.spore_blossom",
+        "place.tuff",
+        "place.tuff_bricks",
+        "use.ancient_debris",
+        "use.basalt",
+        "use.bone_block",
+        "use.candle",
+        "use.cave_vines",
+        "use.chain",
+        "use.cloth",
+        "use.copper",
+        "use.coral",
+        "use.deepslate",
+        "use.deepslate_bricks",
+        "use.dirt_with_roots",
+        "use.dripstone_block",
+        "use.grass",
+        "use.gravel",
+        "use.hanging_roots",
+        "use.honey_block",
+        "use.ladder",
+        "use.moss",
+        "use.nether_brick",
+        "use.nether_gold_ore",
+        "use.nether_sprouts",
+        "use.nether_wart",
+        "use.netherite",
+        "use.netherrack",
+        "use.nylium",
+        "use.pointed_dripstone",
+        "use.roots",
+        "use.sand",
+        "use.sculk_sensor",
+        "use.shroomlight",
+        "use.slime",
+        "use.snow",
+        "use.soul_sand",
+        "use.soul_soil",
+        "use.spore_blossom",
+        "use.stem",
+        "use.stone",
+        "use.vines",
+        "use.wood",
+    ],
+    easeTypes: [
+        "Linear",
+        "InBack",
+        "InBounce",
+        "InCirc",
+        "InCubic",
+        "InElastic",
+        "InExpo",
+        "InOutBack",
+        "InOutBounce",
+        "InOutCirc",
+        "InOutCubic",
+        "InOutElastic",
+        "InOutExpo",
+        "InOutQuad",
+        "InOutQuart",
+        "InOutQuint",
+        "InOutSine",
+        "InQuad",
+        "InQuart",
+        "InQuint",
+        "InSine",
+        "OutBack",
+        "OutBounce",
+        "OutCirc",
+        "OutCubic",
+        "OutElastic",
+        "OutExpo",
+        "OutQuad",
+        "OutQuart",
+        "OutQuint",
+        "OutSine",
+        "Spring",
+    ],
     skinTypes: [
         "Default Skin",
-        "Custom Skin1", "Custom Skin2", "Custom Skin3", "Custom Skin4", "Custom Skin5", "Custom Skin6", "Custom Skin7", "Custom Skin8", "Custom Skin9", "Custom Skin10",
-        "Custom Skin11", "Custom Skin12", "Custom Skin13", "Custom Skin14", "Custom Skin15", "Custom Skin16", "Custom Skin17", "Custom Skin18", "Custom Skin19", "Custom Skin20",
-        "Custom Skin21", "Custom Skin22", "Custom Skin23", "Custom Skin24", "Custom Skin25", "Custom Skin26", "Custom Skin27", "Custom Skin28", "Custom Skin29", "Custom Skin30",
-        "Custom Skin31", "Custom Skin32", "Custom Skin33", "Custom Skin34", "Custom Skin35", "Custom Skin36", "Custom Skin37", "Custom Skin38", "Custom Skin39", "Custom Skin40",
-        "Custom Skin41", "Custom Skin42", "Custom Skin43", "Custom Skin44", "Custom Skin45", "Custom Skin46", "Custom Skin47", "Custom Skin48", "Custom Skin49", "Custom Skin50",
-        "Custom Skin51", "Custom Skin52", "Custom Skin53", "Custom Skin54", "Custom Skin55", "Custom Skin56", "Custom Skin57", "Custom Skin58", "Custom Skin59", "Custom Skin60",
-        "Custom Skin61", "Custom Skin62", "Custom Skin63", "Custom Skin64"
+        "Custom Skin1",
+        "Custom Skin2",
+        "Custom Skin3",
+        "Custom Skin4",
+        "Custom Skin5",
+        "Custom Skin6",
+        "Custom Skin7",
+        "Custom Skin8",
+        "Custom Skin9",
+        "Custom Skin10",
+        "Custom Skin11",
+        "Custom Skin12",
+        "Custom Skin13",
+        "Custom Skin14",
+        "Custom Skin15",
+        "Custom Skin16",
+        "Custom Skin17",
+        "Custom Skin18",
+        "Custom Skin19",
+        "Custom Skin20",
+        "Custom Skin21",
+        "Custom Skin22",
+        "Custom Skin23",
+        "Custom Skin24",
+        "Custom Skin25",
+        "Custom Skin26",
+        "Custom Skin27",
+        "Custom Skin28",
+        "Custom Skin29",
+        "Custom Skin30",
+        "Custom Skin31",
+        "Custom Skin32",
+        "Custom Skin33",
+        "Custom Skin34",
+        "Custom Skin35",
+        "Custom Skin36",
+        "Custom Skin37",
+        "Custom Skin38",
+        "Custom Skin39",
+        "Custom Skin40",
+        "Custom Skin41",
+        "Custom Skin42",
+        "Custom Skin43",
+        "Custom Skin44",
+        "Custom Skin45",
+        "Custom Skin46",
+        "Custom Skin47",
+        "Custom Skin48",
+        "Custom Skin49",
+        "Custom Skin50",
+        "Custom Skin51",
+        "Custom Skin52",
+        "Custom Skin53",
+        "Custom Skin54",
+        "Custom Skin55",
+        "Custom Skin56",
+        "Custom Skin57",
+        "Custom Skin58",
+        "Custom Skin59",
+        "Custom Skin60",
+        "Custom Skin61",
+        "Custom Skin62",
+        "Custom Skin63",
+        "Custom Skin64",
     ],
 
     dbgRecController: undefined,
@@ -46,7 +209,32 @@ export let SharedVariables: SharedVariablesType = {
     replayMDataMap: new Map(),
     replayODataMap: new Map(),
     replaySDataMap: new Map(),
-    twoPartBlocks: ["minecraft:copper_door", "minecraft:exposed_copper_door", "minecraft:weathered_copper_door", "minecraft:oxidized_copper_door", "minecraft:waxed_copper_door", "minecraft:waxed_exposed_copper_door", "minecraft:waxed_weathered_copper_door", "minecraft:waxed_oxidized_copper_door", "minecraft:acacia_door", "minecraft:bamboo_door", "minecraft:birch_door", "minecraft:cherry_door", "minecraft:crimson_door", "minecraft:dark_oak_door", "minecraft:iron_door", "minecraft:jungle_door", "minecraft:mangrove_door", "minecraft:spruce_door", "minecraft:warped_door", "minecraft:wooden_door", "minecraft:sunflower", "minecraft:double_plant", "minecraft:tall_grass", "minecraft:large_fern"],
+    twoPartBlocks: [
+        "minecraft:copper_door",
+        "minecraft:exposed_copper_door",
+        "minecraft:weathered_copper_door",
+        "minecraft:oxidized_copper_door",
+        "minecraft:waxed_copper_door",
+        "minecraft:waxed_exposed_copper_door",
+        "minecraft:waxed_weathered_copper_door",
+        "minecraft:waxed_oxidized_copper_door",
+        "minecraft:acacia_door",
+        "minecraft:bamboo_door",
+        "minecraft:birch_door",
+        "minecraft:cherry_door",
+        "minecraft:crimson_door",
+        "minecraft:dark_oak_door",
+        "minecraft:iron_door",
+        "minecraft:jungle_door",
+        "minecraft:mangrove_door",
+        "minecraft:spruce_door",
+        "minecraft:warped_door",
+        "minecraft:wooden_door",
+        "minecraft:sunflower",
+        "minecraft:double_plant",
+        "minecraft:tall_grass",
+        "minecraft:large_fern",
+    ],
     toggleSound: false,
     selectedSound: 0,
     wantLoadFrameTick: 0,
@@ -82,7 +270,7 @@ export let SharedVariables: SharedVariablesType = {
     hideHUD: false,
     showCameraSetupUI: false,
     currentEditingCamIndex: undefined,
-    useFullRecordingRange: true
+    useFullRecordingRange: true,
 };
 
 //Chat events
@@ -104,8 +292,6 @@ onPlayerSpawn();
 //data-hive
 subscribeToWorldInitialize();
 
-
-
 //Timer for each frame?
 system.runInterval(() => {
     if (SharedVariables.replayStateMachine.state === "recPending") {
@@ -114,11 +300,11 @@ system.runInterval(() => {
 }, 1);
 
 /* Allow replay to occur once the replay has finished call clearStructure
-* remove the playback entity and reset the tick counter.
-*/
+ * remove the playback entity and reset the tick counter.
+ */
 system.runInterval(() => {
     if (SharedVariables.replayStateMachine.state === "viewStartRep") {
-        if (SharedVariables.lilTick >= (SharedVariables.dbgRecTime - 1)) {
+        if (SharedVariables.lilTick >= SharedVariables.dbgRecTime - 1) {
             SharedVariables.replayStateMachine.setState("recSaved");
             SharedVariables.multiPlayers.forEach((player) => {
                 SharedVariables.currentSwitch = false;
@@ -128,13 +314,13 @@ system.runInterval(() => {
             SharedVariables.lilTick = 0;
             return;
         }
-        SharedVariables.lilTick++
+        SharedVariables.lilTick++;
     }
 }, 1);
 //?
 system.runInterval(() => {
     if (SharedVariables.replayStateMachine.state === "recStartRep") {
-        if (SharedVariables.lilTick >= (SharedVariables.dbgRecTime - 1)) {
+        if (SharedVariables.lilTick >= SharedVariables.dbgRecTime - 1) {
             if (SharedVariables.showCameraSetupUI === true) {
                 SharedVariables.replayStateMachine.setState("recCompleted", true);
                 SharedVariables.showCameraSetupUI = false;
@@ -154,11 +340,12 @@ system.runInterval(() => {
             SharedVariables.lilTick = 0;
             return;
         }
-        SharedVariables.lilTick++
+        SharedVariables.lilTick++;
     }
 }, 1);
 
-system.runInterval(() => { // Load The Blocks Depending On The Tick 
+system.runInterval(() => {
+    // Load The Blocks Depending On The Tick
     SharedVariables.multiPlayers.forEach((player) => {
         if (SharedVariables.replayStateMachine.state === "viewStartRep" || SharedVariables.replayStateMachine.state === "recStartRep") {
             if (SharedVariables.lilTick <= SharedVariables.dbgRecTime) {
@@ -168,10 +355,7 @@ system.runInterval(() => { // Load The Blocks Depending On The Tick
                     const blockData = playerData.dbgBlockData[SharedVariables.lilTick];
 
                     if (blockData.lowerPart && blockData.upperPart) {
-                        const {
-                            lowerPart,
-                            upperPart
-                        } = blockData;
+                        const { lowerPart, upperPart } = blockData;
                         const dimension = world.getDimension(player.dimension.id);
                         const lowerBlock = dimension.getBlock(lowerPart.location);
 
@@ -179,22 +363,13 @@ system.runInterval(() => { // Load The Blocks Depending On The Tick
                         const upperBlock = dimension.getBlock(upperPart.location);
 
                         upperBlock.setPermutation(BlockPermutation.resolve(upperPart.typeId, upperPart.states));
-
                     } else if (blockData.thisPart && blockData.otherPart) {
-                        const {
-                            thisPart,
-                            otherPart
-                        } = blockData;
+                        const { thisPart, otherPart } = blockData;
                         const dimension = world.getDimension(player.dimension.id);
                         dimension.getBlock(thisPart.location).setPermutation(BlockPermutation.resolve(thisPart.typeId, thisPart.states));
                         dimension.getBlock(otherPart.location).setPermutation(BlockPermutation.resolve(otherPart.typeId, otherPart.states));
-
                     } else {
-                        const {
-                            location,
-                            typeId,
-                            states
-                        } = blockData;
+                        const { location, typeId, states } = blockData;
                         if (SharedVariables.settReplayType === 0) {
                             customEntity.playAnimation("animation.replayentity.attack");
                         }
@@ -224,10 +399,7 @@ system.runInterval(() => {
                     }
                     const dimension = world.getDimension(SharedVariables.dbgRecController.dimension.id);
                     if (blockData.lowerPart && blockData.upperPart) {
-                        const {
-                            lowerPart,
-                            upperPart
-                        } = blockData;
+                        const { lowerPart, upperPart } = blockData;
                         const lowerBlock = dimension.getBlock(lowerPart.location);
 
                         lowerBlock.setPermutation(BlockPermutation.resolve(lowerPart.typeId, lowerPart.states));
@@ -235,11 +407,7 @@ system.runInterval(() => {
 
                         upperBlock.setPermutation(BlockPermutation.resolve(upperPart.typeId, upperPart.states));
                     } else {
-                        const {
-                            location,
-                            typeId,
-                            states
-                        } = blockData;
+                        const { location, typeId, states } = blockData;
                         const block = dimension.getBlock(location);
                         const permutation = BlockPermutation.resolve(typeId, states);
                         block.setPermutation(permutation);
@@ -255,11 +423,11 @@ system.runInterval(() => {
     SharedVariables.multiPlayers.forEach((player) => {
         if (SharedVariables.replayStateMachine.state !== "recPending") return;
         const posData = SharedVariables.replayPosDataMap.get(player.id);
-        /** 
-         * 
+        /**
+         *
          * is declared but its value is never read.
          * const customEntity = SharedVariables.replayODataMap.get(player.id);
-        */
+         */
         const rotData = SharedVariables.replayRotDataMap.get(player.id);
         if (!posData) return;
         const ploc = player.location;
@@ -279,9 +447,8 @@ system.runInterval(() => {
             if (!posData) return;
 
             if (SharedVariables.settReplayType === 0) {
-
                 customEntity.teleport(posData.dbgRecPos[SharedVariables.lilTick], {
-                    rotation: rotData.dbgRecRot[SharedVariables.lilTick]
+                    rotation: rotData.dbgRecRot[SharedVariables.lilTick],
                 });
             }
         }
@@ -303,13 +470,13 @@ system.runInterval(() => {
         const playerData = SharedVariables.replayMDataMap.get(player.id);
         if (!playerData) return;
         playerData.isSneaking.push(player.isSneaking ? 1 : 0);
-        if(config.devAnimations === true) {
-        // playerData.isSwimming.push(player.isSwimming ? 1 : 0);
-        // playerData.isClimbing.push(player.isClimbing ? 1 : 0);
-        // playerData.isFalling.push(player.isFalling ? 1 : 0);
-        // playerData.isFlying.push(player.isFlying ? 1 : 0);
-        // playerData.isGliding.push(player.isGliding ? 1 : 0);
-        playerData.isSleeping.push(player.isSleeping ? 1 : 0);
+        if (config.devAnimations === true) {
+            // playerData.isSwimming.push(player.isSwimming ? 1 : 0);
+            // playerData.isClimbing.push(player.isClimbing ? 1 : 0);
+            // playerData.isFalling.push(player.isFalling ? 1 : 0);
+            // playerData.isFlying.push(player.isFlying ? 1 : 0);
+            // playerData.isGliding.push(player.isGliding ? 1 : 0);
+            playerData.isSleeping.push(player.isSleeping ? 1 : 0);
         }
     });
 }, 1);
@@ -327,7 +494,9 @@ system.runInterval(() => {
             // customEntity.setProperty("dbg:is_falling", playerData.isFalling[SharedVariables.lilTick] === 1);
             // customEntity.setProperty("dbg:is_flying", playerData.isFlying[SharedVariables.lilTick] === 1);
             // customEntity.setProperty("dbg:is_gliding", playerData.isGliding[SharedVariables.lilTick] === 1);
-            customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[SharedVariables.lilTick] === 1);
+            if (config.devAnimations === true) {
+                customEntity.setProperty("dbg:is_sleeping", playerData.isSleeping[SharedVariables.lilTick] === 1);
+            }
         }
     });
 }, 1);
@@ -373,15 +542,11 @@ system.runInterval(() => {
         SharedVariables.dbgCamAffectPlayer.forEach((player) => {
             //const player = dbgRecController;
             const customEntity = SharedVariables.replayODataMap.get(SharedVariables.dbgCamFocusPlayer.id);
-            const {
-                x,
-                y,
-                z
-            } = customEntity.location;
+            const { x, y, z } = customEntity.location;
             const location = {
                 x,
                 y: y + 1.5,
-                z
+                z,
             };
             player.camera.setCamera("minecraft:free", {
                 facingLocation: location,
@@ -396,15 +561,11 @@ system.runInterval(() => {
         SharedVariables.dbgCamAffectPlayer.forEach((player) => {
             //const player = dbgRecController;
             const customEntity = SharedVariables.replayODataMap.get(SharedVariables.dbgCamFocusPlayer.id);
-            const {
-                x,
-                y,
-                z
-            } = customEntity.location;
+            const { x, y, z } = customEntity.location;
             const location = {
                 x,
                 y: y + SharedVariables.topDownCamHight,
-                z
+                z,
             };
             /**
              * left over code can this ben removed?
@@ -421,7 +582,7 @@ system.runInterval(() => {
                 //facingEntity: customEntity,
                 rotation: {
                     x: 90,
-                    y: 0
+                    y: 0,
                 },
                 easeOptions: {
                     easeTime: 0.4,
@@ -434,21 +595,17 @@ system.runInterval(() => {
         SharedVariables.dbgCamAffectPlayer.forEach((player) => {
             //const player = dbgRecController;
             const customEntity = SharedVariables.replayODataMap.get(SharedVariables.dbgCamFocusPlayer.id);
-            const {
-                x,
-                y,
-                z
-            } = customEntity.location;
+            const { x, y, z } = customEntity.location;
             customEntity.getRotation();
             const location = {
                 x,
                 y: y + SharedVariables.topDownCamHight,
-                z
+                z,
             };
             const rotation = customEntity.getRotation();
             const rotation2 = {
                 x: 90,
-                y: rotation.y
+                y: rotation.y,
             };
             player.camera.setCamera("minecraft:free", {
                 location: location,
@@ -462,7 +619,6 @@ system.runInterval(() => {
     }
 }, 1);
 
-
 export function playerDataDisplay(player: Player) {
     const playerData = SharedVariables.replayMDataMap.get(player.id);
     try {
@@ -472,17 +628,14 @@ export function playerDataDisplay(player: Player) {
     }
 }
 
-
-
 export function SharedVariablesDisplay() {
-    
     const snapshot = {
         useFullRecordingRange: SharedVariables.useFullRecordingRange,
         wantLoadFrameTick: SharedVariables.wantLoadFrameTick,
         frameLoaded: SharedVariables.frameLoaded,
         dbgRecTime: SharedVariables.dbgRecTime,
-        replayCamPosTicks: SharedVariables.replayCamPos.map(p => p.tick),
-        replayCamRotTicks: SharedVariables.replayCamRot.map(r => r.tick),
+        replayCamPosTicks: SharedVariables.replayCamPos.map((p) => p.tick),
+        replayCamRotTicks: SharedVariables.replayCamRot.map((r) => r.tick),
         replayCamPosLength: SharedVariables.replayCamPos.length,
         replayCamRotLength: SharedVariables.replayCamRot.length,
         startingValueTick: SharedVariables.startingValueTick,
@@ -496,4 +649,3 @@ export function SharedVariablesDisplay() {
         console.warn("Failed to stringify SharedVariables snapshot:", err);
     }
 }
-
