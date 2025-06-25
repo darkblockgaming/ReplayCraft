@@ -2,7 +2,7 @@ import * as ui from "@minecraft/server-ui";
 import { loadFrameTicksForm } from "./loadFrameTicksForm";
 import { loadFrameSecondsForm } from "./loadFrameSecondsForm";
 import { cancelRec } from "./cancelRec";
-import { Player } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 import { addPos } from "../functions/camera/addPos";
 import { doProceedFurther } from "../functions/camera/doProceedFurther";
 import { resetCamSetup } from "../functions/camera/resetCamSetup";
@@ -58,10 +58,21 @@ function showTimelineMenu(player: Player) {
             case 1:
                 return loadFrameSecondsForm(player);
             case 2:
-                //if the player is in survival or adventure mode, enable flight (freecam)
+                // Check if player is in Creative mode
                 if (player.getGameMode() !== "Creative") {
+                    //Check if the word is in Hardcore mode
+                    if (world.isHardcore) {
+                        player.sendMessage({
+                            //flight cannot be enabled in hardcore mode
+                            rawtext: [{ translate: "replaycraft.hardcore.mode.check" }],
+                        });
+                        //do the same as ceative mode you will need to get creative with blocks to get the right angle
+                        return addPos(player);
+                    }
+                    //if the player is not in creative mode, and the world is not in hardcore mode, enable flight
                     return enableFlight(player);
                 }
+                // If player is in Creative mode, proceed to add position
                 return addPos(player);
             case 3:
                 return openCameraReplaySelectFormTicks(player);
