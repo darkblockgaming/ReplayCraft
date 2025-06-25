@@ -1,4 +1,4 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.4§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v3.0.0§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
 dbg.rc1.title.replaycraft.settings=§bReplayCraft Settings§r
@@ -176,3 +176,4 @@ replaycraft.recordingmenu.title=§9ReplayCraft: Recording Menu
 replaycraft.previewmenu.title=§9ReplayCraft: Preview Menu
 replaycraft.replaymenu.title=§9ReplayCraft: Finalize & Record
 replaycraft.Finalize.Record.body=Select options below to finalize your replay and start recording your screen.
+replaycraft.hardcore.mode.check = §f§4[ReplayCraft]§f Flight cannot be enabled in hardcore mode.
