@@ -6,7 +6,9 @@ import { rcInfo } from "./guide-about";
 import { setBuildName } from "./set-buildname";
 import { loadBuildName } from "./load-buildname";
 import { deleteBuildUI } from "./remove-session-from-database";
-export function ReplayCraft2A(player: Player) {
+
+//was ReplayCraft2A
+export function uiReplayCraftMainMenu(player: Player) {
     //Default
     const replayForm = new ui.ActionFormData()
         .title("dbg.rc1.title.replay.menu")

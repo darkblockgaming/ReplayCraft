@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 import { ReplayCraft2F } from "../ui/replaycraft-replay-menu";
 import { ReplayCraft2D } from "../ui/replaycraft-preview-menu";
-import { ReplayCraft2A } from "../ui/replaycraft-main-menu";
+import { uiReplayCraftMainMenu } from "../ui/replaycraft-main-menu";
 import { ReplayCraft2B } from "../ui/replaycraft-recording-menu";
 import { ReplayCraft2C } from "../ui/replaycraft-pause-menu";
 import { ReplayCraft2E } from "../ui/replaycraft-camera-menu";
@@ -67,7 +67,7 @@ export class ReplayStateMachine {
     }
 
     private handleDefault(player: Player): void {
-        ReplayCraft2A(player);
+        uiReplayCraftMainMenu(player);
     }
 
     private handleEditingCameraPos(player: Player): void {
