@@ -19,7 +19,11 @@ const rpManifestPath = path.join(rpSourcePath, "manifest.json");
 
 const buildDir = path.join(projectRoot, "build");
 const addonDir = path.join(buildDir, "addon");
-const behaviorPacksDir = path.join(addonDir, "ReplayCraft_BP");
+const bpBuildDir = path.join(addonDir, "ReplayCraft_BP");
+const rpBuildDir = path.join(addonDir, "ReplayCraft_RP");
+
+const bpBuildManifestPath = path.join(bpBuildDir, "manifest.json");
+const rpBuildManifestPath = path.join(rpBuildDir, "manifest.json");
 
 // These are still in the project root
 const projectDocs = ["CHANGELOG.md", "LICENSE", "README.md"];
@@ -60,17 +64,17 @@ function createAddonStructure() {
 }
 
 function updateManifestNames(buildNumber, isDevMode) {
-    const manifest = fs.readJsonSync(bpManifestPath);
-    const resourceManifest = fs.readJsonSync(rpManifestPath);
-    const version = manifest.header.version.join(".");
+    const bpManifest = fs.readJsonSync(bpManifestPath);
+    const rpManifest = fs.readJsonSync(rpManifestPath);
+    const version = bpManifest.header.version.join(".");
 
     if (isDevMode) {
-        manifest.header.name = `ReplayCraft BP v${version}-Dev Build ${buildNumber}`;
-        resourceManifest.header.name = `ReplayCraft RP v${version}-Dev Build ${buildNumber}`;
+        bpManifest.header.name = `ReplayCraft BP v${version}-Dev Build ${buildNumber}`;
+        rpManifest.header.name = `ReplayCraft RP v${version}-Dev Build ${buildNumber}`;
     }
 
-    fs.writeJsonSync(bpManifestPath, manifest, { spaces: 2 });
-    fs.writeJsonSync(rpManifestPath, resourceManifest, { spaces: 2 });
+    fs.writeJsonSync(bpBuildManifestPath, bpManifest, { spaces: 2 });
+    fs.writeJsonSync(rpBuildManifestPath, rpManifest, { spaces: 2 });
 }
 
 function buildProject() {
@@ -117,21 +121,20 @@ function cleanUp() {
     fs.removeSync(buildDir);
     fs.mkdirSync(buildDir, { recursive: true });
 
-    const buildNumber = getAndUpdateBuildNumber();
-
     const isDevMode = process.argv.includes("--dev");
     const isDistMode = process.argv.includes("--mcaddon");
     const isServerMode = process.argv.includes("--server");
 
-    const manifest = fs.readJsonSync(bpManifestPath);
-    const version = manifest.header.version.join(".");
+    const buildNumber = getAndUpdateBuildNumber();
 
-    if (isDevMode) {
-        updateManifestNames(buildNumber, true);
-    }
+    const bpManifest = fs.readJsonSync(bpManifestPath);
+    const version = bpManifest.header.version.join(".");
 
     if (!isServerMode) {
         createAddonStructure();
+        if (isDevMode) {
+            updateManifestNames(buildNumber, true);
+        }
         copyProjectDocs();
         buildProject();
         const outputFileName = isDevMode ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon` : `ReplayCraft-v${version}.mcaddon`;
