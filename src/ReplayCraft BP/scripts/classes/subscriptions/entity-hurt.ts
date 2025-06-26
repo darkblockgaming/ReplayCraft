@@ -1,5 +1,6 @@
 import { world, EntityHurtAfterEvent } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
+import { debugLog } from "../../data/util/debug";
 
 /**
  * Export the function to be called in main.ts
@@ -23,7 +24,7 @@ function initializeEventHandlers() {
  */
 function onEntityHit(event: EntityHurtAfterEvent) {
     const { hurtEntity, damageSource, damage } = event;
-    console.log(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
+    debugLog(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
 
     // Only record ambient entities hurt by players
     if (!damageSource || !damageSource.damagingEntity) return;
@@ -34,20 +35,21 @@ function onEntityHit(event: EntityHurtAfterEvent) {
 
     const session = replaySessions.playerSessions.get(playerId);
     if (!session) return;
+    if (session.replayStateMachine.state === "recPending") {
+        const ambientMap = session.replayAmbientEntityMap.get(playerId);
+        if (!ambientMap) return;
 
-    const ambientMap = session.replayAmbientEntityMap.get(playerId);
-    if (!ambientMap) return;
+        const entityKey = `entity:${hurtEntity.id}`;
+        const data = ambientMap.get(entityKey);
+        if (!data) {
+            debugLog(`[ReplayCraft DEBUG] No ambient entity match found for hurt entity: ${entityKey}`);
+            return;
+        }
 
-    const entityKey = `entity:${hurtEntity.id}`;
-    const data = ambientMap.get(entityKey);
-    if (!data) {
-        console.log(`[ReplayCraft DEBUG] No ambient entity match found for hurt entity: ${entityKey}`);
-        return;
+        const tick = session.recordingEndTick;
+        if (!data.hurtTicks) {
+            data.hurtTicks = new Map<number, number>();
+        }
+        data.hurtTicks.set(tick, damage);
     }
-
-    const tick = session.recordingEndTick;
-    if (!data.hurtTicks) {
-        data.hurtTicks = new Map<number, number>();
-    }
-    data.hurtTicks.set(tick, damage);
 }
