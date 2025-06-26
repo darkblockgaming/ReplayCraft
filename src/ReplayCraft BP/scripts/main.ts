@@ -230,7 +230,7 @@ system.runInterval(() => {
                 const dimension = world.getDimension(player.dimension.id);
                 const nearbyEntities = dimension.getEntities({
                     location: player.location,
-                    maxDistance: 32,
+                    maxDistance: 64,
                     excludeTypes: ["minecraft:player", "dbg:replayentity_steve", "dbg:replayentity_alex", "dbg:rccampos"],
                 });
 
