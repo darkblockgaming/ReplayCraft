@@ -145,6 +145,32 @@ function giveItems(event: ChatSendBeforeEvent) {
             return;
         }
 
+        if (message === "?entity") {
+            system.run(() => {
+                const nearbyEntities = sender.dimension.getEntities({
+                    location: sender.location,
+                    maxDistance: 64,
+                });
+
+                let found = 0;
+                for (const entity of nearbyEntities) {
+                    if (entity.hasTag(`replay:${sender.id}`)) {
+                        found++;
+                        console.log(`[Replay Entity] Type: ${entity.typeId}, Location: ${JSON.stringify(entity.location)}, ID Tag: replay:${sender.id}`);
+                    }
+                }
+
+                if (found === 0) {
+                    console.log(`[Replay Entity] No entities found with tag replay:${sender.id}`);
+                } else {
+                    console.log(`[Replay Entity] Total found: ${found}`);
+                }
+            });
+
+            event.cancel = true;
+            return;
+        }
+
         let playbackEntity = findPlaybackEntityNear(sender);
 
         if (message.startsWith("?playan")) {

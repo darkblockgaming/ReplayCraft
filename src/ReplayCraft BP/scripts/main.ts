@@ -20,7 +20,7 @@ import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
 import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
-import { debugWarn } from "./data/util/debug";
+import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 import { isPlayerCrawling } from "./entity/is-crawling";
 
@@ -318,6 +318,7 @@ system.runInterval(() => {
                             entity.teleport(tickData.location, { rotation: tickData.rotation });
                             // Tag with player ID to track ownership this is later used to despawn.
                             entity.addTag(`replay:${player.id}`);
+                            debugLog(`Spawned ambient entity ${id} for player ${player.name} at ${tickData.location}`);
                             data.replayEntity = entity;
                         } catch (err) {
                             debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
