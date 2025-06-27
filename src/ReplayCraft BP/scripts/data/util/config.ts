@@ -3,4 +3,5 @@ export default {
     devAnimations: true,
     devChatCommands: true,
     debugEnabled: true,
+    debugEntityTracking: false,
 };

@@ -245,7 +245,7 @@ system.runInterval(() => {
                 const dimension = world.getDimension(player.dimension.id);
                 const nearbyEntities = dimension.getEntities({
                     location: player.location,
-                    maxDistance: 64,
+                    maxDistance: 16,
                     excludeTypes: ["minecraft:player", "dbg:replayentity_steve", "dbg:replayentity_alex", "dbg:rccampos"],
                 });
 
@@ -333,7 +333,9 @@ system.runInterval(() => {
                             entity.teleport(tickData.location, { rotation: tickData.rotation });
                             // Tag with player ID to track ownership this is later used to despawn.
                             entity.addTag(`replay:${player.id}`);
-                            debugLog(`Spawned ambient entity ${id} for player ${player.name} at ${tickData.location}`);
+                            if (config.debugEntityTracking) {
+                                debugLog(`Spawned ambient entity ${id} for player ${player.name} at ${tickData.location}`);
+                            }
                             data.replayEntity = entity;
                         } catch (err) {
                             debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
