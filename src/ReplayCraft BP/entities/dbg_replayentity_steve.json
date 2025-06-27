@@ -22,12 +22,12 @@
           "client_sync": true
         },
         "rc:swim_amt": {
-          "type": "int",
-          "default": 0,
+          "type": "float",
+          "default": 0.0,
           "client_sync": true,
           "range": [
-            0,
-            1
+            0.0,
+            1.0
           ]
         },
         "rc:is_sleeping": {
@@ -111,10 +111,6 @@
         "drag_factor": 0
       },
       "minecraft:equip_item": {},
-      "minecraft:collision_box": {
-        "height": 1.8,
-        "width": 0.0
-      },
       "minecraft:physics": {
         "has_gravity": false,
         "has_collision": false

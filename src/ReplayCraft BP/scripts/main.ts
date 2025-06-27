@@ -186,7 +186,22 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
 
                 //Swimming
-                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isGliding[session.currentTick] === 1);
+                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
+
+                //temporarity code for diving diving
+                if (playerData.isSwimming[session.currentTick]) {
+                    const val = Number(entityData.customEntity.getProperty("rc:swim_amt") ?? 0.0);
+
+                    const target = 1.0;
+
+                    // Interpolation speed (smaller = smoother, 0.1 means ~90% in 15 ticks)
+                    const speed = 0.1;
+
+                    const nextVal = val + (target - val) * speed;
+                    safeSet(entityData.customEntity, "rc:swim_amt", Math.min(nextVal, 1.0));
+
+                    //world.sendMessage(`${entityData.customEntity.getProperty("rc:swim_amt")}`);
+                }
 
                 //Sleeping
                 safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
