@@ -330,7 +330,7 @@ system.runInterval(() => {
                 if (pos && rot && entity) {
                     const ratio = calculateFallRatio(pos.recordedVelocities[currentTick]);
                     debugLog(`Elytra ratio for ${entity.id} at tick ${currentTick}: ${ratio}`);
-                    entity.setDynamicProperty("rc:elytra_ratio", ratio);
+                    entity.setProperty("rc:elytra_ratio", ratio);
 
                     try {
                         entity.teleport(pos.recordedPositions[currentTick], {
