@@ -1,0 +1,47 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "minecraft:elytra",
+      "materials": {
+        "default": "elytra",
+        "enchanted": "elytra_glint"
+      },
+      "textures": {
+        "default": "textures/models/armor/elytra",
+        "enchanted": "textures/misc/enchanted_actor_glint"
+      },
+      "geometry": {
+        "default": "geometry.elytra"
+      },
+      "animations": {
+        "default_controller": "controller.animation.elytra.default",
+        "default": "animation.elytra.default",
+        "gliding": "animation.elytra.gliding",
+        "sneaking": "animation.elytra.sneaking",
+        "sleeping": "animation.elytra.sleeping",
+        "swimming": "animation.elytra.swimming",
+        "rcelytra_controller": "controller.animation.rcelytra.default",
+        "rcelytra_default": "animation.rcelytra.default",
+        "rcelytra_gliding": "animation.rcelytra.gliding",
+        "rcelytra_sneaking": "animation.rcelytra.sneaking",
+        "rcelytra_sleeping": "animation.rcelytra.sleeping",
+        "rcelytra_swimming": "animation.rcelytra.swimming"
+      },
+      "scripts": {
+        "parent_setup": "variable.chest_layer_visible = 0.0;",
+        "animate": [
+          {
+             "default_controller": "!query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
+          },
+          {
+            "rcelytra_controller": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.armor"
+      ]
+    }
+  }
+}

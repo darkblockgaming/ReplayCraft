@@ -32,7 +32,7 @@
         },
         "rc:is_sleeping": {
           "type": "bool",
-          "default": true,
+          "default": false,
           "client_sync": true
         },
         "rc:sleep_dir": {
@@ -53,6 +53,15 @@
           "type": "bool",
           "default": false,
           "client_sync": true
+        },
+        "rc:elytra_ratio": {
+          "type": "float",
+          "default": 1.0,
+          "client_sync": true,
+          "range": [
+            0.0,
+            1.0
+          ]
         },
         "rc:is_climbing": {
           "type": "bool",
