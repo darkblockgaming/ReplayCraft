@@ -1,4 +1,4 @@
-import { Entity, system, world } from "@minecraft/server";
+import { Entity } from "@minecraft/server";
 
 export function getElytraGlideRatio(entity: Entity) {
     const vel = entity.getVelocity();
