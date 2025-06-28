@@ -27,6 +27,7 @@ export interface PlayerBlockInteractionBeforeData {
 }
 export interface PlayerPositionData {
     recordedPositions: Vector3[];
+    recordedVelocities: Vector3[];
 }
 export interface PlayerRotationData {
     recordedRotations: Vector2[];
