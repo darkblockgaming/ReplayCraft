@@ -1,18 +1,17 @@
-import { Entity } from "@minecraft/server";
+import { Vector3 } from "@minecraft/server";
 
-export function getElytraGlideRatio(entity: Entity) {
-    const vel = entity.getVelocity();
-    const dz = vel.z;
+export function getSimulatedElytraRatio(recordedPositions: Vector3[], currentTick: number): number {
+    if (currentTick < 1 || currentTick >= recordedPositions.length) return 1;
+
+    const prev = recordedPositions[currentTick - 1];
+    const curr = recordedPositions[currentTick];
+
+    const deltaZ = curr.z - prev.z;
 
     let ratio = 1;
-    if (dz < 0) {
-        // movement_direction ~ velocity.z normalized (simplified here)
-        const movementDirZ = dz;
-        ratio = 1 - Math.pow(-movementDirZ, 1.5);
+    if (deltaZ < 0) {
+        ratio = 1 - Math.pow(-deltaZ, 1.5);
     }
 
-    // Clamp between 0 and 1
-    ratio = Math.max(0, Math.min(1, ratio));
-
-    return ratio;
+    return Math.max(0, Math.min(1, ratio));
 }

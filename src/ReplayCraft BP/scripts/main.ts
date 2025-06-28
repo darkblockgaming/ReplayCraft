@@ -23,7 +23,7 @@ import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 import { isPlayerCrawling } from "./entity/is-crawling";
-import { getElytraGlideRatio } from "./entity/transistion";
+import { getSimulatedElytraRatio } from "./entity/transistion";
 
 //Chat events
 beforeChatSend();
@@ -212,10 +212,6 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
-                //Elytra Glide Ratio
-                const ratio = getElytraGlideRatio(entityData.customEntity);
-                entityData.customEntity.setDynamicProperty("rc:elytra_ratio", ratio);
-
                 //Swimming
                 safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
 
@@ -331,6 +327,9 @@ system.runInterval(() => {
                 const rot = replayRotationDataMap.get(player.id);
                 const entity = replayEntityDataMap.get(player.id)?.customEntity;
                 if (pos && rot && entity) {
+                    const ratio = getSimulatedElytraRatio(pos.recordedPositions, currentTick);
+                    entity.setDynamicProperty("rc:elytra_ratio", ratio);
+
                     try {
                         entity.teleport(pos.recordedPositions[currentTick], {
                             rotation: rot.recordedRotations[currentTick],
