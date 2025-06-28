@@ -25,6 +25,7 @@ export function resetRec(player: Player) {
     });
     session.replayPositionDataMap.set(player.id, {
         recordedPositions: [],
+        recordedVelocities: [],
     });
     session.replayRotationDataMap.set(player.id, {
         recordedRotations: [],

@@ -4,7 +4,7 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
     session.replayBlockStateMap.set(playerId, { blockStateChanges: {} });
     session.replayBlockInteractionAfterMap.set(playerId, { blockSateAfterInteractions: {} });
     session.replayBlockInteractionBeforeMap.set(playerId, { blockStateBeforeInteractions: {} });
-    session.replayPositionDataMap.set(playerId, { recordedPositions: [] });
+    session.replayPositionDataMap.set(playerId, { recordedPositions: [], recordedVelocities: [] });
     session.replayRotationDataMap.set(playerId, { recordedRotations: [] });
     session.replayActionDataMap.set(playerId, {
         isSneaking: [],

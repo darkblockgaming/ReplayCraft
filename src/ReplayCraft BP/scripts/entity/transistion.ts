@@ -1,17 +1,22 @@
 import { Vector3 } from "@minecraft/server";
 
-export function getSimulatedElytraRatio(recordedPositions: Vector3[], currentTick: number): number {
-    if (currentTick < 1 || currentTick >= recordedPositions.length) return 1;
+function normalize(vector: Vector3) {
+    const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+    if (length === 0) return { x: 0, y: 0, z: 0 };
+    return {
+        x: vector.x / length,
+        y: vector.y / length,
+        z: vector.z / length,
+    };
+}
+export function calculateFallRatio(velocity: Vector3) {
+    const yDelta = velocity.y;
 
-    const prev = recordedPositions[currentTick - 1];
-    const curr = recordedPositions[currentTick];
-
-    const deltaZ = curr.z - prev.z;
-
-    let ratio = 1;
-    if (deltaZ < 0) {
-        ratio = 1 - Math.pow(-deltaZ, 1.5);
+    if (yDelta < 0) {
+        const direction = normalize(velocity);
+        const yDir = direction.y;
+        return 1 - Math.pow(-yDir, 1.5);
     }
 
-    return Math.max(0, Math.min(1, ratio));
+    return 1;
 }

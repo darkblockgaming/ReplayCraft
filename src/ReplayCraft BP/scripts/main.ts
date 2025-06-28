@@ -23,7 +23,7 @@ import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 import { isPlayerCrawling } from "./entity/is-crawling";
-import { getSimulatedElytraRatio } from "./entity/transistion";
+import { calculateFallRatio } from "./entity/transistion";
 
 //Chat events
 beforeChatSend();
@@ -171,6 +171,7 @@ system.runInterval(() => {
                 if (pos && rot) {
                     pos.recordedPositions.push(player.location);
                     rot.recordedRotations.push(player.getRotation());
+                    pos.recordedVelocities.push(player.getVelocity());
                 }
             });
         }
@@ -327,7 +328,8 @@ system.runInterval(() => {
                 const rot = replayRotationDataMap.get(player.id);
                 const entity = replayEntityDataMap.get(player.id)?.customEntity;
                 if (pos && rot && entity) {
-                    const ratio = getSimulatedElytraRatio(pos.recordedPositions, currentTick);
+                    const ratio = calculateFallRatio(pos.recordedVelocities[currentTick]);
+                    debugLog(`Elytra ratio for ${entity.id} at tick ${currentTick}: ${ratio}`);
                     entity.setDynamicProperty("rc:elytra_ratio", ratio);
 
                     try {
