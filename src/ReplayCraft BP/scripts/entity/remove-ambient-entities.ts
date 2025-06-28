@@ -15,7 +15,7 @@ export function removeOwnedAmbientEntities(player: Player) {
 
         for (const entity of allEntities) {
             if (entity.hasTag(`replay:${player.id}`) && !customReplayTypes.has(entity.typeId)) {
-                entity.kill();
+                entity.remove();
                 if (config.debugEntityTracking) {
                     debugLog(`Removed ambient entity owned by player ${player.name}: ${entity.id}`);
                 }
