@@ -23,6 +23,7 @@ import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 import { isPlayerCrawling } from "./entity/is-crawling";
+import { getElytraGlideRatio } from "./entity/transistion";
 
 //Chat events
 beforeChatSend();
@@ -211,6 +212,9 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
+                //Elytra Glide Ratio
+                const ratio = getElytraGlideRatio(entityData.customEntity);
+                entityData.customEntity.setDynamicProperty("rc:elytra_ratio", ratio);
 
                 //Swimming
                 safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
