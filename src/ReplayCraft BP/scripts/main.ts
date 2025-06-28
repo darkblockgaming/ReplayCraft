@@ -56,6 +56,7 @@ system.runInterval(() => {
             trackedPlayers,
             settingReplayType,
             replayBlockStateMap,
+            replayBlockInteractionAfterMap,
             replayPositionDataMap,
             replayRotationDataMap,
             replayActionDataMap,
@@ -107,30 +108,56 @@ system.runInterval(() => {
         // --- Block State Replay ---
         if (isReplaying) {
             trackedPlayers.forEach((player) => {
-                const playerData = replayBlockStateMap.get(player.id);
-                const blockData = playerData?.blockStateChanges[currentTick];
                 const dimension = world.getDimension(player.dimension.id);
                 const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
 
-                if (!blockData) return;
+                // Block placement before map
+                const playerData = replayBlockStateMap.get(player.id);
+                const blockData = playerData?.blockStateChanges[currentTick];
 
-                const applyPermutation = (part: BlockData) => {
-                    const block = dimension.getBlock(part.location);
-                    block.setPermutation(BlockPermutation.resolve(part.typeId, part.states));
-                };
+                if (blockData) {
+                    const applyPermutation = (part: BlockData) => {
+                        const block = dimension.getBlock(part.location);
+                        block.setPermutation(BlockPermutation.resolve(part.typeId, part.states));
+                    };
 
-                if ("lowerPart" in blockData && "upperPart" in blockData) {
-                    applyPermutation(blockData.lowerPart);
-                    applyPermutation(blockData.upperPart);
-                } else if ("thisPart" in blockData && "otherPart" in blockData) {
-                    applyPermutation(blockData.thisPart);
-                    applyPermutation(blockData.otherPart);
-                } else {
-                    applyPermutation(blockData);
+                    if ("lowerPart" in blockData && "upperPart" in blockData) {
+                        applyPermutation(blockData.lowerPart);
+                        applyPermutation(blockData.upperPart);
+                    } else if ("thisPart" in blockData && "otherPart" in blockData) {
+                        applyPermutation(blockData.thisPart);
+                        applyPermutation(blockData.otherPart);
+                    } else {
+                        applyPermutation(blockData);
+                        if (settingReplayType === 0 && customEntity) {
+                            customEntity.playAnimation("animation.replayentity.attack");
+                        }
+                        playBlockSound(blockData, player);
+                    }
+                }
+
+                // Block break/interactions after map
+                const interactionData = replayBlockInteractionAfterMap.get(player.id);
+                const interactionBlock = interactionData?.blockSateAfterInteractions[currentTick];
+
+                if (interactionBlock) {
+                    const interactionDimension = world.getDimension(player.dimension.id);
+
+                    const applyInteractionPermutation = (part: BlockData) => {
+                        const block = interactionDimension.getBlock(part.location);
+                        block.setPermutation(BlockPermutation.resolve(part.typeId, part.states));
+                    };
+
+                    if ("lowerPart" in interactionBlock && "upperPart" in interactionBlock) {
+                        applyInteractionPermutation(interactionBlock.lowerPart);
+                        applyInteractionPermutation(interactionBlock.upperPart);
+                    } else {
+                        applyInteractionPermutation(interactionBlock);
+                    }
+
                     if (settingReplayType === 0 && customEntity) {
                         customEntity.playAnimation("animation.replayentity.attack");
                     }
-                    playBlockSound(blockData, player);
                 }
             });
         }
