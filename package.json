@@ -46,7 +46,8 @@
         "build": "npm run check-naming & node bin/build-package.js",
         "dev": "npm run check-naming & node bin/build-package.js --dev",
         "dist": "npm run check-naming & node bin/build-package.js --mcaddon",
-        "copy": "node bin/copy-build.js",
-        "build-copy": "npm run dev & npm run copy"
+        "create-copy": "npm run check-naming & node bin/build-package.js --copy",
+        "do-copy": "node bin/copy-build.js",
+        "build-copy": "npm run create-copy & npm run do-copy"
     }
 }

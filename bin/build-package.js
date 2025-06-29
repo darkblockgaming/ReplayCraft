@@ -124,20 +124,27 @@ function cleanUp() {
     const isDevMode = process.argv.includes("--dev");
     const isDistMode = process.argv.includes("--mcaddon");
     const isServerMode = process.argv.includes("--server");
+    const isCopyMode = process.argv.includes("--copy");
 
-    const buildNumber = getAndUpdateBuildNumber();
+    let buildNumber;
+    if (isCopyMode) { //Dont update the build number for build --copy
+        const buildInfo = fs.existsSync(buildInfoPath) ? fs.readJsonSync(buildInfoPath) : { build: 0 };
+        buildNumber = buildInfo.build;
+    } else {
+        buildNumber = getAndUpdateBuildNumber();
+    }
 
     const bpManifest = fs.readJsonSync(bpManifestPath);
     const version = bpManifest.header.version.join(".");
 
     if (!isServerMode) {
         createAddonStructure();
-        if (isDevMode) {
+        if (isDevMode || isCopyMode) {
             updateManifestNames(buildNumber, true);
         }
         copyProjectDocs();
         buildProject();
-        const outputFileName = isDevMode ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon` : `ReplayCraft-v${version}.mcaddon`;
+        const outputFileName = isDevMode || isCopyMode ? `ReplayCraft-v${version}-Dev-${buildNumber}.mcaddon` : `ReplayCraft-v${version}.mcaddon`;
 
         const outputFilePath = path.resolve(buildDir, "build", outputFileName);
         fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
