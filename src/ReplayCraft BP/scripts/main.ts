@@ -215,20 +215,13 @@ system.runInterval(() => {
                 safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
                 //Swimming
                 safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
-
-                //temporarity code for diving diving
+                //Diving Logic
                 if (playerData.isSwimming[session.currentTick]) {
                     const val = Number(entityData.customEntity.getProperty("rc:swim_amt") ?? 0.0);
-
                     const target = 1.0;
-
-                    // Interpolation speed (smaller = smoother, 0.1 means ~90% in 15 ticks)
                     const speed = 0.1;
-
                     const nextVal = val + (target - val) * speed;
                     safeSet(entityData.customEntity, "rc:swim_amt", Math.min(nextVal, 1.0));
-
-                    //world.sendMessage(`${entityData.customEntity.getProperty("rc:swim_amt")}`);
                 }
 
                 //Sleeping
@@ -329,9 +322,11 @@ system.runInterval(() => {
                 const entity = replayEntityDataMap.get(player.id)?.customEntity;
                 if (pos && rot && entity) {
                     const ratio = calculateFallRatio(pos.recordedVelocities[currentTick]);
-                    debugLog(`Elytra ratio for ${entity.id} at tick ${currentTick}: ${ratio}`);
-                    entity.setProperty("rc:elytra_ratio", ratio);
-
+                    try {
+                        entity.setProperty("rc:elytra_ratio", ratio);
+                    } catch (e) {
+                        debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
+                    }
                     try {
                         entity.teleport(pos.recordedPositions[currentTick], {
                             rotation: rot.recordedRotations[currentTick],
