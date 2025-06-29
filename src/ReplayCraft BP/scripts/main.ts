@@ -322,9 +322,11 @@ system.runInterval(() => {
                 const entity = replayEntityDataMap.get(player.id)?.customEntity;
                 if (pos && rot && entity) {
                     const ratio = calculateFallRatio(pos.recordedVelocities[currentTick]);
-                    debugLog(`Elytra ratio for ${entity.id} at tick ${currentTick}: ${ratio}`);
-                    entity.setProperty("rc:elytra_ratio", ratio);
-
+                    try {
+                        entity.setProperty("rc:elytra_ratio", ratio);
+                    } catch (e) {
+                        debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
+                    }
                     try {
                         entity.teleport(pos.recordedPositions[currentTick], {
                             rotation: rot.recordedRotations[currentTick],
