@@ -1,4 +1,4 @@
-import { Entity, Vector2, Vector3 } from "@minecraft/server";
+import { Entity, ItemStack, Vector2, Vector3 } from "@minecraft/server";
 
 export interface BlockData {
     location: { x: number; y: number; z: number };
@@ -8,6 +8,7 @@ export interface BlockData {
     lowerPart?: BlockData;
     upperPart?: BlockData;
     otherPart?: BlockData;
+    itemStack?: ItemStack;
 }
 export interface PlayerBlockData {
     blockStateChanges: Record<string, BlockData>;

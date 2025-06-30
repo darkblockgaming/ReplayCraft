@@ -70,6 +70,7 @@ function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),
+            itemStack: itemStack,
         };
     }
 }

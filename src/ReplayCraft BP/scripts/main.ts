@@ -159,6 +159,7 @@ system.runInterval(() => {
                     if (settingReplayType === 0 && customEntity) {
                         customEntity.playAnimation("animation.replayentity.attack");
                     }
+                    playBlockSound(blockData, player);
                 }
             });
         }
