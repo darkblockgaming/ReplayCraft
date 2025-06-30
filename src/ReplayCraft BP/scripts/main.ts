@@ -6,7 +6,7 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions
 import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, Entity, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, Entity, EquipmentSlot, ItemStack, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { clearStructure } from "./functions/clear-structure";
 import { playBlockSound } from "./functions/play-block-sound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
@@ -436,13 +436,13 @@ system.runInterval(() => {
                     try {
                         const entity = entityData.customEntity;
                         const tick = currentTick;
-
-                        entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tick]}`);
-                        entity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tick]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tick]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tick]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tick]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tick]}`);
+                        const equipmentComponent = entity.getComponent("minecraft:equippable");
+                        equipmentComponent.setEquipment(EquipmentSlot.Mainhand, new ItemStack(playerData.weapon1[tick]));
+                        equipmentComponent.setEquipment(EquipmentSlot.Offhand, new ItemStack(playerData.weapon2[tick]));
+                        equipmentComponent.setEquipment(EquipmentSlot.Head, new ItemStack(playerData.armor1[tick]));
+                        equipmentComponent.setEquipment(EquipmentSlot.Chest, new ItemStack(playerData.armor2[tick]));
+                        equipmentComponent.setEquipment(EquipmentSlot.Legs, new ItemStack(playerData.armor3[tick]));
+                        equipmentComponent.setEquipment(EquipmentSlot.Feet, new ItemStack(playerData.armor4[tick]));
                     } catch (e) {
                         debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`);
                     }
