@@ -26,6 +26,7 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
             location: block.location,
             typeId: block.typeId,
             states: block.permutation.getAllStates(),
+            eventType: "break",
         };
     }
 }
