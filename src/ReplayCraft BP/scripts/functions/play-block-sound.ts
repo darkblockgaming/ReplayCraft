@@ -4,6 +4,7 @@ import { blockPlaceSounds } from "../data/util/sounds-place-map";
 import { BlockData } from "../classes/types/types";
 import { blockInteractSounds } from "../data/util/sounds-interact-map";
 import { blockBreakSounds } from "../data/util/sounds-break-map";
+import { debugError } from "../data/util/debug";
 
 /**
  * Plays the appropriate sound for a block interaction, placement, or destruction.
@@ -20,42 +21,49 @@ import { blockBreakSounds } from "../data/util/sounds-break-map";
 export function playBlockSound(blockData: BlockData, player: Player, interact?: boolean): void {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) return;
+    try {
+        if (interact) {
+            const blockId = blockData.typeId.replace("minecraft:", "");
+            const location = blockData.location;
+            const states = blockData.states ?? {};
+            const soundData = blockInteractSounds[blockId];
 
-    if (interact) {
-        const blockId = blockData.typeId.replace("minecraft:", "");
-        const location = blockData.location;
-        const states = blockData.states ?? {};
-        const soundData = blockInteractSounds[blockId];
+            // Play interact sound (e.g., door open/close)
+            if (soundData && "open_bit" in states) {
+                const open = states.open_bit === true;
+                const sound = open ? soundData.sound : soundData.closeSound;
+                const pitch = open ? soundData.pitch : soundData.closedPitch;
+                session.replayController.playSound(sound, { location, pitch });
+            }
 
-        // Play interact sound (e.g., door open/close)
-        if (soundData && "open_bit" in states) {
-            const open = states.open_bit === true;
-            const sound = open ? soundData.sound : soundData.closeSound;
-            const pitch = open ? soundData.pitch : soundData.closedPitch;
-            session.replayController.playSound(sound, { location, pitch });
-        }
-
-        // Play break sound
-        if (blockData.eventType === "break") {
-            const breakSound = blockBreakSounds[blockId];
-            if (breakSound) {
-                session.replayController.playSound(breakSound.sound, {
-                    location,
-                    pitch: breakSound.pitch,
-                });
+            // Play break sound
+            if (blockData.eventType === "break") {
+                const breakSound = blockBreakSounds[blockId];
+                if (breakSound) {
+                    session.replayController.playSound(breakSound.sound, {
+                        location,
+                        pitch: breakSound.pitch,
+                    });
+                }
             }
         }
+    } catch (error) {
+        debugError(`Error playing block break/interact sound for player ${player.name}:`, error);
     }
 
     // Play default placement sound
-    const { location, typeId } = blockData;
-    const blockId = typeId.replace("minecraft:", ""); // normalize block ID
-    const soundData = blockPlaceSounds[blockId];
+    try {
+        const { location, typeId } = blockData;
+        const blockId = typeId.replace("minecraft:", ""); // normalize block ID
+        const soundData = blockPlaceSounds[blockId];
 
-    if (!soundData) {
-        console.warn(`No place sound found for block: ${blockId}`);
-        return;
+        if (!soundData) {
+            console.warn(`No place sound found for block: ${blockId}`);
+            return;
+        }
+
+        session.replayController.playSound(soundData.sound, { location, pitch: soundData.pitch });
+    } catch (error) {
+        debugError(`Error playing block placement sound for player ${player.name}:`, error);
     }
-
-    session.replayController.playSound(soundData.sound, { location, pitch: soundData.pitch });
 }
