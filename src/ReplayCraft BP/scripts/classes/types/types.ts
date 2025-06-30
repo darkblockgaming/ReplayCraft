@@ -9,6 +9,8 @@ export interface BlockData {
     upperPart?: BlockData;
     otherPart?: BlockData;
     itemStack?: ItemStack;
+    //we use this to differentiate between different block interactions and block breaking as these are stored in the same map
+    eventType?: string;
 }
 export interface PlayerBlockData {
     blockStateChanges: Record<string, BlockData>;
