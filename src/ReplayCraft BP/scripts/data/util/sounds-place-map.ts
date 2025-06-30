@@ -1008,7 +1008,7 @@ export const blockPlaceSounds: Record<string, { sound: string; pitch: number }> 
     unpowered_repeater: { sound: "dig.wood", pitch: 0.8 },
     powered_repeater: { sound: "dig.wood", pitch: 0.8 },
     redstone_lamp: { sound: "dig.wood", pitch: 0.8 },
-    powered_repealit_redstone_lampter: { sound: "dig.wood", pitch: 0.8 },
+    lit_redstone_lamp: { sound: "dig.wood", pitch: 0.8 },
     redstone_torch: { sound: "dig.wood", pitch: 0.8 },
     unlit_redstone_torch: { sound: "dig.wood", pitch: 0.8 },
     redstone_wire: { sound: "dig.stone", pitch: 0.8 },
