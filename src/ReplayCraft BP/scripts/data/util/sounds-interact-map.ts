@@ -1,4 +1,4 @@
-export const blockInteracrSounds: Record<string, { sound: string; pitch: number }> = {
+export const blockInteractSounds: Record<string, { sound: string; closeSound?: string; pitch: number; closedPitch?: number }> = {
     acacia_button_onclick: { sound: "random.wood_click", pitch: 0.6 },
     oak_button_onclick: { sound: "random.wood_click", pitch: 0.6 },
     spruce_button_onclick: { sound: "random.wood_click", pitch: 0.6 },
