@@ -29,4 +29,6 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
         armor3: [],
         armor4: [],
     });
+    session.allRecordedPlayerIds.add(playerId);
+    session.trackedPlayerJoinTicks.set(playerId, 0);
 }

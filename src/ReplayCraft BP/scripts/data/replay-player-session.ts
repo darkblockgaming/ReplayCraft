@@ -42,6 +42,8 @@ export interface PlayerReplaySession {
     replayEntityDataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
     replayEquipmentDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
     replayAmbientEntityMap: Map<string, Map<string, AmbientEntityData>>;
+    allRecordedPlayerIds: Set<string>; //Used for playback to ensure all players are tracked
+    trackedPlayerJoinTicks: Map<string, number>; // Maps player IDs to the tick they joined the session
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;
