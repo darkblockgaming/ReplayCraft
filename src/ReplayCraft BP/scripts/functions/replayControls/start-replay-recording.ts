@@ -23,6 +23,7 @@ export function doStart(player: Player) {
     if (session.multiPlayerReplayEnabled === true) {
         session.cameraAffectedPlayers = session.trackedPlayers;
     }
+    session.trackedPlayerJoinTicks.set(player.id, 0);
     if (session.textPrompt) {
         player.sendMessage({
             rawtext: [
