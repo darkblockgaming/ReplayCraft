@@ -22,15 +22,15 @@ export class ReplayStateMachine {
     constructor(private session: PlayerReplaySession) {
         this.state = "default";
         this.states = {
-            recStartRep: this.handleRecStartRep.bind(this),
-            viewStartRep: this.handleViewStartRep.bind(this),
-            recCompleted: this.handleRecCompleted.bind(this),
-            recCamSetup: this.handleRecCamSetup.bind(this),
-            recSaved: this.handleRecSaved.bind(this),
-            recPaused: this.handleRecPaused.bind(this),
-            recPending: this.handleRecPending.bind(this),
-            editingCameraPos: this.handleEditingCameraPos.bind(this),
-            default: this.handleDefault.bind(this),
+            recStartRep: this.handleRecStartRep.bind(this), //Playback of the replay not preview mode
+            viewStartRep: this.handleViewStartRep.bind(this), //Preview mode of the replay
+            recCompleted: this.handleRecCompleted.bind(this), //Replay PLayback completed/Stopped
+            recCamSetup: this.handleRecCamSetup.bind(this), //Camera setup post recording
+            recSaved: this.handleRecSaved.bind(this), //Replay recording has been stop & saved
+            recPaused: this.handleRecPaused.bind(this), //Replay recording has been paused
+            recPending: this.handleRecPending.bind(this), //Replay is recording
+            editingCameraPos: this.handleEditingCameraPos.bind(this), //Editing camera position
+            default: this.handleDefault.bind(this), //Default state, shows main menu
         };
     }
 
