@@ -10,6 +10,8 @@ import {
     replayCraftPlaybackEntityDB,
     replayCraftPlayerArmorWeaponsDB,
     replayAmbientEntityDB,
+    replayAllRecordedPlayerIds,
+    replayTrackedPlayerJoinTicks,
 } from "../../classes/subscriptions/world-initialize";
 import { PlayerReplaySession } from "../../data/replay-player-session";
 import { debugLog, debugWarn } from "../../data/util/debug";
@@ -20,39 +22,51 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         debugWarn("No players found in session.trackedPlayers.");
         return;
     }
+    // Save the allRecordedPlayerIds for just this player and session
+    const playerAllRecordedPlayerIdsData = session.allRecordedPlayerIds;
+    if (!playerAllRecordedPlayerIdsData) {
+        debugWarn(`Missing allRecordedPlayerIds data for player ${player.id}`);
+    } else {
+        // Convert Set to Array for saving
+        const arrayToSave = Array.from(playerAllRecordedPlayerIdsData);
+        replayAllRecordedPlayerIds.set(player.id + session.buildName, arrayToSave);
+    }
 
     // Save per-player data from session maps
-    for (const currentPlayer of session.trackedPlayers) {
-        console.log(`Saving data for player: ${currentPlayer.name} (${currentPlayer.id})`);
+    for (const playerId of session.allRecordedPlayerIds) {
+        debugLog(`Saving data for player: ${player.name} playerId: (${playerId})`);
 
-        const PlayerBlockData = session.replayBlockStateMap.get(currentPlayer.id);
-        const playerPositionData = session.replayPositionDataMap.get(currentPlayer.id);
-        const playerRotationData = session.replayRotationDataMap.get(currentPlayer.id);
-        const playerActionsData = session.replayActionDataMap.get(currentPlayer.id);
-        const playerBlockInteractionsData = session.replayBlockInteractionAfterMap.get(currentPlayer.id);
-        const playerBeforeBlockInteractionsData = session.replayBlockInteractionBeforeMap.get(currentPlayer.id);
-        const playBackEntityData = session.replayEntityDataMap.get(currentPlayer.id);
-        const playerArmorWeaponsData = session.replayEquipmentDataMap.get(currentPlayer.id);
-        const playerAmbientEntityData = session.replayAmbientEntityMap.get(currentPlayer.id);
+        const PlayerBlockData = session.replayBlockStateMap.get(playerId);
+        const playerPositionData = session.replayPositionDataMap.get(playerId);
+        const playerRotationData = session.replayRotationDataMap.get(playerId);
+        const playerActionsData = session.replayActionDataMap.get(playerId);
+        const playerBlockInteractionsData = session.replayBlockInteractionAfterMap.get(playerId);
+        const playerBeforeBlockInteractionsData = session.replayBlockInteractionBeforeMap.get(playerId);
+        const playBackEntityData = session.replayEntityDataMap.get(playerId);
+        const playerArmorWeaponsData = session.replayEquipmentDataMap.get(playerId);
+        const playerAmbientEntityData = session.replayAmbientEntityMap.get(playerId);
+        const playerTrackedPlayerJoinTicks = session.trackedPlayerJoinTicks.get(playerId);
 
-        if (!PlayerBlockData) debugWarn(`Missing block data for player ${currentPlayer.id}`);
-        if (!playerPositionData) debugWarn(`Missing position data for player ${currentPlayer.id}`);
-        if (!playerRotationData) debugWarn(`Missing rotation data for player ${currentPlayer.id}`);
-        if (!playerActionsData) debugWarn(`Missing action data for player ${currentPlayer.id}`);
-        if (!playerBlockInteractionsData) debugWarn(`Missing block interaction data for player ${currentPlayer.id}`);
-        if (!playerBeforeBlockInteractionsData) debugWarn(`Missing before block interaction data for player ${currentPlayer.id}`);
-        if (!playBackEntityData) debugWarn(`Missing playback entity data for player ${currentPlayer.id}`);
-        if (!playerArmorWeaponsData) debugWarn(`Missing armor/weapons data for player ${currentPlayer.id}`);
-        if (!playerAmbientEntityData) debugWarn(`Missing Ambient Entity data for player ${currentPlayer.id}`);
+        if (!PlayerBlockData) debugWarn(`Missing block data for player ${playerId}`);
+        if (!playerPositionData) debugWarn(`Missing position data for player ${playerId}`);
+        if (!playerRotationData) debugWarn(`Missing rotation data for player ${playerId}`);
+        if (!playerActionsData) debugWarn(`Missing action data for player ${playerId}`);
+        if (!playerBlockInteractionsData) debugWarn(`Missing block interaction data for player ${playerId}`);
+        if (!playerBeforeBlockInteractionsData) debugWarn(`Missing before block interaction data for player ${playerId}`);
+        if (!playBackEntityData) debugWarn(`Missing playback entity data for player ${playerId}`);
+        if (!playerArmorWeaponsData) debugWarn(`Missing armor/weapons data for player ${playerId}`);
+        if (!playerAmbientEntityData) debugWarn(`Missing Ambient Entity data for player ${playerId}`);
+        if (!playerTrackedPlayerJoinTicks) debugWarn(`Missing tracked player join ticks for player ${playerId}`);
 
-        if (PlayerBlockData) replayCraftBlockDB.set(currentPlayer.id + session.buildName, PlayerBlockData);
-        if (playerPositionData) replayCraftPlayerPosDB.set(currentPlayer.id + session.buildName, playerPositionData);
-        if (playerRotationData) replayCraftPlayerRotDB.set(currentPlayer.id + session.buildName, playerRotationData);
-        if (playerActionsData) replayCraftPlayerActionsDB.set(currentPlayer.id + session.buildName, playerActionsData);
-        if (playerBlockInteractionsData) replayCraftBlockInteractionsDB.set(currentPlayer.id + session.buildName, playerBlockInteractionsData);
-        if (playerBeforeBlockInteractionsData) replayCraftBeforeBlockInteractionsDB.set(currentPlayer.id + session.buildName, playerBeforeBlockInteractionsData);
-        if (playBackEntityData) replayCraftPlaybackEntityDB.set(currentPlayer.id + session.buildName, playBackEntityData);
-        if (playerArmorWeaponsData) replayCraftPlayerArmorWeaponsDB.set(currentPlayer.id + session.buildName, playerArmorWeaponsData);
+        if (PlayerBlockData) replayCraftBlockDB.set(playerId + session.buildName, PlayerBlockData);
+        if (playerPositionData) replayCraftPlayerPosDB.set(playerId + session.buildName, playerPositionData);
+        if (playerRotationData) replayCraftPlayerRotDB.set(playerId + session.buildName, playerRotationData);
+        if (playerActionsData) replayCraftPlayerActionsDB.set(playerId + session.buildName, playerActionsData);
+        if (playerBlockInteractionsData) replayCraftBlockInteractionsDB.set(playerId + session.buildName, playerBlockInteractionsData);
+        if (playerBeforeBlockInteractionsData) replayCraftBeforeBlockInteractionsDB.set(playerId + session.buildName, playerBeforeBlockInteractionsData);
+        if (playBackEntityData) replayCraftPlaybackEntityDB.set(playerId + session.buildName, playBackEntityData);
+        if (playerArmorWeaponsData) replayCraftPlayerArmorWeaponsDB.set(playerId + session.buildName, playerArmorWeaponsData);
+        if (playerTrackedPlayerJoinTicks) replayTrackedPlayerJoinTicks.set(playerId + session.buildName, playerTrackedPlayerJoinTicks);
         if (playerAmbientEntityData instanceof Map) {
             // Convert outer Map to object with entityId keys
             const objToSave: Record<string, any> = {};
@@ -65,12 +79,12 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
                 };
             }
 
-            replayAmbientEntityDB.set(currentPlayer.id + session.buildName, objToSave);
+            replayAmbientEntityDB.set(playerId + session.buildName, objToSave);
         } else {
-            replayAmbientEntityDB.set(currentPlayer.id + session.buildName, playerAmbientEntityData);
+            replayAmbientEntityDB.set(playerId + session.buildName, playerAmbientEntityData);
         }
 
-        debugLog(`Data saved for player: ${currentPlayer.id}`);
+        debugLog(`Data saved for player: ${playerId}`);
     }
 
     // Filter session object before saving general settings
@@ -87,6 +101,8 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         "replayEntityDataMap",
         "replayEquipmentDataMap",
         "replayAmbientEntityMap",
+        "allRecordedPlayerIds",
+        "trackedPlayerJoinTicks",
     ]);
 
     for (const [key, value] of Object.entries(session)) {

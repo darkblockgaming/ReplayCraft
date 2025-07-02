@@ -9,6 +9,8 @@ import {
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
     replayAmbientEntityDB,
+    replayAllRecordedPlayerIds,
+    replayTrackedPlayerJoinTicks,
 } from "../../classes/subscriptions/world-initialize";
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
@@ -54,6 +56,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 }
             }
         }
+        debugLog(`Session.trackedPlayers for ${player.id} before resolving: ${JSON.stringify(session.trackedPlayers.map((p) => p?.id || "undefined"))}`);
     } catch (err) {
         debugError(`Error setting up session for ${player.id}:`, err);
         return;
@@ -61,22 +64,52 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
 
     try {
         const players = world.getPlayers();
+        debugLog(`World players (${players.length}): ${players.map((p) => `${p.name} (${p.id})`).join(", ")}`);
 
         if (session.replayController) {
             const actualPlayer = players.find((p) => p.id === session.replayController.id);
-            if (actualPlayer) session.replayController = actualPlayer;
+            if (actualPlayer) {
+                session.replayController = actualPlayer;
+                debugLog(`Resolved replayController to: ${actualPlayer.name}`);
+            } else {
+                debugWarn(`Replay controller with id ${session.replayController.id} not found`);
+            }
         }
 
         if (Array.isArray(session.cameraAffectedPlayers)) {
-            session.cameraAffectedPlayers = session.cameraAffectedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+            const resolved = session.cameraAffectedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+            session.cameraAffectedPlayers = resolved;
+            debugLog(`Resolved cameraAffectedPlayers: ${resolved.map((p) => p.name).join(", ")}`);
         }
 
         if (Array.isArray(session.trackedPlayers)) {
-            session.trackedPlayers = session.trackedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+            const resolved = session.trackedPlayers.map((oldP) => players.find((p) => p.id === oldP.id)).filter(Boolean);
+            debugLog(`Resolved trackedPlayers: ${resolved.map((p) => `${p.name} (${p.id})`).join(", ")}`);
+            session.trackedPlayers = resolved;
+        } else {
+            debugWarn(`session.trackedPlayers is not an array for ${player.id}`);
         }
+
+        debugLog(`Final trackedPlayers count: ${session.trackedPlayers.length}`);
     } catch (err) {
         debugError(`Error resolving player references for ${player.id}:`, err);
         return;
+    }
+
+    //reload allPLayerIds from DB
+    try {
+        // Load allRecordedPlayerIds array from DB (using player.id + buildName key)
+        const allRecordedIdsRaw = replayAllRecordedPlayerIds.get(player.id + buildName);
+        if (Array.isArray(allRecordedIdsRaw)) {
+            session.allRecordedPlayerIds = new Set(allRecordedIdsRaw);
+            debugLog(`Restored allRecordedPlayerIds for session: ${allRecordedIdsRaw.join(", ")}`);
+        } else {
+            debugWarn(`No valid allRecordedPlayerIds found for session.`);
+            session.allRecordedPlayerIds = new Set();
+        }
+    } catch (err) {
+        debugError(`Error restoring allRecordedPlayerIds for session:`, err);
+        session.allRecordedPlayerIds = new Set();
     }
 
     try {
@@ -92,21 +125,23 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             "replayEntityDataMap",
             "replayEquipmentDataMap",
             "replayAmbientEntityMap",
+            "trackedPlayerJoinTicks",
         ].forEach((key) => {
             const val = (session as any)[key];
             debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
         });
 
-        session.trackedPlayers.forEach((p) => {
-            session.replayBlockStateMap.delete(p.id);
-            session.replayPositionDataMap.delete(p.id);
-            session.replayRotationDataMap.delete(p.id);
-            session.replayActionDataMap.delete(p.id);
-            session.replayBlockInteractionAfterMap.delete(p.id);
-            session.replayBlockInteractionBeforeMap.delete(p.id);
-            session.replayEntityDataMap.delete(p.id);
-            session.replayEquipmentDataMap.delete(p.id);
-            session.replayAmbientEntityMap.delete(p.id);
+        session.allRecordedPlayerIds.forEach((p) => {
+            session.replayBlockStateMap.delete(p);
+            session.replayPositionDataMap.delete(p);
+            session.replayRotationDataMap.delete(p);
+            session.replayActionDataMap.delete(p);
+            session.replayBlockInteractionAfterMap.delete(p);
+            session.replayBlockInteractionBeforeMap.delete(p);
+            session.replayEntityDataMap.delete(p);
+            session.replayEquipmentDataMap.delete(p);
+            session.replayAmbientEntityMap.delete(p);
+            session.trackedPlayerJoinTicks.delete(p);
         });
     } catch (err) {
         debugError(`Error clearing map data for ${player.id}:`, err);
@@ -114,8 +149,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     }
 
     try {
-        session.trackedPlayers.forEach((p) => {
-            const pidKey = p.id + buildName;
+        session.allRecordedPlayerIds.forEach((p) => {
+            const pidKey = p + buildName;
 
             let savedPlayerBlockData,
                 savedPlayerPositionData,
@@ -125,7 +160,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayerBeforeBlockInteractionsData,
                 savedPlayBackEntityData,
                 savedPlayerArmorWeaponsData,
-                savedAmbientEntityData;
+                savedAmbientEntityData,
+                savedPlayerJoinTicksData;
 
             try {
                 savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
@@ -137,36 +173,53 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
                 savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
                 savedAmbientEntityData = replayAmbientEntityDB.get(pidKey);
+                savedPlayerJoinTicksData = replayTrackedPlayerJoinTicks.get(pidKey);
             } catch (innerErr) {
-                debugError(`Error loading per-player DB for ${p.name} (${p.id}):`, innerErr);
+                debugError(`Error loading per-player DB for (${p}):`, innerErr);
                 return;
             }
 
-            if (
-                !savedPlayerBlockData ||
-                !savedPlayerPositionData ||
-                !savedPlayerRotationData ||
-                !savedPlayerActionsData ||
-                !savedPlayerBlockInteractionsData ||
-                !savedPlayerBeforeBlockInteractionsData ||
-                !savedPlayBackEntityData ||
-                !savedPlayerArmorWeaponsData ||
-                !savedAmbientEntityData
-            ) {
-                debugWarn(`Missing replay data for player ${p.name} (${p.id})`);
+            if (!savedPlayerBlockData) {
+                debugWarn(`Missing savedPlayerBlockData for player (${p})`);
+            }
+            if (!savedPlayerPositionData) {
+                debugWarn(`Missing savedPlayerPositionData for player (${p})`);
+            }
+            if (!savedPlayerRotationData) {
+                debugWarn(`Missing savedPlayerRotationData for player (${p})`);
+            }
+            if (!savedPlayerActionsData) {
+                debugWarn(`Missing savedPlayerActionsData for player (${p})`);
+            }
+            if (!savedPlayerBlockInteractionsData) {
+                debugWarn(`Missing savedPlayerBlockInteractionsData for player (${p})`);
+            }
+            if (!savedPlayerBeforeBlockInteractionsData) {
+                debugWarn(`Missing savedPlayerBeforeBlockInteractionsData for player (${p})`);
+            }
+            if (!savedPlayBackEntityData) {
+                debugWarn(`Missing savedPlayBackEntityData for player (${p})`);
+            }
+            if (!savedPlayerArmorWeaponsData) {
+                debugWarn(`Missing savedPlayerArmorWeaponsData for player (${p})`);
+            }
+            if (!savedAmbientEntityData) {
+                debugWarn(`Missing savedAmbientEntityData for player (${p})`);
+            }
+            if (!savedPlayerJoinTicksData) {
+                debugWarn(`Missing savedPlayerJoinTicksData for player (${p})`);
             }
 
-            debugLog(`Block data for ${p.name} (${p.id}):`, JSON.stringify(savedPlayerBlockData, null, 2));
-
             try {
-                if (savedPlayerBlockData) session.replayBlockStateMap.set(p.id, savedPlayerBlockData);
-                if (savedPlayerPositionData) session.replayPositionDataMap.set(p.id, savedPlayerPositionData);
-                if (savedPlayerRotationData) session.replayRotationDataMap.set(p.id, savedPlayerRotationData);
-                if (savedPlayerActionsData) session.replayActionDataMap.set(p.id, savedPlayerActionsData);
-                if (savedPlayerBlockInteractionsData) session.replayBlockInteractionAfterMap.set(p.id, savedPlayerBlockInteractionsData);
-                if (savedPlayerBeforeBlockInteractionsData) session.replayBlockInteractionBeforeMap.set(p.id, savedPlayerBeforeBlockInteractionsData);
-                if (savedPlayBackEntityData) session.replayEntityDataMap.set(p.id, savedPlayBackEntityData);
-                if (savedPlayerArmorWeaponsData) session.replayEquipmentDataMap.set(p.id, savedPlayerArmorWeaponsData);
+                if (savedPlayerBlockData) session.replayBlockStateMap.set(p, savedPlayerBlockData);
+                if (savedPlayerPositionData) session.replayPositionDataMap.set(p, savedPlayerPositionData);
+                if (savedPlayerRotationData) session.replayRotationDataMap.set(p, savedPlayerRotationData);
+                if (savedPlayerActionsData) session.replayActionDataMap.set(p, savedPlayerActionsData);
+                if (savedPlayerBlockInteractionsData) session.replayBlockInteractionAfterMap.set(p, savedPlayerBlockInteractionsData);
+                if (savedPlayerBeforeBlockInteractionsData) session.replayBlockInteractionBeforeMap.set(p, savedPlayerBeforeBlockInteractionsData);
+                if (savedPlayBackEntityData) session.replayEntityDataMap.set(p, savedPlayBackEntityData);
+                if (savedPlayerArmorWeaponsData) session.replayEquipmentDataMap.set(p, savedPlayerArmorWeaponsData);
+                if (savedPlayerJoinTicksData) session.trackedPlayerJoinTicks.set(p, savedPlayerJoinTicksData);
                 interface AmbientEntityDataRaw {
                     typeId: string;
                     recordedData: any;
@@ -204,13 +257,13 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                             });
                         }
 
-                        session.replayAmbientEntityMap.set(p.id, ambientMap);
+                        session.replayAmbientEntityMap.set(p, ambientMap);
                     } catch (err) {
-                        debugError(`Error loading ambient entity map for player ${p.name} (${p.id}):`, err);
+                        debugError(`Error loading ambient entity map for player (${p}):`, err);
                     }
                 }
             } catch (mapSetErr) {
-                debugError(`Error assigning replay maps for ${p.name} (${p.id}):`, mapSetErr);
+                debugError(`Error assigning replay maps for (${p}):`, mapSetErr);
             }
         });
     } catch (err) {
