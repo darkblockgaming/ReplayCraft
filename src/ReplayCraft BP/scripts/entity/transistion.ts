@@ -10,13 +10,18 @@ function normalize(vector: Vector3) {
     };
 }
 export function calculateFallRatio(velocity: Vector3) {
-    const yDelta = velocity.y;
+    try {
+        const yDelta = velocity.y;
 
-    if (yDelta < 0) {
-        const direction = normalize(velocity);
-        const yDir = direction.y;
-        return 1 - Math.pow(-yDir, 1.5);
+        if (yDelta < 0) {
+            const direction = normalize(velocity);
+            const yDir = direction.y;
+            return 1 - Math.pow(-yDir, 1.5);
+        }
+
+        return 1;
+    } catch (e) {
+        console.error("Error calculating fall ratio:", e);
+        return 1; // Default value in case of error
     }
-
-    return 1;
 }
