@@ -84,8 +84,11 @@ export async function doReplay(player: Player, pointIndex?: number) {
     session.cameraAffectedPlayers.forEach((player) => {
         startReplayCam(player, pointIndex); // Ensure camera starts from correct tick
     });
-
+    /*
     session.trackedPlayers.forEach((player) => {
-        summonReplayEntity(player); // Ensure entities spawn from correct tick
+        summonReplayEntity(session, player); // Ensure entities spawn from correct tick
     });
+    **/
+    // Summon the replay entity for the main player additional players is present will be spawned later at there tick time
+    summonReplayEntity(session, player, player.id);
 }

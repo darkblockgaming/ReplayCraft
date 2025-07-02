@@ -26,38 +26,39 @@ export async function doViewReplay(player: Player) {
     }
 
     session.replayStateMachine.setState("viewStartRep");
-
-    for (const player of session.trackedPlayers) {
-        const posData = session.replayPositionDataMap.get(player.id);
-        if (!posData || !posData.recordedPositions) {
-            console.error(`Replay position data not found for player ${player.name}`);
-            continue;
-        }
-
-        const summonPos = posData.recordedPositions[0];
-
-        // Calculate distance between player and the target position (summonPos)
-        const dx = player.location.x - summonPos.x;
-        const dz = player.location.z - summonPos.z;
-        const distanceSquared = dx * dx + dz * dz;
-
-        // Define chunk radius for comparison
-        const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
-        const isFarAway = distanceSquared > CHUNK_RADIUS * CHUNK_RADIUS; // Player is outside the 4-chunk radius
-
-        if (isFarAway) {
-            const success = player.tryTeleport(summonPos, { checkForBlocks: false });
-            if (success) {
-                // Wait for the chunk to load before continuing
-                await new Promise<void>((resolve) => system.runTimeout(() => resolve(), 5)); // Wait a few ticks
-            } else {
-                console.error(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
-            }
-        }
-
-        // Now summon the entity after ensuring the chunk is loaded
-        summonReplayEntity(player);
+    player.sendMessage(`[ReplayCraft] Tracked players count: ${session.trackedPlayers.length}`);
+    const controller = session.replayController;
+    if (!controller) {
+        player.sendMessage(`§c[ReplayCraft] Error: No replay controller player found.`);
+        return;
     }
+
+    const posData = session.replayPositionDataMap.get(controller.id);
+    if (!posData || !posData.recordedPositions) {
+        console.error(`Replay position data not found for controller player ${controller.name}`);
+        return;
+    }
+
+    const summonPos = posData.recordedPositions[0];
+
+    // Teleport player if too far away to ensure chunk load
+    const dx = player.location.x - summonPos.x;
+    const dz = player.location.z - summonPos.z;
+    const distanceSquared = dx * dx + dz * dz;
+    const CHUNK_RADIUS = 4 * 16;
+    const isFarAway = distanceSquared > CHUNK_RADIUS * CHUNK_RADIUS;
+
+    if (isFarAway) {
+        const success = player.tryTeleport(summonPos, { checkForBlocks: false });
+        if (success) {
+            await new Promise<void>((resolve) => system.runTimeout(() => resolve(), 5));
+        } else {
+            console.error(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
+        }
+    }
+
+    // Summon only the controller entity at start of replay
+    summonReplayEntity(session, controller, player.id);
 
     session.isReplayActive = true;
     /**
