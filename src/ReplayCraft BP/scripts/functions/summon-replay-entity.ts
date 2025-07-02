@@ -1,27 +1,29 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
-import { replaySessions } from "../data/replay-player-session.js";
+import { PlayerReplaySession } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
 
 //@ts-check
-export function summonReplayEntity(player: Player) {
-    const session = replaySessions.playerSessions.get(player.id);
+export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string) {
     if (!session) {
-        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
+        onlinePlayer.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    const posData = session.replayPositionDataMap.get(player.id);
-    const rotData = session.replayRotationDataMap.get(player.id);
-    const pData = session.replayActionDataMap.get(player.id);
+
+    // Use offlinePlayerId if provided, otherwise fallback to onlinePlayer.id
+    const targetPlayerId = offlinePlayerId ?? onlinePlayer.id;
+
+    // Retrieve replay data keyed by the offline player (target)
+    const posData = session.replayPositionDataMap.get(targetPlayerId);
+    const rotData = session.replayRotationDataMap.get(targetPlayerId);
+    const pData = session.replayActionDataMap.get(targetPlayerId);
 
     if (!posData) return;
 
-    let customEntity;
-
     if (session.settingReplayType === 0) {
-        // Get skin and model data
-        let skinData = replayCraftSkinDB.get(player.id);
+        // Get skin and model data keyed by offline player ID
+        let skinData = replayCraftSkinDB.get(targetPlayerId);
         if (!skinData) {
-            console.error(`[ReplayCraft] Failed to retrieve skin data for ${player.id}, have they set a skin?`);
+            console.error(`[ReplayCraft] Failed to retrieve skin data for ${targetPlayerId}, have they set a skin?`);
             skinData = "0,0";
         }
 
@@ -42,42 +44,46 @@ export function summonReplayEntity(player: Player) {
 
         const entityType = modelID === 0 ? ("dbg:replayentity_steve" as VanillaEntityIdentifier) : ("dbg:replayentity_alex" as VanillaEntityIdentifier);
 
-        customEntity = player.dimension.spawnEntity(entityType, spawnPos);
+        // Spawn entity in the onlinePlayer's dimension
+        const customEntity = onlinePlayer.dimension.spawnEntity(entityType, spawnPos);
 
         if (!customEntity) {
-            console.error(`[ReplayCraft] Failed to spawn replay entity for ${player.name}`);
+            console.error(`[ReplayCraft] Failed to spawn replay entity for ${onlinePlayer.name}`);
             return;
         }
-        customEntity.addTag("owner:" + player.id);
+
+        // Tag with owner as onlinePlayer.id
+        customEntity.addTag("owner:" + onlinePlayer.id);
 
         // Set skin and name tag
         customEntity.setProperty("dbg:skin", skinID);
         switch (session.settingNameType) {
             case 0:
             case 1:
-                customEntity.nameTag = player.name;
+                customEntity.nameTag = onlinePlayer.name;
                 break;
             case 2:
                 customEntity.nameTag = session.settingCustomName;
                 break;
         }
 
-        // Store entity
-        session.replayEntityDataMap.set(player.id, { customEntity });
+        // Store entity keyed by the online player ID
+        session.replayEntityDataMap.set(targetPlayerId, { customEntity });
+        console.warn(`[ReplayCraft] Stored replay entity for ${targetPlayerId} at tick ${startTick}`);
 
-        // === Sync entity to exact start tick position/rotation ===
+        // Sync entity position and rotation at the start tick
         const posAtTick = posData.recordedPositions[startTick];
         const rotAtTick = rotData?.recordedRotations?.[startTick];
 
         if (posAtTick && rotAtTick) {
             customEntity.teleport(posAtTick, { rotation: rotAtTick });
 
-            // Sneaking state if present
+            // Apply sneaking state if present
             if (pData?.isSneaking?.[startTick] !== undefined) {
                 customEntity.isSneaking = pData.isSneaking[startTick] === 1;
             }
         } else {
-            console.warn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for ${player.name}`);
+            console.warn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for player ${targetPlayerId}`);
         }
     }
 }
