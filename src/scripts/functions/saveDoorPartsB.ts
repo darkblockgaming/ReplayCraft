@@ -3,27 +3,45 @@ import { SharedVariables } from "../main";
 
 export function saveDoorPartsB(block: Block, player: Player) {
     const isUpper = block.permutation.getState("upper_block_bit");
-    if (!isUpper) {
-        const lowerPart = {
-            location: block.location,
-            typeId: block.typeId,
-            states: block.permutation.getAllStates()
+
+    let lowerBlock: Block;
+    let upperBlock: Block;
+
+    if (isUpper) {
+        // The clicked block is upper half
+        upperBlock = block;
+        const lowerPartLocation = {
+            x: block.location.x,
+            y: block.location.y - 1, // one below
+            z: block.location.z,
         };
+        lowerBlock = block.dimension.getBlock(lowerPartLocation);
+    } else {
+        // The clicked block is lower half
+        lowerBlock = block;
         const upperPartLocation = {
             x: block.location.x,
-            y: block.location.y + 1,
-            z: block.location.z
+            y: block.location.y + 1, // one above
+            z: block.location.z,
         };
-        const upperPartBlock = block.dimension.getBlock(upperPartLocation);
-        const upperPart = {
-            location: upperPartLocation,
-            typeId: upperPartBlock.typeId,
-            states: upperPartBlock.permutation.getAllStates()
-        };
-        const playerData = SharedVariables.replayBDataBMap.get(player.id);
-        playerData.dbgBlockDataB[SharedVariables.dbgRecTime] = {
-            lowerPart,
-            upperPart
-        };
+        upperBlock = block.dimension.getBlock(upperPartLocation);
     }
+
+    const lowerPart = {
+        location: lowerBlock.location,
+        typeId: lowerBlock.typeId,
+        states: lowerBlock.permutation.getAllStates(),
+    };
+
+    const upperPart = {
+        location: upperBlock.location,
+        typeId: upperBlock.typeId,
+        states: upperBlock.permutation.getAllStates(),
+    };
+
+    const playerData = SharedVariables.replayBDataBMap.get(player.id);
+    playerData.dbgBlockDataB[SharedVariables.dbgRecTime] = {
+        lowerPart,
+        upperPart,
+    };
 }
