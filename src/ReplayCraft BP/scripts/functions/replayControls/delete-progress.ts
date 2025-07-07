@@ -31,7 +31,7 @@ export function deletePro(player: Player) {
     session.replayStateMachine.setState("default");
     session.trackedPlayers.forEach((player) => {
         removeEntities(player, false);
-        clearStructure(player);
+        clearStructure(player, session);
         resetRec(player);
     });
 }

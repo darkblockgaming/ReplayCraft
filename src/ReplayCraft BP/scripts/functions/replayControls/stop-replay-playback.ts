@@ -33,7 +33,7 @@ export function doStopReplay(player: Player) {
 
             const entityData = session.replayEntityDataMap.get(player.id);
             entityData?.customEntity.remove();
-            clearStructure(player);
+            clearStructure(player, session);
 
             player.camera.clear();
             //player.runCommand(`camera @s clear`);

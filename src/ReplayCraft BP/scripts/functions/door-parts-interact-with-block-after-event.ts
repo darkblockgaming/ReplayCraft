@@ -1,14 +1,7 @@
 import { Block, Player } from "@minecraft/server";
-import { replaySessions } from "../data/replay-player-session";
+import { PlayerReplaySession } from "../data/replay-player-session";
 
-export function saveDoorPartsB(block: Block, player: Player) {
-    const session = replaySessions.playerSessions.get(player.id);
-    if (!session) {
-        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
-        console.warn(`[ReplayCraft DEBUG] No replay session found for player ${player.name} (${player.id})`);
-        return;
-    }
-
+export function saveDoorPartsB(block: Block, player: Player, session: PlayerReplaySession) {
     const isUpper = block.permutation.getState("upper_block_bit");
 
     let lowerBlock: Block;

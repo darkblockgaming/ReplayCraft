@@ -29,7 +29,7 @@ export async function doSaveReset(player: Player) {
     session.replayStateMachine.setState("default");
 
     // Wait for `clearStructure()` to finish before proceeding
-    await clearStructure(player);
+    await clearStructure(player, session);
 
     // Then remove entities
     removeEntities(player, false);

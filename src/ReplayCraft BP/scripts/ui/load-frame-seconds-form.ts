@@ -54,7 +54,7 @@ export function loadFrameSecondsForm(player: Player) {
 
         await Promise.all(
             session.trackedPlayers.map(async (p) => {
-                await clearStructure(p);
+                await clearStructure(p, session);
             })
         );
 

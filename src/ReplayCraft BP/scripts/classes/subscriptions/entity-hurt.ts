@@ -26,15 +26,22 @@ function onEntityHit(event: EntityHurtAfterEvent) {
     const { hurtEntity, damageSource, damage } = event;
     debugLog(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
 
-    // Only record ambient entities hurt by players
     if (!damageSource || !damageSource.damagingEntity) return;
     if (damageSource.damagingEntity.typeId !== "minecraft:player") return;
 
     const player = damageSource.damagingEntity;
     const playerId = player.id;
 
-    const session = replaySessions.playerSessions.get(playerId);
-    if (!session) return;
+    // Try to get the player's own session first
+    let session = replaySessions.playerSessions.get(playerId);
+
+    // If no session, try to find a session tracking this player (guest)
+    if (!session) {
+        session = [...replaySessions.playerSessions.values()].find((s) => s.replayStateMachine.state === "recPending" && s.trackedPlayers.some((p) => p.id === playerId));
+    }
+
+    if (!session) return; // no valid session found
+
     if (session.replayStateMachine.state === "recPending") {
         const ambientMap = session.replayAmbientEntityMap.get(playerId);
         if (!ambientMap) return;

@@ -20,7 +20,7 @@ export function doSave(player: Player) {
         });
     }
     session.trackedPlayers.forEach((player) => {
-        clearStructure(player);
+        clearStructure(player, session);
     });
 
     saveToDB(player, session);

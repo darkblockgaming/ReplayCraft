@@ -26,7 +26,7 @@ export function doProceedFurther(player: Player) {
     }
     session.replayStateMachine.setState("recCompleted");
     session.trackedPlayers.forEach((player) => {
-        clearStructure(player);
+        clearStructure(player, session);
     });
     removeEntities(player, false);
 }

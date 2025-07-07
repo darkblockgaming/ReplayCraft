@@ -23,7 +23,7 @@ export function doStopPreview(player: Player) {
         session.trackedPlayers.forEach((player) => {
             const entityData = session.replayEntityDataMap.get(player.id);
             entityData?.customEntity.remove();
-            clearStructure(player);
+            clearStructure(player, session);
         });
 
         session.currentTick = 0;

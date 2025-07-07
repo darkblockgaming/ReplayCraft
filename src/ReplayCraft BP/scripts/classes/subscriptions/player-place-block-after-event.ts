@@ -7,34 +7,43 @@ import { debugLog, debugWarn } from "../../data/util/debug";
 function recordBlocks(event: PlayerPlaceBlockAfterEvent) {
     const { player, block } = event;
 
-    const session = replaySessions.playerSessions.get(player.id);
-    if (!session) {
-        debugWarn(`[ReplayCraft] No session found for ${player.name} (${player.id})`);
-        return;
+    // Case 1: Player has their own session
+    let session = replaySessions.playerSessions.get(player.id);
+    if (session) {
+        if (session.replayStateMachine.state !== "recPending") {
+            debugWarn(`[ReplayCraft] ${player.name} has a session but it's not in recPending (state: ${session.replayStateMachine.state})`);
+            return;
+        }
+
+        if (!session.trackedPlayers.includes(player)) {
+            debugWarn(`[ReplayCraft] ${player.name} is not in their own trackedPlayers list`);
+            return;
+        }
+    } else {
+        // Case 2: Player is a tracked guest in another recorder's session
+        session = [...replaySessions.playerSessions.values()].find((s) => s.replayStateMachine.state === "recPending" && s.trackedPlayers.some((p) => p.id === player.id));
+
+        if (!session) {
+            debugWarn(`[ReplayCraft] No session found tracking guest ${player.name} (${player.id})`);
+            return;
+        }
     }
 
-    if (session.replayStateMachine.state !== "recPending") {
-        debugWarn(`[ReplayCraft] Not in recPending state for ${player.name}, current state: ${session.replayStateMachine.state}`);
-        return;
-    }
-
-    if (!session.trackedPlayers.includes(player)) {
-        debugWarn(`[ReplayCraft] ${player.name} is not in session.trackedPlayers`);
-        return;
-    }
+    // Continue with recording logic...
 
     if (block.typeId === "minecraft:bed" || session.twoPartBlocks.includes(block.type.id)) {
         debugLog(`[ReplayCraft] Saving multi-block structure (${block.typeId}) for ${player.name}`);
         if (block.typeId === "minecraft:bed") {
-            saveBedParts(block, player);
+            saveBedParts(block, player, session);
         } else {
-            saveDoorParts(block, player);
+            saveDoorParts(block, player, session);
         }
     } else {
-        const playerData = session.replayBlockStateMap.get(player.id);
+        let playerData = session.replayBlockStateMap.get(player.id);
         if (!playerData) {
-            debugWarn(`[ReplayCraft] replayBlockStateMap not initialized for ${player.name}`);
-            return;
+            playerData = { blockStateChanges: {} };
+            session.replayBlockStateMap.set(player.id, playerData);
+            debugWarn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name}`);
         }
 
         const tick = session.recordingEndTick;

@@ -18,7 +18,7 @@ export function replayMenuAfterLoad(player: Player) {
                 session.replayStateMachine.setState("recPaused");
                 await loadBlocksUpToTick(session.recordingEndTick, player);
                 // Wait for `clearStructure()` to finish before proceeding
-                await clearStructure(player);
+                await clearStructure(player, session);
 
                 // Then remove entities
                 removeEntities(player, false);

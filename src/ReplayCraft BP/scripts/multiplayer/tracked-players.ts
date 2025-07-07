@@ -6,17 +6,17 @@ const MAX_TRACK_RADIUS = 16;
 
 /**
  * Dynamically updates the list of tracked players for each active recording session.
- * It includes nearby players who are not actively recording their own sessions.
+ * Adds nearby players who are not actively recording themselves and removes those
+ * who leave the tracking radius.
  */
 export function updateTrackedPlayers() {
     for (const session of replaySessions.playerSessions.values()) {
-        // Only update tracked players during active or paused recording
         if (!["recPending", "recPaused"].includes(session.replayStateMachine.state)) continue;
 
         const mainRecorder = session.trackedPlayers[0];
         if (!mainRecorder || !mainRecorder.isValid) continue;
 
-        // Find players within radius of main recorder (excluding themselves)
+        // Get players nearby within tracking radius
         const playersNearby = world.getPlayers().filter((p) => {
             if (p.id === mainRecorder.id) return false;
             const dx = p.location.x - mainRecorder.location.x;
@@ -26,49 +26,45 @@ export function updateTrackedPlayers() {
             return distSq <= MAX_TRACK_RADIUS * MAX_TRACK_RADIUS;
         });
 
-        // Start new tracked list with the main recorder
         const newTracked = [mainRecorder];
+        const newTrackedIds = new Set<string>([mainRecorder.id]);
 
         for (const p of playersNearby) {
-            // Skip if this player is actively recording their own session
             const passiveSession = replaySessions.playerSessions.get(p.id);
             if (passiveSession && ["recPending", "recPaused"].includes(passiveSession.replayStateMachine.state)) {
-                continue; // They're actively recording themselves
+                continue; // Actively recording their own session
             }
 
-            // Add player to main recorder's tracking session (passive tracking only)
             newTracked.push(p);
+            newTrackedIds.add(p.id);
         }
 
-        // Determine if trackedPlayers has changed (removal or addition)
-        const oldIds = new Set(session.trackedPlayers.map((p) => p.id));
-        const newIds = new Set(newTracked.map((p) => p.id));
-        const changed = oldIds.size !== newIds.size || [...newIds].some((id) => !oldIds.has(id));
+        const oldTracked = session.trackedPlayers;
+        const oldTrackedIds = new Set(oldTracked.map((p) => p.id));
 
-        // Always make sure main recorder is in allRecordedPlayerIds
-        if (!session.allRecordedPlayerIds.has(mainRecorder.id)) {
-            session.allRecordedPlayerIds.add(mainRecorder.id);
-            session.trackedPlayerJoinTicks.set(mainRecorder.id, session.recordingEndTick ?? 0);
-        }
+        const playersRemoved = oldTracked.filter((p) => !newTrackedIds.has(p.id));
+        const playersAdded = newTracked.filter((p) => !oldTrackedIds.has(p.id));
 
-        // Update trackedPlayers if any changes are detected
+        const changed = playersRemoved.length > 0 || playersAdded.length > 0;
+
         if (changed) {
             session.trackedPlayers = newTracked;
-            if (!session.trackedPlayerJoinTicks) {
-                session.trackedPlayerJoinTicks = new Map(); // ensure it exists
+
+            mainRecorder.sendMessage(`§7[ReplayCraft] Tracking ${newTracked.length} player(s): §f+${playersAdded.length} -${playersRemoved.length}`);
+
+            // Add newly tracked players to replay data
+            for (const p of playersAdded) {
+                ensureReplayDataForPlayer(p.id);
+                session.allRecordedPlayerIds.add(p.id);
+                if (!session.trackedPlayerJoinTicks.has(p.id)) {
+                    session.trackedPlayerJoinTicks.set(p.id, session.recordingEndTick ?? 0);
+                }
             }
 
-            mainRecorder.sendMessage(`§7[ReplayCraft] Tracking ${newTracked.length} player(s).`);
-
-            // Initialize replay data and add to allRecordedPlayerIds (append-only)
-            newTracked.forEach((player) => {
-                ensureReplayDataForPlayer(player.id);
-                session.allRecordedPlayerIds.add(player.id);
-                // Ensure player is in trackedPlayerJoinTicks and the tick from recordingEndTick
-                if (!session.trackedPlayerJoinTicks.has(player.id)) {
-                    session.trackedPlayerJoinTicks.set(player.id, session.recordingEndTick ?? 0);
-                }
-            });
+            // Optionally handle removed players (e.g., clean up visuals, stop anims)
+            for (const p of playersRemoved) {
+                console.log(`§7[ReplayCraft] Player ${p.name} (${p.id}) is no longer being tracked.`);
+            }
         }
     }
 }

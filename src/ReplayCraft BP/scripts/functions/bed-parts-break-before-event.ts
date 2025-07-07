@@ -1,12 +1,7 @@
 import { Block, Player } from "@minecraft/server";
-import { replaySessions } from "../data/replay-player-session";
-export function saveBedParts1(block: Block, player: Player) {
+import { PlayerReplaySession } from "../data/replay-player-session";
+export function saveBedParts1(block: Block, player: Player, session: PlayerReplaySession) {
     //Calculate Orher Part Of Bed
-    const session = replaySessions.playerSessions.get(player.id);
-    if (!session) {
-        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
-        return;
-    }
     const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
     const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east =3', 'west = 1'
     let otherPartLocation = {
@@ -73,7 +68,12 @@ export function saveBedParts1(block: Block, player: Player) {
             states: otherPartBlock.permutation.getAllStates(),
         };
 
-        const playerData = session.replayBlockInteractionBeforeMap.get(player.id);
+        let playerData = session.replayBlockInteractionBeforeMap.get(player.id);
+        if (!playerData) {
+            playerData = { blockStateBeforeInteractions: {} };
+            session.replayBlockInteractionBeforeMap.set(player.id, playerData);
+            console.warn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for ${player.name}`);
+        }
         playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
             upperPart: {
                 location: block.location,

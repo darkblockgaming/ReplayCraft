@@ -30,7 +30,7 @@ function setController(eventData: ItemUseAfterEvent) {
 
         // Set controller logic (this used to be in beforeEvents)
         if (!session.replayController || session.replayController === player) {
-            if (!session.multiPlayerReplayEnabled) {
+            if (!session.multiPlayerReplayEnabled && session.trackedPlayers.length === 0) {
                 session.trackedPlayers = [player];
             }
             session.replayController = player;

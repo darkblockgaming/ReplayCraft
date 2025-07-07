@@ -108,7 +108,7 @@ async function startReplay(player: Player, pointIndex: number) {
 
     session.frameLoaded = true;
 
-    await Promise.all(session.trackedPlayers.map(clearStructure));
+    await Promise.all(session.trackedPlayers.map((player) => clearStructure(player, session)));
 
     await Promise.all(
         session.trackedPlayers.map(async (p) => {

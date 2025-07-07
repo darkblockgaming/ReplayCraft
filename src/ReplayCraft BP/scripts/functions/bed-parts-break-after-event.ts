@@ -1,13 +1,8 @@
 import { Block, Player, Vector3 } from "@minecraft/server";
-import { replaySessions } from "../data/replay-player-session";
+import { PlayerReplaySession } from "../data/replay-player-session";
 import { BlockData } from "../classes/types/types";
 
-export function saveBedParts(block: Block, player: Player) {
-    const session = replaySessions.playerSessions.get(player.id);
-    if (!session) {
-        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
-        return;
-    }
+export function saveBedParts(block: Block, player: Player, session: PlayerReplaySession) {
     const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
     const direction = block.permutation.getState("direction"); // 'north = 2', 'south = 0', 'east = 3', 'west = 1'
 
@@ -49,7 +44,12 @@ export function saveBedParts(block: Block, player: Player) {
             states: otherPartBlock.permutation.getAllStates(),
         };
 
-        const playerData = session.replayBlockStateMap.get(player.id);
+        let playerData = session.replayBlockStateMap.get(player.id);
+        if (!playerData) {
+            playerData = { blockStateChanges: {} };
+            session.replayBlockStateMap.set(player.id, playerData);
+            console.warn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name} (from saveDoorParts)`);
+        }
         playerData.blockStateChanges[session.recordingEndTick] = {
             location: block.location,
             typeId: block.typeId,

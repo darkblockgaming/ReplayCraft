@@ -11,7 +11,7 @@ export function resetCamSetup(player: Player) {
     }
 
     session.trackedPlayers.forEach((player) => {
-        clearStructure(player);
+        clearStructure(player, session);
         removeEntities(player, false);
     });
     session.isReplayActive = false;
