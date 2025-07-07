@@ -2,6 +2,7 @@ import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { doStopCamera } from "../camera/stop-camera-setup";
 import { clearStructure } from "../clear-structure";
+import { cleanupReplayEntities } from "../../multiplayer/cleanup-replay-entities";
 
 export function doStopReplay(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -34,6 +35,7 @@ export function doStopReplay(player: Player) {
             const entityData = session.replayEntityDataMap.get(player.id);
             entityData?.customEntity.remove();
             clearStructure(player, session);
+            cleanupReplayEntities(session);
 
             player.camera.clear();
             //player.runCommand(`camera @s clear`);

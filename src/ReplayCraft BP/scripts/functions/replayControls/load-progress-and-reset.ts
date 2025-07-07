@@ -5,6 +5,7 @@ import { clearStructure } from "../clear-structure";
 import { loadBlocksUpToTick } from "../load-blocks-upto-tick";
 import { removeEntities } from "../remove-entities";
 import { resetRec } from "./reset-replay";
+import { cleanupReplayEntities } from "../../multiplayer/cleanup-replay-entities";
 
 export async function doSaveReset(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -33,6 +34,9 @@ export async function doSaveReset(player: Player) {
 
     // Then remove entities
     removeEntities(player, false);
+
+    //Remove offline playback Entities
+    cleanupReplayEntities(session);
 
     // Now safely load blocks
     await loadBlocksUpToTick(session.recordingEndTick, player);
