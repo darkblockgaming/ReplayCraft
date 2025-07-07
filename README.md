@@ -1,3 +1,11 @@
+
+<p align="center">
+<h1>This is a work in progress for version three, the aim is to provide full server/realm multiplayer support. This allows all players to record and replay at the same time as well as dynamically included other players in each others replay recording sessions with offline playback.</h1> 
+</p>
+
+
+
+
 <p align="center">
   <img src="assets/replaycraft-text-logo.webp" alt="ReplayCraft Text & Icon Logo" />
 </p>
