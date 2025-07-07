@@ -6,7 +6,7 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions
 import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, Entity, EquipmentSlot, ItemStack, system, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, Entity, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { clearStructure } from "./functions/clear-structure";
 import { playBlockSound } from "./functions/play-block-sound";
 import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
@@ -24,6 +24,9 @@ import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
 import { isPlayerCrawling } from "./entity/is-crawling";
 import { calculateFallRatio } from "./entity/transistion";
+import { updateTrackedPlayers } from "./multiplayer/tracked-players";
+import { summonReplayEntity } from "./functions/summon-replay-entity";
+import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
 
 //Chat events
 beforeChatSend();
@@ -85,9 +88,10 @@ system.runInterval(() => {
             replayStateMachine.setState("recSaved");
             trackedPlayers.forEach((player) => {
                 session.isReplayActive = false;
-                clearStructure(player);
+                clearStructure(player, session);
                 removeEntities(player, true);
                 removeOwnedAmbientEntities(player);
+                cleanupReplayEntities(session);
             });
             session.currentTick = 0;
         } else if (isPlayback && currentTick >= recordingEndTick - 1) {
@@ -99,21 +103,24 @@ system.runInterval(() => {
                 session.isTopDownFixedCamActive = false;
                 session.isTopDownDynamicCamActive = false;
                 player.camera.clear();
-                clearStructure(player);
+                clearStructure(player, session);
                 removeEntities(player, true);
                 removeOwnedAmbientEntities(player);
+                cleanupReplayEntities(session);
             });
             session.currentTick = 0;
         }
 
         // --- Block State Replay ---
-        if (isReplaying) {
-            trackedPlayers.forEach((player) => {
-                const dimension = world.getDimension(player.dimension.id);
-                const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
+        if (isReplaying && session.replayController) {
+            const player = session.replayController;
+            const dimension = world.getDimension(player.dimension.id);
 
-                // Block placement before map
-                const playerData = replayBlockStateMap.get(player.id);
+            for (const playerId of session.allRecordedPlayerIds) {
+                const customEntity = replayEntityDataMap.get(playerId)?.customEntity;
+
+                // --- Block Placement (before map) ---
+                const playerData = replayBlockStateMap.get(playerId);
                 const blockData = playerData?.blockStateChanges[currentTick];
 
                 if (blockData) {
@@ -130,22 +137,22 @@ system.runInterval(() => {
                         applyPermutation(blockData.otherPart);
                     } else {
                         applyPermutation(blockData);
+
                         if (settingReplayType === 0 && customEntity) {
                             customEntity.playAnimation("animation.replayentity.attack");
                         }
+
                         playBlockSound(blockData, player);
                     }
                 }
 
-                // Block break/interactions after map
-                const interactionData = replayBlockInteractionAfterMap.get(player.id);
+                // --- Block Interactions (after map) ---
+                const interactionData = replayBlockInteractionAfterMap.get(playerId);
                 const interactionBlock = interactionData?.blockSateAfterInteractions[currentTick];
 
                 if (interactionBlock) {
-                    const interactionDimension = world.getDimension(player.dimension.id);
-
                     const applyInteractionPermutation = (part: BlockData) => {
-                        const block = interactionDimension.getBlock(part.location);
+                        const block = dimension.getBlock(part.location);
                         block.setPermutation(BlockPermutation.resolve(part.typeId, part.states));
                     };
 
@@ -159,22 +166,43 @@ system.runInterval(() => {
                     if (settingReplayType === 0 && customEntity) {
                         customEntity.playAnimation("animation.replayentity.attack");
                     }
+
                     playBlockSound(blockData, player, true);
                 }
-            });
+            }
         }
 
         // --- Position and Rotation Recording ---
         if (isRecording) {
             trackedPlayers.forEach((player) => {
+                // Ensure replayPositionDataMap has entry for this player
+                if (!replayPositionDataMap.has(player.id)) {
+                    replayPositionDataMap.set(player.id, {
+                        recordedPositions: [],
+                        recordedVelocities: [], // Assuming you track this too
+                    });
+                }
+                // Same for rotation map
+                if (!replayRotationDataMap.has(player.id)) {
+                    replayRotationDataMap.set(player.id, {
+                        recordedRotations: [],
+                    });
+                }
+
                 const pos = replayPositionDataMap.get(player.id);
                 const rot = replayRotationDataMap.get(player.id);
+
                 if (pos && rot) {
                     pos.recordedPositions.push(player.location);
                     rot.recordedRotations.push(player.getRotation());
                     pos.recordedVelocities.push(player.getVelocity());
                 }
             });
+        }
+
+        // --- Multiplayer Player Tracking ---
+        if (isRecording) {
+            updateTrackedPlayers();
         }
 
         // --- Action Recording ---
@@ -199,25 +227,49 @@ system.runInterval(() => {
             });
         }
 
-        // --- Animation + Action Playback ---
         if (isReplaying && settingReplayType === 0) {
-            trackedPlayers.forEach((player) => {
-                const playerData = session.replayActionDataMap.get(player.id);
-                const entityData = session.replayEntityDataMap.get(player.id);
-                if (!playerData || !entityData || !entityData.customEntity || typeof entityData.customEntity !== "object" || typeof playerData.isSneaking !== "object" || !(session.currentTick in playerData.isSneaking)) {
-                    return;
+            for (const playerId of session.allRecordedPlayerIds) {
+                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const tickOffset = session.currentTick - joinTick;
+
+                if (tickOffset < 0) {
+                    // Player hasn’t joined yet at this tick
+                    continue;
                 }
 
-                safeSet(entityData.customEntity, "isSneaking", playerData.isSneaking[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_falling", playerData.isFalling[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_climbing", playerData.isClimbing[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[session.currentTick] === 1);
-                safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[session.currentTick] === 1);
-                //Swimming
-                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[session.currentTick] === 1);
-                //Diving Logic
-                if (playerData.isSwimming[session.currentTick]) {
+                const playerData = session.replayActionDataMap.get(playerId);
+                const entityData = session.replayEntityDataMap.get(playerId);
+
+                if (!playerData || !entityData || !entityData.customEntity || typeof entityData.customEntity !== "object") {
+                    continue;
+                }
+
+                // Defensive check to make sure arrays have data for this tickOffset
+                if (
+                    typeof playerData.isSneaking !== "object" ||
+                    !(tickOffset in playerData.isSneaking) ||
+                    !(tickOffset in playerData.isFalling) ||
+                    !(tickOffset in playerData.isClimbing) ||
+                    !(tickOffset in playerData.isSprinting) ||
+                    !(tickOffset in playerData.isFlying) ||
+                    !(tickOffset in playerData.isGliding) ||
+                    !(tickOffset in playerData.isSwimming) ||
+                    !(tickOffset in playerData.isSleeping) ||
+                    !(tickOffset in playerData.isRiding) ||
+                    !(tickOffset in playerData.ridingTypeId)
+                ) {
+                    continue;
+                }
+
+                safeSet(entityData.customEntity, "isSneaking", playerData.isSneaking[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_falling", playerData.isFalling[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_climbing", playerData.isClimbing[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_sprinting", playerData.isSprinting[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_flying", playerData.isFlying[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_gliding", playerData.isGliding[tickOffset] === 1);
+                safeSet(entityData.customEntity, "rc:is_swimming", playerData.isSwimming[tickOffset] === 1);
+
+                if (playerData.isSwimming[tickOffset]) {
                     const val = Number(entityData.customEntity.getProperty("rc:swim_amt") ?? 0.0);
                     const target = 1.0;
                     const speed = 0.1;
@@ -225,42 +277,43 @@ system.runInterval(() => {
                     safeSet(entityData.customEntity, "rc:swim_amt", Math.min(nextVal, 1.0));
                 }
 
-                //Sleeping
-                safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[session.currentTick] === 1);
-                if (playerData.isSleeping[session.currentTick] === 1) {
+                safeSet(entityData.customEntity, "rc:is_sleeping", playerData.isSleeping[tickOffset] === 1);
+
+                if (playerData.isSleeping[tickOffset] === 1) {
                     const bedBlock = entityData.customEntity.dimension.getBlock(entityData.customEntity.location);
                     if (bedBlock && bedBlock.typeId.includes("bed")) {
                         const direction = bedBlock.permutation.getState("direction");
                         switch (direction) {
-                            case 0: //south
-                                safeSet(entityData.customEntity, "rc:sleep_dir", 90); //north
+                            case 0: // south
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 90); // north
                                 break;
-                            case 1: //west
-                                safeSet(entityData.customEntity, "rc:sleep_dir", 0); //east
+                            case 1: // west
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 0); // east
                                 break;
-                            case 2: //north
-                                safeSet(entityData.customEntity, "rc:sleep_dir", 270); //south
+                            case 2: // north
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 270); // south
                                 break;
-                            case 3: //east
-                                safeSet(entityData.customEntity, "rc:sleep_dir", 180); //west
+                            case 3: // east
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 180); // west
                                 break;
                         }
                     }
                 }
 
-                //Riding
-                safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[session.currentTick] === 1);
-                if (playerData.isRiding[session.currentTick]) {
+                safeSet(entityData.customEntity, "rc:is_riding", playerData.isRiding[tickOffset] === 1);
+
+                if (playerData.isRiding[tickOffset]) {
                     const entityTypeArray = ["minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:strider"];
-                    const ridingEntity = playerData.ridingTypeId[currentTick];
+                    const ridingEntity = playerData.ridingTypeId[tickOffset];
                     if (entityTypeArray.includes(ridingEntity)) {
                         safeSet(entityData.customEntity, "rc:riding_y_offset", -10.0);
                     } else {
                         safeSet(entityData.customEntity, "rc:riding_y_offset", 0.0);
                     }
                 }
-            });
+            }
         }
+
         // --- Ambient Entity Recording ---
         if (isRecording) {
             trackedPlayers.forEach((player) => {
@@ -315,28 +368,57 @@ system.runInterval(() => {
             });
         }
 
+        if (isReplaying && session.replayStateMachine.state !== "recSaved") {
+            debugLog("Tick:", session.currentTick);
+            debugLog("All player IDs:", session.allRecordedPlayerIds);
+
+            for (const playerId of session.allRecordedPlayerIds) {
+                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const entity = session.replayEntityDataMap.get(playerId)?.customEntity;
+
+                debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
+
+                if (session.currentTick === joinTick && !entity && session.currentTick <= session.recordingEndTick) {
+                    debugLog(`Spawning entity for ${playerId}`);
+                    summonReplayEntity(session, session.replayController, playerId);
+                }
+            }
+        }
         // --- Entity Positioning Playback ---
         if (isReplaying && settingReplayType === 0) {
-            trackedPlayers.forEach((player) => {
-                const pos = replayPositionDataMap.get(player.id);
-                const rot = replayRotationDataMap.get(player.id);
-                const entity = replayEntityDataMap.get(player.id)?.customEntity;
+            for (const playerId of session.allRecordedPlayerIds) {
+                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const pos = replayPositionDataMap.get(playerId);
+                const rot = replayRotationDataMap.get(playerId);
+                const entity = replayEntityDataMap.get(playerId)?.customEntity;
+
                 if (pos && rot && entity) {
-                    const ratio = calculateFallRatio(pos.recordedVelocities[currentTick]);
-                    try {
-                        entity.setProperty("rc:elytra_ratio", ratio);
-                    } catch (e) {
-                        debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
-                    }
-                    try {
-                        entity.teleport(pos.recordedPositions[currentTick], {
-                            rotation: rot.recordedRotations[currentTick],
-                        });
-                    } catch (e) {
-                        debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
+                    const tickOffset = session.currentTick - joinTick;
+
+                    if (tickOffset >= 0 && tickOffset < pos.recordedPositions.length && tickOffset < rot.recordedRotations.length) {
+                        const ratio = calculateFallRatio(pos.recordedVelocities[tickOffset]);
+                        try {
+                            entity.setProperty("rc:elytra_ratio", ratio);
+                        } catch (e) {
+                            debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
+                        }
+
+                        try {
+                            entity.teleport(pos.recordedPositions[tickOffset], {
+                                rotation: rot.recordedRotations[tickOffset],
+                            });
+                        } catch (e) {
+                            debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
+                        }
+                    } else if (tickOffset >= 0) {
+                        // Only log out-of-bounds if we expected to be within range
+                        debugWarn(`[ReplayCraft] Tick ${session.currentTick} out of bounds for ${playerId} (tickOffset=${tickOffset}, posLen=${pos.recordedPositions.length}, rotLen=${rot.recordedRotations.length})`);
+                    } else {
+                        // Optional: early skip logging
+                        debugLog(`[ReplayCraft] Skipping movement for ${playerId} — joinTick ${joinTick} > currentTick ${session.currentTick}`);
                     }
                 }
-            });
+            }
         }
 
         // --- Ambient Entity Playback ---
@@ -402,7 +484,7 @@ system.runInterval(() => {
                     // Despawn
                     if (data.replayEntity && data.despawnTick === currentTick) {
                         try {
-                            data.replayEntity.kill();
+                            data.replayEntity.remove();
                             data.replayEntity = undefined;
                         } catch (err) {
                             debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
@@ -428,23 +510,49 @@ system.runInterval(() => {
         }
 
         // --- Equipment Playback ---
+        /**
+         * Re-equips recorded items (mainhand, offhand, and armor slots) for a replaying entity at the current tick offset.
+         *
+         * Due to limitations in the Minecraft Bedrock Edition scripting API:
+         * - The `minecraft:equippable` component is only available on players, not on custom entities.
+         * - The `minecraft:inventory` component does not currently support native methods to set item slots.
+         *
+         * Therefore, we rely on `runCommand` to apply `replaceitem` commands to the replay entity.
+         * This allows setting the exact recorded equipment during playback, even though it is not ideal or performant.
+         *
+         * @param {Entity} entity - The replaying custom entity to apply the items to.
+         * @param {Object} playerData - The replay data object for the player.
+         * @param {number} tickOffset - The offset tick relative to when the player joined the session.
+         * @example
+         * // Replaces current items with recorded ones
+         * entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tickOffset]}`);
+         */
         if (settingReplayType === 0) {
-            trackedPlayers.forEach((player) => {
+            session.allRecordedPlayerIds.forEach((playerId) => {
                 if (isView || isPlayback) {
-                    const playerData = replayEquipmentDataMap.get(player.id);
-                    const entityData = replayEntityDataMap.get(player.id);
+                    const playerData = replayEquipmentDataMap.get(playerId);
+                    const entityData = replayEntityDataMap.get(playerId);
+                    if (!playerData || !entityData) return;
                     try {
                         const entity = entityData.customEntity;
-                        const tick = currentTick;
-                        const equipmentComponent = entity.getComponent("minecraft:equippable");
-                        equipmentComponent.setEquipment(EquipmentSlot.Mainhand, new ItemStack(playerData.weapon1[tick]));
-                        equipmentComponent.setEquipment(EquipmentSlot.Offhand, new ItemStack(playerData.weapon2[tick]));
-                        equipmentComponent.setEquipment(EquipmentSlot.Head, new ItemStack(playerData.armor1[tick]));
-                        equipmentComponent.setEquipment(EquipmentSlot.Chest, new ItemStack(playerData.armor2[tick]));
-                        equipmentComponent.setEquipment(EquipmentSlot.Legs, new ItemStack(playerData.armor3[tick]));
-                        equipmentComponent.setEquipment(EquipmentSlot.Feet, new ItemStack(playerData.armor4[tick]));
+                        const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                        const tickOffset = session.currentTick - joinTick;
+                        if (tickOffset < 0) {
+                            console.log("Haven't reached this player's join tick yet");
+                            return; // Haven't reached this player's join tick yet
+                        }
+                        if (tickOffset >= playerData.weapon1.length) {
+                            console.log("Out of recorded data range");
+                            return; // Out of recorded data range
+                        }
+                        entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tickOffset]}`);
+                        entity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tickOffset]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tickOffset]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tickOffset]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tickOffset]}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tickOffset]}`);
                     } catch (e) {
-                        debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`);
+                        debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
                     }
                 }
             });
