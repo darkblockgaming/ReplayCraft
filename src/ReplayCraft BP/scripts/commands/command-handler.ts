@@ -1,23 +1,30 @@
 import { system, CustomCommand, CommandPermissionLevel, CustomCommandParamType, StartupEvent, CustomCommandResult, CustomCommandStatus, CustomCommandOrigin, Player } from "@minecraft/server";
 import { givePlayerControls } from "./player commands/control-items";
 import { playerSetSkin } from "./player commands/skin";
+import { sessionManager } from "./admin commands/session-manager";
 function init(event: StartupEvent) {
     const replaycraftControlsCommand: CustomCommand = {
         name: "rc:controls",
         description: "gives you the replaycraft controls items.",
         permissionLevel: CommandPermissionLevel.Any,
     };
-    const replaycraftSkingCommand: CustomCommand = {
+    const replaycraftSkinCommand: CustomCommand = {
         name: "rc:skin",
         description: "Allows you to set your skin to be used in a replay.(Opens Skin UI)",
         permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftSessionManagerCommand: CustomCommand = {
+        name: "rc:sessions",
+        description: "Opens the Session Manager.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
     };
 
     /*
      * Register commands
      **/
     event.customCommandRegistry.registerCommand(replaycraftControlsCommand, givePlayerControls);
-    event.customCommandRegistry.registerCommand(replaycraftSkingCommand, playerSetSkin);
+    event.customCommandRegistry.registerCommand(replaycraftSkinCommand, playerSetSkin);
+    event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManager);
 }
 
 // Subscribe to startup event to register commands
