@@ -2,6 +2,7 @@ import { system, CustomCommand, CommandPermissionLevel, CustomCommandParamType, 
 import { givePlayerControls } from "./player commands/control-items";
 import { playerSetSkin } from "./player commands/skin";
 import { sessionManager } from "./admin commands/session-manager";
+import { playerSetCameraPoint } from "./player commands/add-camera-point-cmd";
 function init(event: StartupEvent) {
     const replaycraftControlsCommand: CustomCommand = {
         name: "rc:controls",
@@ -11,6 +12,11 @@ function init(event: StartupEvent) {
     const replaycraftSkinCommand: CustomCommand = {
         name: "rc:skin",
         description: "Allows you to set your skin to be used in a replay.(Opens Skin UI)",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftAddCameraPointCommand: CustomCommand = {
+        name: "rc:add",
+        description: "Add a camera point.",
         permissionLevel: CommandPermissionLevel.Any,
     };
     const replaycraftSessionManagerCommand: CustomCommand = {
@@ -24,6 +30,7 @@ function init(event: StartupEvent) {
      **/
     event.customCommandRegistry.registerCommand(replaycraftControlsCommand, givePlayerControls);
     event.customCommandRegistry.registerCommand(replaycraftSkinCommand, playerSetSkin);
+    event.customCommandRegistry.registerCommand(replaycraftAddCameraPointCommand, playerSetCameraPoint);
     event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManager);
 }
 
