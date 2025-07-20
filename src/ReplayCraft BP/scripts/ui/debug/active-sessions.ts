@@ -1,6 +1,6 @@
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { PlayerReplaySession, replaySessions } from "../../data/replay-player-session";
+import { replaySessions } from "../../data/replay-player-session";
 import { replayCraftActiveSessionsDB } from "../../classes/subscriptions/world-initialize";
 
 export function showActiveSessionsUI(player: Player, playerLabels: string[], playerIds: string[]) {

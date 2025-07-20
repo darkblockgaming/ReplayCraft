@@ -4,6 +4,9 @@ import { playerSetSkin } from "./player commands/skin";
 import { sessionManager } from "./admin commands/session-manager";
 import { playerSetCameraPoint } from "./player commands/add-camera-point-cmd";
 function init(event: StartupEvent) {
+    /*
+     * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
+     **/
     const replaycraftControlsCommand: CustomCommand = {
         name: "rc:controls",
         description: "gives you the replaycraft controls items.",
@@ -19,6 +22,10 @@ function init(event: StartupEvent) {
         description: "Add a camera point.",
         permissionLevel: CommandPermissionLevel.Any,
     };
+    /*
+     * Commands that are GameDirectors means the player must have Operator Status, this based on testing
+     * is the most compatible level to use across BDS, Realms and local words.
+     **/
     const replaycraftSessionManagerCommand: CustomCommand = {
         name: "rc:sessions",
         description: "Opens the Session Manager.",
