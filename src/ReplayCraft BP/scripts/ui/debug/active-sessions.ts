@@ -1,6 +1,7 @@
 import { ActionFormData, MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { replaySessions } from "../../data/replay-player-session";
+import { PlayerReplaySession, replaySessions } from "../../data/replay-player-session";
+import { replayCraftActiveSessionsDB } from "../../classes/subscriptions/world-initialize";
 
 export function showActiveSessionsUI(player: Player, playerLabels: string[], playerIds: string[]) {
     if (playerLabels.length === 0) {
@@ -33,22 +34,6 @@ export function showActiveSessionsUI(player: Player, playerLabels: string[], pla
     });
 }
 
-/*function showSessionDetailsForm(player: Player, playerId: string, session: any) {
-    const form = new ModalFormData()
-        .title(`Session: ${playerId}: ${player.name}`)
-        .textField("Replay Type", session.settReplayType?.toString() ?? "N/A")
-        .textField("Current Tick", session.lilTick?.toString() ?? "N/A")
-        .textField("Replay Speed", session.replaySpeed?.toString() ?? "N/A")
-        .toggle("Follow Camera?", { defaultValue: session.followCamSwitch })
-        .toggle("Top-down View?", { defaultValue: session.topDownCamSwitch });
-
-    form.show(player).then((response) => {
-        if (response.canceled && response.cancelationReason === "UserBusy") {
-            showSessionDetailsForm(player, playerId, session);
-        }
-    });
-}
-**/
 export function showSessionExplorerUI(player: Player, session: any, sessionId: string) {
     const keys = Object.keys(session);
     const form = new ActionFormData().title(`Session: ${sessionId}`).body("Select a key to view its value:");
@@ -57,10 +42,17 @@ export function showSessionExplorerUI(player: Player, session: any, sessionId: s
         form.button(key);
     }
 
+    form.button("§cDelete Session");
+
     form.show(player).then((result) => {
         if (result.canceled || result.selection === undefined) return;
-        const selectedKey = keys[result.selection];
-        showSessionKeyValueUI(player, session, selectedKey, sessionId);
+
+        if (result.selection === keys.length) {
+            confirmDeleteSession(player, sessionId);
+        } else {
+            const selectedKey = keys[result.selection];
+            showSessionKeyValueUI(player, session, selectedKey, sessionId);
+        }
     });
 }
 
@@ -123,4 +115,23 @@ function safeStringify(obj: any, space = 2): string {
         },
         space
     );
+}
+
+function confirmDeleteSession(player: Player, sessionId: string) {
+    new MessageFormData()
+        .title("Confirm Deletion")
+        .body(`Are you sure you want to delete the session for "${sessionId}"?`)
+        .button1("§cYes, delete")
+        .button2("Cancel")
+        .show(player)
+        .then((result) => {
+            if (result.selection === 0) {
+                replaySessions.playerSessions.delete(sessionId);
+                replayCraftActiveSessionsDB.delete(player.id);
+
+                player.sendMessage(`§aDeleted session for ${sessionId}.`);
+            } else {
+                player.sendMessage("§7Session deletion cancelled.");
+            }
+        });
 }
