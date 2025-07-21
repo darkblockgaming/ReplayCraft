@@ -27,6 +27,7 @@ import { calculateFallRatio } from "./entity/transistion";
 import { updateTrackedPlayers } from "./multiplayer/tracked-players";
 import { summonReplayEntity } from "./functions/summon-replay-entity";
 import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
+import { customCommands } from "./commands/command-handler";
 
 //Chat events
 beforeChatSend();
@@ -49,6 +50,7 @@ onPlayerLeave();
 subscribeToWorldInitialize();
 
 onEntityHurt();
+customCommands();
 
 //Single loop this now handles the playback and recording logic.
 system.runInterval(() => {

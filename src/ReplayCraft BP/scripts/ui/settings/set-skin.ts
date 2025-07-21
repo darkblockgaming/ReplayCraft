@@ -9,11 +9,15 @@ export function setSkin(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    let skinData = replayCraftSkinDB.get(player.id);
-    const [skinIDStr, modelIDStr] = skinData.split(",");
-    const skinID: number = parseInt(skinIDStr);
-    const modelID: number = parseInt(modelIDStr);
 
+    let skinID: number = 0;
+    let modelID: number = 0;
+    let skinData = replayCraftSkinDB.get(player.id);
+    if (skinData) {
+        const [skinIDStr, modelIDStr] = skinData.split(",");
+        skinID = parseInt(skinIDStr);
+        modelID = parseInt(modelIDStr);
+    }
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replaycraft.settings")
         .dropdown("dbg.rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: skinID })
