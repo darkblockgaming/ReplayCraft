@@ -2,7 +2,7 @@ import { CustomCommandOrigin, CustomCommandStatus, Player, system } from "@minec
 import { replayCraftActiveSessionsDB } from "../../classes/subscriptions/world-initialize";
 import { showActiveSessionsUI } from "../../ui/debug/active-sessions";
 
-export function sessionManager(_origin: CustomCommandOrigin) {
+export function sessionManagerCmd(_origin: CustomCommandOrigin) {
     const entity = _origin.sourceEntity;
     const sender = entity as Player;
     system.run(() => {

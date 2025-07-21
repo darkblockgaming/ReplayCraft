@@ -1,6 +1,6 @@
 import { CustomCommandOrigin, CustomCommandStatus, EntityInventoryComponent, ItemStack, Player, system } from "@minecraft/server";
 
-export function givePlayerControls(_origin: CustomCommandOrigin) {
+export function givePlayerControlsCmd(_origin: CustomCommandOrigin) {
     system.run(() => {
         const entity = _origin.sourceEntity;
         const sender = entity as Player;

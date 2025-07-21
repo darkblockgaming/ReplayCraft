@@ -1,8 +1,11 @@
-import { system, CustomCommand, CommandPermissionLevel, StartupEvent } from "@minecraft/server";
-import { givePlayerControls } from "./player commands/control-items";
-import { playerSetSkin } from "./player commands/skin";
-import { sessionManager } from "./admin commands/session-manager";
-import { playerSetCameraPoint } from "./player commands/add-camera-point-cmd";
+import { system, CustomCommand, CommandPermissionLevel, StartupEvent, CustomCommandParamType } from "@minecraft/server";
+import { givePlayerControlsCmd } from "./player commands/control-items-cmd";
+import { playerSetSkinCmd } from "./player commands/skin-cmd";
+import { sessionManagerCmd } from "./admin commands/session-manager-cmd";
+import { playerSetCameraPointCmd } from "./player commands/add-camera-point-cmd";
+import config from "../data/util/config";
+import { debugDatabaseUiCmd } from "./debug/database-ui-cmd";
+import { debugPlayAnimationCmd } from "./debug/play-animation-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -31,14 +34,34 @@ function init(event: StartupEvent) {
         description: "Opens the Session Manager.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
-
+    /*
+     * Debug Commands
+     **/
+    const replaycraftDatabaseUiCommand: CustomCommand = {
+        name: "rc:database",
+        description: "Opens the Database Manager.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+    };
+    const playAnimationCommand: CustomCommand = {
+        name: "rc:playcustomanimation",
+        description: "Playback a custom animation a replay entity will be spawend.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+        mandatoryParameters: [
+            { type: CustomCommandParamType.String, name: "Property Name" },
+            { type: CustomCommandParamType.String, name: "Value" },
+        ],
+    };
     /*
      * Register commands
      **/
-    event.customCommandRegistry.registerCommand(replaycraftControlsCommand, givePlayerControls);
-    event.customCommandRegistry.registerCommand(replaycraftSkinCommand, playerSetSkin);
-    event.customCommandRegistry.registerCommand(replaycraftAddCameraPointCommand, playerSetCameraPoint);
-    event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManager);
+    event.customCommandRegistry.registerCommand(replaycraftControlsCommand, givePlayerControlsCmd);
+    event.customCommandRegistry.registerCommand(replaycraftSkinCommand, playerSetSkinCmd);
+    event.customCommandRegistry.registerCommand(replaycraftAddCameraPointCommand, playerSetCameraPointCmd);
+    event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManagerCmd);
+    if (config.devChatCommands) {
+        event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
+        event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
+    }
 }
 
 // Subscribe to startup event to register commands
