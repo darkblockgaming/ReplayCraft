@@ -12,6 +12,10 @@ export function addPos(player: Player) {
                     },
                 ],
             });
+            // If the player is playing in survival or adventure mode, they will be currently in spectator mode. we need to disable this and return them to their original game mode.
+            if (player.getGameMode() === "Spectator") {
+                disableFlight(player);
+            }
         }
         if (SharedVariables.soundCue) {
             player.playSound("note.bass");
@@ -28,6 +32,10 @@ export function addPos(player: Player) {
                     },
                 ],
             });
+            // If the player is playing in survival or adventure mode, they will be currently in spectator mode. we need to disable this and return them to their original game mode.
+            if (player.getGameMode() === "Spectator") {
+                disableFlight(player);
+            }
         }
         if (SharedVariables.soundCue) {
             player.playSound("note.bass");
