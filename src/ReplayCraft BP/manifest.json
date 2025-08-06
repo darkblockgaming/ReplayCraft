@@ -28,7 +28,7 @@
     "min_engine_version": [
       1,
       21,
-      90
+      100
     ],
     "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
     "version": [
@@ -70,11 +70,11 @@
     },
     {
       "module_name": "@minecraft/server",
-      "version": "2.1.0-beta"
+      "version": "2.3.0-beta"
     },
     {
       "module_name": "@minecraft/server-ui",
-      "version": "2.1.0-beta"
+      "version": "2.3.0-beta"
     },
     {
       "module_name": "@minecraft/debug-utilities",
