@@ -596,7 +596,7 @@ function cineSettings(player: Player) {
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc2.title.settings")
         .dropdown("dbg.rc2.dropdown.camera.settings.ease.type", easeTypes, { defaultValueIndex: eData.easeType })
-        .textField("dbg.rc2.textfield.time", `${eData.easeTime}`)
+        .textField("dbg.rc2.textfield.time", String(isFinite(eData.easingTime) && eData.easingTime > 0 ? eData.easingTime : 1))
         .dropdown("dbg.rc2.dropdown.camera.facing", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], { defaultValueIndex: eData.camFacingType })
 
         .slider({ rawtext: [{ translate: "dbg.rc2.slider.pitch" }] }, -90, 90, {
@@ -642,8 +642,8 @@ function cineSettings(player: Player) {
             return;
         }
         eData.easeType = response.formValues[0];
-        eData.easingTime = (response.formValues[1] as number) <= 0 ? 1 : Math.floor(response.formValues[1] as number);
-        //eData.easingTime = (response.formValues[1] != null && response.formValues[1] > 0) ? response.formValues[1] : 1;
+        const parsed = Number(response.formValues[1]);
+        eData.easingTime = isNaN(parsed) || parsed <= 0 ? 1 : Math.floor(parsed);
         eData.camFacingType = response.formValues[2];
         eData.camFacingX = response.formValues[3];
         eData.camFacingY = response.formValues[4];
@@ -740,8 +740,8 @@ function removeLastFrame(player: Player) {
         });
         return;
     }
-    pData.cineCamPos = [];
-    rData.cineCamRot = [];
+    pData.cineCamPos.pop();
+    rData.cineCamRot.pop();
     saveFrameDataRC(player);
     player.sendMessage({
         rawtext: [
