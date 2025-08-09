@@ -18,7 +18,7 @@ import "./ReplayCraft.js";
 import { removeEntities } from "./functions/remove-entities";
 import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
-import { BlockData } from "./classes/types/types";
+import { BlockData, RecordedEntityComponent } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
@@ -28,6 +28,7 @@ import { updateTrackedPlayers } from "./multiplayer/tracked-players";
 import { summonReplayEntity } from "./functions/summon-replay-entity";
 import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
 import { customCommands } from "./commands/command-handler";
+import { cloneComponentData } from "./data/util/export-entity-components";
 
 //Chat events
 beforeChatSend();
@@ -341,13 +342,25 @@ system.runInterval(() => {
 
                     let entry = playerMap.get(key);
                     if (!entry) {
+                        // Gather all components with their current values
+                        const components: RecordedEntityComponent[] = entity.getComponents().map((component) => {
+                            const componentData = cloneComponentData(component) as Record<string, unknown>;
+                            return {
+                                typeId: component.typeId,
+                                componentData,
+                            };
+                        });
+
                         entry = {
                             typeId: entity.typeId,
                             recordedData: {},
                             spawnTick: session.recordingEndTick,
                             despawnTick: null,
                             lastSeenTick: session.recordingEndTick,
+                            id: entity.id,
+                            entityComponents: components, // now contains type + values
                         };
+
                         playerMap.set(key, entry);
                     }
 

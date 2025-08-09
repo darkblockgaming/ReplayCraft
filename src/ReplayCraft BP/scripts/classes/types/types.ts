@@ -51,6 +51,11 @@ export interface PlayerActionsData {
 export interface PlaybackEntityData {
     customEntity: Entity;
 }
+export interface RecordedEntityComponent {
+    typeId: string;
+    componentData: Record<string, unknown>;
+}
+
 export interface AmbientEntityData {
     typeId: string;
     recordedData: {
@@ -64,6 +69,8 @@ export interface AmbientEntityData {
     lastSeenTick: number;
     replayEntity?: Entity; // created during playback
     hurtTicks?: Map<number, number>;
+    id?: string;
+    entityComponents?: RecordedEntityComponent[]; // now stores type + values
 }
 export type AmbientEntityMap = Map<string, AmbientEntityData>; // entityId -> data
 
