@@ -22,7 +22,7 @@
     ]
   },
   "header": {
-    "name": "ReplayCraft RP v2.3.0",
+    "name": "ReplayCraft RP v2.3.1",
     "description": "Replay Craft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition.",
     "min_engine_version": [
       1,
@@ -33,7 +33,7 @@
     "version": [
       2,
       3,
-      0
+      1
     ]
   },
   "modules": [
@@ -53,7 +53,7 @@
       "version": [
         2,
         3,
-        0
+        1
       ]
     }
   ]

@@ -71,7 +71,6 @@ const easeTypesCom = [
     "out_sine",
     "spring",
 ];
-
 const particlesName = [
     "Heart Particle",
     "Soul Particle",
@@ -741,8 +740,8 @@ function removeLastFrame(player: Player) {
         });
         return;
     }
-    pData.cineCamPos = [];
-    rData.cineCamRot = [];
+    pData.cineCamPos.pop();
+    rData.cineCamRot.pop();
     saveFrameDataRC(player);
     player.sendMessage({
         rawtext: [
