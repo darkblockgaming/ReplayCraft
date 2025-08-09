@@ -1,4 +1,4 @@
-import { CustomCommandOrigin, CustomCommandStatus, Player, system } from "@minecraft/server";
+import { CustomCommandOrigin, CustomCommandStatus, system } from "@minecraft/server";
 import {
     replayCraftBlockDB,
     replayCraftPlayerPosDB,

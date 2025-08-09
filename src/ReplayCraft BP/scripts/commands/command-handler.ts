@@ -53,7 +53,7 @@ function init(event: StartupEvent) {
         ],
     };
     const replaycraftDatabaseCommand: CustomCommand = {
-        name: "rc:database",
+        name: "rc:listdatabase",
         description: "Prints the contents of a database to the server console",
         permissionLevel: CommandPermissionLevel.GameDirectors,
         optionalParameters: [{ type: CustomCommandParamType.String, name: "Database Name" }],
