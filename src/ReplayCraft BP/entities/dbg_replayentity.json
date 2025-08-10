@@ -1,5 +1,5 @@
 {
-  "format_version": "1.20.40",
+  "format_version": "1.21.100",
   "minecraft:entity": {
     "description": {
       "identifier": "dbg:replayentity",
@@ -39,7 +39,7 @@
       "minecraft:damage_sensor": {
         "triggers": {
           "cause": "all",
-          "deals_damage": false
+          "deals_damage": "no"
         }
       },
       "minecraft:water_movement": {

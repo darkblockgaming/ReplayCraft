@@ -1,15 +1,15 @@
-dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v2.1.4§r
+dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v3.0.0§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
 dbg.rc1.title.replaycraft.settings=§bReplayCraft Settings§r
 dbg.rc1.title.multiplayer.settings=§bMultiplayer Settings§r
 
-dbg.rc1.body.2a=Made By §6DarkBlock Gaming§r\nRecording: §bOff
-dbg.rc1.body.2b=Made By §6DarkBlock Gaming§r\nRecording: §bOn (Background)
-dbg.rc1.body.2c=Made By §6DarkBlock Gaming§r\nRecording: §bPaused
-dbg.rc1.body.2d=Made By §6DarkBlock Gaming§r\nRecording: §bSaved (Off)
-dbg.rc1.body.2e=Made By §6DarkBlock Gaming§r\nRecording: §bSaved (Off)
-dbg.rc1.body.2f=Made By §6DarkBlock Gaming§r\nRecording: §bSaved (Off)
+dbg.rc1.body.2a=Recording: §bOff
+dbg.rc1.body.2b=Recording: §bOn (Background)
+dbg.rc1.body.2c=Recording: §bPaused
+dbg.rc1.body.2d=Recording: §bSaved (Off)
+dbg.rc1.body.2e=Recording: §bSaved (Off)
+dbg.rc1.body.2f=Recording: §bSaved (Off)
 
 dbg.rc1.body.made.by.dbg=Made By §6DarkBlock Gaming§r
 
@@ -176,3 +176,4 @@ replaycraft.recordingmenu.title=§9ReplayCraft: Recording Menu
 replaycraft.previewmenu.title=§9ReplayCraft: Preview Menu
 replaycraft.replaymenu.title=§9ReplayCraft: Finalize & Record
 replaycraft.Finalize.Record.body=Select options below to finalize your replay and start recording your screen.
+replaycraft.hardcore.mode.check = §f§4[ReplayCraft]§f Flight cannot be enabled in hardcore mode.

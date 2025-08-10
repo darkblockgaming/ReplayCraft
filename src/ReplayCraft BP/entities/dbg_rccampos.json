@@ -1,11 +1,30 @@
 {
-    "format_version": "1.16.0",
+    "format_version": "1.21.100",
     "minecraft:entity": {
         "description": {
             "identifier": "dbg:rccampos",
             "is_spawnable": false,
             "is_summonable": true,
-            "is_experimental": false
+            "properties": {
+                "rc:rot_x": {
+                    "type": "float",
+                    "range": [
+                        -90.0,
+                        90.0
+                    ],
+                    "default": 0.0,
+                    "client_sync": true
+                },
+                "rc:rot_y": {
+                    "type": "float",
+                    "range": [
+                        -180.0,
+                        180.0
+                    ],
+                    "default": 180.0,
+                    "client_sync": true
+                }
+            }
         },
         "components": {
             "minecraft:type_family": {
@@ -14,7 +33,7 @@
             "minecraft:damage_sensor": {
                 "triggers": {
                     "cause": "all",
-                    "deals_damage": false
+                    "deals_damage": "no"
                 }
             },
             "minecraft:collision_box": {

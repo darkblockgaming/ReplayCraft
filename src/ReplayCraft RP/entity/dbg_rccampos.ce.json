@@ -1,16 +1,24 @@
 {
-  "format_version": "1.16.0",
+  "format_version": "1.21.100",
   "minecraft:client_entity": {
     "description": {
       "identifier": "dbg:rccampos",
       "materials": {
-        "default": "spider"
+        "default": "entity_alphatest"
       },
       "textures": {
-        "default": "textures/entity/others/dbg_rccampos"
+        "default": "textures/entity/others/campos.png"
       },
       "geometry": {
         "default": "geometry.dbg_rccampos"
+      },
+      "animations": {
+        "facing": "animation.campos_facing"
+      },
+      "scripts": {
+        "animate": [
+          "facing"
+        ]
       },
       "render_controllers": [ "controller.render.dbg_rccampos" ]
     }

@@ -61,6 +61,8 @@ export function addCameraPoint(player: Player) {
 
     const camPos1Entity = player.dimension.spawnEntity("dbg:rccampos" as VanillaEntityIdentifier, spawnLocation);
     camPos1Entity.nameTag = `Camera Point ${session.replayCamPos.length}`;
+    camPos1Entity.setProperty("rc:rot_x", player.getRotation().x);
+    camPos1Entity.setProperty("rc:rot_y", player.getRotation().y);
     camPos1Entity.addTag("owner:" + player.id);
 
     if (session.textPrompt) {
