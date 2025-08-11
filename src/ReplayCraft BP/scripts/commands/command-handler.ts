@@ -7,6 +7,7 @@ import config from "../data/util/config";
 import { debugDatabaseUiCmd } from "./debug/database-ui-cmd";
 import { debugPlayAnimationCmd } from "./debug/play-animation-cmd";
 import { debugDatabaseConsoleCmd } from "./debug/database-list-cmd";
+import { debugShowEntityComponentsCmd } from "./debug/debug-utils/show-entity-components";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -58,6 +59,12 @@ function init(event: StartupEvent) {
         permissionLevel: CommandPermissionLevel.GameDirectors,
         optionalParameters: [{ type: CustomCommandParamType.String, name: "Database Name" }],
     };
+    const replaycraftShowEntityComponetsCommand: CustomCommand = {
+        name: "rc:showentitycomponets",
+        description: "Shows requested entity components above near by entities.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+        optionalParameters: [{ type: CustomCommandParamType.String, name: "Required Components." }],
+    };
     /*
      * Register commands
      **/
@@ -69,6 +76,7 @@ function init(event: StartupEvent) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
         event.customCommandRegistry.registerCommand(replaycraftDatabaseCommand, debugDatabaseConsoleCmd);
+        event.customCommandRegistry.registerCommand(replaycraftShowEntityComponetsCommand, debugShowEntityComponentsCmd);
     }
 }
 
