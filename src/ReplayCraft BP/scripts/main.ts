@@ -29,6 +29,7 @@ import { summonReplayEntity } from "./functions/summon-replay-entity";
 import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
 import { customCommands } from "./commands/command-handler";
 import { cloneComponentData } from "./data/util/export-entity-components";
+import { registerEntitySpawnHandler } from "./classes/subscriptions/entity-spawn-after-event";
 
 //Chat events
 beforeChatSend();
@@ -82,7 +83,9 @@ system.runInterval(() => {
         const isPlayback = state === "recStartRep";
         const isRecording = state === "recPending";
         const isReplaying = isView || isPlayback;
-
+        registerEntitySpawnHandler({
+            trackedPlayers,
+        });
         // --- Recording Timer ---
         if (isRecording) session.recordingEndTick++;
 
@@ -359,6 +362,7 @@ system.runInterval(() => {
                             lastSeenTick: session.recordingEndTick,
                             id: entity.id,
                             entityComponents: components, // now contains type + values
+                            wasSpawned: false,
                         };
 
                         playerMap.set(key, entry);
@@ -437,7 +441,7 @@ system.runInterval(() => {
         }
 
         // --- Ambient Entity Playback ---
-        if (isReplaying && settingReplayType === 0) {
+        /*if (isReplaying && settingReplayType === 0) {
             trackedPlayers.forEach((player) => {
                 const dimension = player.dimension;
                 const playerId = player.id;
@@ -501,6 +505,111 @@ system.runInterval(() => {
                         try {
                             data.replayEntity.remove();
                             data.replayEntity = undefined;
+                        } catch (err) {
+                            debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
+                        }
+                    }
+                }
+            });
+        }
+**/
+        if (isReplaying && settingReplayType === 0) {
+            trackedPlayers.forEach((player) => {
+                const dimension = player.dimension;
+                const playerId = player.id;
+                const ambientMap = session.replayAmbientEntityMap.get(playerId);
+                if (!ambientMap) return;
+
+                // CLEANUP STEP at replay start: remove entities spawned during recording
+                if (currentTick === 0) {
+                    debugLog(`Running cleanup for player ${player.name}...`);
+                    for (const [id, data] of ambientMap.entries()) {
+                        if (!id.startsWith("entity:")) continue;
+                        debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
+
+                        if (data.wasSpawned === false) {
+                            debugLog(`Skipping pre-existing entity ${id}`);
+                            continue;
+                        }
+
+                        // Instead of relying on data.replayEntity, find entity in dimension directly
+                        const numericId = id.replace("entity:", "");
+                        const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
+
+                        if (foundEntity && foundEntity.isValid) {
+                            try {
+                                foundEntity.remove();
+                                debugLog(`Removed spawned entity ${id} at replay start for player ${player.name}`);
+                            } catch (err) {
+                                debugWarn(`Failed to remove spawned entity ${id} at replay start for player ${player.name}:`, err);
+                            }
+                        } else {
+                            debugLog(`No valid entity found to remove for ${id}`);
+                        }
+                    }
+                }
+
+                for (const [id, data] of ambientMap.entries()) {
+                    if (!id.startsWith("entity:")) continue;
+                    if (data.typeId === "minecraft:item" || data.typeId === "minecraft:xp_orb") continue;
+
+                    const tickData = data.recordedData[currentTick];
+
+                    // Try to find existing entity by id in dimension if not assigned yet
+                    if (!data.replayEntity) {
+                        const numericId = id.replace("entity:", "");
+                        const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
+                        if (foundEntity) {
+                            data.replayEntity = foundEntity;
+                            debugLog(`Assigned existing entity ${id} to replayEntity for player ${player.name}`);
+                        }
+                    }
+
+                    const entity = data.replayEntity;
+                    const hasValidEntity = entity && entity.isValid;
+
+                    // Spawn if no entity exists and we have tickData
+                    if (!hasValidEntity && currentTick >= data.spawnTick && tickData) {
+                        try {
+                            const spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
+                            spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
+                            spawnedEntity.addTag(`replay:${player.id}`);
+                            debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
+                            data.replayEntity = spawnedEntity;
+                        } catch (err) {
+                            debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
+                        }
+                    }
+
+                    if (hasValidEntity && tickData) {
+                        try {
+                            entity.teleport(tickData.location, { rotation: tickData.rotation });
+                        } catch (err) {
+                            debugWarn(`Failed to move ambient entity ${id} for player ${player.name}:`, err);
+                            data.replayEntity = undefined; // clear invalid reference
+                        }
+                    }
+
+                    // Damage and despawn logic unchanged...
+                    if (hasValidEntity && data.hurtTicks?.has(currentTick)) {
+                        try {
+                            const damageAmount = data.hurtTicks.get(currentTick);
+                            if (damageAmount !== undefined) {
+                                const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
+                                customEntity?.playAnimation("animation.replayentity.attack");
+                                entity.applyDamage(damageAmount);
+                            }
+                        } catch (err) {
+                            debugWarn(`Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
+                            data.replayEntity = undefined;
+                        }
+                    }
+
+                    if (hasValidEntity && data.despawnTick === currentTick && entity.hasTag(`replay:${player.id}`)) {
+                        try {
+                            entity.remove();
+                            data.replayEntity = undefined;
+                            debugLog(`Despawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
                         } catch (err) {
                             debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
                         }

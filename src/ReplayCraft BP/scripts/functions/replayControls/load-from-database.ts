@@ -227,6 +227,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                     despawnTick: number;
                     lastSeenTick: number;
                     hurtTicks?: [number, number][] | Record<number, number>;
+                    wasSpawned: boolean;
                 }
                 if (savedAmbientEntityData) {
                     try {
@@ -254,6 +255,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                                 lastSeenTick: data.lastSeenTick,
                                 replayEntity: undefined,
                                 hurtTicks: hurtTicksMap,
+                                wasSpawned: data.wasSpawned,
                             });
                         }
 

@@ -71,6 +71,7 @@ export interface AmbientEntityData {
     hurtTicks?: Map<number, number>;
     id?: string;
     entityComponents?: RecordedEntityComponent[]; // now stores type + values
+    wasSpawned: boolean;
 }
 export type AmbientEntityMap = Map<string, AmbientEntityData>; // entityId -> data
 
