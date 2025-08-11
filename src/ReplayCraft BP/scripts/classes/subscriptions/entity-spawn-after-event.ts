@@ -24,7 +24,6 @@ export function registerEntitySpawnHandler({ trackedPlayers }: { trackedPlayers:
             const entry = playerMap.get(key);
 
             if (!entry) {
-                debugLog(`Entity ${key} not found in replay map for player ${player.id} — ignoring spawn.`);
                 return;
             }
 

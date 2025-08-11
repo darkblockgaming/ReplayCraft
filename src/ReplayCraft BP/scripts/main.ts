@@ -18,7 +18,7 @@ import "./ReplayCraft.js";
 import { removeEntities } from "./functions/remove-entities";
 import config from "./data/util/config";
 import { replaySessions } from "./data/replay-player-session";
-import { BlockData, RecordedEntityComponent } from "./classes/types/types";
+import { BlockData } from "./classes/types/types";
 import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
@@ -345,15 +345,6 @@ system.runInterval(() => {
 
                     let entry = playerMap.get(key);
                     if (!entry) {
-                        // Gather all components with their current values
-                        const components: RecordedEntityComponent[] = entity.getComponents().map((component) => {
-                            const componentData = cloneComponentData(component) as Record<string, unknown>;
-                            return {
-                                typeId: component.typeId,
-                                componentData,
-                            };
-                        });
-
                         entry = {
                             typeId: entity.typeId,
                             recordedData: {},
@@ -361,11 +352,18 @@ system.runInterval(() => {
                             despawnTick: null,
                             lastSeenTick: session.recordingEndTick,
                             id: entity.id,
-                            entityComponents: components, // now contains type + values
+                            entityComponents: [], // now contains type + values
                             wasSpawned: false,
                         };
 
                         playerMap.set(key, entry);
+                    }
+                    // If no components recorded yet, store them now
+                    if (!entry.entityComponents || entry.entityComponents.length === 0) {
+                        entry.entityComponents = entity.getComponents().map((component) => ({
+                            typeId: component.typeId,
+                            componentData: cloneComponentData(component) as Record<string, unknown>,
+                        }));
                     }
 
                     entry.recordedData[session.recordingEndTick] = {
@@ -388,14 +386,14 @@ system.runInterval(() => {
         }
 
         if (isReplaying && session.replayStateMachine.state !== "recSaved") {
-            debugLog("Tick:", session.currentTick);
-            debugLog("All player IDs:", session.allRecordedPlayerIds);
+            //debugLog("Tick:", session.currentTick);
+            //debugLog("All player IDs:", session.allRecordedPlayerIds);
 
             for (const playerId of session.allRecordedPlayerIds) {
                 const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
                 const entity = session.replayEntityDataMap.get(playerId)?.customEntity;
 
-                debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
+                //debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
 
                 if (session.currentTick === joinTick && !entity && session.currentTick <= session.recordingEndTick) {
                     debugLog(`Spawning entity for ${playerId}`);
@@ -502,6 +500,28 @@ system.runInterval(() => {
                             const spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
                             spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
                             spawnedEntity.addTag(`replay:${player.id}`);
+
+                            if (data.entityComponents && data.entityComponents.length > 0) {
+                                debugLog(`Restoring ${data.entityComponents.length} components for entity ${id}`);
+
+                                for (const comp of data.entityComponents) {
+                                    try {
+                                        const entityComponent = spawnedEntity.getComponent(comp.typeId);
+                                        if (!entityComponent) {
+                                            debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
+                                            continue;
+                                        }
+                                        debugLog(`Applying component ${comp.typeId} to entity ${id}`);
+                                        Object.assign(entityComponent, comp.componentData);
+                                        debugLog(`Applied component ${comp.typeId} to ${id}`);
+                                    } catch (err) {
+                                        debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
+                                    }
+                                }
+                            } else {
+                                debugLog(`No components found to restore for entity ${id}`);
+                            }
+
                             debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
                             data.replayEntity = spawnedEntity;
                         } catch (err) {

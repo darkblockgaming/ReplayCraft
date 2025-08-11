@@ -17,7 +17,7 @@ import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog, debugWarn, debugError } from "../../data/util/debug";
-import { AmbientEntityData } from "../../classes/types/types";
+import { AmbientEntityData, RecordedEntityComponent } from "../../classes/types/types";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     const key = player.id + buildName;
@@ -228,6 +228,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                     lastSeenTick: number;
                     hurtTicks?: [number, number][] | Record<number, number>;
                     wasSpawned: boolean;
+                    entityComponents?: RecordedEntityComponent[];
                 }
                 if (savedAmbientEntityData) {
                     try {
@@ -255,6 +256,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                                 lastSeenTick: data.lastSeenTick,
                                 replayEntity: undefined,
                                 hurtTicks: hurtTicksMap,
+                                entityComponents: data.entityComponents,
                                 wasSpawned: data.wasSpawned,
                             });
                         }
