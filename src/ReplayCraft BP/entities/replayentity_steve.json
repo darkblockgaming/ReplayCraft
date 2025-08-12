@@ -5,7 +5,6 @@
       "identifier": "dbg:replayentity_steve",
       "is_spawnable": false,
       "is_summonable": true,
-      "is_experimental": false,
       "properties": {
         "dbg:skin": {
           "type": "int",
@@ -100,38 +99,60 @@
       }
     },
     "components": {
-      "minecraft:tick_world": {
-        "distance_to_players": 128,
-        "never_despawn": true,
-        "radius": 6
+      "minecraft:experience_reward": {
+        "on_death": "Math.Min(query.player_level * 7, 100)"
       },
       "minecraft:type_family": {
         "family": [
-          "other"
+          "replayentity",
+          "dummy-player"
         ]
       },
-      "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "all",
-          "deals_damage": "no"
-        }
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:loot": {
+        "table": "loot_tables/empty.json"
       },
-      "minecraft:water_movement": {
-        "drag_factor": 0
+      "minecraft:health": {
+        "value": 20,
+        "max": 20
       },
-      "minecraft:equip_item": {},
-      "minecraft:physics": {
-        "has_gravity": false,
-        "has_collision": false
+      // "minecraft:collision_box": {
+      //     "width": 0.6,
+      //     "height": 1.8
+      // },
+      "minecraft:collision_box": {
+          "width": 0.0,
+          "height": 0.0
       },
-      "minecraft:pushable": {
-        "is_pushable": false,
-        "is_pushable_by_piston": false
-      },
+      "minecraft:can_climb": {},
       "minecraft:nameable": {
         "always_show": true,
         "allow_name_tag_renaming": false
-      }
+      },
+      "minecraft:physics": {
+        "push_towards_closest_space": true
+      },
+      // "minecraft:physics": {
+      //   "has_gravity": false,
+      //   "has_collision": false
+      // },
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:block_climber": {},
+      "minecraft:tick_world": {
+        "never_despawn": true,
+        "radius": 6
+      },
+      // "minecraft:damage_sensor": {
+      //   "triggers": {
+      //     "cause": "all",
+      //     "deals_damage": "no"
+      //   }
+      // }
+      "minecraft:equip_item": {}
     }
   }
 }
