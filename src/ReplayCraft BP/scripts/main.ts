@@ -30,6 +30,7 @@ import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
 import { customCommands } from "./commands/command-handler";
 import { cloneComponentData } from "./data/util/export-entity-components";
 import { registerEntitySpawnHandler } from "./classes/subscriptions/entity-spawn-after-event";
+import { assignEntityComponents } from "./entity/variant-trigger";
 
 //Chat events
 beforeChatSend();
@@ -360,10 +361,27 @@ system.runInterval(() => {
                     }
                     // If no components recorded yet, store them now
                     if (!entry.entityComponents || entry.entityComponents.length === 0) {
-                        entry.entityComponents = entity.getComponents().map((component) => ({
-                            typeId: component.typeId,
-                            componentData: cloneComponentData(component) as Record<string, unknown>,
-                        }));
+                        entry.entityComponents = entity.getComponents().map((component) => {
+                            /*Clone the data however this wont grab data that uses extra functions.
+                             * so we add those below as and when needed.
+                             **/
+
+                            const clonedData = cloneComponentData(component) as Record<string, unknown>;
+
+                            // Special case to extract the familes data via getTypeFamilies()
+                            if (component.typeId === "minecraft:type_family" && typeof (component as any).getTypeFamilies === "function") {
+                                try {
+                                    clonedData.families = (component as any).getTypeFamilies();
+                                } catch (e) {
+                                    console.warn(`Failed to get type families for ${entity.typeId}:`, e);
+                                }
+                            }
+
+                            return {
+                                typeId: component.typeId,
+                                componentData: clonedData,
+                            };
+                        });
                     }
 
                     entry.recordedData[session.recordingEndTick] = {
@@ -511,9 +529,8 @@ system.runInterval(() => {
                                             debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
                                             continue;
                                         }
-                                        debugLog(`Applying component ${comp.typeId} to entity ${id}`);
-                                        Object.assign(entityComponent, comp.componentData);
-                                        debugLog(`Applied component ${comp.typeId} to ${id}`);
+                                        console.log(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
+                                        assignEntityComponents(spawnedEntity, comp);
                                     } catch (err) {
                                         debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
                                     }
