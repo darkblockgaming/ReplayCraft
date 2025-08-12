@@ -46,6 +46,8 @@ export function resetRec(player: Player) {
     session.replayEntityDataMap.set(player.id, {
         customEntity: undefined,
     });
+
+    session.replayAmbientEntityMap.set(player.id, new Map());
     session.replayEquipmentDataMap.set(player.id, {
         weapon1: [],
         weapon2: [],
@@ -54,4 +56,7 @@ export function resetRec(player: Player) {
         armor3: [],
         armor4: [],
     });
+    session.allRecordedPlayerIds.add(player.id);
+    session.trackedPlayerJoinTicks.set(player.id, 0);
+    session.playerDamageEventsMap.set(player.id, undefined);
 }

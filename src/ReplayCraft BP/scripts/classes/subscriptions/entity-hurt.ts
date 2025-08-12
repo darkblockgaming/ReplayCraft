@@ -27,7 +27,11 @@ function onEntityHit(event: EntityHurtAfterEvent) {
     debugLog(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
 
     if (!damageSource || !damageSource.damagingEntity) return;
-    if (damageSource.damagingEntity.typeId !== "minecraft:player") return;
+
+    if (damageSource.damagingEntity.typeId !== "minecraft:player") {
+        // Need to record this data so we can play it back later on
+        return;
+    }
 
     const player = damageSource.damagingEntity;
     const playerId = player.id;

@@ -12,9 +12,10 @@ let replayCraftPlaybackEntityDB: OptimizedDatabase;
 let replayCraftPlayerArmorWeaponsDB: OptimizedDatabase;
 let replayCraftSkinDB: OptimizedDatabase;
 let replayCraftActiveSessionsDB: OptimizedDatabase;
-let replayAmbientEntityDB: OptimizedDatabase;
-let replayAllRecordedPlayerIds: OptimizedDatabase;
-let replayTrackedPlayerJoinTicks: OptimizedDatabase;
+let replayCraftAmbientEntityDB: OptimizedDatabase;
+let replayCraftAllRecordedPlayerIdsDB: OptimizedDatabase;
+let replayCraftTrackedPlayerJoinTicksDB: OptimizedDatabase;
+let replayCraftPlayerDamageEventsDB: OptimizedDatabase;
 export {
     replayCraftBlockDB,
     replayCraftPlayerPosDB,
@@ -27,9 +28,10 @@ export {
     replayCraftPlayerArmorWeaponsDB,
     replayCraftSkinDB,
     replayCraftActiveSessionsDB,
-    replayAmbientEntityDB,
-    replayAllRecordedPlayerIds,
-    replayTrackedPlayerJoinTicks,
+    replayCraftTrackedPlayerJoinTicksDB,
+    replayCraftAmbientEntityDB,
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftPlayerDamageEventsDB,
 };
 /**
  * Initializes define the database on world initialization.
@@ -43,10 +45,10 @@ function onWorldInitialize() {
     replayCraftBeforeBlockInteractionsDB = new OptimizedDatabase("replayCraftBeforeBlockInteractionsDatabase");
     replayCraftPlaybackEntityDB = new OptimizedDatabase("replayCraftPlaybackEntityDatabase");
     replayCraftPlayerArmorWeaponsDB = new OptimizedDatabase("replayCraftPlayerArmorWeaponsDatabase");
-    replayAmbientEntityDB = new OptimizedDatabase("replayAmbientEntityDatabase");
+    replayCraftAmbientEntityDB = new OptimizedDatabase("replayAmbientEntityDatabase");
     // This database is used to store all player IDs that have been recorded in the replay.
-    replayAllRecordedPlayerIds = new OptimizedDatabase("replayAllRecordedPlayerIdsDatabase");
-    replayTrackedPlayerJoinTicks = new OptimizedDatabase("replayTrackedPlayerJoinTicksDatabase");
+    replayCraftAllRecordedPlayerIdsDB = new OptimizedDatabase("replayAllRecordedPlayerIdsDatabase");
+    replayCraftTrackedPlayerJoinTicksDB = new OptimizedDatabase("replayTrackedPlayerJoinTicksDatabase");
     //Skin Data for multiplayer recordings
     replayCraftSkinDB = new OptimizedDatabase("replayCraftSkinDatabase");
 
@@ -55,6 +57,9 @@ function onWorldInitialize() {
 
     //store active sessions
     replayCraftActiveSessionsDB = new OptimizedDatabase("replayCraftActiveSessionsDatabase");
+
+    //Store damage data for the players
+    replayCraftPlayerDamageEventsDB = new OptimizedDatabase("replayCraftPlayerDamageEventsDataBase");
 }
 
 /**

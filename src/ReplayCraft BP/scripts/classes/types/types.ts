@@ -55,6 +55,16 @@ export interface RecordedEntityComponent {
     typeId: string;
     componentData: Record<string, unknown>;
 }
+export interface PlayerDamageData {
+    playerID: string;
+    playerName: string;
+    hurtTick: number;
+    DamageDealt: number;
+    Weapon: string;
+    VictimID: string;
+    VictimName: string;
+}
+export type PlayerDamageMap = Map<string, PlayerDamageData | undefined>;
 
 export interface AmbientEntityData {
     typeId: string;

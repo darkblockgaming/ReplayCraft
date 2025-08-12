@@ -9,9 +9,10 @@ import {
     replayCraftSettingsDB,
     replayCraftPlaybackEntityDB,
     replayCraftPlayerArmorWeaponsDB,
-    replayAmbientEntityDB,
-    replayAllRecordedPlayerIds,
-    replayTrackedPlayerJoinTicks,
+    replayCraftAmbientEntityDB,
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftTrackedPlayerJoinTicksDB,
+    replayCraftPlayerDamageEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { PlayerReplaySession } from "../../data/replay-player-session";
 import { debugLog, debugWarn } from "../../data/util/debug";
@@ -29,7 +30,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
     } else {
         // Convert Set to Array for saving
         const arrayToSave = Array.from(playerAllRecordedPlayerIdsData);
-        replayAllRecordedPlayerIds.set(player.id + session.buildName, arrayToSave);
+        replayCraftAllRecordedPlayerIdsDB.set(player.id + session.buildName, arrayToSave);
     }
 
     // Save per-player data from session maps
@@ -46,6 +47,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         const playerArmorWeaponsData = session.replayEquipmentDataMap.get(playerId);
         const playerAmbientEntityData = session.replayAmbientEntityMap.get(playerId);
         const playerTrackedPlayerJoinTicks = session.trackedPlayerJoinTicks.get(playerId);
+        const playerDamageEventData = session.playerDamageEventsMap.get(playerId);
 
         if (!PlayerBlockData) debugWarn(`Missing block data for player ${playerId}`);
         if (!playerPositionData) debugWarn(`Missing position data for player ${playerId}`);
@@ -57,6 +59,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         if (!playerArmorWeaponsData) debugWarn(`Missing armor/weapons data for player ${playerId}`);
         if (!playerAmbientEntityData) debugWarn(`Missing Ambient Entity data for player ${playerId}`);
         if (!playerTrackedPlayerJoinTicks) debugWarn(`Missing tracked player join ticks for player ${playerId}`);
+        if (!playerDamageEventData) debugWarn(`Missing player damage event data for player ${playerId}`);
 
         if (PlayerBlockData) replayCraftBlockDB.set(playerId + session.buildName, PlayerBlockData);
         if (playerPositionData) replayCraftPlayerPosDB.set(playerId + session.buildName, playerPositionData);
@@ -66,7 +69,8 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         if (playerBeforeBlockInteractionsData) replayCraftBeforeBlockInteractionsDB.set(playerId + session.buildName, playerBeforeBlockInteractionsData);
         if (playBackEntityData) replayCraftPlaybackEntityDB.set(playerId + session.buildName, playBackEntityData);
         if (playerArmorWeaponsData) replayCraftPlayerArmorWeaponsDB.set(playerId + session.buildName, playerArmorWeaponsData);
-        if (playerTrackedPlayerJoinTicks) replayTrackedPlayerJoinTicks.set(playerId + session.buildName, playerTrackedPlayerJoinTicks);
+        if (playerTrackedPlayerJoinTicks) replayCraftTrackedPlayerJoinTicksDB.set(playerId + session.buildName, playerTrackedPlayerJoinTicks);
+        if (playerDamageEventData) replayCraftPlayerDamageEventsDB.set(playerId + session.buildName, playerDamageEventData);
         if (playerAmbientEntityData instanceof Map) {
             // Convert outer Map to object with entityId keys
             const objToSave: Record<string, any> = {};
@@ -79,9 +83,9 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
                 };
             }
 
-            replayAmbientEntityDB.set(playerId + session.buildName, objToSave);
+            replayCraftAmbientEntityDB.set(playerId + session.buildName, objToSave);
         } else {
-            replayAmbientEntityDB.set(playerId + session.buildName, playerAmbientEntityData);
+            replayCraftAmbientEntityDB.set(playerId + session.buildName, playerAmbientEntityData);
         }
 
         debugLog(`Data saved for player: ${playerId}`);

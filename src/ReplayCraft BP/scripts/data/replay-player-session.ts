@@ -1,6 +1,17 @@
 import { Player, Vector3 } from "@minecraft/server";
 import { ReplayStateMachine } from "../classes/replay-state-machine";
-import { PlayerBlockData, PlayerBlockInteractionData, PlayerBlockInteractionBeforeData, PlayerPositionData, PlayerRotationData, PlayerActionsData, PlaybackEntityData, PlayerEquipmentData, AmbientEntityData } from "../classes/types/types";
+import {
+    PlayerBlockData,
+    PlayerBlockInteractionData,
+    PlayerBlockInteractionBeforeData,
+    PlayerPositionData,
+    PlayerRotationData,
+    PlayerActionsData,
+    PlaybackEntityData,
+    PlayerEquipmentData,
+    AmbientEntityData,
+    PlayerDamageData,
+} from "../classes/types/types";
 
 export interface PlayerReplaySession {
     /**
@@ -44,6 +55,7 @@ export interface PlayerReplaySession {
     replayAmbientEntityMap: Map<string, Map<string, AmbientEntityData>>;
     allRecordedPlayerIds: Set<string>; //Used for playback to ensure all players are tracked
     trackedPlayerJoinTicks: Map<string, number>; // Maps player IDs to the tick they joined the session
+    playerDamageEventsMap: Map<string, PlayerDamageData>;
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;

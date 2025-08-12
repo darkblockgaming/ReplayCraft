@@ -31,4 +31,5 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
     });
     session.allRecordedPlayerIds.add(playerId);
     session.trackedPlayerJoinTicks.set(playerId, 0);
+    session.playerDamageEventsMap.set(playerId, undefined);
 }

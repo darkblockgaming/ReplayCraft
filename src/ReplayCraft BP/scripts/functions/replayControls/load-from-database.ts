@@ -8,9 +8,10 @@ import {
     replayCraftPlayerPosDB,
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
-    replayAmbientEntityDB,
-    replayAllRecordedPlayerIds,
-    replayTrackedPlayerJoinTicks,
+    replayCraftAmbientEntityDB,
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftTrackedPlayerJoinTicksDB,
+    replayCraftPlayerDamageEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
@@ -99,7 +100,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     //reload allPLayerIds from DB
     try {
         // Load allRecordedPlayerIds array from DB (using player.id + buildName key)
-        const allRecordedIdsRaw = replayAllRecordedPlayerIds.get(player.id + buildName);
+        const allRecordedIdsRaw = replayCraftAllRecordedPlayerIdsDB.get(player.id + buildName);
         if (Array.isArray(allRecordedIdsRaw)) {
             session.allRecordedPlayerIds = new Set(allRecordedIdsRaw);
             debugLog(`Restored allRecordedPlayerIds for session: ${allRecordedIdsRaw.join(", ")}`);
@@ -126,6 +127,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             "replayEquipmentDataMap",
             "replayAmbientEntityMap",
             "trackedPlayerJoinTicks",
+            "playerDamageEventsMap",
         ].forEach((key) => {
             const val = (session as any)[key];
             debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
@@ -142,6 +144,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             session.replayEquipmentDataMap.delete(p);
             session.replayAmbientEntityMap.delete(p);
             session.trackedPlayerJoinTicks.delete(p);
+            session.playerDamageEventsMap.delete(p);
         });
     } catch (err) {
         debugError(`Error clearing map data for ${player.id}:`, err);
@@ -161,7 +164,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayBackEntityData,
                 savedPlayerArmorWeaponsData,
                 savedAmbientEntityData,
-                savedPlayerJoinTicksData;
+                savedPlayerJoinTicksData,
+                savedPlayerDamageEventsData;
 
             try {
                 savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
@@ -172,8 +176,9 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayerBeforeBlockInteractionsData = replayCraftBeforeBlockInteractionsDB.get(pidKey);
                 savedPlayBackEntityData = replayCraftPlaybackEntityDB.get(pidKey);
                 savedPlayerArmorWeaponsData = replayCraftPlayerArmorWeaponsDB.get(pidKey);
-                savedAmbientEntityData = replayAmbientEntityDB.get(pidKey);
-                savedPlayerJoinTicksData = replayTrackedPlayerJoinTicks.get(pidKey);
+                savedAmbientEntityData = replayCraftAmbientEntityDB.get(pidKey);
+                savedPlayerJoinTicksData = replayCraftTrackedPlayerJoinTicksDB.get(pidKey);
+                savedPlayerDamageEventsData = replayCraftPlayerDamageEventsDB.get(pidKey);
             } catch (innerErr) {
                 debugError(`Error loading per-player DB for (${p}):`, innerErr);
                 return;
@@ -208,6 +213,9 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             }
             if (!savedPlayerJoinTicksData) {
                 debugWarn(`Missing savedPlayerJoinTicksData for player (${p})`);
+            }
+            if (!savedPlayerDamageEventsData) {
+                debugWarn(`Missing savedPlayerDamageEventsData for player (${p})`);
             }
 
             try {
@@ -266,6 +274,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                         debugError(`Error loading ambient entity map for player (${p}):`, err);
                     }
                 }
+                if (savedPlayerDamageEventsData) session.playerDamageEventsMap.set(p, savedPlayerDamageEventsData);
             } catch (mapSetErr) {
                 debugError(`Error assigning replay maps for (${p}):`, mapSetErr);
             }
