@@ -64,7 +64,7 @@ export interface PlayerDamageData {
     VictimID: string;
     VictimName: string;
 }
-export type PlayerDamageMap = Map<string, PlayerDamageData | undefined>;
+export type PlayerDamageMap = Map<string, PlayerDamageData[]>;
 
 export interface AmbientEntityData {
     typeId: string;

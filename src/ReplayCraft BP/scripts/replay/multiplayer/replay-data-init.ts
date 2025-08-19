@@ -42,5 +42,8 @@ export function ensureReplayDataForPlayer(playerId: string) {
                 armor4: [],
             });
         }
+        if (!session.playerDamageEventsMap.has(playerId)) {
+            session.playerDamageEventsMap.set(playerId, undefined);
+        }
     }
 }

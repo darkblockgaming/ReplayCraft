@@ -11,20 +11,21 @@ import {
     replayCraftPlayerArmorWeaponsDB,
     replayCraftSkinDB,
     replayCraftActiveSessionsDB,
-    replayAmbientEntityDB,
-    replayAllRecordedPlayerIds,
-    replayTrackedPlayerJoinTicks,
+    replayCraftAmbientEntityDB,
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftTrackedPlayerJoinTicksDB,
+    replayCraftPlayerDamageEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { OptimizedDatabase } from "../../data/data-hive";
 
 export function debugDatabaseConsoleCmd(_origin: CustomCommandOrigin, targetDatabase: string) {
     let db: OptimizedDatabase;
     switch (targetDatabase) {
-        case "replayAmbientEntityDB":
-            db = replayAmbientEntityDB;
+        case "replayCraftAmbientEntityDB":
+            db = replayCraftAmbientEntityDB;
             break;
-        case "replayAllRecordedPlayerIds":
-            db = replayAllRecordedPlayerIds;
+        case "replayCraftAllRecordedPlayerIds":
+            db = replayCraftAllRecordedPlayerIdsDB;
             break;
         case "replayCraftBlockDB":
             db = replayCraftBlockDB;
@@ -61,8 +62,11 @@ export function debugDatabaseConsoleCmd(_origin: CustomCommandOrigin, targetData
         case "replayCraftActiveSessionsDB":
             db = replayCraftActiveSessionsDB;
             break;
-        case "replayTrackedPlayerJoinTicks":
-            db = replayTrackedPlayerJoinTicks;
+        case "replayTrackedPlayerJoinTicksDB":
+            db = replayCraftTrackedPlayerJoinTicksDB;
+            break;
+        case "replayCraftPlayerDamageEventsDB":
+            db = replayCraftPlayerDamageEventsDB;
             break;
     }
     system.run(() => {

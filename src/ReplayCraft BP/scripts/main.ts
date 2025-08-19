@@ -1,36 +1,36 @@
-import { beforeChatSend } from "./classes/subscriptions/chat-send-before-event";
-import { replaycraftBreakBlockAfterEvent } from "./classes/subscriptions/player-break-block-after-event";
-import { replaycraftBreakBlockBeforeEvent } from "./classes/subscriptions/player-break-block-before-event";
-import { replaycraftInteractWithBlockAfterEvent } from "./classes/subscriptions/player-interact-with-block-after-event";
-import { replaycraftInteractWithBlockBeforeEvent } from "./classes/subscriptions/player-interact-with-block-before-event";
-import { replaycraftItemUseAfterEvent } from "./classes/subscriptions/player-item-use-after-event";
-import { replaycraftPlaceBlockBeforeEvent } from "./classes/subscriptions/player-place-block-before-event";
-import { replaycraftPlaceBlockAfterEvent } from "./classes/subscriptions/player-place-block-after-event";
+import { beforeChatSend } from "./replay/classes/subscriptions/chat-send-before-event";
+import { replaycraftBreakBlockAfterEvent } from "./replay/classes/subscriptions/player-break-block-after-event";
+import { replaycraftBreakBlockBeforeEvent } from "./replay/classes/subscriptions/player-break-block-before-event";
+import { replaycraftInteractWithBlockAfterEvent } from "./replay/classes/subscriptions/player-interact-with-block-after-event";
+import { replaycraftInteractWithBlockBeforeEvent } from "./replay/classes/subscriptions/player-interact-with-block-before-event";
+import { replaycraftItemUseAfterEvent } from "./replay/classes/subscriptions/player-item-use-after-event";
+import { replaycraftPlaceBlockBeforeEvent } from "./replay/classes/subscriptions/player-place-block-before-event";
+import { replaycraftPlaceBlockAfterEvent } from "./replay/classes/subscriptions/player-place-block-after-event";
 import { BlockPermutation, EasingType, Entity, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
-import { clearStructure } from "./functions/clear-structure";
-import { playBlockSound } from "./functions/play-block-sound";
-import { onPlayerSpawn } from "./classes/subscriptions/player-spawn-after-event";
-import { onPlayerLeave } from "./classes/subscriptions/player-leave-after-event";
-import { subscribeToWorldInitialize } from "./classes/subscriptions/world-initialize";
-import { onEntityHurt } from "./classes/subscriptions/entity-hurt";
+import { clearStructure } from "./replay/functions/clear-structure";
+import { playBlockSound } from "./replay/functions/play-block-sound";
+import { onPlayerSpawn } from "./replay/classes/subscriptions/player-spawn-after-event";
+import { onPlayerLeave } from "./replay/classes/subscriptions/player-leave-after-event";
+import { subscribeToWorldInitialize } from "./replay/classes/subscriptions/world-initialize";
+import { onEntityHurt } from "./replay/classes/subscriptions/entity-hurt";
 //temp solution for the missing import this needs to be convered.
-import "./ReplayCraft.js";
-import { removeEntities } from "./functions/remove-entities";
-import config from "./data/util/config";
-import { replaySessions } from "./data/replay-player-session";
-import { BlockData } from "./classes/types/types";
-import { removeOwnedAmbientEntities } from "./entity/remove-ambient-entities";
-import { debugLog, debugWarn } from "./data/util/debug";
-import { getRiddenEntity, isPlayerRiding } from "./entity/is-riding";
-import { isPlayerCrawling } from "./entity/is-crawling";
-import { calculateFallRatio } from "./entity/transistion";
-import { updateTrackedPlayers } from "./multiplayer/tracked-players";
-import { summonReplayEntity } from "./functions/summon-replay-entity";
-import { cleanupReplayEntities } from "./multiplayer/cleanup-replay-entities";
-import { customCommands } from "./commands/command-handler";
-import { cloneComponentData } from "./data/util/export-entity-components";
-import { registerEntitySpawnHandler } from "./classes/subscriptions/entity-spawn-after-event";
-import { assignEntityComponents } from "./entity/variant-trigger";
+import "./cinematic/cinematic.js";
+import { removeEntities } from "./replay/functions/remove-entities";
+import config from "./replay/data/util/config";
+import { replaySessions } from "./replay/data/replay-player-session";
+import { BlockData } from "./replay/classes/types/types";
+import { removeOwnedAmbientEntities } from "./replay/entity/remove-ambient-entities";
+import { debugLog, debugWarn } from "./replay/data/util/debug";
+import { getRiddenEntity, isPlayerRiding } from "./replay/entity/is-riding";
+import { isPlayerCrawling } from "./replay/entity/is-crawling";
+import { calculateFallRatio } from "./replay/entity/transistion";
+import { updateTrackedPlayers } from "./replay/multiplayer/tracked-players";
+import { summonReplayEntity } from "./replay/functions/summon-replay-entity";
+import { cleanupReplayEntities } from "./replay/multiplayer/cleanup-replay-entities";
+import { customCommands } from "./replay/commands/command-handler";
+import { cloneComponentData } from "./replay/data/util/export-entity-components";
+import { registerEntitySpawnHandler } from "./replay/classes/subscriptions/entity-spawn-after-event";
+import { assignEntityComponents } from "./replay/entity/variant-trigger";
 
 //Chat events
 beforeChatSend();
@@ -71,6 +71,7 @@ system.runInterval(() => {
             replayActionDataMap,
             replayEntityDataMap,
             replayEquipmentDataMap,
+            playerDamageEventsMap,
             isFollowCamActive,
             isTopDownFixedCamActive,
             isTopDownDynamicCamActive,
@@ -642,6 +643,23 @@ system.runInterval(() => {
                         entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tickOffset]}`);
                     } catch (e) {
                         debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
+                    }
+                }
+            });
+        }
+        // --- Entity Hurt Event Playback ---
+        /**
+         */
+        if (settingReplayType === 0) {
+            session.allRecordedPlayerIds.forEach((playerId) => {
+                if (isView || isPlayback) {
+                    const playerDamageEvents = playerDamageEventsMap.get(playerId);
+                    const entityData = replayEntityDataMap.get(playerId);
+                    if (!playerDamageEvents || !entityData) return;
+                    try {
+                        //const entity = entityData.customEntity;
+                    } catch (e) {
+                        debugWarn(` Skipped Entity Hurt Event Playback: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
                     }
                 }
             });

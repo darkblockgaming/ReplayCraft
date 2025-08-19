@@ -1,5 +1,5 @@
 import { CustomCommandOrigin, CustomCommandStatus, Entity, Player, system, VanillaEntityIdentifier } from "@minecraft/server";
-import { safeSet } from "../../main";
+import { safeSet } from "../../../main";
 
 export function debugPlayAnimationCmd(_origin: CustomCommandOrigin, PropertyID: string, Value: string) {
     function findPlaybackEntityNear(sender: Entity): Entity | undefined {

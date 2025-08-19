@@ -107,6 +107,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         "replayAmbientEntityMap",
         "allRecordedPlayerIds",
         "trackedPlayerJoinTicks",
+        "playerDamageEventsMap",
     ]);
 
     for (const [key, value] of Object.entries(session)) {

@@ -11,7 +11,10 @@ import {
     replayCraftPlayerRotDB,
     replayCraftSettingsDB,
     replayCraftSkinDB,
-    replayAmbientEntityDB,
+    replayCraftAmbientEntityDB,
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftPlayerDamageEventsDB,
+    replayCraftTrackedPlayerJoinTicksDB,
 } from "../../classes/subscriptions/world-initialize";
 import { Player } from "@minecraft/server";
 
@@ -27,7 +30,10 @@ export function showDatabaseListUI(player: Player) {
         ["Armor & Weapons", replayCraftPlayerArmorWeaponsDB],
         ["Player Skins", replayCraftSkinDB],
         ["Settings", replayCraftSettingsDB],
-        ["Ambient Entity's", replayAmbientEntityDB],
+        ["Ambient Entity's", replayCraftAmbientEntityDB],
+        ["All Recorded Plater IDs", replayCraftAllRecordedPlayerIdsDB],
+        ["Tracked Player Join Ticks", replayCraftTrackedPlayerJoinTicksDB],
+        ["Player Damage Events", replayCraftPlayerDamageEventsDB],
     ];
 
     const form = new ActionFormData().title("ReplayCraft DB Overview").body("Select a database to view entry sizes:");

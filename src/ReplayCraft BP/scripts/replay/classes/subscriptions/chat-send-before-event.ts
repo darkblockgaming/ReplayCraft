@@ -1,10 +1,10 @@
 import { ChatSendBeforeEvent, Entity, EntityInventoryComponent, GameMode, ItemStack, system, VanillaEntityIdentifier, world } from "@minecraft/server";
-import { setSkin } from "../../ui/settings/set-skin";
-import { showDatabaseListUI } from "../../ui/debug/db-size";
 import { showActiveSessionsUI } from "../../ui/debug/active-sessions";
+import { showDatabaseListUI } from "../../ui/debug/db-size";
+import { setSkin } from "../../ui/settings/set-skin";
 import {
-    replayAmbientEntityDB,
     replayCraftActiveSessionsDB,
+    replayCraftAmbientEntityDB,
     replayCraftBeforeBlockInteractionsDB,
     replayCraftBlockDB,
     replayCraftBlockInteractionsDB,
@@ -18,11 +18,11 @@ import {
 } from "./world-initialize";
 
 import { OptimizedDatabase } from "../../data/data-hive";
-import config from "../../data/util/config";
-import { addCameraPoint } from "../../functions/camera/add-camera-point";
 import { replaySessions } from "../../data/replay-player-session";
+import config from "../../data/util/config";
 import { isPlayerRiding } from "../../entity/is-riding";
-import { safeSet } from "../../main";
+import { addCameraPoint } from "../../functions/camera/add-camera-point";
+import { safeSet } from "../../../main";
 import { toggle } from "../../ui/debug/debug-box";
 
 function findPlaybackEntityNear(sender: Entity): Entity | undefined {
@@ -207,7 +207,7 @@ function giveItems(event: ChatSendBeforeEvent) {
         // Logs all keys and values from replayCraftBlockDB
         if (message === "?dblist") {
             system.run(() => {
-                for (const [key, value] of replayAmbientEntityDB.entries()) {
+                for (const [key, value] of replayCraftAmbientEntityDB.entries()) {
                     console.log(`[${key}]`, JSON.stringify(value, null, 2));
                 }
             });

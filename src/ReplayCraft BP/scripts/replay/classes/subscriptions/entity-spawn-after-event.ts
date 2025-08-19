@@ -16,7 +16,7 @@ export function registerEntitySpawnHandler({ trackedPlayers }: { trackedPlayers:
 
             const playerMap = session.replayAmbientEntityMap.get(player.id);
             if (!playerMap) {
-                debugLog(`No entity map for player ${player.id} — skipping entity spawn update.`);
+                //debugLog(`No entity map for player ${player.id} — skipping entity spawn update.`);
                 return;
             }
 
