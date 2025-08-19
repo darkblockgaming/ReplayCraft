@@ -6,10 +6,8 @@ import { FrameData } from "./data/types/types";
 //Import constants
 import { particlesStr } from "./data/constants/constants";
 //Import Functions
-import { initMaps } from "./data/initMaps";
-import { cinematicUi } from "./functions/ui/cinematicUi";
-
-
+import { initMaps } from "./data/init-maps";
+import { cinematicUi } from "./functions/ui/cinematic-ui";
 
 world.afterEvents.itemUse.subscribe((eventData) => {
     const player = eventData.source;
@@ -37,4 +35,3 @@ system.runInterval(() => {
         });
     }
 }, 8);
-

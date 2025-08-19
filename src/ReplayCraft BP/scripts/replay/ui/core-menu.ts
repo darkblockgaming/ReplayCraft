@@ -1,6 +1,6 @@
 import * as ui from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { cinematicUi } from "../../cinematic/functions/ui/cinematicUi";
+import { cinematicUi } from "../../cinematic/functions/ui/cinematic-ui";
 import { uiReplayCraftMainMenu } from "./replaycraft-main-menu";
 export function uiReplayCraftCore(player: Player) {
     //Default

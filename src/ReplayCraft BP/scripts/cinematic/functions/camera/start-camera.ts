@@ -1,7 +1,7 @@
 import { Player, system, EasingType } from "@minecraft/server";
 import { frameDataMap, settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
-import { startCountdown } from "../camera/startCountdown";
+import { startCountdown } from "./start-countdown";
 
 export function startCamera(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];

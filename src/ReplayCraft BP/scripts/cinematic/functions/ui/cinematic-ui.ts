@@ -1,14 +1,14 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 //Import functions
-import { addCameraFrame } from "../addFrame";
-import { removeLastFrame } from "../removeLastFrame";
-import { removeAllFrames } from "../removeAllFrames";
+import { addCameraFrame } from "../add-frame";
+import { removeLastFrame } from "../remove-last-frame";
+import { removeAllFrames } from "../remove-all-frames";
 import { cineSettings } from "../settings";
-import { cineResetSettings } from "../resetSettings";
-import { startCamera } from "../camera/startCamera";
-import { startPreview } from "../camera/startPrevCamera";
-import { stopCamera } from "../camera/stopCamera";
+import { cineResetSettings } from "../reset-settings";
+import { startCamera } from "../camera/start-camera";
+import { startPreview } from "../camera/start-prev-camera";
+import { stopCamera } from "../camera/stop-camera";
 
 export function cinematicUi(player: Player) {
     const replayForm = new ActionFormData()
