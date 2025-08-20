@@ -1,0 +1,18 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.dynamic_collision": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "on_entry": ["@s rc:enable_normal_collision"],
+                    "transitions": [{ "sleep_collision": "query.property('rc:is_sleeping')" }]
+                },
+                "sleep_collision": {
+                    "on_entry": ["@s rc:enable_sleep_collision"],
+                    "transitions": [{ "default": "!query.property('rc:is_sleeping')" }]
+                }
+            }
+        }
+    }
+}

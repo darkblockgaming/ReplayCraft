@@ -1,158 +1,199 @@
 {
-  "format_version": "1.21.100",
-  "minecraft:entity": {
-    "description": {
-      "identifier": "dbg:replayentity_steve",
-      "is_spawnable": false,
-      "is_summonable": true,
-      "properties": {
-        "dbg:skin": {
-          "type": "int",
-          "default": 0,
-          "client_sync": true,
-          "range": [
-            0,
-            64
-          ]
+    "format_version": "1.21.100",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "dbg:replayentity_steve",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "animations": {
+                "dynamic_collision": "controller.animation.dynamic_collision"
+            },
+            "scripts": {
+                "animate": [
+                    "dynamic_collision"
+                ]
+            },
+            "properties": {
+                "dbg:skin": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [
+                        0,
+                        64
+                    ]
+                },
+                "rc:is_swimming": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:swim_amt": {
+                    "type": "float",
+                    "default": 0.0,
+                    "client_sync": true,
+                    "range": [
+                        0.0,
+                        1.0
+                    ]
+                },
+                "rc:is_sleeping": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:sleep_dir": {
+                    "type": "int",
+                    "default": 270,
+                    "client_sync": true,
+                    "range": [
+                        0,
+                        360
+                    ]
+                },
+                "rc:is_crawling": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_gliding": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:elytra_ratio": {
+                    "type": "float",
+                    "default": 1.0,
+                    "client_sync": true,
+                    "range": [
+                        0.0,
+                        1.0
+                    ]
+                },
+                "rc:is_climbing": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_falling": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_flying": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_riding": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:riding_y_offset": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [
+                        -10,
+                        0
+                    ]
+                },
+                "rc:is_sprinting": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
         },
-        "rc:is_swimming": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
+        "component_groups": {
+            "rc:normal_collision": {
+                "minecraft:collision_box": {
+                    "width": 0.6,
+                    "height": 1.8
+                }
+            },
+            "rc:sleep_collision": {
+                "minecraft:collision_box": {
+                    "width": 0.6,
+                    "height": 0.2
+                }
+            }
         },
-        "rc:swim_amt": {
-          "type": "float",
-          "default": 0.0,
-          "client_sync": true,
-          "range": [
-            0.0,
-            1.0
-          ]
+        "components": {
+            "minecraft:experience_reward": {
+                "on_death": "Math.Min(query.player_level * 7, 100)"
+            },
+            "minecraft:type_family": {
+                "family": [
+                    "replayentity",
+                    "dummy-player"
+                ]
+            },
+            "minecraft:is_hidden_when_invisible": {},
+            "minecraft:loot": {
+                "table": "loot_tables/empty.json"
+            },
+            "minecraft:health": {
+                "value": 20,
+                "max": 20
+            },
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 1.8
+            },
+            // "minecraft:collision_box": {
+            //     "width": 0.0,
+            //     "height": 0.0
+            // },
+            "minecraft:can_climb": {},
+            "minecraft:nameable": {
+                "always_show": true,
+                "allow_name_tag_renaming": false
+            },
+            "minecraft:physics": {
+                "push_towards_closest_space": true
+            },
+            // "minecraft:physics": {
+            //   "has_gravity": false,
+            //   "has_collision": false
+            // },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {},
+            "minecraft:block_climber": {},
+            "minecraft:tick_world": {
+                "never_despawn": true,
+                "radius": 6
+            },
+            // "minecraft:damage_sensor": {
+            //   "triggers": {
+            //     "cause": "all",
+            //     "deals_damage": "no"
+            //   }
+            // }
+            "minecraft:equip_item": {}
         },
-        "rc:is_sleeping": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:sleep_dir": {
-          "type": "int",
-          "default": 270,
-          "client_sync": true,
-          "range": [
-            0,
-            360
-          ]
-        },
-        "rc:is_crawling": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_gliding": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:elytra_ratio": {
-          "type": "float",
-          "default": 1.0,
-          "client_sync": true,
-          "range": [
-            0.0,
-            1.0
-          ]
-        },
-        "rc:is_climbing": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_falling": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_flying": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_riding": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:riding_y_offset": {
-          "type": "int",
-          "default": 0,
-          "client_sync": true,
-          "range": [
-            -10,
-            0
-          ]
-        },
-        "rc:is_sprinting": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
+        "events": {
+            "minecraft:entity_spawned": {
+                "trigger": "rc:enable_normal_collision"
+            },
+            "rc:enable_normal_collision": {
+                "add": {
+                    "component_groups": [
+                        "rc:normal_collision"
+                    ]
+                }
+            },
+            "rc:enable_sleep_collision": {
+                "add": {
+                    "component_groups": [
+                        "rc:sleep_collision"
+                    ]
+                }
+            }
         }
-      }
-    },
-    "components": {
-      "minecraft:experience_reward": {
-        "on_death": "Math.Min(query.player_level * 7, 100)"
-      },
-      "minecraft:type_family": {
-        "family": [
-          "replayentity",
-          "dummy-player"
-        ]
-      },
-      "minecraft:is_hidden_when_invisible": {},
-      "minecraft:loot": {
-        "table": "loot_tables/empty.json"
-      },
-      "minecraft:health": {
-        "value": 20,
-        "max": 20
-      },
-      "minecraft:collision_box": {
-          "width": 0.6,
-          "height": 1.8
-      },
-      // "minecraft:collision_box": {
-      //     "width": 0.0,
-      //     "height": 0.0
-      // },
-      "minecraft:can_climb": {},
-      "minecraft:nameable": {
-        "always_show": true,
-        "allow_name_tag_renaming": false
-      },
-      "minecraft:physics": {
-        "push_towards_closest_space": true
-      },
-      // "minecraft:physics": {
-      //   "has_gravity": false,
-      //   "has_collision": false
-      // },
-      "minecraft:pushable": {
-        "is_pushable": false,
-        "is_pushable_by_piston": true
-      },
-      "minecraft:conditional_bandwidth_optimization": {},
-      "minecraft:block_climber": {},
-      "minecraft:tick_world": {
-        "never_despawn": true,
-        "radius": 6
-      },
-      // "minecraft:damage_sensor": {
-      //   "triggers": {
-      //     "cause": "all",
-      //     "deals_damage": "no"
-      //   }
-      // }
-      "minecraft:equip_item": {}
     }
-  }
 }
