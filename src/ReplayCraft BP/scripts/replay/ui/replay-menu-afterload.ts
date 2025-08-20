@@ -31,11 +31,13 @@ export function replayMenuAfterLoad(player: Player) {
             if (response.selection === 1) {
                 session.replayStateMachine.setState("recSaved");
                 player.sendMessage("§f§4[ReplayCraft]§f Replay has been loaded please open the menu.");
+                removeEntities(player, false);
                 return;
             }
             if (response.selection === 2) {
                 session.replayStateMachine.setState("recCamSetup");
                 player.sendMessage("§f§4[ReplayCraft]§f Replay has been loaded please open the menu.");
+                removeEntities(player, false);
                 return;
             }
         })
