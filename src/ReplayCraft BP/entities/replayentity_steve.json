@@ -116,14 +116,14 @@
         "value": 20,
         "max": 20
       },
-      // "minecraft:collision_box": {
-      //     "width": 0.6,
-      //     "height": 1.8
-      // },
       "minecraft:collision_box": {
-          "width": 0.0,
-          "height": 0.0
+          "width": 0.6,
+          "height": 1.8
       },
+      // "minecraft:collision_box": {
+      //     "width": 0.0,
+      //     "height": 0.0
+      // },
       "minecraft:can_climb": {},
       "minecraft:nameable": {
         "always_show": true,
