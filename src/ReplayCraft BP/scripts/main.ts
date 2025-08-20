@@ -652,16 +652,32 @@ system.runInterval(() => {
          */
         if (settingReplayType === 0) {
             session.allRecordedPlayerIds.forEach((playerId) => {
-                if (isView || isPlayback) {
-                    const playerDamageEvents = playerDamageEventsMap.get(playerId);
-                    const entityData = replayEntityDataMap.get(playerId);
-                    if (!playerDamageEvents || !entityData) return;
+                const playerDamageEvents = playerDamageEventsMap.get(playerId);
+                if (!playerDamageEvents) return;
+
+                const eventsThisTick = playerDamageEvents.filter((e) => e.hurtTick === currentTick);
+                if (eventsThisTick.length === 0) return;
+
+                eventsThisTick.forEach((event) => {
+                    const attackerEntity = replayEntityDataMap.get(event.playerID)?.customEntity;
+                    const victimEntity = replayEntityDataMap.get(event.VictimID)?.customEntity;
+
+                    if (!attackerEntity || !victimEntity) return;
+
                     try {
-                        //const entity = entityData.customEntity;
+                        // Play victim hurt animation
+                        switch (event.Weapon) {
+                            case "minecraft:iron_sword":
+                                attackerEntity.playAnimation("animation.replayentity.attack");
+                        }
+                        victimEntity.applyDamage(event.DamageDealt);
+
+                        // Debug
+                        console.log(`[ReplayCraft DEBUG] Replayed hit: ${event.playerName} -> ${event.VictimName} for ${event.DamageDealt}`);
                     } catch (e) {
-                        debugWarn(` Skipped Entity Hurt Event Playback: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
+                        console.warn("Entity Hurt Playback error", e);
                     }
-                }
+                });
             });
         }
 
