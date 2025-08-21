@@ -379,7 +379,9 @@ system.runInterval(() => {
                                 try {
                                     clonedData.families = (component as any).getTypeFamilies();
                                 } catch (e) {
-                                    console.warn(`Failed to get type families for ${entity.typeId}:`, e);
+                                    if (config.debugEnabled) {
+                                        debugWarn(`Failed to get type families for ${entity.typeId}:`, e);
+                                    }
                                 }
                             }
 
@@ -410,17 +412,22 @@ system.runInterval(() => {
         }
 
         if (isReplaying && session.replayStateMachine.state !== "recSaved") {
-            //debugLog("Tick:", session.currentTick);
-            //debugLog("All player IDs:", session.allRecordedPlayerIds);
+            if (config.debugEntitySpawnEvents === true && config.debugTickData === true) {
+                debugLog("Tick:", session.currentTick);
+                debugLog("All player IDs:", session.allRecordedPlayerIds);
+            }
 
             for (const playerId of session.allRecordedPlayerIds) {
                 const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
                 const entity = session.replayEntityDataMap.get(playerId)?.customEntity;
-
-                //debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
-
+                if (config.debugEntitySpawnEvents === true) {
+                    debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
+                }
                 if (session.currentTick === joinTick && !entity && session.currentTick <= session.recordingEndTick) {
-                    debugLog(`Spawning entity for ${playerId}`);
+                    if (config.debugEntitySpawnEvents === true) {
+                        debugLog(`Spawning entity for ${playerId}`);
+                    }
+
                     summonReplayEntity(session, session.replayController, playerId);
                 }
             }
@@ -441,7 +448,9 @@ system.runInterval(() => {
                         try {
                             entity.setProperty("rc:elytra_ratio", ratio);
                         } catch (e) {
-                            debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
+                            if (config.debugEntityPlayback === true) {
+                                debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
+                            }
                         }
 
                         try {
@@ -449,14 +458,20 @@ system.runInterval(() => {
                                 rotation: rot.recordedRotations[tickOffset],
                             });
                         } catch (e) {
-                            debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
+                            if (config.debugEntityPlayback === true) {
+                                debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
+                            }
                         }
                     } else if (tickOffset >= 0) {
-                        // Only log out-of-bounds if we expected to be within range
-                        debugWarn(`[ReplayCraft] Tick ${session.currentTick} out of bounds for ${playerId} (tickOffset=${tickOffset}, posLen=${pos.recordedPositions.length}, rotLen=${rot.recordedRotations.length})`);
+                        if (config.debugEntityPlayback === true) {
+                            // Only log out-of-bounds if we expected to be within range
+                            debugWarn(`[ReplayCraft] Tick ${session.currentTick} out of bounds for ${playerId} (tickOffset=${tickOffset}, posLen=${pos.recordedPositions.length}, rotLen=${rot.recordedRotations.length})`);
+                        }
                     } else {
-                        // Optional: early skip logging
-                        debugLog(`[ReplayCraft] Skipping movement for ${playerId} — joinTick ${joinTick} > currentTick ${session.currentTick}`);
+                        if (config.debugEntityPlayback === true) {
+                            //early skip logging
+                            debugLog(`[ReplayCraft] Skipping movement for ${playerId} — joinTick ${joinTick} > currentTick ${session.currentTick}`);
+                        }
                     }
                 }
             }
@@ -475,10 +490,15 @@ system.runInterval(() => {
                     debugLog(`Running cleanup for player ${player.name}...`);
                     for (const [id, data] of ambientMap.entries()) {
                         if (!id.startsWith("entity:")) continue;
-                        debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
+                        if (config.debugEntityTracking === true) {
+                            debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
+                        }
 
                         if (data.wasSpawned === false) {
-                            debugLog(`Skipping pre-existing entity ${id}`);
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Skipping pre-existing entity ${id}`);
+                            }
+
                             continue;
                         }
 
@@ -489,12 +509,18 @@ system.runInterval(() => {
                         if (foundEntity && foundEntity.isValid) {
                             try {
                                 foundEntity.remove();
-                                debugLog(`Removed spawned entity ${id} at replay start for player ${player.name}`);
+                                if (config.debugEntityTracking === true) {
+                                    debugLog(`Removed spawned entity ${id} at replay start for player ${player.name}`);
+                                }
                             } catch (err) {
-                                debugWarn(`Failed to remove spawned entity ${id} at replay start for player ${player.name}:`, err);
+                                if (config.debugEntityTracking === true) {
+                                    debugWarn(`Failed to remove spawned entity ${id} at replay start for player ${player.name}:`, err);
+                                }
                             }
                         } else {
-                            debugLog(`No valid entity found to remove for ${id}`);
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`No valid entity found to remove for ${id}`);
+                            }
                         }
                     }
                 }
@@ -511,7 +537,9 @@ system.runInterval(() => {
                         const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
                         if (foundEntity) {
                             data.replayEntity = foundEntity;
-                            debugLog(`Assigned existing entity ${id} to replayEntity for player ${player.name}`);
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Assigned existing entity ${id} to replayEntity for player ${player.name}`);
+                            }
                         }
                     }
 
@@ -532,23 +560,37 @@ system.runInterval(() => {
                                     try {
                                         const entityComponent = spawnedEntity.getComponent(comp.typeId);
                                         if (!entityComponent) {
-                                            debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
+                                            if (config.debugEntityTracking === true) {
+                                                debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
+                                            }
+
                                             continue;
                                         }
-                                        console.log(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
+                                        if (config.debugEntityTracking === true) {
+                                            debugLog(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
+                                        }
+
                                         assignEntityComponents(spawnedEntity, comp);
                                     } catch (err) {
-                                        debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
+                                        if (config.debugEntityTracking === true) {
+                                            debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
+                                        }
                                     }
                                 }
                             } else {
-                                debugLog(`No components found to restore for entity ${id}`);
+                                if (config.debugEntityTracking === true) {
+                                    debugLog(`No components found to restore for entity ${id}`);
+                                }
+                            }
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
                             }
 
-                            debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
                             data.replayEntity = spawnedEntity;
                         } catch (err) {
-                            debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
+                            if (config.debugEntityTracking === true) {
+                                debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
+                            }
                         }
                     }
 
@@ -556,7 +598,10 @@ system.runInterval(() => {
                         try {
                             entity.teleport(tickData.location, { rotation: tickData.rotation });
                         } catch (err) {
-                            debugWarn(`Failed to move ambient entity ${id} for player ${player.name}:`, err);
+                            if (config.debugEntityTracking === true) {
+                                debugWarn(`Failed to move ambient entity ${id} for player ${player.name}:`, err);
+                            }
+
                             data.replayEntity = undefined; // clear invalid reference
                         }
                     }
@@ -571,7 +616,10 @@ system.runInterval(() => {
                                 entity.applyDamage(damageAmount);
                             }
                         } catch (err) {
-                            debugWarn(`Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
+                            if (config.debugEntityTracking === true) {
+                                debugWarn(`Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
+                            }
+
                             data.replayEntity = undefined;
                         }
                     }
@@ -580,9 +628,13 @@ system.runInterval(() => {
                         try {
                             entity.remove();
                             data.replayEntity = undefined;
-                            debugLog(`Despawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Despawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
+                            }
                         } catch (err) {
-                            debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
+                            if (config.debugEntityTracking === true) {
+                                debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
+                            }
                         }
                     }
                 }
@@ -633,11 +685,17 @@ system.runInterval(() => {
                         const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
                         const tickOffset = session.currentTick - joinTick;
                         if (tickOffset < 0) {
-                            console.log("Haven't reached this player's join tick yet");
+                            if (config.debugEquipmentPlayback === true) {
+                                debugLog("Haven't reached this player's join tick yet");
+                            }
+
                             return; // Haven't reached this player's join tick yet
                         }
                         if (tickOffset >= playerData.weapon1.length) {
-                            console.log("Out of recorded data range");
+                            if (config.debugEquipmentPlayback === true) {
+                                debugLog("Out of recorded data range");
+                            }
+
                             return; // Out of recorded data range
                         }
                         entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tickOffset]}`);
@@ -647,7 +705,9 @@ system.runInterval(() => {
                         entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tickOffset]}`);
                         entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tickOffset]}`);
                     } catch (e) {
-                        debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
+                        if (config.debugEquipmentPlayback) {
+                            debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
+                        }
                     }
                 }
             });
@@ -678,9 +738,13 @@ system.runInterval(() => {
                         victimEntity.applyDamage(event.DamageDealt);
 
                         // Debug
-                        console.log(`[ReplayCraft DEBUG] Replayed hit: ${event.playerName} -> ${event.VictimName} for ${event.DamageDealt}`);
+                        if (config.debugEntityHurtPlayback === true) {
+                            debugLog(`[ReplayCraft DEBUG] Replayed hit: ${event.playerName} -> ${event.VictimName} for ${event.DamageDealt}`);
+                        }
                     } catch (e) {
-                        console.warn("Entity Hurt Playback error", e);
+                        if (config.debugEntityHurtPlayback === true) {
+                            debugWarn("Entity Hurt Playback error", e);
+                        }
                     }
                 });
             });
@@ -696,7 +760,10 @@ system.runInterval(() => {
                 baseLocation = entityData.customEntity.location;
                 baseRotation = entityData.customEntity.getRotation();
             } catch (e) {
-                debugWarn(`[Scripting] Camera focus entity invalid or removed`);
+                if (config.debugCameraUpdates === true) {
+                    debugWarn(`[Scripting] Camera focus entity invalid or removed`);
+                }
+
                 return;
             }
 
@@ -760,6 +827,8 @@ export function safeSet(entity: Entity & { setProperty?: (id: string, value: boo
             entity.setProperty?.(key, value);
         }
     } catch (e) {
-        debugWarn(`Skipped setting ${key} on removed entity: ${(entity as any)?.id}`);
+        if (config.debugSafeSet === true) {
+            debugWarn(`Skipped setting ${key} on removed entity: ${(entity as any)?.id}`);
+        }
     }
 }

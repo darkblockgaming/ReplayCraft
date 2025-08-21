@@ -3,7 +3,7 @@ export default {
     devAnimations: true,
     devChatCommands: true,
     debugEnabled: true,
-    debugEntityTracking: false,
+    debugEntityTracking: false, //Used for Ambient Entity Playback Logic (This is a busy flag!)
     debugEntityHurt: false, //Entity damage events are logged when enabled (This is a busy flag!)
     debugPlayerHurt: false, //PvP Hurt Data are logged when enabled.
     debugEntityPlayback: false,
@@ -17,4 +17,9 @@ export default {
     debugPlayerLeaveAfterEvent: false,
     debugPlayerPlaceBlockAfterEvent: false,
     debugPlayerPlaceBlockBeforeEvent: false,
+    debugTickData: false,
+    debugEquipmentPlayback: false,
+    debugEntityHurtPlayback: false,
+    debugSafeSet: false,
+    debugCameraUpdates: false,
 };
