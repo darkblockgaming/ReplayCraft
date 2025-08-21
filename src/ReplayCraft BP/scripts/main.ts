@@ -77,6 +77,7 @@ system.runInterval(() => {
             replayEntityDataMap,
             replayEquipmentDataMap,
             playerDamageEventsMap,
+            playerItemUseDataMap,
             isFollowCamActive,
             isTopDownFixedCamActive,
             isTopDownDynamicCamActive,
@@ -710,6 +711,30 @@ system.runInterval(() => {
                         }
                     }
                 }
+            });
+        }
+        // --- Charge Item Playback ---
+        if (settingReplayType === 0) {
+            session.allRecordedPlayerIds.forEach((playerId) => {
+                const playerItemUseData = playerItemUseDataMap.get(playerId);
+                if (!playerItemUseData) return;
+
+                const attackerEntity = replayEntityDataMap.get(playerId)?.customEntity;
+                if (!attackerEntity) return;
+
+                // Check if any bow events are relevant this tick
+                playerItemUseData.forEach((event) => {
+                    const startTick = event.trackingTick;
+                    const endTick = startTick + event.bowChargeTime;
+
+                    if (currentTick === startTick) {
+                        // Started charging
+                        attackerEntity.setProperty("rc:holding-charged_item", true);
+                    } else if (currentTick === endTick) {
+                        // Released bow
+                        attackerEntity.setProperty("rc:holding-charged_item", false);
+                    }
+                });
             });
         }
         // --- Entity Hurt Event Playback ---
