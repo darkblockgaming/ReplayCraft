@@ -1,6 +1,7 @@
 import { world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog } from "../../data/util/debug";
+import config from "../../data/util/config";
 
 export function registerEntitySpawnHandler({ trackedPlayers }: { trackedPlayers: any[] }) {
     world.afterEvents.entitySpawn.subscribe((event) => {
@@ -10,13 +11,19 @@ export function registerEntitySpawnHandler({ trackedPlayers }: { trackedPlayers:
         trackedPlayers.forEach((player: { id: string }) => {
             const session = replaySessions.playerSessions.get(player.id);
             if (!session) {
-                debugLog(`No active replay session for player ${player.id} — skipping entity spawn update.`);
+                if (config.debugEntitySpawnEvents === true) {
+                    debugLog(`No active replay session for player ${player.id} — skipping entity spawn update.`);
+                }
+
                 return;
             }
 
             const playerMap = session.replayAmbientEntityMap.get(player.id);
             if (!playerMap) {
-                debugLog(`No entity map for player ${player.id} — skipping entity spawn update.`);
+                if (config.debugEntitySpawnEvents === true) {
+                    debugLog(`No entity map for player ${player.id} — skipping entity spawn update.`);
+                }
+
                 return;
             }
 
@@ -28,8 +35,9 @@ export function registerEntitySpawnHandler({ trackedPlayers }: { trackedPlayers:
             }
 
             entry.wasSpawned = true;
-
-            debugLog(`Entity spawn event updated entity ${key} spawnTick to ${entry.spawnTick} and marked as spawned`);
+            if (config.debugEntitySpawnEvents === true) {
+                debugLog(`Entity spawn event updated entity ${key} spawnTick to ${entry.spawnTick} and marked as spawned`);
+            }
         });
     });
 }

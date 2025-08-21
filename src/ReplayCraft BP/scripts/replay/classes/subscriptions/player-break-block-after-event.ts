@@ -3,6 +3,7 @@ import { replaySessions } from "../../data/replay-player-session";
 import { debugWarn } from "../../data/util/debug";
 import { saveBedParts } from "../../functions/bed-parts-break-after-event";
 import { saveDoorParts } from "../../functions/door-parts-break-after-event";
+import config from "../../data/util/config";
 
 //saveBedParts = bed-parts-break-after-event
 //saveDoorParts = door-parts-break-after-event
@@ -13,12 +14,18 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
     let session = replaySessions.playerSessions.get(player.id);
     if (session) {
         if (session.replayStateMachine.state !== "recPending") {
-            debugWarn(`[ReplayCraft] ${player.name} has a session but it's not in recPending (state: ${session.replayStateMachine.state})`);
+            if (config.debugPlayerBreakBlockAfterEvent === true) {
+                debugWarn(`[ReplayCraft] ${player.name} has a session but it's not in recPending (state: ${session.replayStateMachine.state})`);
+            }
+
             return;
         }
 
         if (!session.trackedPlayers.includes(player)) {
-            debugWarn(`[ReplayCraft] ${player.name} is not in their own trackedPlayers list`);
+            if (config.debugPlayerBreakBlockAfterEvent === true) {
+                debugWarn(`[ReplayCraft] ${player.name} is not in their own trackedPlayers list`);
+            }
+
             return;
         }
     } else {
@@ -26,7 +33,10 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
         session = [...replaySessions.playerSessions.values()].find((s) => s.replayStateMachine.state === "recPending" && s.trackedPlayers.some((p) => p.id === player.id));
 
         if (!session) {
-            debugWarn(`[ReplayCraft] No session found tracking guest ${player.name} (${player.id})`);
+            if (config.debugPlayerBreakBlockAfterEvent === true) {
+                debugWarn(`[ReplayCraft] No session found tracking guest ${player.name} (${player.id})`);
+            }
+
             return;
         }
     }
@@ -43,7 +53,9 @@ function recordBlocks(event: PlayerBreakBlockAfterEvent) {
         if (!playerBlockData) {
             playerBlockData = { blockSateAfterInteractions: {} };
             session.replayBlockInteractionAfterMap.set(player.id, playerBlockData);
-            debugWarn(`[ReplayCraft] Initialized replayBlockInteractionAfterMap for guest ${player.name}`);
+            if (config.debugPlayerBreakBlockAfterEvent === true) {
+                debugWarn(`[ReplayCraft] Initialized replayBlockInteractionAfterMap for guest ${player.name}`);
+            }
         }
         playerBlockData.blockSateAfterInteractions[session.recordingEndTick] = {
             location: block.location,

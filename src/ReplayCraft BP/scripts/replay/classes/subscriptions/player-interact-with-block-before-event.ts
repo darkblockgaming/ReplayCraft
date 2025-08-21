@@ -3,6 +3,7 @@ import { replaySessions } from "../../data/replay-player-session";
 import { saveDoorParts1 } from "../../functions/door-parts-break-before-event";
 import { getOffsetFromBlockFace } from "../../data/util/block-face-to-offset";
 import { debugWarn } from "../../data/util/debug";
+import config from "../../data/util/config";
 
 function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
     const { player, block, itemStack, blockFace } = event;
@@ -35,7 +36,9 @@ function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
         if (!playerData) {
             playerData = { blockStateBeforeInteractions: {} };
             session.replayBlockInteractionBeforeMap.set(player.id, playerData);
-            debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            if (config.debugPlayerInteractWithBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            }
         }
 
         playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
@@ -47,7 +50,10 @@ function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
     }
 
     if (session.twoPartBlocks.includes(block.type.id)) {
-        console.log(`[ReplayCraft] Recording two-part block before interaction for ${block.typeId} at ${block.location.x}, ${block.location.y}, ${block.location.z} by player ${player.name}`);
+        if (config.debugPlayerInteractWithBlockBeforeEvent === true) {
+            console.log(`[ReplayCraft] Recording two-part block before interaction for ${block.typeId} at ${block.location.x}, ${block.location.y}, ${block.location.z} by player ${player.name}`);
+        }
+
         saveDoorParts1(block, player, session);
     } else {
         let playerData = session.replayBlockInteractionBeforeMap.get(player.id);
@@ -55,7 +61,9 @@ function recordBlocks(event: PlayerInteractWithBlockBeforeEvent) {
         if (!playerData) {
             playerData = { blockStateBeforeInteractions: {} };
             session.replayBlockInteractionBeforeMap.set(player.id, playerData);
-            debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            if (config.debugPlayerInteractWithBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            }
         }
 
         playerData.blockStateBeforeInteractions[session.recordingEndTick] = {

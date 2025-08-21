@@ -4,4 +4,17 @@ export default {
     devChatCommands: true,
     debugEnabled: true,
     debugEntityTracking: false,
+    debugEntityHurt: false, //Entity damage events are logged when enabled (This is a busy flag!)
+    debugPlayerHurt: false, //PvP Hurt Data are logged when enabled.
+    debugEntityPlayback: false,
+    debugEntitySpawnEvents: false, //Entity Spawning events are logged when enabled (This is a busy flag!)
+    debugItemUseEvents: false, //Item start use and release events are logged when enabled
+    debugPlayerBreakBlockAfterEvent: false,
+    debugPlayerBreakBlockBeforeEvent: false,
+    debugPlayerInteractWithBlockAfterEvent: false,
+    debugPlayerInteractWithBlockBeforeEvent: false,
+    debugPlayerItemUseAfterEvent: false,
+    debugPlayerLeaveAfterEvent: false,
+    debugPlayerPlaceBlockAfterEvent: false,
+    debugPlayerPlaceBlockBeforeEvent: false,
 };

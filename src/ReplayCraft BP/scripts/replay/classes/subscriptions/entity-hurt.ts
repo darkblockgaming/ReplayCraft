@@ -2,7 +2,7 @@ import { world, EntityHurtAfterEvent, EquipmentSlot } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog } from "../../data/util/debug";
 import { PlayerDamageData, PlayerDamageMap } from "../types/types";
-
+import config from "../../data/util/config";
 /**
  * Export the function to be called in main.ts
  */
@@ -36,7 +36,9 @@ function addDamageEvent(map: PlayerDamageMap, playerID: string, event: PlayerDam
  */
 function onEntityHit(event: EntityHurtAfterEvent) {
     const { hurtEntity, damageSource, damage } = event;
-    debugLog(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
+    if (config.debugEntityHurt === true) {
+        debugLog(`onEntityHit: Entity=${hurtEntity.id}, DamageSource=${damageSource?.damagingEntity?.id ?? "none"}, Damage=${damage}`);
+    }
 
     if (!damageSource || !damageSource.damagingEntity) return;
 
@@ -57,24 +59,6 @@ function onEntityHit(event: EntityHurtAfterEvent) {
 
     if (!session) return; // no valid session found
 
-    /* if (session.replayStateMachine.state === "recPending") {
-        const ambientMap = session.replayAmbientEntityMap.get(playerId);
-        if (!ambientMap) return;
-
-        const entityKey = `entity:${hurtEntity.id}`;
-        const data = ambientMap.get(entityKey);
-        if (!data) {
-            debugLog(`[ReplayCraft DEBUG] No ambient entity match found for hurt entity: ${entityKey}`);
-            return;
-        }
-
-        const tick = session.recordingEndTick;
-        if (!data.hurtTicks) {
-            data.hurtTicks = new Map<number, number>();
-        }
-        data.hurtTicks.set(tick, damage);
-    }**/
-
     if (session.replayStateMachine.state === "recPending") {
         const tick = session.recordingEndTick;
 
@@ -89,7 +73,9 @@ function onEntityHit(event: EntityHurtAfterEvent) {
                 }
                 data.hurtTicks.set(tick, damage);
             } else {
-                debugLog(`[ReplayCraft DEBUG] No ambient entity match found for hurt entity: ${entityKey}`);
+                if (config.debugEntityHurt === true) {
+                    debugLog(`[ReplayCraft DEBUG] No ambient entity match found for hurt entity: ${entityKey}`);
+                }
             }
         }
 
@@ -110,7 +96,9 @@ function onEntityHit(event: EntityHurtAfterEvent) {
 
             // Store in attacker's session
             addDamageEvent(session.playerDamageEventsMap, attacker.id, damageData);
-            debugLog(`[ReplayCraft DEBUG] Recorded player damage for attacker: ${JSON.stringify(damageData)}`);
+            if (config.debugPlayerHurt === true) {
+                debugLog(`[ReplayCraft DEBUG] Recorded player damage for attacker: ${JSON.stringify(damageData)}`);
+            }
 
             // Victim session logging
             let victimSession = replaySessions.playerSessions.get(victim.id);
@@ -126,7 +114,9 @@ function onEntityHit(event: EntityHurtAfterEvent) {
                     VictimID: victim.id,
                     VictimName: victim.nameTag ?? "Unknown",
                 });
-                debugLog(`[ReplayCraft DEBUG] Recorded player damage for victim: ${JSON.stringify(damageData)}`);
+                if (config.debugPlayerHurt === true) {
+                    debugLog(`[ReplayCraft DEBUG] Recorded player damage for victim: ${JSON.stringify(damageData)}`);
+                }
             }
         }
     }

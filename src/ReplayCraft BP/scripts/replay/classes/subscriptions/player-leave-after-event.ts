@@ -1,6 +1,8 @@
 import { PlayerLeaveAfterEvent, world } from "@minecraft/server";
 import { replayCraftActiveSessionsDB } from "./world-initialize";
 import { replaySessions } from "../../data/replay-player-session";
+import config from "../../data/util/config";
+import { debugLog } from "../../data/util/debug";
 /**
  * Function to execute when a player leaves.
  * Initializes event handlers for player leave events.
@@ -29,6 +31,8 @@ function handlePlayerLeave(event: PlayerLeaveAfterEvent) {
     replayCraftActiveSessionsDB.delete(event.playerId);
     if (replaySessions.playerSessions.has(event.playerId)) {
         replaySessions.playerSessions.delete(event.playerId);
-        console.log(` Session deleted for player ${event.playerId} From playerSessions Map and replayCraftActiveSessionsDB`);
+        if (config.debugPlayerLeaveAfterEvent === true) {
+            debugLog(` Session deleted for player ${event.playerId} From playerSessions Map and replayCraftActiveSessionsDB`);
+        }
     }
 }

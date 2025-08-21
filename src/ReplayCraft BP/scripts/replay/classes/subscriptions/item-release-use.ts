@@ -1,5 +1,6 @@
 import { ItemReleaseUseAfterEvent, system, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
+import config from "../../data/util/config";
 
 function captureReleaseData(eventData: ItemReleaseUseAfterEvent) {
     if (eventData.itemStack?.typeId === "minecraft:bow") {
@@ -14,8 +15,9 @@ function captureReleaseData(eventData: ItemReleaseUseAfterEvent) {
         if (lastEvent.bowEnd === 0) {
             lastEvent.bowEnd = system.currentTick;
             lastEvent.bowChargeTime = lastEvent.bowEnd - lastEvent.bowStart;
-
-            console.log(`[ReplayCraft DEBUG] Bow released: ${JSON.stringify(lastEvent)}`);
+            if (config.debugItemUseEvents === true) {
+                console.log(`[ReplayCraft DEBUG] Bow released: ${JSON.stringify(lastEvent)}`);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ import { saveDoorParts1 } from "../../functions/door-parts-break-before-event";
 import { replaySessions } from "../../data/replay-player-session";
 import { PlayerBreakBlockBeforeEvent, world } from "@minecraft/server";
 import { debugWarn } from "../../data/util/debug";
+import config from "../../data/util/config";
 //saveBedParts1 = bed-parts-break-before-event
 //saveDoorParts1 = door-parts-break-before-event
 
@@ -14,12 +15,16 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
     let session = replaySessions.playerSessions.get(player.id);
     if (session) {
         if (session.replayStateMachine.state !== "recPending") {
-            debugWarn(`[ReplayCraft] ${player.name} has a session but it's not in recPending (state: ${session.replayStateMachine.state})`);
+            if (config.debugPlayerBreakBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] ${player.name} has a session but it's not in recPending (state: ${session.replayStateMachine.state})`);
+            }
             return;
         }
 
         if (!session.trackedPlayers.includes(player)) {
-            debugWarn(`[ReplayCraft] ${player.name} is not in their own trackedPlayers list`);
+            if (config.debugPlayerBreakBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] ${player.name} is not in their own trackedPlayers list`);
+            }
             return;
         }
     } else {
@@ -27,7 +32,9 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
         session = [...replaySessions.playerSessions.values()].find((s) => s.replayStateMachine.state === "recPending" && s.trackedPlayers.some((p) => p.id === player.id));
 
         if (!session) {
-            debugWarn(`[ReplayCraft] No session found tracking guest ${player.name} (${player.id})`);
+            if (config.debugPlayerBreakBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] No session found tracking guest ${player.name} (${player.id})`);
+            }
             return;
         }
     }
@@ -44,7 +51,9 @@ function recordBlocks(event: PlayerBreakBlockBeforeEvent) {
         if (!playerData) {
             playerData = { blockStateBeforeInteractions: {} };
             session.replayBlockInteractionBeforeMap.set(player.id, playerData);
-            debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            if (config.debugPlayerBreakBlockBeforeEvent === true) {
+                debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for guest ${player.name}`);
+            }
         }
         if (!playerData) return;
 
