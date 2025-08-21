@@ -11,6 +11,7 @@ import {
     PlayerEquipmentData,
     AmbientEntityData,
     PlayerDamageData,
+    itemUseData,
 } from "../classes/types/types";
 
 export interface PlayerReplaySession {
@@ -56,6 +57,7 @@ export interface PlayerReplaySession {
     allRecordedPlayerIds: Set<string>; //Used for playback to ensure all players are tracked
     trackedPlayerJoinTicks: Map<string, number>; // Maps player IDs to the tick they joined the session
     playerDamageEventsMap: Map<string, PlayerDamageData[]>;
+    playerItemUseDataMap: Map<string, itemUseData[]>;
     twoPartBlocks: string[];
     toggleSound: boolean;
     selectedSound: number;

@@ -13,6 +13,7 @@ import {
     replayCraftAllRecordedPlayerIdsDB,
     replayCraftTrackedPlayerJoinTicksDB,
     replayCraftPlayerDamageEventsDB,
+    replayCraftPlayerItemUseEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { PlayerReplaySession } from "../../data/replay-player-session";
 import { debugLog, debugWarn } from "../../data/util/debug";
@@ -48,6 +49,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         const playerAmbientEntityData = session.replayAmbientEntityMap.get(playerId);
         const playerTrackedPlayerJoinTicks = session.trackedPlayerJoinTicks.get(playerId);
         const playerDamageEventData = session.playerDamageEventsMap.get(playerId);
+        const playerItemUseEventData = session.playerItemUseDataMap.get(playerId);
 
         if (!PlayerBlockData) debugWarn(`Missing block data for player ${playerId}`);
         if (!playerPositionData) debugWarn(`Missing position data for player ${playerId}`);
@@ -60,6 +62,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         if (!playerAmbientEntityData) debugWarn(`Missing Ambient Entity data for player ${playerId}`);
         if (!playerTrackedPlayerJoinTicks) debugWarn(`Missing tracked player join ticks for player ${playerId}`);
         if (!playerDamageEventData) debugWarn(`Missing player damage event data for player ${playerId}`);
+        if (!playerItemUseEventData) debugWarn(`Missing player item use event data for player ${playerId}`);
 
         if (PlayerBlockData) replayCraftBlockDB.set(playerId + session.buildName, PlayerBlockData);
         if (playerPositionData) replayCraftPlayerPosDB.set(playerId + session.buildName, playerPositionData);
@@ -71,6 +74,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         if (playerArmorWeaponsData) replayCraftPlayerArmorWeaponsDB.set(playerId + session.buildName, playerArmorWeaponsData);
         if (playerTrackedPlayerJoinTicks) replayCraftTrackedPlayerJoinTicksDB.set(playerId + session.buildName, playerTrackedPlayerJoinTicks);
         if (playerDamageEventData) replayCraftPlayerDamageEventsDB.set(playerId + session.buildName, playerDamageEventData);
+        if (playerItemUseEventData) replayCraftPlayerItemUseEventsDB.set(playerId + session.buildName, playerItemUseEventData);
         if (playerAmbientEntityData instanceof Map) {
             // Convert outer Map to object with entityId keys
             const objToSave: Record<string, any> = {};
@@ -108,6 +112,7 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
         "allRecordedPlayerIds",
         "trackedPlayerJoinTicks",
         "playerDamageEventsMap",
+        "playerItemUseDataMap",
     ]);
 
     for (const [key, value] of Object.entries(session)) {

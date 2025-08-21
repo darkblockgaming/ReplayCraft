@@ -65,7 +65,13 @@ export interface PlayerDamageData {
     VictimName: string;
 }
 export type PlayerDamageMap = Map<string, PlayerDamageData[]>;
-
+export interface itemUseData {
+    trackingTick: number;
+    bowStart: number;
+    bowChargeTime: number;
+    bowEnd: number;
+}
+export type PlayerItemUseDataMap = Map<string, itemUseData[]>;
 export interface AmbientEntityData {
     typeId: string;
     recordedData: {

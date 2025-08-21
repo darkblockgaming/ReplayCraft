@@ -15,6 +15,7 @@ import {
     replayCraftAllRecordedPlayerIdsDB,
     replayCraftTrackedPlayerJoinTicksDB,
     replayCraftPlayerDamageEventsDB,
+    replayCraftPlayerItemUseEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { OptimizedDatabase } from "../../data/data-hive";
 
@@ -67,6 +68,9 @@ export function debugDatabaseConsoleCmd(_origin: CustomCommandOrigin, targetData
             break;
         case "replayCraftPlayerDamageEventsDB":
             db = replayCraftPlayerDamageEventsDB;
+            break;
+        case "replayCraftPlayerItemUseEventsDB":
+            db = replayCraftPlayerItemUseEventsDB;
             break;
     }
     system.run(() => {

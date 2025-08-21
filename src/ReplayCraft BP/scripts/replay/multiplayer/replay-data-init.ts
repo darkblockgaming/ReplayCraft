@@ -45,5 +45,8 @@ export function ensureReplayDataForPlayer(playerId: string) {
         if (!session.playerDamageEventsMap.has(playerId)) {
             session.playerDamageEventsMap.set(playerId, undefined);
         }
+        if (!session.playerItemUseDataMap.has(playerId)) {
+            session.playerItemUseDataMap.set(playerId, undefined);
+        }
     }
 }

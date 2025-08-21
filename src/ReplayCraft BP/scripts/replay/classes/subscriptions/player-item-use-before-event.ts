@@ -17,6 +17,7 @@ function setController(eventData: ItemUseBeforeEvent) {
         }
     }
 }
+
 const replaycraftItemUseBeforeEvent = () => {
     world.beforeEvents.itemUse.subscribe(setController);
 };

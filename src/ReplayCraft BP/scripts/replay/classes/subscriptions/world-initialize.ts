@@ -16,6 +16,7 @@ let replayCraftAmbientEntityDB: OptimizedDatabase;
 let replayCraftAllRecordedPlayerIdsDB: OptimizedDatabase;
 let replayCraftTrackedPlayerJoinTicksDB: OptimizedDatabase;
 let replayCraftPlayerDamageEventsDB: OptimizedDatabase;
+let replayCraftPlayerItemUseEventsDB: OptimizedDatabase;
 export {
     replayCraftBlockDB,
     replayCraftPlayerPosDB,
@@ -32,6 +33,7 @@ export {
     replayCraftAmbientEntityDB,
     replayCraftAllRecordedPlayerIdsDB,
     replayCraftPlayerDamageEventsDB,
+    replayCraftPlayerItemUseEventsDB,
 };
 /**
  * Initializes define the database on world initialization.
@@ -60,6 +62,7 @@ function onWorldInitialize() {
 
     //Store damage data for the players
     replayCraftPlayerDamageEventsDB = new OptimizedDatabase("replayCraftPlayerDamageEventsDataBase");
+    replayCraftPlayerItemUseEventsDB = new OptimizedDatabase("replayCraftPlayerItemUseEventsDataBase");
 }
 
 /**

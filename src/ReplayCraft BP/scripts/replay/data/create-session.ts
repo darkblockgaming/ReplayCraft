@@ -197,6 +197,7 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         allRecordedPlayerIds: new Set(),
         trackedPlayerJoinTicks: new Map(),
         playerDamageEventsMap: new Map(),
+        playerItemUseDataMap: new Map(),
         twoPartBlocks: [
             "minecraft:copper_door",
             "minecraft:exposed_copper_door",

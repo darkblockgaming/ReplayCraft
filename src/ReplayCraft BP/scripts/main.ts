@@ -31,6 +31,8 @@ import { customCommands } from "./replay/commands/command-handler";
 import { cloneComponentData } from "./replay/data/util/export-entity-components";
 import { registerEntitySpawnHandler } from "./replay/classes/subscriptions/entity-spawn-after-event";
 import { assignEntityComponents } from "./replay/entity/variant-trigger";
+import { replayCraftItemReleaseAfterEvent } from "./replay/classes/subscriptions/item-release-use";
+import { replayCraftItemStartAfterEvent } from "./replay/classes/subscriptions/item-start-use";
 
 //Chat events
 beforeChatSend();
@@ -42,7 +44,10 @@ replaycraftPlaceBlockAfterEvent();
 replaycraftInteractWithBlockBeforeEvent();
 replaycraftInteractWithBlockAfterEvent();
 // soon to be removed from the API!
+
 replaycraftItemUseAfterEvent();
+replayCraftItemReleaseAfterEvent();
+replayCraftItemStartAfterEvent();
 
 //Show the player a useful message for the first time they join!
 onPlayerSpawn();

@@ -12,6 +12,7 @@ import {
     replayCraftAllRecordedPlayerIdsDB,
     replayCraftTrackedPlayerJoinTicksDB,
     replayCraftPlayerDamageEventsDB,
+    replayCraftPlayerItemUseEventsDB,
 } from "../../classes/subscriptions/world-initialize";
 import { Player, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
@@ -128,6 +129,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             "replayAmbientEntityMap",
             "trackedPlayerJoinTicks",
             "playerDamageEventsMap",
+            "playerItemUseDataMap",
         ].forEach((key) => {
             const val = (session as any)[key];
             debugLog(` - ${key}: ${val instanceof Map ? "Map" : typeof val}`);
@@ -145,6 +147,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             session.replayAmbientEntityMap.delete(p);
             session.trackedPlayerJoinTicks.delete(p);
             session.playerDamageEventsMap.delete(p);
+            session.playerItemUseDataMap.delete(p);
         });
     } catch (err) {
         debugError(`Error clearing map data for ${player.id}:`, err);
@@ -165,7 +168,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedPlayerArmorWeaponsData,
                 savedAmbientEntityData,
                 savedPlayerJoinTicksData,
-                savedPlayerDamageEventsData;
+                savedPlayerDamageEventsData,
+                savedPlayerItemUseEventData;
 
             try {
                 savedPlayerBlockData = replayCraftBlockDB.get(pidKey);
@@ -179,6 +183,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                 savedAmbientEntityData = replayCraftAmbientEntityDB.get(pidKey);
                 savedPlayerJoinTicksData = replayCraftTrackedPlayerJoinTicksDB.get(pidKey);
                 savedPlayerDamageEventsData = replayCraftPlayerDamageEventsDB.get(pidKey);
+                savedPlayerItemUseEventData = replayCraftPlayerItemUseEventsDB.get(pidKey);
             } catch (innerErr) {
                 debugError(`Error loading per-player DB for (${p}):`, innerErr);
                 return;
@@ -216,6 +221,9 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
             }
             if (!savedPlayerDamageEventsData) {
                 debugWarn(`Missing savedPlayerDamageEventsData for player (${p})`);
+            }
+            if (!savedPlayerItemUseEventData) {
+                debugWarn(`Missing savedPlayerItemUseEventData for player (${p})`);
             }
 
             try {
@@ -275,6 +283,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                     }
                 }
                 if (savedPlayerDamageEventsData) session.playerDamageEventsMap.set(p, savedPlayerDamageEventsData);
+                if (savedPlayerItemUseEventData) session.playerItemUseDataMap.set(p, savedPlayerItemUseEventData);
             } catch (mapSetErr) {
                 debugError(`Error assigning replay maps for (${p}):`, mapSetErr);
             }
