@@ -97,11 +97,11 @@
                     "variable.tcos0 = (math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;",
                     "variable.first_person_rotation_factor = math.sin((1 - variable.attack_time) * 180.0);",
                     "variable.hand_bob = query.life_time < 0.01 ? 0.0 : variable.hand_bob + ((query.is_on_ground && query.is_alive ? math.clamp(math.sqrt(math.pow(query.position_delta(0), 2.0) + math.pow(query.position_delta(2), 2.0)), 0.0, 0.1) : 0.0) - variable.hand_bob) * 0.02;",
-                    //"variable.item_use_normalized = query.main_hand_item_use_duration / query.main_hand_item_max_duration;",
-
-                    "variable.is_holding_chargeable_item = query.property('rc:holding_chargeable_item');",
+                    //vanilla variables
                     "variable.item_use_normalized = query.property('rc:item_use_duration') / query.main_hand_item_max_duration;",
-                    "variable.charge_amount=1.6;"
+                    "variable.charge_amount =  math.clamp((query.main_hand_item_max_duration - (query.property('rc:item_use_duration') - query.frame_alpha + 1.0)) / 10.0, 0.0, 1.0f);",
+                    //Custom variables
+                    "variable.is_holding_chargeable_item = query.property('rc:holding_chargeable_item');"
                 ],
                 "animate": [
                     "humanoid_base_pose",
@@ -187,6 +187,9 @@
                 ]
             },
             "animations": {
+                
+                "wield_third_person_raise": "animation.trident.wield_third_person_raise",
+
                 "base_controller": "controller.animation.player.base",
                 "hudplayer": "controller.animation.player.hudplayer",
                 "humanoid_base_pose": "animation.humanoid.base_pose",
