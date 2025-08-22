@@ -71,6 +71,8 @@ export interface itemUseData {
     startTime: number;
     chargeTime: number;
     endTime: number;
+    isCharged?: boolean;
+    firedAt?: number;
 }
 export type PlayerItemUseDataMap = Map<string, itemUseData[]>;
 export interface AmbientEntityData {

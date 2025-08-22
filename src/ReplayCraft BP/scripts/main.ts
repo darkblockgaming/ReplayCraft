@@ -722,22 +722,36 @@ system.runInterval(() => {
                 const attackerEntity = replayEntityDataMap.get(playerId)?.customEntity;
                 if (!attackerEntity) return;
 
-                // Check if any bow events are relevant this tick
                 playerItemUseData.forEach((event) => {
                     const startTick = event.trackingTick;
                     const endTick = startTick + event.chargeTime;
 
-                    if (currentTick === startTick) {
-                        // Started charging
-                        attackerEntity.setProperty("rc:holding_chargeable_item", true);
-                        attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
-                    } else if (currentTick === endTick) {
-                        // Released bow
-                        attackerEntity.setProperty("rc:holding_chargeable_item", false);
+                    if (event.typeId !== "minecraft:crossbow") {
+                        if (currentTick === startTick) {
+                            attackerEntity.setProperty("rc:holding_chargeable_item", true);
+                            attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
+                        } else if (currentTick === endTick) {
+                            attackerEntity.setProperty("rc:holding_chargeable_item", false);
+                        }
+                    } else {
+                        // --- Crossbow special handling ---
+                        if (currentTick === startTick) {
+                            // Started charging
+                            attackerEntity.setProperty("rc:holding_chargeable_item", true);
+                            attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
+                        } else if (currentTick === endTick) {
+                            // Finished charging but stays charged
+                            attackerEntity.setProperty("rc:holding_chargeable_item", false);
+                            attackerEntity.setProperty("rc:crossbow_charged", true);
+                        } else if (event.firedAt && currentTick === event.firedAt) {
+                            // Actually fired
+                            attackerEntity.setProperty("rc:crossbow_charged", false);
+                        }
                     }
                 });
             });
         }
+
         // --- Entity Hurt Event Playback ---
         /**
          */

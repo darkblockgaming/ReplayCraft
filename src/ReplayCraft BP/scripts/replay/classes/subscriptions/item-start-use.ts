@@ -22,6 +22,7 @@ function captureStartData(eventData: ItemStartUseAfterEvent) {
         startTime: tick,
         chargeTime: 0,
         endTime: 0,
+        firedAt: 0,
     };
 
     addBowEvent(session.playerItemUseDataMap, player.id, itemStartData);
