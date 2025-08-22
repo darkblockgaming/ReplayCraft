@@ -23,6 +23,21 @@
                         64
                     ]
                 },
+                "rc:item_use_duration": {
+                    "type": "int",
+                    "range": [
+                        0,
+                        9999999
+                    ],
+                    "default": 0,
+                    "client_sync": true
+                },
+                "rc:holding_chargeable_item": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+
                 "rc:is_swimming": {
                     "type": "bool",
                     "default": false,

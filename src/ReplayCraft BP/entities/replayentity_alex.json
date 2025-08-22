@@ -1,100 +1,95 @@
 {
-  "format_version": "1.21.100",
-  "minecraft:entity": {
-    "description": {
-      "identifier": "dbg:replayentity_alex",
-      "is_spawnable": false,
-      "is_summonable": true,
-      "is_experimental": false,
-      "properties": {
-        "dbg:skin": {
-          "type": "int",
-          "default": 0,
-          "client_sync": true,
-          "range": [
-            0,
-            64
-          ]
+    "format_version": "1.21.100",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "dbg:replayentity_alex",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "properties": {
+                "dbg:skin": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [0, 64]
+                },
+                "rc:is_swimming": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_sleeping": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_gliding": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_climbing": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_falling": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_flying": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_riding": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
+                "rc:is_sprinting": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                }
+            }
         },
-        "rc:is_swimming": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_sleeping": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_gliding": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_climbing": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_falling": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_flying": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_riding": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
-        },
-        "rc:is_sprinting": {
-          "type": "bool",
-          "default": false,
-          "client_sync": true
+        "components": {
+            "minecraft:tick_world": {
+                "distance_to_players": 128,
+                "never_despawn": true,
+                "radius": 6
+            },
+            "minecraft:type_family": {
+                "family": ["other"]
+            },
+            "minecraft:damage_sensor": {
+                "triggers": {
+                    "cause": "all",
+                    "deals_damage": "no"
+                }
+            },
+            "minecraft:water_movement": {
+                "drag_factor": 0
+            },
+            "minecraft:equip_item": {},
+            "minecraft:collision_box": {
+                "height": 1.8,
+                "width": 0.0
+            },
+            "minecraft:physics": {
+                "has_gravity": false,
+                "has_collision": false
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:nameable": {
+                "always_show": true,
+                "allow_name_tag_renaming": false
+            }
         }
-      }
-    },
-    "components": {
-      "minecraft:tick_world": {
-        "distance_to_players": 128,
-        "never_despawn": true,
-        "radius": 6
-      },
-      "minecraft:type_family": {
-        "family": [
-          "other"
-        ]
-      },
-      "minecraft:damage_sensor": {
-        "triggers": {
-          "cause": "all",
-          "deals_damage": "no"
-        }
-      },
-      "minecraft:water_movement": {
-        "drag_factor": 0
-      },
-      "minecraft:equip_item": {},
-      "minecraft:collision_box": {
-        "height": 1.8,
-        "width": 0.0
-      },
-      "minecraft:physics": {
-        "has_gravity": false,
-        "has_collision": false
-      },
-      "minecraft:pushable": {
-        "is_pushable": false,
-        "is_pushable_by_piston": false
-      },
-      "minecraft:nameable": {
-        "always_show": true,
-        "allow_name_tag_renaming": false
-      }
     }
-  }
 }

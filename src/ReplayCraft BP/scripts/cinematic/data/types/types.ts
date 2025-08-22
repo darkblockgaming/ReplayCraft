@@ -1,5 +1,8 @@
 import { Vector3, Vector2 } from "@minecraft/server";
 
+export interface uiState {
+    state: string;
+}
 export interface FrameData {
     pos: Vector3;
     rot: Vector2;
