@@ -11,24 +11,22 @@ function addBowEvent(map: PlayerItemUseDataMap, playerID: string, event: itemUse
     events.push(event);
 }
 function captureStartData(eventData: ItemStartUseAfterEvent) {
-    if (eventData.itemStack?.typeId === "minecraft:bow") {
-        const player = eventData.source;
-        const session = replaySessions.playerSessions.get(player.id);
-        if (!session || session.replayStateMachine.state !== "recPending") return;
-        const tick = session.recordingEndTick;
+    const player = eventData.source;
+    const session = replaySessions.playerSessions.get(player.id);
+    if (!session || session.replayStateMachine.state !== "recPending") return;
+    const tick = session.recordingEndTick;
 
-        const bowStartData = {
-            trackingTick: tick,
-            typeId: eventData.itemStack.typeId,
-            bowStart: tick,
-            bowChargeTime: 0,
-            bowEnd: 0,
-        };
+    const itemStartData = {
+        trackingTick: tick,
+        typeId: eventData.itemStack.typeId,
+        startTime: tick,
+        chargeTime: 0,
+        endTime: 0,
+    };
 
-        addBowEvent(session.playerItemUseDataMap, player.id, bowStartData);
-        if (config.debugItemUseEvents === true) {
-            console.log(`[ReplayCraft DEBUG] Bow started charging: ${JSON.stringify(bowStartData)}`);
-        }
+    addBowEvent(session.playerItemUseDataMap, player.id, itemStartData);
+    if (config.debugItemUseEvents === true) {
+        console.log(`[ReplayCraft DEBUG] Bow started charging: ${JSON.stringify(itemStartData)}`);
     }
 }
 

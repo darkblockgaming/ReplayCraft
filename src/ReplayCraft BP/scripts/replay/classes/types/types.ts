@@ -68,9 +68,9 @@ export type PlayerDamageMap = Map<string, PlayerDamageData[]>;
 export interface itemUseData {
     trackingTick: number;
     typeId: string;
-    bowStart: number;
-    bowChargeTime: number;
-    bowEnd: number;
+    startTime: number;
+    chargeTime: number;
+    endTime: number;
 }
 export type PlayerItemUseDataMap = Map<string, itemUseData[]>;
 export interface AmbientEntityData {

@@ -725,12 +725,12 @@ system.runInterval(() => {
                 // Check if any bow events are relevant this tick
                 playerItemUseData.forEach((event) => {
                     const startTick = event.trackingTick;
-                    const endTick = startTick + event.bowChargeTime;
+                    const endTick = startTick + event.chargeTime;
 
                     if (currentTick === startTick) {
                         // Started charging
                         attackerEntity.setProperty("rc:holding_chargeable_item", true);
-                        attackerEntity.setProperty("rc:item_use_duration", event.bowChargeTime);
+                        attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
                     } else if (currentTick === endTick) {
                         // Released bow
                         attackerEntity.setProperty("rc:holding_chargeable_item", false);
