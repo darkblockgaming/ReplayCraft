@@ -1,4 +1,4 @@
-import { ItemStartUseAfterEvent, system, world } from "@minecraft/server";
+import { ItemStartUseAfterEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { itemUseData, PlayerItemUseDataMap } from "../types/types";
 import config from "../../data/util/config";
@@ -19,7 +19,8 @@ function captureStartData(eventData: ItemStartUseAfterEvent) {
 
         const bowStartData = {
             trackingTick: tick,
-            bowStart: system.currentTick,
+            typeId: eventData.itemStack.typeId,
+            bowStart: tick,
             bowChargeTime: 0,
             bowEnd: 0,
         };

@@ -8,7 +8,7 @@ export default {
     debugPlayerHurt: false, //PvP Hurt Data are logged when enabled.
     debugEntityPlayback: false,
     debugEntitySpawnEvents: false, //Entity Spawning events are logged when enabled (This is a busy flag!)
-    debugItemUseEvents: false, //Item start use and release events are logged when enabled
+    debugItemUseEvents: true, //Item start use and release events are logged when enabled
     debugPlayerBreakBlockAfterEvent: false,
     debugPlayerBreakBlockBeforeEvent: false,
     debugPlayerInteractWithBlockAfterEvent: false,

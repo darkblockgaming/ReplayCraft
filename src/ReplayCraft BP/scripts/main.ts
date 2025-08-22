@@ -729,7 +729,8 @@ system.runInterval(() => {
 
                     if (currentTick === startTick) {
                         // Started charging
-                        attackerEntity.setProperty("rc:holding-charged_item", true);
+                        attackerEntity.setProperty("rc:holding_charged_item", true);
+                        attackerEntity.setProperty("rc:item_use_duration", event.bowChargeTime);
                     } else if (currentTick === endTick) {
                         // Released bow
                         attackerEntity.setProperty("rc:holding-charged_item", false);
