@@ -1,5 +1,5 @@
 import { Player } from "@minecraft/server";
-import { settingsDataMap, otherDataMap } from "../data/maps";
+import { settingsDataMap, otherDataMap } from "../../../data/maps";
 
 export function cineResetSettings(player: Player) {
     const otherData = otherDataMap.get(player.id);
@@ -11,21 +11,19 @@ export function cineResetSettings(player: Player) {
         });
         return;
     }
+    const current = settingsDataMap.get(player.id);
     settingsDataMap.set(player.id, {
+        ...current,
         hideHud: true,
         easeType: 0,
-        easetime: 4,
         camFacingType: 0,
         camFacingX: 0,
         camFacingY: 0,
-        cineParType: 0,
-        cinePrevSpeed: 0.5,
-        cineParSwitch: true,
-        cinePrevSpeedMult: 5,
         cineFadeSwitch: true,
         cineRedValue: 37,
         cineGreenValue: 128,
         cineBlueValue: 27,
+        easetime: 4
     });
     player.sendMessage({
         translate: "dbg.rc2.mes.all.settings.have.been.reset.to.default",

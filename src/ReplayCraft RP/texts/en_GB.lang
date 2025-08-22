@@ -117,7 +117,7 @@ dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Fade Screen Settings§r\
 dbg.rc2.slider.green.value=§aGreen Value
 dbg.rc2.slider.blue.value=§9Blue Value
 
-dbg.rc2.body=Made By §6DarkBlock Gaming
+dbg.rc2.body=Create a track/camera path!
 
 dbg.rc2.button.add.position.frame=Add Position Frame
 dbg.rc2.button.start.camera=Start Camera

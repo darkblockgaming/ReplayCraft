@@ -1,19 +1,32 @@
 import { world, system } from "@minecraft/server";
 //Import maps
-import { frameDataMap, settingsDataMap, otherDataMap } from "./data/maps";
+import { uiStateMap, frameDataMap, settingsDataMap, otherDataMap } from "./data/maps";
 //Import types
 import { FrameData } from "./data/types/types";
 //Import constants
 import { particlesStr } from "./data/constants/constants";
 //Import Functions
 import { initMaps } from "./data/init-maps";
-import { cinematicUi } from "./functions/ui/cinematic-ui";
+import { framePlacementMenu } from "./functions/ui/frame-placement";
+import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
 
-world.afterEvents.itemUse.subscribe((eventData) => {
-    const player = eventData.source;
-    if (eventData.itemStack?.typeId === "minecraft:blaze_rod" || (eventData.itemStack?.typeId === "minecraft:stick" && /^(Cinematic|cinematic|CINEMATIC|ReplayCraft1|replaycraft1|REPLAYCRAFT1|Replaycraft1)$/.test(eventData.itemStack.nameTag))) {
-        cinematicUi(player);
-        initMaps(player);
+const cineUiHandlers = {
+    framePlacementMenu: framePlacementMenu,
+    cameraPlaybackMenu: cameraPlaybackMenu,
+};
+
+world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
+    if (itemStack?.typeId === "minecraft:blaze_rod" || (itemStack?.typeId === "minecraft:stick" && /^(Cinematic|cinematic|CINEMATIC|ReplayCraft1|replaycraft1|REPLAYCRAFT1|Replaycraft1)$/.test(itemStack.nameTag))) {
+        initMaps(source);
+
+        const uiState = uiStateMap.get(source.id);
+        const handler = cineUiHandlers[uiState.state as keyof typeof cineUiHandlers];
+        if (handler) {
+            handler(source);
+        } else {
+            console.warn("Invalid State:", uiState.state);
+            uiState.state = "framePlacementMenu";
+        }
     }
 });
 

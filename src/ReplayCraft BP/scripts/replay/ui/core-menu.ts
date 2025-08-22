@@ -1,6 +1,6 @@
 import * as ui from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { cinematicUi } from "../../cinematic/functions/ui/cinematic-ui";
+//import { cinematicUi } from "../../cinematic/functions/ui/frame-placement";
 import { uiReplayCraftMainMenu } from "./replaycraft-main-menu";
 export function uiReplayCraftCore(player: Player) {
     //Default
@@ -12,7 +12,7 @@ export function uiReplayCraftCore(player: Player) {
         if (result.canceled) return;
         const actions = {
             0: () => uiReplayCraftMainMenu(player),
-            1: () => cinematicUi(player),
+            //1: () => cinematicUi(player),
         };
         const selectedAction = actions[result.selection as keyof typeof actions];
         if (selectedAction) {

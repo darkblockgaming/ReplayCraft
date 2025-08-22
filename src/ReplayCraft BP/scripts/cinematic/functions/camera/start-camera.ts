@@ -1,7 +1,6 @@
 import { Player, system, EasingType } from "@minecraft/server";
 import { frameDataMap, settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
-import { startCountdown } from "./start-countdown";
 
 export function startCamera(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];
@@ -12,6 +11,14 @@ export function startCamera(player: Player) {
         player.playSound("note.bass");
         player.sendMessage({
             translate: "dbg.rc2.mes.camera.is.already.moving",
+        });
+        return;
+    }
+
+    if (frames.length === 0) {
+        player.playSound("note.bass");
+        player.sendMessage({
+            translate: "",
         });
         return;
     }
@@ -48,7 +55,6 @@ export function startCamera(player: Player) {
             rotation: frames[0].rot,
         });
     }
-    startCountdown(player);
 
     let index = 1;
     cameraIntervalMap.set(player.id, []);
@@ -121,6 +127,6 @@ export function startCamera(player: Player) {
     const initialIntervalId = system.runTimeout(() => {
         otherData.isCameraInMotion = true;
         moveNextCameraFrame();
-    }, 65);
+    }, 5);
     cameraIntervalMap.get(player.id).push(initialIntervalId);
 }

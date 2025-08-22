@@ -1,7 +1,10 @@
 import { Player } from "@minecraft/server";
-import { frameDataMap, settingsDataMap, otherDataMap } from "./maps";
+import { uiStateMap, frameDataMap, settingsDataMap, otherDataMap } from "./maps";
 
 export function initMaps(player: Player) {
+    if (!uiStateMap.has(player.id)) {
+        uiStateMap.set(player.id, { state: "framePlacementMenu" });
+    }
     if (!frameDataMap.has(player.id)) {
         frameDataMap.set(player.id, []);
     }

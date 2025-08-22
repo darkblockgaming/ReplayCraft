@@ -1,4 +1,4 @@
-import { Player } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { frameDataMap, otherDataMap } from "../data/maps";
 import { FrameData } from "../data/types/types";
 
@@ -15,8 +15,6 @@ export function addCameraFrame(player: Player) {
     const pos = player.getHeadLocation();
     const rot = player.getRotation();
 
-    //TODO: Spawn entity to represent the camera position at pos facing at rot
-
     const frame: FrameData = {
         pos: pos,
         rot: rot,
@@ -24,5 +22,10 @@ export function addCameraFrame(player: Player) {
 
     const frames = frameDataMap.get(player.id) ?? [];
     frames.push(frame);
-    frameDataMap.set(player.id, frames);
+
+    const camPosEntity = player.dimension.spawnEntity("dbg:rccampos" as VanillaEntityIdentifier, pos);
+    camPosEntity.nameTag = `Camera Frame ${frames.length}`;
+    camPosEntity.setProperty("rc:rot_x", player.getRotation().x);
+    camPosEntity.setProperty("rc:rot_y", player.getRotation().y);
+    camPosEntity.addTag("cinematicOwner:" + player.id);
 }

@@ -1,3 +1,70 @@
+##-----------------------------------------------
+##------------- Cinematic Menu Section -------------
+
+dbg.rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v1.8.0§r
+
+##"framePlacementMenu"
+dbg.rc2.button.add.position.frame=Add Position Frame
+dbg.rc2.body.create.path=Create camera path/place frames!
+dbg.rc2.button.preview=Preview
+dbg.rc2.button.remove.last.frame=Remove Last Frame
+dbg.rc2.button.remove.all.frames=Remove All Frames
+dbg.rc2.button.frame.settings=Frame Settings
+dbg.rc2.button.reset.frame.settings=Reset Settings
+dbg.rc2.button.next=Next --->>
+
+##"cameraPlaybackMenu"
+dbg.rc2.body.camera-playback=PlayBack and record!
+dbg.rc2.button.start.camera=Start Camera
+dbg.rc2.button.stop.camera=Stop Camera
+dbg.rc2.button.camera.settings=Camera Settings
+dbg.rc2.button.reset.camera.settings=Reset Settings
+dbg.rc2.button.go.back=<<--- Go Back
+
+##"Frame Settings"
+dbg.rc2.title.frame.settings=Frame Settings
+dbg.rc2.lebel.particle.settings=§l§g- Particle Options
+dbg.rc2.dropdown.frame.particle.type=Frame Particle Type
+dbg.rc2.toggle.enable.frame.particles=Enable Frame Particles
+dbg.rc2.lebel.preview.settings=§l§g- Preview Options
+dbg.rc2.slider.preview.speed.multiplier=Preview Speed Multiplier
+
+##Camera Settings
+dbg.rc2.title.camera.settings=Camera Settings
+dbg.rc2.lebel.easing.settings=§l§g- Easing Options
+dbg.rc2.dropdown.ease.type=Ease Type (Transition Animation)
+dbg.rc2.textfield.ease.time=Time (Time More = Speed Less)
+dbg.rc2.lebel.camera.options=§l§g- Camera Options
+dbg.rc2.dropdown.camera.facing.type=Camera Facing Type
+dbg.rc2.slider.pitch=Pitch (X-rotation)
+dbg.rc2.slider.yaw=Yaw (Y-rotation)
+dbg.rc2.lebel.screen.settings=§l§g- Screen Options
+dbg.rc2.toggle.hide.hud=Hide Hud During Cinematic
+dbg.rc2.slider.fade.screen.settings.red.value=§cRed Value
+dbg.rc2.slider.green.value=§aGreen Value
+dbg.rc2.slider.blue.value=§9Blue Value
+
+
+dbg.rc2.mes.add.cam.frame=§f§4[ReplayCraft] §f§cAdd camera frames first!! §r
+dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Add Frames While Camera Is In Motion§r
+dbg.rc2.mes.camera.is.already.moving=§f§4[ReplayCraft] §f§cCamera is already moving §r
+dbg.rc2.mes.preview.camera.is.already.moving=§f§4[ReplayCraft] §f§cPreview Camera is already moving §r
+dbg.rc2.mes.camera.movement.complete=§f§4[ReplayCraft] §f§aCamera movement complete §r
+dbg.rc2.mes.no.active.camera.movement.to.stop=§f§4[ReplayCraft] §f§cNo active camera movement to stop §r
+dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Change Settings While Camera Is In Motion§r
+dbg.rc2.mes.please.click.submit=§f§4[ReplayCraft] §f§cPlease Click Submit
+dbg.rc2.mes.settings.have.been.saved.successfully=§f§4[ReplayCraft] §fSettings have been saved successfully
+dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't reset settings while camera is in motion§r
+dbg.rc2.mes.all.settings.have.been.reset.to.default=§f§4[ReplayCraft] §fAll settings have been reset to default.
+dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't remove last frame while camera is in motion§r
+dbg.rc2.mes.no.frames.to.remove=§f§4[ReplayCraft] §f§cNo frames to remove§r
+dbg.rc2.mes.removed.last.frame=Removed last frame
+dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't remove all frames while camera is in motion§r
+dbg.rc2.mes.no.frames.to.remove=§f§4[ReplayCraft] §f§cNo frames to remove§r
+dbg.rc2.mes.all.frames.have.been.removed=All frames have been removed.
+
+##-----------------------------------------------
+##------------- Replay Menu Section -------------
 dbg.rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v3.0.0§r
 dbg.rc1.title.replay.settings=Replay Settings
 dbg.rc1.title.preview.settings=Preview Settings
@@ -100,52 +167,6 @@ dbg.rc1.mes.interaction.successfull=§f§4[ReplayCraft] §fInteraction Successfu
 dbg.rc1.mes.no.other.players.available=§f§4[ReplayCraft] §f§cNo other players available.
 dbg.rc1.mes.you.have.to.select.multiple.players=§f§4[ReplayCraft] §f§cYou Have To Select Multiple Players
 dbg.rc1.mes.multiplayer.replay.is.off=§f§4[ReplayCraft] §f§aMultiplayer replay is off.
-
-dbg.rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v1.8.0§r
-dbg.rc2.title.settings=Settings
-
-dbg.rc2.dropdown.camera.settings.ease.type=§l§g- Camera Settings§r\n\nEase Type (Transition Animation)
-dbg.rc2.textfield.time=Time (Time More = Speed Less)
-dbg.rc2.dropdown.camera.facing=Camera Facing
-dbg.rc2.slider.pitch=Pitch (X-rotation)
-dbg.rc2.slider.yaw=Yaw (Y-rotation)
-dbg.rc2.dropdown.particle.Settings.frame.particle.type=\n§l§g- Particle Settings§r\n\nFrame Particle Type
-dbg.rc2.toggle.enable.position.frame.particles=Enable Position Frame Particles
-dbg.rc2.toggle.hide.hud=Hide Hud During Cinematic
-dbg.rc2.slider.preview.settings.preview.speed.multiplier=\n§l§g- Preview Settings§r\n\nPreview Speed Multiplier
-dbg.rc2.slider.fade.screen.settings.red.value=\n§l§g- Fade Screen Settings§r\n\n§cRed Value
-dbg.rc2.slider.green.value=§aGreen Value
-dbg.rc2.slider.blue.value=§9Blue Value
-
-dbg.rc2.body=Made By §6DarkBlock Gaming
-
-dbg.rc2.button.add.position.frame=Add Position Frame
-dbg.rc2.button.start.camera=Start Camera
-dbg.rc2.button.preview=Preview
-dbg.rc2.button.stop.camera=Stop Camera
-dbg.rc2.button.settings=Settings
-dbg.rc2.button.reset.settings=Reset Settings
-dbg.rc2.button.remove.last.frame=Remove Last Frame
-dbg.rc2.button.remove.all.frames=Remove All Frames
-
-dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Add Frames While Camera Is In Motion§r
-dbg.rc2.mes.camera.is.already.moving=§f§4[ReplayCraft] §f§cCamera is already moving §r
-dbg.rc2.mes.preview.camera.is.already.moving=§f§4[ReplayCraft] §f§cPreview Camera is already moving §r
-dbg.rc2.mes.camera.movement.complete=§f§4[ReplayCraft] §f§aCamera movement complete §r
-dbg.rc2.mes.camera.movement.stopped=Camera movement stopped!
-dbg.rc2.mes.no.active.camera.movement.to.stop=§f§4[ReplayCraft] §f§cNo active camera movement to stop §r
-dbg.rc2.mes.no.preview.camera.movement.complete=§aPreview camera movement complete §r
-dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Change Settings While Camera Is In Motion§r
-dbg.rc2.mes.please.click.submit=§f§4[ReplayCraft] §f§cPlease Click Submit
-dbg.rc2.mes.settings.have.been.saved.successfully=§f§4[ReplayCraft] §fSettings have been saved successfully
-dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't reset settings while camera is in motion§r
-dbg.rc2.mes.all.settings.have.been.reset.to.default=§f§4[ReplayCraft] §fAll settings have been reset to default.
-dbg.rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't remove last frame while camera is in motion§r
-dbg.rc2.mes.no.frames.to.remove=§f§4[ReplayCraft] §f§cNo frames to remove§r
-dbg.rc2.mes.removed.last.frame=Removed last frame
-dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't remove all frames while camera is in motion§r
-dbg.rc2.mes.no.frames.to.remove=§f§4[ReplayCraft] §f§cNo frames to remove§r
-dbg.rc2.mes.all.frames.have.been.removed=All frames have been removed.
 
 replaymenueafterload.title= How To Continue?
 replaymenueafterload= How To Continue?
