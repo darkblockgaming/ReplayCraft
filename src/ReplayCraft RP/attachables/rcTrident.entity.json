@@ -31,9 +31,9 @@
           {
             "wield_third_person": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
           },
-          {
-            "wield_third_person_raise": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
-          },
+          // {
+          //   "wield_third_person_raise": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
+          // },
           {
             "wield": "!query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
           }

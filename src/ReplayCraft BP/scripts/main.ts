@@ -725,7 +725,6 @@ system.runInterval(() => {
                 playerItemUseData.forEach((event) => {
                     const startTick = event.trackingTick;
                     const endTick = startTick + event.chargeTime;
-
                     if (event.typeId !== "minecraft:crossbow") {
                         if (currentTick === startTick) {
                             attackerEntity.setProperty("rc:holding_chargeable_item", true);
