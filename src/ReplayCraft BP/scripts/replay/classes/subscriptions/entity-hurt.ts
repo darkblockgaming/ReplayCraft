@@ -43,6 +43,23 @@ function onEntityHit(event: EntityHurtAfterEvent) {
     if (!damageSource || !damageSource.damagingEntity) return;
 
     if (damageSource.damagingEntity.typeId !== "minecraft:player") {
+        const attacker = damageSource.damagingEntity;
+        const victim = hurtEntity;
+        let victimSession = replaySessions.playerSessions.get(victim.id);
+        const tick = victimSession.recordingEndTick;
+        const damageData: PlayerDamageData = {
+            playerID: attacker.id,
+            playerName: attacker.nameTag ?? "Unknown",
+            attackerTypeId: attacker.typeId,
+            hurtTick: tick,
+            DamageDealt: damage,
+            Weapon: attacker.getComponent("minecraft:equippable")?.getEquipment(EquipmentSlot.Mainhand)?.typeId ?? "unknown",
+            VictimID: victim.id,
+            VictimName: victim.nameTag ?? "Unknown",
+            victimTypeId: victim.typeId,
+        };
+        addDamageEvent(victimSession.playerDamageEventsMap, attacker.id, damageData);
+
         return;
     }
 
@@ -87,11 +104,13 @@ function onEntityHit(event: EntityHurtAfterEvent) {
             const damageData: PlayerDamageData = {
                 playerID: attacker.id,
                 playerName: attacker.nameTag ?? "Unknown",
+                attackerTypeId: attacker.typeId,
                 hurtTick: tick,
                 DamageDealt: damage,
                 Weapon: attacker.getComponent("minecraft:equippable")?.getEquipment(EquipmentSlot.Mainhand)?.typeId ?? "unknown",
                 VictimID: victim.id,
                 VictimName: victim.nameTag ?? "Unknown",
+                victimTypeId: victim.typeId,
             };
 
             // Store in attacker's session
@@ -113,6 +132,7 @@ function onEntityHit(event: EntityHurtAfterEvent) {
                     playerName: victim.nameTag ?? "Unknown",
                     VictimID: victim.id,
                     VictimName: victim.nameTag ?? "Unknown",
+                    victimTypeId: victim.typeId,
                 });
                 if (config.debugPlayerHurt === true) {
                     debugLog(`[ReplayCraft DEBUG] Recorded player damage for victim: ${JSON.stringify(damageData)}`);

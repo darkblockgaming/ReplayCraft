@@ -58,11 +58,13 @@ export interface RecordedEntityComponent {
 export interface PlayerDamageData {
     playerID: string;
     playerName: string;
+    attackerTypeId: string;
     hurtTick: number;
     DamageDealt: number;
     Weapon: string;
     VictimID: string;
     VictimName: string;
+    victimTypeId: string;
 }
 export type PlayerDamageMap = Map<string, PlayerDamageData[]>;
 export interface itemUseData {
@@ -91,6 +93,8 @@ export interface AmbientEntityData {
     id?: string;
     entityComponents?: RecordedEntityComponent[]; // now stores type + values
     wasSpawned: boolean;
+    isProjectile: boolean;
+    velocity: Vector3;
 }
 export type AmbientEntityMap = Map<string, AmbientEntityData>; // entityId -> data
 

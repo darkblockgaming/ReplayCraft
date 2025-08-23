@@ -33,6 +33,8 @@ import { registerEntitySpawnHandler } from "./replay/classes/subscriptions/entit
 import { assignEntityComponents } from "./replay/entity/variant-trigger";
 import { replayCraftItemReleaseAfterEvent } from "./replay/classes/subscriptions/item-release-use";
 import { replayCraftItemStartAfterEvent } from "./replay/classes/subscriptions/item-start-use";
+import { replayCraftItemCompleteUseAfterEvent } from "./replay/classes/subscriptions/item-complete-use";
+import { replayCraftItemStopUseAfterEvent } from "./replay/classes/subscriptions/item-stop-use";
 
 //Chat events
 beforeChatSend();
@@ -43,12 +45,14 @@ replaycraftPlaceBlockBeforeEvent();
 replaycraftPlaceBlockAfterEvent();
 replaycraftInteractWithBlockBeforeEvent();
 replaycraftInteractWithBlockAfterEvent();
+
 // soon to be removed from the API!
 
 replaycraftItemUseAfterEvent();
 replayCraftItemReleaseAfterEvent();
 replayCraftItemStartAfterEvent();
-
+replayCraftItemCompleteUseAfterEvent();
+replayCraftItemStopUseAfterEvent();
 //Show the player a useful message for the first time they join!
 onPlayerSpawn();
 //Handle player leaving the game
@@ -350,7 +354,10 @@ system.runInterval(() => {
                 for (const entity of nearbyEntities) {
                     const id = entity.id;
                     const key = `entity:${id}`;
-
+                    let isProjectileDetected = false;
+                    if (entity.getComponent("minecraft:projectile")) {
+                        isProjectileDetected = true;
+                    }
                     let entry = playerMap.get(key);
                     if (!entry) {
                         entry = {
@@ -362,6 +369,8 @@ system.runInterval(() => {
                             id: entity.id,
                             entityComponents: [], // now contains type + values
                             wasSpawned: false,
+                            isProjectile: isProjectileDetected,
+                            velocity: entity.getVelocity(),
                         };
 
                         playerMap.set(key, entry);
@@ -529,7 +538,6 @@ system.runInterval(() => {
                 for (const [id, data] of ambientMap.entries()) {
                     if (!id.startsWith("entity:")) continue;
                     if (data.typeId === "minecraft:item" || data.typeId === "minecraft:xp_orb") continue;
-
                     const tickData = data.recordedData[currentTick];
 
                     // Try to find existing entity by id in dimension if not assigned yet
@@ -550,44 +558,62 @@ system.runInterval(() => {
                     // Spawn if no entity exists and we have tickData
                     if (!hasValidEntity && currentTick >= data.spawnTick && tickData) {
                         try {
-                            const spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
-                            spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
-                            spawnedEntity.addTag(`replay:${player.id}`);
+                            let spawnedEntity;
+                            if (data.isProjectile) {
+                                if (currentTick === data.spawnTick) {
+                                    // Special handling for projectiles
+                                    spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
 
-                            if (data.entityComponents && data.entityComponents.length > 0) {
-                                debugLog(`Restoring ${data.entityComponents.length} components for entity ${id}`);
+                                    const projComp = spawnedEntity.getComponent("minecraft:projectile");
+                                    if (projComp && data.velocity) {
+                                        projComp.shoot(data.velocity);
+                                    }
 
-                                for (const comp of data.entityComponents) {
-                                    try {
-                                        const entityComponent = spawnedEntity.getComponent(comp.typeId);
-                                        if (!entityComponent) {
-                                            if (config.debugEntityTracking === true) {
-                                                debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
-                                            }
-
-                                            continue;
-                                        }
-                                        if (config.debugEntityTracking === true) {
-                                            debugLog(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
-                                        }
-
-                                        assignEntityComponents(spawnedEntity, comp);
-                                    } catch (err) {
-                                        if (config.debugEntityTracking === true) {
-                                            debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
-                                        }
+                                    spawnedEntity.addTag(`replay:${player.id}`);
+                                    if (config.debugEntityTracking === true) {
+                                        debugLog(`Spawned projectile ${id} with velocity ${JSON.stringify(data.velocity)} for player ${player.name}`);
                                     }
                                 }
                             } else {
-                                if (config.debugEntityTracking === true) {
-                                    debugLog(`No components found to restore for entity ${id}`);
-                                }
-                            }
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
-                            }
+                                spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
+                                spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
+                                spawnedEntity.addTag(`replay:${player.id}`);
 
-                            data.replayEntity = spawnedEntity;
+                                if (data.entityComponents && data.entityComponents.length > 0) {
+                                    debugLog(`Restoring ${data.entityComponents.length} components for entity ${id}`);
+
+                                    for (const comp of data.entityComponents) {
+                                        try {
+                                            const entityComponent = spawnedEntity.getComponent(comp.typeId);
+                                            if (!entityComponent) {
+                                                if (config.debugEntityTracking === true) {
+                                                    debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
+                                                }
+
+                                                continue;
+                                            }
+                                            if (config.debugEntityTracking === true) {
+                                                debugLog(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
+                                            }
+
+                                            assignEntityComponents(spawnedEntity, comp);
+                                        } catch (err) {
+                                            if (config.debugEntityTracking === true) {
+                                                debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (config.debugEntityTracking === true) {
+                                        debugLog(`No components found to restore for entity ${id}`);
+                                    }
+                                }
+                                if (config.debugEntityTracking === true) {
+                                    debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
+                                }
+
+                                data.replayEntity = spawnedEntity;
+                            }
                         } catch (err) {
                             if (config.debugEntityTracking === true) {
                                 debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
@@ -595,7 +621,7 @@ system.runInterval(() => {
                         }
                     }
 
-                    if (hasValidEntity && tickData) {
+                    if (hasValidEntity && tickData && !data.isProjectile) {
                         try {
                             entity.teleport(tickData.location, { rotation: tickData.rotation });
                         } catch (err) {
@@ -722,31 +748,18 @@ system.runInterval(() => {
                 const attackerEntity = replayEntityDataMap.get(playerId)?.customEntity;
                 if (!attackerEntity) return;
 
+                // Check if any bow events are relevant this tick
                 playerItemUseData.forEach((event) => {
                     const startTick = event.trackingTick;
                     const endTick = startTick + event.chargeTime;
 
-                    if (event.typeId !== "minecraft:crossbow") {
-                        if (currentTick === startTick) {
-                            attackerEntity.setProperty("rc:holding_chargeable_item", true);
-                            attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
-                        } else if (currentTick === endTick) {
-                            attackerEntity.setProperty("rc:holding_chargeable_item", false);
-                        }
-                    } else {
-                        // --- Crossbow special handling ---
-                        if (currentTick === startTick) {
-                            // Started charging
-                            attackerEntity.setProperty("rc:holding_chargeable_item", true);
-                            attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
-                        } else if (currentTick === endTick) {
-                            // Finished charging but stays charged
-                            attackerEntity.setProperty("rc:holding_chargeable_item", false);
-                            attackerEntity.setProperty("rc:crossbow_charged", true);
-                        } else if (event.firedAt && currentTick === event.firedAt) {
-                            // Actually fired
-                            attackerEntity.setProperty("rc:crossbow_charged", false);
-                        }
+                    if (currentTick === startTick) {
+                        // Started charging
+                        attackerEntity.setProperty("rc:holding_chargeable_item", true);
+                        attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
+                    } else if (currentTick === endTick) {
+                        // Released bow
+                        attackerEntity.setProperty("rc:holding_chargeable_item", false);
                     }
                 });
             });
@@ -768,6 +781,15 @@ system.runInterval(() => {
                     const victimEntity = replayEntityDataMap.get(event.VictimID)?.customEntity;
 
                     if (!attackerEntity || !victimEntity) return;
+
+                    if (event.attackerTypeId !== "minecraft:player") {
+                        victimEntity.applyDamage(event.DamageDealt);
+                        // Debug
+                        if (config.debugEntityHurtPlayback === true) {
+                            debugLog(`[ReplayCraft DEBUG] Replayed hit: ${event.playerName} -> ${event.VictimName} for ${event.DamageDealt}`);
+                        }
+                        return;
+                    }
 
                     try {
                         // Play victim hurt animation

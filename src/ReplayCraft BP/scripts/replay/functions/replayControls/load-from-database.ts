@@ -14,7 +14,7 @@ import {
     replayCraftPlayerDamageEventsDB,
     replayCraftPlayerItemUseEventsDB,
 } from "../../classes/subscriptions/world-initialize";
-import { Player, world } from "@minecraft/server";
+import { Player, Vector3, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
 import { replaySessions } from "../../data/replay-player-session";
@@ -245,6 +245,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                     hurtTicks?: [number, number][] | Record<number, number>;
                     wasSpawned: boolean;
                     entityComponents?: RecordedEntityComponent[];
+                    isProjectile: boolean;
+                    velocity: Vector3;
                 }
                 if (savedAmbientEntityData) {
                     try {
@@ -274,6 +276,8 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
                                 hurtTicks: hurtTicksMap,
                                 entityComponents: data.entityComponents,
                                 wasSpawned: data.wasSpawned,
+                                isProjectile: data.isProjectile,
+                                velocity: data.velocity,
                             });
                         }
 
