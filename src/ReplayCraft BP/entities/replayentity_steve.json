@@ -37,7 +37,11 @@
                     "default": false,
                     "client_sync": true
                 },
-
+                "rc:crossbow_charged": {
+                    "type": "bool",
+                    "default": false,
+                    "client_sync": true
+                },
                 "rc:is_swimming": {
                     "type": "bool",
                     "default": false,

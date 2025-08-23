@@ -86,7 +86,7 @@
                     "variable.is_blinking = 0.0;",
                     "variable.last_blink_time = 0.0;",
                     "variable.hand_bob = 0.0;",
-                    "variable.charge_amount=0.0;"
+                    "variable.charge_amount = 0.0;"
                 ],
                 "pre_animation": [
                     "variable.helmet_layer_visible = 1.0;",
@@ -183,13 +183,17 @@
                     },
                     {
                         "brandish_spear": "variable.is_holding_chargeable_item && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:trident')"
+                    },
+                    {
+                        "third_person_crossbow_equipped": "variable.is_holding_chargeable_item && !q.property('rc:crossbow_charged') && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:crossbow')"
+                    },
+                    {
+                        "crossbow_hold": "q.property('rc:crossbow_charged') && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:crossbow')"
                     }
                 ]
             },
             "animations": {
-                
                 "wield_third_person_raise": "animation.trident.wield_third_person_raise",
-
                 "base_controller": "controller.animation.player.base",
                 "hudplayer": "controller.animation.player.hudplayer",
                 "humanoid_base_pose": "animation.humanoid.base_pose",
