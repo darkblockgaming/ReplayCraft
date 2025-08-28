@@ -9,10 +9,9 @@
 import { Entity, ItemStack } from "@minecraft/server";
 
 export function playItemAnimation(entity: Entity, typeId: string, progress: number) {
+    let stagedItem: ItemStack;
     switch (typeId) {
         case "minecraft:bow":
-            let stagedItem: ItemStack;
-
             if (progress < 0.33) {
                 stagedItem = new ItemStack("rc:bow_0", 1);
             } else if (progress < 0.66) {
@@ -20,8 +19,22 @@ export function playItemAnimation(entity: Entity, typeId: string, progress: numb
             } else {
                 stagedItem = new ItemStack("rc:bow_2", 1);
             }
+            executeRunCommand(entity, stagedItem);
+            break;
 
-            entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${stagedItem.typeId} 1`);
+        case "minecraft:trident":
+            if (progress < 0.33) {
+                stagedItem = new ItemStack("rc:trident_0", 1);
+            } else if (progress < 0.66) {
+                stagedItem = new ItemStack("rc:trident_1", 1);
+            } else {
+                stagedItem = new ItemStack("rc:trident_2", 1);
+            }
+            executeRunCommand(entity, stagedItem);
             break;
     }
+}
+
+function executeRunCommand(entity: Entity, item: ItemStack) {
+    entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${item.typeId} 1`);
 }
