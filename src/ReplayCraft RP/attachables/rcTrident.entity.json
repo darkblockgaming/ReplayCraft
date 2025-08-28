@@ -2,7 +2,7 @@
   "format_version": "1.10",
   "minecraft:attachable": {
     "description": {
-      "identifier": "minecraft:trident",
+      "identifier": "rc:trident_raised",
       "materials": {
         "default": "entity_alphatest",
         "enchanted": "entity_alphatest_glint"
@@ -15,31 +15,17 @@
         "default": "geometry.trident"
       },
       "animations": {
-        "wield": "controller.animation.trident.wield",
-        "wield_first_person": "animation.trident.wield_first_person",
-        "wield_first_person_raise": "animation.trident.wield_first_person_raise",
-        "wield_first_person_raise_shake": "animation.trident.wield_first_person_raise_shake",
-        "wield_first_person_riptide": "animation.trident.wield_first_person_riptide",
         "wield_third_person": "animation.trident.wield_third_person",
         "wield_third_person_raise": "animation.trident.wield_third_person_raise"
       },
       "scripts": {
-        "pre_animation": [
-          "variable.charge_amount = math.clamp((query.main_hand_item_max_duration - (query.main_hand_item_use_duration - query.frame_alpha + 1.0)) / 10.0, 0.0, 1.0f);"
-        ],
         "animate": [
-          {
-            "wield_third_person": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
-          },
-          // {
-          //   "wield_third_person_raise": "query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
-          // },
-          {
-            "wield": "!query.is_owner_identifier_any('dbg:replayentity_steve', 'dbg:replayentity_alex')"
-          }
+          "wield_third_person_raise"
         ]
       },
-      "render_controllers": [ "controller.render.item_default" ]
+      "render_controllers": [
+        "controller.render.item_default"
+      ]
     }
   }
 }
