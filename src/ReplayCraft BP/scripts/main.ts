@@ -35,6 +35,7 @@ import { replayCraftItemReleaseAfterEvent } from "./replay/classes/subscriptions
 import { replayCraftItemStartAfterEvent } from "./replay/classes/subscriptions/item-start-use";
 import { replayCraftItemCompleteUseAfterEvent } from "./replay/classes/subscriptions/item-complete-use";
 import { replayCraftItemStopUseAfterEvent } from "./replay/classes/subscriptions/item-stop-use";
+import { playItemAnimation } from "./replay/items/item-animation-playback";
 
 //Chat events
 beforeChatSend();
@@ -748,18 +749,26 @@ system.runInterval(() => {
                 const attackerEntity = replayEntityDataMap.get(playerId)?.customEntity;
                 if (!attackerEntity) return;
 
-                // Check if any bow events are relevant this tick
                 playerItemUseData.forEach((event) => {
                     const startTick = event.trackingTick;
-                    const endTick = startTick + event.chargeTime;
+                    const endTick = event.endTime;
 
-                    if (currentTick === startTick) {
-                        // Started charging
+                    // While charging
+                    if (currentTick >= startTick && currentTick < endTick) {
+                        const elapsed = currentTick - startTick;
+                        const progress = Math.min(elapsed / event.chargeTime, 1);
                         attackerEntity.setProperty("rc:holding_chargeable_item", true);
                         attackerEntity.setProperty("rc:item_use_duration", event.chargeTime);
-                    } else if (currentTick === endTick) {
-                        // Released bow
+                        //Call custom animation function
+                        playItemAnimation(attackerEntity, event.typeId, progress);
+                    }
+
+                    // At release
+                    if (currentTick === endTick) {
+                        //restore vanilla item to mainhand
+                        attackerEntity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${event.typeId} 1`);
                         attackerEntity.setProperty("rc:holding_chargeable_item", false);
+                        attackerEntity.setProperty("rc:item_use_duration", 0);
                     }
                 });
             });
