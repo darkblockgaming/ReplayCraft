@@ -570,7 +570,6 @@ system.runInterval(() => {
 
                                     const projComp = spawnedEntity.getComponent("minecraft:projectile");
                                     if (projComp && data.velocity) {
-                                        spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
                                         projComp.shoot(data.velocity);
                                     }
 
