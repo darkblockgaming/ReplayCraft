@@ -6,6 +6,8 @@ export function getReplayEntityId(typeId: string): string {
     switch (typeId) {
         case "minecraft:thrown_trident":
             return "rc:thrown_trident";
+        case "minecraft:ender_pearl":
+            return "rc:ender_pearl";
         default:
             return typeId;
     }
