@@ -7,7 +7,8 @@
         "default": "entity_alphatest"
       },
       "textures": {
-        "default": "textures/entity/others/campos.png"
+        "default": "textures/entity/others/campos.png",
+        "default2": "textures/entity/others/campos2.png"
       },
       "geometry": {
         "default": "geometry.dbg_rccampos"

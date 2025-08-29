@@ -19,10 +19,6 @@ export function cineResetSettings(player: Player) {
         camFacingType: 0,
         camFacingX: 0,
         camFacingY: 0,
-        cineFadeSwitch: true,
-        cineRedValue: 37,
-        cineGreenValue: 128,
-        cineBlueValue: 27,
         easetime: 4
     });
     player.sendMessage({

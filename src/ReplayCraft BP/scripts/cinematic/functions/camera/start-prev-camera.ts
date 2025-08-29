@@ -1,69 +1,80 @@
 import { Player, system, EasingType } from "@minecraft/server";
 import { frameDataMap, settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
+import { FrameData } from "../../data/types/types";
+import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
+import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 
 export function startPreview(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];
-
     const otherData = otherDataMap.get(player.id);
     const settingsData = settingsDataMap.get(player.id);
-    if (otherData.isCameraInMotion === true) {
-        player.playSound("note.bass");
-        player.sendMessage({
-            translate: "dbg.rc2.mes.camera.is.already.moving",
-        });
+
+    if (!settingsData || !otherData) {
+        player.sendMessage("§cMissing camera settings or state.");
         return;
     }
 
-    const easetime = settingsData.cinePrevSpeed;
-    const easeType = easeTypes[settingsData.easeType];
+    if (otherData.isCameraInMotion) {
+        player.playSound("note.bass");
+        player.sendMessage({ translate: "dbg.rc2.mes.camera.is.already.moving" });
+        return;
+    }
 
+    if (frames.length === 0) {
+        player.playSound("note.bass");
+        player.sendMessage({ translate: "dbg.rc2.mes.no.frames.found" });
+        return;
+    }
+    if (frames.length === 1) {
+        player.playSound("note.bass");
+        player.sendMessage({ translate: "dbg.rc2.mes.add.more.frames" });
+        return;
+    }
+
+    removeAllFrameEntities(player);
+
+    const easeTime = settingsData.cinePrevSpeed;
+    const easeTypeKey = easeTypes[settingsData.easeType];
+    const easeEnum = EasingType[easeTypeKey as keyof typeof EasingType] ?? EasingType.Linear;
+
+    // Clear any old intervals
+    const existing = cameraIntervalMap.get(player.id);
+    if (existing) {
+        existing.forEach(id => system.clearRun(id));
+    }
+    cameraIntervalMap.set(player.id, []);
+
+    // start at frame 0
     player.camera.setCamera("minecraft:free", {
         location: frames[0].pos,
         rotation: frames[0].rot,
     });
-    //player.runCommand(`camera @s set minecraft:free pos ${positions[0]} rot ${rotations[0]}`);
 
-    let index = 1;
-    cameraIntervalMap.set(player.id, []);
+    otherData.isCameraInMotion = true;
 
-    // Function to transition between frames
-    function moveNextCameraFrame() {
-        if (index < frames.length) {
-            const nextPos = frames[index].pos;
-            const nextRot = frames[index].rot;
-
-            player.camera.setCamera("minecraft:free", {
-                location: nextPos,
-                rotation: nextRot,
-                easeOptions: {
-                    easeTime: easetime,
-                    easeType: EasingType[easeType as keyof typeof EasingType],
-                },
-            });
-
-            //player.runCommand(`camera @s set minecraft:free ease ${currentEaseTime} ${easeType} pos ${nextPos} rot ${nextRot}`);
-
-            // Move to the next frame after ease time
-            const intervalId = system.runTimeout(() => {
-                index++;
-                moveNextCameraFrame(); // Recursive call to transition to the next frame
-            }, easetime * 20); // Convert easeTime from seconds to ticks
-
-            // Save the interval ID for potential stopping later
-            cameraIntervalMap.get(player.id).push(intervalId);
-        } else {
-            // At the last frame, clear the camera with no delay
+    function moveNextCameraFrame(player: Player, frames: FrameData[], index: number) {
+        if (index >= frames.length) {
+            refreshAllFrameEntities(player);
             player.camera.clear();
-
-            player.sendMessage({
-                translate: "dbg.rc2.mes.no.preview.camera.movement.complete",
-            });
-            otherData.isCameraInMotion = false; // Reset the camera switch flag
+            otherData.isCameraInMotion = false;
+            return;
         }
+
+        const frame = frames[index];
+        player.camera.setCamera("minecraft:free", {
+            location: frame.pos,
+            rotation: frame.rot,
+            easeOptions: { easeTime, easeType: easeEnum },
+        });
+
+        const intervalId = system.runTimeout(() => {
+            moveNextCameraFrame(player, frames, index + 1);
+        }, easeTime * 20);
+
+        cameraIntervalMap.get(player.id)!.push(intervalId);
     }
 
-    // Start camera movement immediately with no delay
-    otherData.isCameraInMotion = true;
-    moveNextCameraFrame(); // Begin transitioning to the next frame
+    // start transition from frame 1
+    moveNextCameraFrame(player, frames, 1);
 }

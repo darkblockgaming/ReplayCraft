@@ -24,10 +24,7 @@ export function cameraSettings(player: Player) {
         camFacingType: 6,
         camFacingX: 7,
         camFacingY: 8,
-        hideHud: 11,
-        redValue: 12,
-        greenValue: 13,
-        blueValue: 14,
+        hideHud: 11
     } as const;
 
     const form = new ModalFormData()
@@ -54,18 +51,6 @@ export function cameraSettings(player: Player) {
         .divider()
         .label("dbg.rc2.lebel.screen.settings")
         .toggle("dbg.rc2.toggle.hide.hud", { defaultValue: settingsData.hideHud })
-        .slider({ rawtext: [{ translate: "dbg.rc2.slider.fade.screen.settings.red.value" }] }, 0, 255, {
-            valueStep: 1,
-            defaultValue: settingsData.cineRedValue,
-        })
-        .slider({ rawtext: [{ translate: "dbg.rc2.slider.green.value" }] }, 0, 255, {
-            valueStep: 1,
-            defaultValue: settingsData.cineGreenValue,
-        })
-        .slider({ rawtext: [{ translate: "dbg.rc2.slider.blue.value" }] }, 0, 255, {
-            valueStep: 1,
-            defaultValue: settingsData.cineBlueValue,
-        })
         .divider();
 
     form.show(player).then((response) => {
@@ -85,10 +70,6 @@ export function cameraSettings(player: Player) {
         settingsData.camFacingY = Number(values[FIELD_INDEX.camFacingY]);
 
         settingsData.hideHud = Boolean(values[FIELD_INDEX.hideHud]);
-
-        settingsData.cineRedValue = Number(values[FIELD_INDEX.redValue]);
-        settingsData.cineGreenValue = Number(values[FIELD_INDEX.greenValue]);
-        settingsData.cineBlueValue = Number(values[FIELD_INDEX.blueValue]);
 
         notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });

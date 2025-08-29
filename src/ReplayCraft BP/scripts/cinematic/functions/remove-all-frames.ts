@@ -1,5 +1,6 @@
 import { Player } from "@minecraft/server";
 import { frameDataMap, otherDataMap } from "../data/maps";
+import { removeAllFrameEntities } from "./entity/remove-all-frame-entities";
 
 export function removeAllFrames(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];
@@ -20,6 +21,7 @@ export function removeAllFrames(player: Player) {
         });
         return;
     }
+    removeAllFrameEntities(player);
     frameDataMap.set(player.id, []);
     player.sendMessage({
         translate: "dbg.rc2.mes.all.frames.have.been.removed",

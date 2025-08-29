@@ -16,21 +16,14 @@ export function initMaps(player: Player) {
             camFacingType: 0,
             camFacingX: 0,
             camFacingY: 0,
-            cineParType: 0,
             cinePrevSpeed: 0.5,
-            cineParSwitch: true,
             cinePrevSpeedMult: 5,
-            cineFadeSwitch: true,
-            cineRedValue: 37,
-            cineGreenValue: 128,
-            cineBlueValue: 27,
+
         });
     }
     if (!otherDataMap.has(player.id)) {
         otherDataMap.set(player.id, {
             isCameraInMotion: false,
-            retrievedData: false,
-            retrievedSett: false,
         });
     }
 }

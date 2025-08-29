@@ -1,7 +1,6 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { settingsDataMap, otherDataMap } from "../../../data/maps";
-import { particlesName } from "../../../data/constants/constants";
 
 // Small helper to avoid repeating message + sound
 function notifyPlayer(player: Player, translationKey: string, sound: string = "note.bass") {
@@ -20,17 +19,13 @@ export function frameSettings(player: Player) {
 
     // Keep track of indices so we don’t rely on magic numbers
     const FIELD_INDEX = {
-        particleType: 2,
-        particleEnabled: 3,
-        previewSpeedMult: 6,
+        previewSpeedMult: 4,
     } as const;
 
     const form = new ModalFormData()
         .title("dbg.rc2.title.frame.settings")
         .divider()
         .label("dbg.rc2.lebel.particle.settings")
-        .dropdown("dbg.rc2.dropdown.frame.particle.type", particlesName, { defaultValueIndex: settingsData.cineParType })
-        .toggle("dbg.rc2.toggle.enable.frame.particles", { defaultValue: settingsData.cineParSwitch })
         .divider()
         .label("dbg.rc2.lebel.preview.settings")
         .slider({ translate: "dbg.rc2.slider.preview.speed.multiplier" }, 1, 10, {
@@ -46,8 +41,6 @@ export function frameSettings(player: Player) {
         }
 
         const values = response.formValues;
-        settingsData.cineParSwitch = Boolean(values[FIELD_INDEX.particleEnabled]);
-        settingsData.cineParType = Number(values[FIELD_INDEX.particleType]);
         settingsData.cinePrevSpeedMult = Number(values[FIELD_INDEX.previewSpeedMult]);
         settingsData.cinePrevSpeed = Math.round((1 / settingsData.cinePrevSpeedMult) * 10) / 10;
 

@@ -1,0 +1,22 @@
+{
+	"format_version": "1.10.0",
+	"animations": {
+		"animation.rc_thrown_trident": {
+			"loop": true,
+			"bones": {
+				"pole": {
+					"rotation": [
+						"-q.body_x_rotation + 90",
+						"-q.body_y_rotation",
+						0
+					],
+					"position": [
+						0,
+						-24,
+						0
+					]
+				}
+			}
+		}
+	}
+}

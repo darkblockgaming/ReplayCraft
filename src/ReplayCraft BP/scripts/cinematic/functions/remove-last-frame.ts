@@ -1,4 +1,4 @@
-import { Player } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 import { frameDataMap, otherDataMap } from "../data/maps";
 
 export function removeLastFrame(player: Player) {
@@ -19,7 +19,13 @@ export function removeLastFrame(player: Player) {
         });
         return;
     }
+
+    const entityId = frames[frames.length -1].entityId;
+    const entity = world.getEntity(entityId);
+    entity?.remove();
+
     frames.pop();
+
     player.sendMessage({
         translate: "dbg.rc2.mes.removed.last.frame",
     });

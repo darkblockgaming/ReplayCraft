@@ -1,132 +1,104 @@
-import { Player, system, EasingType } from "@minecraft/server";
+import { Player, system, EasingType, Vector3, Vector2 } from "@minecraft/server";
 import { frameDataMap, settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
+import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
+import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
+
+function applyCamera(player: Player, pos: Vector3, rot: Vector2, facingType: number, settingsData: any, easeTime?: number, easeEnum?: EasingType) {
+    const base: any = { location: pos };
+
+    if (facingType === 1) {
+        base.rotation = { x: settingsData.camFacingX, y: settingsData.camFacingY };
+    } else if (facingType === 2) {
+        base.facingEntity = player;
+    } else {
+        base.rotation = rot;
+    }
+
+    if (easeTime && easeEnum) {
+        base.easeOptions = { easeTime, easeType: easeEnum };
+    }
+
+    player.camera.setCamera("minecraft:free", base);
+}
 
 export function startCamera(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];
     const otherData = otherDataMap.get(player.id);
     const settingsData = settingsDataMap.get(player.id);
 
-    if (otherData.isCameraInMotion === true) {
+    if (!settingsData || !otherData) {
+        player.sendMessage("§cMissing camera settings or state.");
+        return;
+    }
+
+    if (otherData.isCameraInMotion) {
         player.playSound("note.bass");
-        player.sendMessage({
-            translate: "dbg.rc2.mes.camera.is.already.moving",
-        });
+        player.sendMessage({ translate: "dbg.rc2.mes.camera.is.already.moving" });
         return;
     }
 
     if (frames.length === 0) {
         player.playSound("note.bass");
-        player.sendMessage({
-            translate: "",
-        });
+        player.sendMessage({ translate: "dbg.rc2.mes.no.frames.found" });
         return;
     }
 
-    if (settingsData.hideHud === true) {
+    if (frames.length === 1) {
+        player.playSound("note.bass");
+        player.sendMessage({ translate: "dbg.rc2.mes.add.more.frames" });
+        return;
+    }
+
+    removeAllFrameEntities(player);
+
+    if (settingsData.hideHud) {
         player.onScreenDisplay.setHudVisibility(0);
     }
 
-    otherData.isCameraInMotion = true;
-
-    //Set the camera at first frame!!!
-
-    //If camera facing type is manual
-    if (settingsData.camFacingType === 1) {
-        player.camera.setCamera("minecraft:free", {
-            location: frames[0].pos,
-            rotation: {
-                x: settingsData.camFacingX,
-                y: settingsData.camFacingY,
-            },
-        });
+    // clear any leftover intervals
+    const existing = cameraIntervalMap.get(player.id);
+    if (existing) {
+        existing.forEach(id => system.clearRun(id));
     }
-    //if camera facing type is (facing the player)
-    else if (settingsData.camFacingType === 2) {
-        player.camera.setCamera("minecraft:free", {
-            location: frames[0].pos,
-            facingEntity: player,
-        });
-    }
-    //if camera facing type is default
-    else {
-        player.camera.setCamera("minecraft:free", {
-            location: frames[0].pos,
-            rotation: frames[0].rot,
-        });
-    }
-
-    let index = 1;
     cameraIntervalMap.set(player.id, []);
 
-    const easetime = settingsData.easetime || 1;
-    const easeType = easeTypes[settingsData.easeType];
+    const easeTime = settingsData.easetime || 1;
+    const easeTypeKey = easeTypes[settingsData.easeType];
+    const easeEnum = EasingType[easeTypeKey as keyof typeof EasingType] ?? EasingType.Linear;
+
+    // place camera at first frame
+    applyCamera(player, frames[0].pos, frames[0].rot, settingsData.camFacingType, settingsData);
+
+    let index = 1;
+    otherData.isCameraInMotion = true;
 
     function moveNextCameraFrame() {
-        //if there are more frames after first frame
         if (index < frames.length) {
-            const nextPos = frames[index].pos;
-            const nextRot = frames[index].rot;
-
-            if (settingsData.camFacingType === 1) {
-                player.camera.setCamera("minecraft:free", {
-                    location: nextPos,
-                    rotation: {
-                        x: settingsData.camFacingX,
-                        y: settingsData.camFacingY,
-                    },
-                    easeOptions: {
-                        easeTime: easetime,
-                        easeType: EasingType[easeType as keyof typeof EasingType],
-                    },
-                });
-            } else if (settingsData.camFacingType === 2) {
-                player.camera.setCamera("minecraft:free", {
-                    location: nextPos,
-                    facingEntity: player,
-                    easeOptions: {
-                        easeTime: easetime,
-                        easeType: EasingType[easeType as keyof typeof EasingType],
-                    },
-                });
-
-                //player.runCommand(`camera @s set minecraft:free ease ${currentEaseTime} ${easeType} pos ${nextPos} facing @s`);
-            } else {
-                player.camera.setCamera("minecraft:free", {
-                    location: nextPos,
-                    rotation: nextRot,
-                    easeOptions: {
-                        easeTime: easetime,
-                        easeType: EasingType[easeType as keyof typeof EasingType],
-                    },
-                });
-            }
+            const next = frames[index];
+            applyCamera(player, next.pos, next.rot, settingsData.camFacingType, settingsData, easeTime, easeEnum);
 
             const intervalId = system.runTimeout(() => {
                 index++;
                 moveNextCameraFrame();
-            }, easetime * 20);
-            cameraIntervalMap.get(player.id).push(intervalId);
-        }
-        //else if there are no frames after last frame
-        else {
+            }, easeTime * 20);
+            cameraIntervalMap.get(player.id)!.push(intervalId);
+        } else {
+            // last frame cleanup
             const intervalId = system.runTimeout(() => {
                 player.camera.clear();
-                if (settingsData.hideHud === true) {
+                if (settingsData.hideHud) {
                     player.onScreenDisplay.setHudVisibility(1);
                 }
-                player.sendMessage({
-                    translate: "dbg.rc2.mes.camera.movement.complete",
-                });
+                player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.complete" });
+                refreshAllFrameEntities(player);
                 otherData.isCameraInMotion = false;
             }, 10);
-            cameraIntervalMap.get(player.id).push(intervalId);
+            cameraIntervalMap.get(player.id)!.push(intervalId);
         }
     }
-    //More after a delay of 65 tick after putting the camera at first frame (particles take soem time to dissapear)
-    const initialIntervalId = system.runTimeout(() => {
-        otherData.isCameraInMotion = true;
-        moveNextCameraFrame();
-    }, 5);
-    cameraIntervalMap.get(player.id).push(initialIntervalId);
+
+    // start moving after small delay
+    const initialIntervalId = system.runTimeout(() => moveNextCameraFrame(), 5);
+    cameraIntervalMap.get(player.id)!.push(initialIntervalId);
 }

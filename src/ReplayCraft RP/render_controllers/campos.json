@@ -2,9 +2,23 @@
     "format_version": "1.10.0",
     "render_controllers": {
         "controller.render.dbg_rccampos": {
+            "arrays": {
+                "textures": {
+                    "array.skin": [
+                        "texture.default",
+                        "texture.default2"
+                    ]
+                }
+            },
             "geometry": "geometry.default",
-            "materials": [ { "*": "material.default" } ],
-            "textures": [ "texture.default" ]
+            "materials": [
+                {
+                    "*": "material.default"
+                }
+            ],
+            "textures": [
+                "array.skin[query.property('rc:skin')]"
+            ]
         }
     }
 }
