@@ -179,7 +179,7 @@
                         "holding_heavy_core": "query.is_item_name_any('slot.weapon.mainhand', 'minecraft:heavy_core')"
                     },
                     {
-                        "third_person_bow_equipped": "variable.is_holding_chargeable_item"
+                        "third_person_bow_equipped": "variable.is_holding_chargeable_item && q.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow', 'rc:bow_0', 'rc:bow_1', 'rc:bow_2')"
                     },
                     {
                         "brandish_spear": "variable.is_holding_chargeable_item && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:trident')"
