@@ -36,6 +36,7 @@ import { replayCraftItemStartAfterEvent } from "./replay/classes/subscriptions/i
 import { replayCraftItemCompleteUseAfterEvent } from "./replay/classes/subscriptions/item-complete-use";
 import { replayCraftItemStopUseAfterEvent } from "./replay/classes/subscriptions/item-stop-use";
 import { playItemAnimation } from "./replay/items/item-animation-playback";
+import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 
 //Chat events
 beforeChatSend();
@@ -563,7 +564,9 @@ system.runInterval(() => {
                             if (data.isProjectile) {
                                 if (currentTick === data.spawnTick) {
                                     // Special handling for projectiles
-                                    spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
+                                    //Some entities can not be summond so we use a lookup to return a custom copy that can be summoned.
+                                    const replayId = getReplayEntityId(data.typeId);
+                                    spawnedEntity = dimension.spawnEntity(replayId as VanillaEntityIdentifier, tickData.location);
 
                                     const projComp = spawnedEntity.getComponent("minecraft:projectile");
                                     if (projComp && data.velocity) {

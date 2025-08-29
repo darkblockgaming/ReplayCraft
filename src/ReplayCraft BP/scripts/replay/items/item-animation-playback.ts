@@ -23,12 +23,10 @@ export function playItemAnimation(entity: Entity, typeId: string, progress: numb
             break;
 
         case "minecraft:trident":
-            if (progress < 0.33) {
+            if (progress < 0.25) {
                 stagedItem = new ItemStack("rc:trident_0", 1);
-            } else if (progress < 0.66) {
-                stagedItem = new ItemStack("rc:trident_1", 1);
             } else {
-                stagedItem = new ItemStack("rc:trident_2", 1);
+                stagedItem = new ItemStack("rc:trident_1", 1);
             }
             executeRunCommand(entity, stagedItem);
             break;
