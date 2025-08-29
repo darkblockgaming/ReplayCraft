@@ -2,16 +2,15 @@
 	"format_version": "1.21.90",
 	"minecraft:item": {
 		"description": {
-			"identifier": "rc:trident_raised",
+			"identifier": "rc:trident_1",
 			"menu_category": {
 				"category": "items"
 			}
 		},
 		"components": {
 			"minecraft:max_stack_size": 1,
-			"minecraft:icon": "rc:bow_pulling_0",
 			"minecraft:display_name": {
-				"value": "Trident Raised"
+				"value": "ReplayCraft Prop 5"
 			},
 			"minecraft:should_despawn": true
 		}

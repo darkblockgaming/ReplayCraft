@@ -2,7 +2,7 @@
   "format_version": "1.10",
   "minecraft:attachable": {
     "description": {
-      "identifier": "rc:trident_raised",
+      "identifier": "rc:trident_0",
       "materials": {
         "default": "entity_alphatest",
         "enchanted": "entity_alphatest_glint"
@@ -20,12 +20,10 @@
       },
       "scripts": {
         "animate": [
-          "wield_third_person_raise"
+          "wield_third_person"
         ]
       },
-      "render_controllers": [
-        "controller.render.item_default"
-      ]
+      "render_controllers": [ "controller.render.item_default" ]
     }
   }
 }

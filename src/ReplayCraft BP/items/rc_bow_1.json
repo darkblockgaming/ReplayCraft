@@ -9,9 +9,8 @@
 		},
 		"components": {
 			"minecraft:max_stack_size": 1,
-			"minecraft:icon": "rc:bow_pulling_1",
 			"minecraft:display_name": {
-				"value": "Bow"
+				"value": "ReplayCraft Prop 2"
 			},
 			"minecraft:should_despawn": true
 		}
