@@ -182,7 +182,7 @@
                         "third_person_bow_equipped": "variable.is_holding_chargeable_item && q.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow', 'rc:bow_0', 'rc:bow_1', 'rc:bow_2')"
                     },
                     {
-                        "brandish_spear": "variable.is_holding_chargeable_item && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:trident')"
+                        "brandish_spear": "variable.is_holding_chargeable_item && query.is_item_name_any('slot.weapon.mainhand', 'rc:trident_1')"
                     },
                     {
                         "third_person_crossbow_equipped": "variable.is_holding_chargeable_item && !q.property('rc:crossbow_charged') && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:crossbow')"
