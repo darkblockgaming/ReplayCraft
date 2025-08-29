@@ -4,7 +4,8 @@
     "description": {
       "identifier": "rc:thrown_trident",
       "is_spawnable": false,
-      "is_summonable": true
+      "is_summonable": true,
+      "runtime_identifier": "snowball"
     },
 
     "components": {
