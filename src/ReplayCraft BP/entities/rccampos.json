@@ -6,6 +6,15 @@
             "is_spawnable": false,
             "is_summonable": true,
             "properties": {
+                "rc:skin": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [
+                        0,
+                        1
+                    ]
+                },
                 "rc:rot_x": {
                     "type": "float",
                     "range": [
@@ -28,7 +37,9 @@
         },
         "components": {
             "minecraft:type_family": {
-                "family": [ "other" ]
+                "family": [
+                    "other"
+                ]
             },
             "minecraft:damage_sensor": {
                 "triggers": {
@@ -51,9 +62,8 @@
             "minecraft:nameable": {
                 "always_show": true,
                 "allow_name_tag_renaming": true
-             },
-            "minecraft:conditional_bandwidth_optimization": {
-            }
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
         }
     }
 }
