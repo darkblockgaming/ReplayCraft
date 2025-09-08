@@ -6,7 +6,7 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./replay/classes/subscr
 import { replaycraftItemUseAfterEvent } from "./replay/classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./replay/classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./replay/classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, Entity, EquipmentSlot, system, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, Entity, EquipmentSlot, Player, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { clearStructure } from "./replay/functions/clear-structure";
 import { playBlockSound } from "./replay/functions/play-block-sound";
 import { onPlayerSpawn } from "./replay/classes/subscriptions/player-spawn-after-event";
@@ -37,6 +37,8 @@ import { replayCraftItemCompleteUseAfterEvent } from "./replay/classes/subscript
 import { replayCraftItemStopUseAfterEvent } from "./replay/classes/subscriptions/item-stop-use";
 import { playItemAnimation } from "./replay/items/item-animation-playback";
 import { getReplayEntityId } from "./replay/items/lookup-custom-items";
+import { doSave } from "./replay/functions/replayControls/save-replay-recording";
+import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
 
 //Chat events
 beforeChatSend();
@@ -65,6 +67,32 @@ subscribeToWorldInitialize();
 
 onEntityHurt();
 customCommands();
+const MAP_MEMORY_LIMITS = {
+    // ~5MB per map as a starting point. These can be adjusted as required.
+    replayBlockStateMap: 5_000_000,
+    replayBlockInteractionAfterMap: 5_000_000,
+    replayRotationDataMap: 5_000_000,
+    replayActionDataMap: 5_000_000,
+    replayEntityDataMap: 5_000_000,
+    playerDamageEventsMap: 5_000_000,
+    playerItemUseDataMap: 5_000_000,
+
+    /**
+     * These maps will grow the most during recording.
+     *
+     * You can increase these limits if you have memory to spare.
+     *
+     * Notes:
+     * - By default, a single addon is limited to ~250 MB.
+     * - You can increase the default memory allowance in the BDS `server.properties` file.
+     * - The scripting engine is limited to 2 GB across all addons, so keep this in mind when
+     *   adjusting these values.
+     */
+
+    replayAmbientEntityMap: 5_000_000,
+    replayPositionDataMap: 5_000_000,
+    replayEquipmentDataMap: 5_000_000,
+};
 
 //Single loop this now handles the playback and recording logic.
 system.runInterval(() => {
@@ -84,6 +112,7 @@ system.runInterval(() => {
             replayEquipmentDataMap,
             playerDamageEventsMap,
             playerItemUseDataMap,
+            replayAmbientEntityMap,
             isFollowCamActive,
             isTopDownFixedCamActive,
             isTopDownDynamicCamActive,
@@ -887,6 +916,25 @@ system.runInterval(() => {
             }
         }
 
+        if (isRecording) {
+            const allMaps = {
+                replayBlockStateMap,
+                replayBlockInteractionAfterMap,
+                replayPositionDataMap,
+                replayRotationDataMap,
+                replayActionDataMap,
+                replayEntityDataMap,
+                replayEquipmentDataMap,
+                playerDamageEventsMap,
+                playerItemUseDataMap,
+                replayAmbientEntityMap,
+            };
+
+            // Optionally, only run every N ticks
+            if (recordingEndTick % 20 === 0) {
+                checkMapMemoryLimits(allMaps, session.replayController);
+            }
+        }
         // --- Advance Tick ---
         if (isReplaying) session.currentTick++;
     }
@@ -905,4 +953,38 @@ export function safeSet(entity: Entity & { setProperty?: (id: string, value: boo
             debugWarn(`Skipped setting ${key} on removed entity: ${(entity as any)?.id}`);
         }
     }
+}
+
+function estimateMapMemory(map: Map<any, any>): number {
+    let total = 0;
+    // Rough approximation: sum JSON string lengths of values
+    for (const value of map.values()) {
+        total += JSON.stringify(value).length;
+    }
+    console.log(`Estimated memory for map: ${total} bytes`);
+    return total;
+}
+
+function checkMapMemoryLimits(maps: Record<string, Map<any, any>>, player: any) {
+    for (const [name, map] of Object.entries(maps)) {
+        const memoryUsage = estimateMapMemory(map);
+
+        // Debug: log current size and estimated memory usage
+        console.log(`[DEBUG] ${name}: entries=${map.size}, approxMemory=${memoryUsage} bytes`);
+
+        if (memoryUsage >= MAP_MEMORY_LIMITS[name as keyof typeof MAP_MEMORY_LIMITS]) {
+            stopRecording(name, player);
+            return true; // stop early if any map exceeds limit
+        }
+    }
+    return false;
+}
+
+function stopRecording(mapName: string, player: Player) {
+    //call doSave
+    doSave(player);
+    // Send in-game message to player
+    player.sendMessage(`§f§4[ReplayCraft]§f Recording stopped: ${mapName} exceeded memory limit. Your replay has been saved. and you will need to start a new recording.`);
+    //reset and build the structure
+    doSaveReset(player);
 }
