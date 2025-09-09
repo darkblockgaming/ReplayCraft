@@ -39,7 +39,16 @@ export function showSessionExplorerUI(player: Player, session: any, sessionId: s
     const form = new ActionFormData().title(`Session: ${sessionId}`).body("Select a key to view its value:");
 
     for (const key of keys.slice(0, 25)) {
-        form.button(key);
+        let label = key;
+
+        // Show map size if this key is a Map
+        const value = session[key];
+        if (value instanceof Map) {
+            const bytes = estimateMapMemory(value);
+            label += ` §7(${formatBytes(bytes)})`;
+        }
+
+        form.button(label);
     }
 
     form.button("§cDelete Session");
@@ -55,7 +64,6 @@ export function showSessionExplorerUI(player: Player, session: any, sessionId: s
         }
     });
 }
-
 function showSessionKeyValueUI(player: Player, session: any, key: string, sessionId: string) {
     const value = session[key];
     const json = safeStringify(value, 2);
@@ -134,4 +142,27 @@ function confirmDeleteSession(player: Player, sessionId: string) {
                 player.sendMessage("§7Session deletion cancelled.");
             }
         });
+}
+
+function estimateMapMemory(map: Map<any, any>, sampleSize = 50): number {
+    const totalEntries = map.size;
+    if (totalEntries === 0) return 0;
+
+    let totalSampled = 0;
+    let count = 0;
+
+    for (const value of map.values()) {
+        totalSampled += JSON.stringify(value).length;
+        count++;
+        if (count >= sampleSize) break; // sample first N entries
+    }
+
+    const avgSize = totalSampled / count;
+    return Math.round(avgSize * totalEntries); // approximate total bytes
+}
+
+function formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+    return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }

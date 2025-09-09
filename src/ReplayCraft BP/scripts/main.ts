@@ -93,6 +93,7 @@ const MAP_MEMORY_LIMITS = {
     replayPositionDataMap: 5_000_000,
     replayEquipmentDataMap: 5_000_000,
 };
+const MEMORY_CHECK_INTERVAL = 1200; // 1 minute in ticks
 
 //Single loop this now handles the playback and recording logic.
 system.runInterval(() => {
@@ -931,7 +932,7 @@ system.runInterval(() => {
             };
 
             // Optionally, only run every N ticks
-            if (recordingEndTick % 20 === 0) {
+            if (recordingEndTick % MEMORY_CHECK_INTERVAL === 0) {
                 checkMapMemoryLimits(allMaps, session.replayController);
             }
         }
