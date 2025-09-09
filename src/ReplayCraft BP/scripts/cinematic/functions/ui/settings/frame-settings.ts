@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { settingsDataMap, otherDataMap } from "../../../data/maps";
+import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
 
 // Small helper to avoid repeating message + sound
 function notifyPlayer(player: Player, translationKey: string, sound: string = "note.bass") {
@@ -9,7 +9,7 @@ function notifyPlayer(player: Player, translationKey: string, sound: string = "n
 }
 
 export function frameSettings(player: Player) {
-    const otherData = otherDataMap.get(player.id);
+    const otherData = cineRuntimeDataMap.get(player.id);
     if (otherData?.isCameraInMotion) {
         notifyPlayer(player, "dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion");
         return;

@@ -1,28 +1,61 @@
 import { world } from "@minecraft/server";
 //Import maps
-import { uiStateMap } from "./data/maps";
+import { frameDataMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
 //Import Functions
 import { initMaps } from "./data/init-maps";
 import { framePlacementMenu } from "./functions/ui/frame-placement";
 import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
+import { OptimizedDatabase } from "../replay/data/data-hive";
 
 const cineUiHandlers = {
     framePlacementMenu: framePlacementMenu,
     cameraPlaybackMenu: cameraPlaybackMenu,
 };
 
-world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
-    if (itemStack?.typeId === "minecraft:blaze_rod" || (itemStack?.typeId === "minecraft:stick" && /^(Cinematic|cinematic|CINEMATIC|ReplayCraft1|replaycraft1|REPLAYCRAFT1|Replaycraft1)$/.test(itemStack.nameTag))) {
-        initMaps(source);
+//Initialise DataBase(s)
+export let cinematicFramesDB: OptimizedDatabase;
+export let cinematicSettingsDB: OptimizedDatabase;
 
-        const uiState = uiStateMap.get(source.id);
-        const handler = cineUiHandlers[uiState.state as keyof typeof cineUiHandlers];
+world.afterEvents.worldLoad.subscribe(() => {
+    cinematicFramesDB = new OptimizedDatabase("cinematicFramesData");
+    cinematicSettingsDB = new OptimizedDatabase("cinematicSettingsData");
+});
+
+//ItemUse event
+world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
+    if (itemStack?.typeId === "minecraft:stick" && /^(Cinematic|cinematic|CINEMATIC|ReplayCraft1|replaycraft1|REPLAYCRAFT1|Replaycraft1)$/.test(itemStack.nameTag)) {
+        const savedFramesData = cinematicFramesDB.get(source.id);
+        if (savedFramesData) {
+            frameDataMap.set(source.id, savedFramesData);
+        } else {
+            frameDataMap.set(source.id, []);
+        }
+
+        const savedSettingsData = cinematicSettingsDB.get(source.id);
+        if (savedSettingsData) {
+            settingsDataMap.set(source.id, savedSettingsData);
+        } else {
+            settingsDataMap.set(source.id, {
+                hideHud: true,
+                easeType: 0,
+                easetime: 4,
+                camFacingType: 0,
+                camFacingX: 0,
+                camFacingY: 0,
+                cinePrevSpeed: 0.5,
+                cinePrevSpeedMult: 5,
+            });
+        }
+
+        initMaps(source);
+        const cineRuntimeData = cineRuntimeDataMap.get(source.id);
+        const handler = cineUiHandlers[cineRuntimeData.state as keyof typeof cineUiHandlers];
         if (handler) {
             handler(source);
         } else {
-            console.warn("Invalid State:", uiState.state);
-            uiState.state = "framePlacementMenu";
+            console.warn("Invalid State:", cineRuntimeData.state);
+            cineRuntimeData.state = "framePlacementMenu";
         }
     }
 });
@@ -45,15 +78,3 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
 //         });
 //     }
 // }, 8);
-
-// system.runInterval(() => {
-//     for (const player of world.getAllPlayers()) {
-//         player.getEntitiesFromViewDirection({maxDistance: 5})[0]?.entity?.remove();
-//     }
-// }, 1);
-
-// world.afterEvents.itemUse.subscribe((eb) => {
-//     if (eb.itemStack?.typeId === "minecraft:dirt") {
-//         eb.source.dimension.spawnEntity("minecraft:thrown_trident", eb.source.location);
-//     }
-// });

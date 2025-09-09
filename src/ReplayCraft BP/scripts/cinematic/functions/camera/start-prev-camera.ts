@@ -1,5 +1,5 @@
 import { Player, system, EasingType } from "@minecraft/server";
-import { frameDataMap, settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
+import { frameDataMap, settingsDataMap, cineRuntimeDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
 import { FrameData } from "../../data/types/types";
 import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
@@ -7,15 +7,15 @@ import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 
 export function startPreview(player: Player) {
     const frames = frameDataMap.get(player.id) ?? [];
-    const otherData = otherDataMap.get(player.id);
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const settingsData = settingsDataMap.get(player.id);
 
-    if (!settingsData || !otherData) {
+    if (!settingsData || !cineRuntimeData) {
         player.sendMessage("§cMissing camera settings or state.");
         return;
     }
 
-    if (otherData.isCameraInMotion) {
+    if (cineRuntimeData.isCameraInMotion) {
         player.playSound("note.bass");
         player.sendMessage({ translate: "dbg.rc2.mes.camera.is.already.moving" });
         return;
@@ -51,13 +51,13 @@ export function startPreview(player: Player) {
         rotation: frames[0].rot,
     });
 
-    otherData.isCameraInMotion = true;
+    cineRuntimeData.isCameraInMotion = true;
 
     function moveNextCameraFrame(player: Player, frames: FrameData[], index: number) {
         if (index >= frames.length) {
             refreshAllFrameEntities(player);
             player.camera.clear();
-            otherData.isCameraInMotion = false;
+            cineRuntimeData.isCameraInMotion = false;
             return;
         }
 

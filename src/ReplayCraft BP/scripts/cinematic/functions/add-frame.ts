@@ -1,12 +1,13 @@
 import { Player } from "@minecraft/server";
-import { frameDataMap, otherDataMap } from "../data/maps";
+import { frameDataMap, cineRuntimeDataMap } from "../data/maps";
 import { FrameData } from "../data/types/types";
 import { spawnFrameEntity } from "./entity/spawn-frame-entity";
 import { refreshAllFrameEntities } from "./entity/refresh-all-frame-entities";
+import { cinematicFramesDB } from "../cinematic";
 
 export function addCameraFrame(player: Player) {
-    const otherData = otherDataMap.get(player.id);
-    if (otherData?.isCameraInMotion) {
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    if (cineRuntimeData?.isCameraInMotion) {
         player.playSound("note.bass");
         player.sendMessage({
             translate: "dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion",
@@ -17,7 +18,6 @@ export function addCameraFrame(player: Player) {
     const pos = player.getHeadLocation();
     const rot = player.getRotation();
 
-    // ensure a stable array for this player
     const frames = frameDataMap.get(player.id) ?? [];
 
     // the new frame will be at index = frames.length
@@ -31,4 +31,5 @@ export function addCameraFrame(player: Player) {
 
     frames.push(frame);
     frameDataMap.set(player.id, frames);
+    cinematicFramesDB.set(player.id, frames);
 }

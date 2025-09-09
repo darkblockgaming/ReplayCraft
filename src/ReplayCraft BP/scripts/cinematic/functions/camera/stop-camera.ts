@@ -1,9 +1,9 @@
 import { Player, system } from "@minecraft/server";
-import { settingsDataMap, otherDataMap, cameraIntervalMap } from "../../data/maps";
+import { settingsDataMap, cineRuntimeDataMap, cameraIntervalMap } from "../../data/maps";
 
 export function stopCamera(player: Player) {
-    const otherData = otherDataMap.get(player.id);
-    if (!otherData.isCameraInMotion) {
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    if (!cineRuntimeData.isCameraInMotion) {
         player.sendMessage({ translate: "dbg.rc2.mes.no.active.camera.movement.to.stop" });
         return;
     }
@@ -24,5 +24,5 @@ export function stopCamera(player: Player) {
     player.camera.clear();
     player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.stopped" });
 
-    otherData.isCameraInMotion = false;
+    cineRuntimeData.isCameraInMotion = false;
 }

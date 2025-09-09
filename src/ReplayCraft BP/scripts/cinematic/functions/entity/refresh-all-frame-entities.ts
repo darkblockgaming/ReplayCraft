@@ -1,6 +1,7 @@
-import { Player, world,  Vector3 } from "@minecraft/server";
+import { Player, world, Vector3 } from "@minecraft/server";
 import { frameDataMap } from "../../data/maps";
 import { spawnFrameEntity } from "../entity/spawn-frame-entity";
+import { cinematicFramesDB } from "../../cinematic";
 
 const TOLERANCE = 0.01;
 
@@ -8,24 +9,17 @@ const TOLERANCE = 0.01;
  * Compare two positions with a tolerance
  */
 function isSamePosition(a: Vector3, b: Vector3, tolerance = TOLERANCE): boolean {
-    return (
-        Math.abs(a.x - b.x) <= tolerance &&
-        Math.abs(a.y - b.y) <= tolerance &&
-        Math.abs(a.z - b.z) <= tolerance
-    );
+    return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance && Math.abs(a.z - b.z) <= tolerance;
 }
 
 /**
  * Compare two rotations with a tolerance
  */
 function isSameRotation(a: { x: number; y: number }, b: { x: number; y: number }, tolerance = TOLERANCE): boolean {
-    return (
-        Math.abs(a.x - b.x) <= tolerance &&
-        Math.abs(a.y - b.y) <= tolerance
-    );
+    return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance;
 }
 
-export function refreshAllFrameEntities(player: Player) {
+export async function refreshAllFrameEntities(player: Player) {
     const frames = frameDataMap.get(player.id);
     if (!frames || frames.length === 0) return;
 
@@ -36,6 +30,7 @@ export function refreshAllFrameEntities(player: Player) {
         if (!entity) {
             const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index);
             frame.entityId = newEntity.id;
+            frames[index] = frame;
             return;
         }
 
@@ -44,9 +39,10 @@ export function refreshAllFrameEntities(player: Player) {
             entity.remove();
             const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index);
             frame.entityId = newEntity.id;
+            frames[index] = frame;
         }
-
         // Case 3: entity matches → do nothing
     });
+    frameDataMap.set(player.id, frames);
+    cinematicFramesDB.set(player.id, frames);
 }
-

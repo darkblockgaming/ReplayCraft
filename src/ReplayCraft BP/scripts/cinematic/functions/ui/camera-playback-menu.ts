@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
-import { uiStateMap } from "../../data/maps";
+import { cineRuntimeDataMap } from "../../data/maps";
 import { cameraSettings } from "./settings/camera-settings";
 import { cineResetSettings } from "./settings/reset-settings";
 import { startCamera } from "../camera/start-camera";
@@ -8,8 +8,8 @@ import { stopCamera } from "../camera/stop-camera";
 import { framePlacementMenu } from "./frame-placement";
 
 export function cameraPlaybackMenu(player: Player) {
-    const uiState = uiStateMap.get(player.id);
-    uiState.state = "cameraPlaybackMenu";
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    cineRuntimeData.state = "cameraPlaybackMenu";
     const replayForm = new ActionFormData()
         .title("dbg.rc2.title.cinematic.menu")
         .body("dbg.rc2.body.camera-playback")

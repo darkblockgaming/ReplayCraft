@@ -1,8 +1,8 @@
 import { Player } from "@minecraft/server";
-import { settingsDataMap, otherDataMap } from "../../../data/maps";
+import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
 
 export function cineResetSettings(player: Player) {
-    const otherData = otherDataMap.get(player.id);
+    const otherData = cineRuntimeDataMap.get(player.id);
 
     if (otherData.isCameraInMotion === true) {
         player.playSound("note.bass");

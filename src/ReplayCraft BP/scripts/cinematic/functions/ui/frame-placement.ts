@@ -6,14 +6,14 @@ import { startPreview } from "../camera/start-prev-camera";
 import { removeLastFrame } from "../remove-last-frame";
 import { removeAllFrames } from "../remove-all-frames";
 import { frameSettings } from "./settings/frame-settings";
-import { uiStateMap } from "../../data/maps";
+import { cineRuntimeDataMap } from "../../data/maps";
 import { cameraPlaybackMenu } from "./camera-playback-menu";
 // import { startCamera } from "../camera/start-camera";
 // import { stopCamera } from "../camera/stop-camera";
 
 export function framePlacementMenu(player: Player) {
-    const uiState = uiStateMap.get(player.id);
-    uiState.state = "framePlacementMenu";
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    cineRuntimeData.state = "framePlacementMenu";
     const replayForm = new ActionFormData()
         .title("dbg.rc2.title.cinematic.menu")
         .body("dbg.rc2.body.create.path")

@@ -1,7 +1,8 @@
 import { Vector3, Vector2 } from "@minecraft/server";
 
-export interface uiState {
+export interface CineRuntimeData {
     state: string;
+    isCameraInMotion: boolean;
 }
 
 export interface FrameData {
@@ -19,8 +20,4 @@ export interface SettingsData {
     camFacingY: number;
     cinePrevSpeed: number;
     cinePrevSpeedMult: number;
-}
-
-export interface OtherData {
-    isCameraInMotion: boolean;
 }
