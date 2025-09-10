@@ -17,6 +17,12 @@ dbg.rc2.button.next=Next --->>
 dbg.rc2.body.manage.frames=Remove/manage frames.
 dbg.rc2.button.remove.last.frame=Remove Last Frame
 dbg.rc2.button.remove.all.frames=Remove All Frames
+dbg.rc2.button.selective.removal=Selective Removal
+
+## advancedFrameRemoval
+dbg.rc2.title.advanced.frame.removal=Advanced Frame Removal
+dbg.rc2.lebel.selective.removal=§l§g- Selective Frame Removal
+dbg.rc2.slider.select.a.frame=Select a frame
 
 ##"cameraPlaybackMenu"
 dbg.rc2.body.camera-playback=PlayBack and record!
