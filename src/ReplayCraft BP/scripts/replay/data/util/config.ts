@@ -22,4 +22,5 @@ export default {
     debugEntityHurtPlayback: false,
     debugSafeSet: false,
     debugCameraUpdates: false,
+    debugLogMemoryUsage: false,
 };

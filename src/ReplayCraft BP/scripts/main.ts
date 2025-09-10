@@ -13,7 +13,7 @@ import { onPlayerSpawn } from "./replay/classes/subscriptions/player-spawn-after
 import { onPlayerLeave } from "./replay/classes/subscriptions/player-leave-after-event";
 import { subscribeToWorldInitialize } from "./replay/classes/subscriptions/world-initialize";
 import { onEntityHurt } from "./replay/classes/subscriptions/entity-hurt";
-//temp solution for the missing import this needs to be convered.
+//temp solution for the missing import this needs to be converted.
 import "./cinematic/cinematic.js";
 import { removeEntities } from "./replay/functions/remove-entities";
 import config from "./replay/data/util/config";
@@ -93,7 +93,13 @@ const MAP_MEMORY_LIMITS = {
     replayPositionDataMap: 5_000_000,
     replayEquipmentDataMap: 5_000_000,
 };
-const MEMORY_CHECK_INTERVAL = 1200; // 1 minute in ticks
+/**
+ * Adjusting this interval can help balance performance and responsiveness.
+ * A shorter interval means more frequent memory checks, which can catch memory issues sooner,
+ * but adds a lot of overhead. A longer interval reduces overhead but may delay detection of memory issues.
+ * The default of 1200 ticks (1 minute) is a reasonable starting point for most scenarios.
+ */
+const MEMORY_CHECK_INTERVAL = 1200;
 
 //Single loop this now handles the playback and recording logic.
 system.runInterval(() => {
@@ -865,7 +871,7 @@ system.runInterval(() => {
                 baseRotation = entityData.customEntity.getRotation();
             } catch (e) {
                 if (config.debugCameraUpdates === true) {
-                    debugWarn(`[Scripting] Camera focus entity invalid or removed`);
+                    debugWarn(`[ReplayCraft DEBUG] Camera focus entity invalid or removed`);
                 }
 
                 return;
@@ -962,16 +968,19 @@ function estimateMapMemory(map: Map<any, any>): number {
     for (const value of map.values()) {
         total += JSON.stringify(value).length;
     }
-    console.log(`Estimated memory for map: ${total} bytes`);
+    if (config.debugLogMemoryUsage) {
+        debugLog(`[ReplayCraft DEBUG] Estimated memory for map: ${total} bytes`);
+    }
+
     return total;
 }
 
 function checkMapMemoryLimits(maps: Record<string, Map<any, any>>, player: any) {
     for (const [name, map] of Object.entries(maps)) {
         const memoryUsage = estimateMapMemory(map);
-
-        // Debug: log current size and estimated memory usage
-        console.log(`[DEBUG] ${name}: entries=${map.size}, approxMemory=${memoryUsage} bytes`);
+        if (config.debugLogMemoryUsage) {
+            debugLog(`[ReplayCraft DEBUG] ${name}: entries=${map.size}, approxMemory=${memoryUsage} bytes`);
+        }
 
         if (memoryUsage >= MAP_MEMORY_LIMITS[name as keyof typeof MAP_MEMORY_LIMITS]) {
             stopRecording(name, player);
