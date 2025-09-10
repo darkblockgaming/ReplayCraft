@@ -7,6 +7,7 @@ import { framePlacementMenu } from "./functions/ui/frame-placement";
 import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
 import { OptimizedDatabase } from "../replay/data/data-hive";
 import { frameManagementMenu } from "./functions/ui/manage-frames";
+import { refreshAllFrameEntities } from "./functions/entity/refresh-all-frame-entities";
 
 const cineUiHandlers = {
     framePlacementMenu: framePlacementMenu,
@@ -27,8 +28,8 @@ world.afterEvents.worldLoad.subscribe(() => {
 world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
     if (!itemStack || itemStack.typeId !== "minecraft:stick" || !/^(cinematic|replaycraft1)$/i.test(itemStack.nameTag)) return;
 
+    //get saved data from the database or init maps with default values
     frameDataMap.set(source.id, cinematicFramesDB.get(source.id) ?? []);
-
     settingsDataMap.set(
         source.id,
         cinematicSettingsDB.get(source.id) ?? {
@@ -42,15 +43,17 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
             cinePrevSpeedMult: 5,
         }
     );
-
     const runtimeDefaults = {
         state: "framePlacementMenu",
         isCameraInMotion: false,
     };
-
     const cineRuntimeData = cineRuntimeDataMap.get(source.id) ?? runtimeDefaults;
     cineRuntimeDataMap.set(source.id, cineRuntimeData);
 
+    //refresh the frame entities
+    refreshAllFrameEntities(source);
+
+    //show the ui depending on the ui state
     const handler = cineUiHandlers[cineRuntimeData.state as keyof typeof cineUiHandlers] ?? cineUiHandlers.framePlacementMenu;
 
     handler(source);
