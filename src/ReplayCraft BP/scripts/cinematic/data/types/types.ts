@@ -14,7 +14,7 @@ export interface FrameData {
 export interface SettingsData {
     hideHud: boolean;
     easeType: number;
-    easetime: number;
+    camSpeed: number;
     camFacingType: number;
     camFacingX: number;
     camFacingY: number;

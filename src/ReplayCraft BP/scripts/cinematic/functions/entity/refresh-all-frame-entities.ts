@@ -1,5 +1,5 @@
 import { Player, world, Vector3 } from "@minecraft/server";
-import { frameDataMap } from "../../data/maps";
+import { cineRuntimeDataMap, frameDataMap } from "../../data/maps";
 import { spawnFrameEntity } from "../entity/spawn-frame-entity";
 import { cinematicFramesDB } from "../../cinematic";
 
@@ -22,6 +22,9 @@ function isSameRotation(a: { x: number; y: number }, b: { x: number; y: number }
 export async function refreshAllFrameEntities(player: Player) {
     const frames = frameDataMap.get(player.id);
     if (!frames || frames.length === 0) return;
+
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    if (cineRuntimeData?.isCameraInMotion) return;
 
     frames.forEach((frame, index) => {
         const entity = world.getEntity(frame.entityId);

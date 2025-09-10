@@ -35,7 +35,7 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
         cinematicSettingsDB.get(source.id) ?? {
             hideHud: true,
             easeType: 0,
-            easetime: 4,
+            camSpeed: 2,
             camFacingType: 0,
             camFacingX: 0,
             camFacingY: 0,

@@ -41,8 +41,10 @@ dbg.rc2.slider.preview.speed.multiplier=Preview Speed Multiplier
 dbg.rc2.title.camera.settings=Camera Settings
 dbg.rc2.lebel.easing.settings=§l§g- Easing Options
 dbg.rc2.dropdown.ease.type=Ease Type (Transition Animation)
-dbg.rc2.textfield.ease.time=Time (Time More = Speed Less)
-dbg.rc2.lebel.camera.options=§l§g- Camera Options
+dbg.rc2.slider.camspeed=Camera Speed [blocks/sec]
+dbg.rc2.slider.camspeed.multiplier=Speed Multiplier
+dbg.rc2.lebel.camera.speed.options=§l§g- Camera Speed Options
+dbg.rc2.lebel.camera.rot.options=§l§g- Camera Rotation Options
 dbg.rc2.dropdown.camera.facing.type=Camera Facing Type
 dbg.rc2.slider.pitch=Pitch (X-rotation)
 dbg.rc2.slider.yaw=Yaw (Y-rotation)

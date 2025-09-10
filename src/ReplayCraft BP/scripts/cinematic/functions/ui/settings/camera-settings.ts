@@ -15,22 +15,24 @@ export function cameraSettings(player: Player) {
     const settingsData = settingsDataMap.get(player.id);
 
     const FIELD_INDEX = {
-        easeType: 2,
-        easeTime: 3,
-        camFacingType: 6,
-        camFacingX: 7,
-        camFacingY: 8,
-        hideHud: 11,
+        camSpeed: 2,
+        easeType: 5,
+        camFacingType: 8,
+        camFacingX: 9,
+        camFacingY: 10,
+        hideHud: 13,
     } as const;
 
     const form = new ModalFormData()
         .title("dbg.rc2.title.camera.settings")
         .divider()
+        .label("dbg.rc2.lebel.camera.speed.options")
+        .textField("dbg.rc2.slider.camspeed", "Numbers only: 0.1, 0.5, 1, 2, 3, etc...", { defaultValue: String(settingsData.camSpeed) })
+        .divider()
         .label("dbg.rc2.lebel.easing.settings")
         .dropdown("dbg.rc2.dropdown.ease.type", easeTypes, {
             defaultValueIndex: settingsData.easeType,
         })
-        .textField("dbg.rc2.textfield.ease.time", String(isFinite(settingsData.easetime) && settingsData.easetime > 0 ? settingsData.easetime : 1))
         .divider()
         .label("dbg.rc2.lebel.camera.options")
         .dropdown("dbg.rc2.dropdown.camera.facing.type", ["Default", "Custom Rotation `Select Below`", "Focus On Player"], {
@@ -56,10 +58,18 @@ export function cameraSettings(player: Player) {
         }
 
         const values = response.formValues;
-        settingsData.easeType = Number(values[FIELD_INDEX.easeType]);
 
-        const parsedTime = Number(values[FIELD_INDEX.easeTime]);
-        settingsData.easetime = isNaN(parsedTime) || parsedTime <= 0 ? 1 : Math.floor(parsedTime);
+        // Manage speed
+        const raw = values[FIELD_INDEX.camSpeed];
+        const value = Number(raw);
+        if (typeof raw !== "string" || raw.trim() === "" || isNaN(value) || value <= 0) {
+            notifyPlayer(player, "dbg.rc2.mes.invalid.speed.value", "note.bass");
+            settingsData.camSpeed = settingsData.camSpeed ?? 2;
+            return;
+        }
+        settingsData.camSpeed = value;
+
+        settingsData.easeType = Number(values[FIELD_INDEX.easeType]);
 
         settingsData.camFacingType = Number(values[FIELD_INDEX.camFacingType]);
         settingsData.camFacingX = Number(values[FIELD_INDEX.camFacingX]);
