@@ -152,10 +152,13 @@ function estimateMapMemory(map: Map<any, any>, sampleSize = 50): number {
     let count = 0;
 
     for (const value of map.values()) {
-        totalSampled += JSON.stringify(value).length;
+        const str = JSON.stringify(value) ?? "";
+        totalSampled += str.length;
         count++;
         if (count >= sampleSize) break; // sample first N entries
     }
+
+    if (count === 0) return 0;
 
     const avgSize = totalSampled / count;
     return Math.round(avgSize * totalEntries); // approximate total bytes

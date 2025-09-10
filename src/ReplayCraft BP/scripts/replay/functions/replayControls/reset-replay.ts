@@ -57,6 +57,9 @@ export function resetRec(player: Player) {
         armor4: [],
     });
     session.allRecordedPlayerIds.add(player.id);
-    session.trackedPlayerJoinTicks.set(player.id, 0);
+    session.trackedPlayerJoinTicks.set(player.id, {
+        joinTick: 0,
+        name: undefined,
+    });
     session.playerDamageEventsMap.set(player.id, undefined);
 }

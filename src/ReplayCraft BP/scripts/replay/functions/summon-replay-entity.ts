@@ -3,7 +3,7 @@ import { PlayerReplaySession } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
 
 //@ts-check
-export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string) {
+export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string, offlinePlayerName?: string) {
     if (!session) {
         onlinePlayer.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
@@ -60,7 +60,7 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         switch (session.settingNameType) {
             case 0:
             case 1:
-                customEntity.nameTag = onlinePlayer.name;
+                customEntity.nameTag = offlinePlayerName ?? onlinePlayer.name;
                 break;
             case 2:
                 customEntity.nameTag = session.settingCustomName;

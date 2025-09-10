@@ -285,7 +285,10 @@ system.runInterval(() => {
 
         if (isReplaying && settingReplayType === 0) {
             for (const playerId of session.allRecordedPlayerIds) {
-                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                if (!joinData) continue; // skip if missing
+
+                const joinTick = joinData.joinTick;
                 const tickOffset = session.currentTick - joinTick;
 
                 if (tickOffset < 0) {
@@ -466,7 +469,9 @@ system.runInterval(() => {
             }
 
             for (const playerId of session.allRecordedPlayerIds) {
-                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                if (!joinData) continue; // skip if missing
+                const joinTick = joinData.joinTick;
                 const entity = session.replayEntityDataMap.get(playerId)?.customEntity;
                 if (config.debugEntitySpawnEvents === true) {
                     debugLog(`Checking ${playerId}: joinTick=${joinTick}, currentTick=${session.currentTick}, entity exists: ${!!entity}`);
@@ -476,14 +481,16 @@ system.runInterval(() => {
                         debugLog(`Spawning entity for ${playerId}`);
                     }
 
-                    summonReplayEntity(session, session.replayController, playerId);
+                    summonReplayEntity(session, session.replayController, playerId, joinData.name);
                 }
             }
         }
         // --- Entity Positioning Playback ---
         if (isReplaying && settingReplayType === 0) {
             for (const playerId of session.allRecordedPlayerIds) {
-                const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                if (!joinData) continue; // skip if missing
+                const joinTick = joinData.joinTick;
                 const pos = replayPositionDataMap.get(playerId);
                 const rot = replayRotationDataMap.get(playerId);
                 const entity = replayEntityDataMap.get(playerId)?.customEntity;
@@ -749,7 +756,8 @@ system.runInterval(() => {
                     if (!playerData || !entityData) return;
                     try {
                         const entity = entityData.customEntity;
-                        const joinTick = session.trackedPlayerJoinTicks.get(playerId) ?? 0;
+                        const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                        const joinTick = joinData.joinTick;
                         const tickOffset = session.currentTick - joinTick;
                         if (tickOffset < 0) {
                             if (config.debugEquipmentPlayback === true) {

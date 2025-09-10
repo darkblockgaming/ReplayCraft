@@ -56,8 +56,13 @@ export function updateTrackedPlayers() {
             for (const p of playersAdded) {
                 ensureReplayDataForPlayer(p.id);
                 session.allRecordedPlayerIds.add(p.id);
+
+                // Store join tick and name together
                 if (!session.trackedPlayerJoinTicks.has(p.id)) {
-                    session.trackedPlayerJoinTicks.set(p.id, session.recordingEndTick ?? 0);
+                    session.trackedPlayerJoinTicks.set(p.id, {
+                        joinTick: session.recordingEndTick ?? 0,
+                        name: p.name,
+                    });
                 }
             }
 

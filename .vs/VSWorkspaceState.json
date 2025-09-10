@@ -2,11 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\scripts",
-    "\\src\\scripts\\data",
-    "\\src\\scripts\\functions",
-    "\\src\\scripts\\functions\\replayControls"
+    "\\src\\ReplayCraft BP",
+    "\\src\\ReplayCraft BP\\scripts"
   ],
-  "SelectedNode": "\\src\\scripts\\functions\\replayControls\\load-from-database.ts",
+  "SelectedNode": "\\src\\ReplayCraft BP\\scripts\\main.ts",
   "PreviewInSolutionExplorer": false
 }

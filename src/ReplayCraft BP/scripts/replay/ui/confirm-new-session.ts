@@ -8,6 +8,28 @@ import { replayCraftActiveSessionsDB } from "../classes/subscriptions/world-init
 import config from "../data/util/config";
 
 export function newSession(player: Player) {
+    let session = replaySessions.playerSessions.get(player.id);
+
+    // If session already exists, skip the UI
+    if (session) {
+        if (config.debugPlayerItemUseAfterEvent === true) {
+            debugLog(`[Replay Init] Existing session detected for ${player.name}, skipping confirmation.`);
+        }
+        session.replayStateMachine.handleEvent(player);
+
+        // Set controller if not set
+        if (!session.replayController || session.replayController === player) {
+            if (!session.multiPlayerReplayEnabled && session.trackedPlayers.length === 0) {
+                session.trackedPlayers = [player];
+            }
+            session.replayController = player;
+            if (config.debugPlayerItemUseAfterEvent === true) {
+                debugLog(`[Replay Init] Controller set to ${player.name}`);
+            }
+        }
+        return;
+    }
+
     const messageForm = new MessageFormData().title("replaycraft.new.session.title").body("replaycraft.new.session.body").button1("replaycraft.ui.yes.button").button2("replaycraft.ui.no.button");
 
     messageForm

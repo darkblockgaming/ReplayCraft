@@ -2,6 +2,7 @@ import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { clearStructure } from "../clear-structure";
 import { cleanupReplayEntities } from "../../multiplayer/cleanup-replay-entities";
+import { removeEntities } from "../remove-entities";
 
 export function doStopPreview(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -26,6 +27,7 @@ export function doStopPreview(player: Player) {
             entityData?.customEntity.remove();
             clearStructure(player, session);
             cleanupReplayEntities(session);
+            removeEntities(player, true);
         });
 
         session.currentTick = 0;

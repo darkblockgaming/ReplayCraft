@@ -30,7 +30,10 @@ export function initializePlayerMaps(session: PlayerReplaySession, playerId: str
         armor4: [],
     });
     session.allRecordedPlayerIds.add(playerId);
-    session.trackedPlayerJoinTicks.set(playerId, 0);
+    session.trackedPlayerJoinTicks.set(playerId, {
+        joinTick: 0,
+        name: undefined,
+    });
     session.playerDamageEventsMap.set(playerId, undefined);
     session.playerItemUseDataMap.set(playerId, undefined);
 }
