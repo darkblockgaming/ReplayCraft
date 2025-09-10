@@ -12,7 +12,6 @@ export function mainSettings(player: Player) {
         .title("dbg.rc1.title.replaycraft.settings")
         .toggle(`dbg.rc1.toggle.sound.cues`, { defaultValue: session.soundCue })
         .toggle(`dbg.rc1.toggle.text.prompts`, { defaultValue: session.textPrompt })
-        .dropdown(`dbg.rc1.dropdown.select.block.placing.sound`, session.soundIds, { defaultValueIndex: session.selectedSound })
         .toggle(`dbg.rc1.toggle.block.placing.sound`, { defaultValue: session.toggleSound })
         .toggle(`dbg.rc1.toggle.hide.hud.on.replay`, { defaultValue: session.hideHUD });
 
@@ -32,7 +31,6 @@ export function mainSettings(player: Player) {
         }
         session.soundCue = Boolean(response.formValues[0]);
         session.textPrompt = Boolean(response.formValues[1]);
-        session.selectedSound = Number(response.formValues[2]);
         session.toggleSound = Boolean(response.formValues[3]);
         session.hideHUD = Boolean(response.formValues[4]);
     });
