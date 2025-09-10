@@ -1,5 +1,6 @@
 import { Player, system } from "@minecraft/server";
 import { settingsDataMap, cineRuntimeDataMap, cameraIntervalMap } from "../../data/maps";
+import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 
 export function stopCamera(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
@@ -25,4 +26,5 @@ export function stopCamera(player: Player) {
     player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.stopped" });
 
     cineRuntimeData.isCameraInMotion = false;
+    refreshAllFrameEntities(player);
 }

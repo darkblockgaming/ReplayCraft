@@ -1,12 +1,8 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
+import { notifyPlayer } from "../../helpers/notify-player";
 
-// Small helper to avoid repeating message + sound
-function notifyPlayer(player: Player, translationKey: string, sound: string = "note.bass") {
-    player.sendMessage({ translate: translationKey });
-    player.playSound(sound);
-}
 
 export function frameSettings(player: Player) {
     const otherData = cineRuntimeDataMap.get(player.id);

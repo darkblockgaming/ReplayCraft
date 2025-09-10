@@ -7,10 +7,12 @@ import { initMaps } from "./data/init-maps";
 import { framePlacementMenu } from "./functions/ui/frame-placement";
 import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
 import { OptimizedDatabase } from "../replay/data/data-hive";
+import { frameManagementMenu } from "./functions/ui/manage-frames";
 
 const cineUiHandlers = {
     framePlacementMenu: framePlacementMenu,
     cameraPlaybackMenu: cameraPlaybackMenu,
+    frameManagementMenu: frameManagementMenu
 };
 
 //Initialise DataBase(s)

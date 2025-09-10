@@ -5,10 +5,7 @@ export function removeAllFrameEntities(player: Player) {
     const frames = frameDataMap.get(player.id);
     if (!frames || frames.length === 0) return;
 
-    let entcount = 0;
     for (const frame of frames) {
         world.getEntity(frame.entityId)?.remove();
-        entcount++;
     }
-    console.warn(`${entcount}`);
 }
