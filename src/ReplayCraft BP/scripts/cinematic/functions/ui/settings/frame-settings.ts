@@ -2,7 +2,7 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
 import { notifyPlayer } from "../../helpers/notify-player";
-
+import { cinematicSettingsDB } from "../../../cinematic";
 
 export function frameSettings(player: Player) {
     const otherData = cineRuntimeDataMap.get(player.id);
@@ -15,13 +15,11 @@ export function frameSettings(player: Player) {
 
     // Keep track of indices so we don’t rely on magic numbers
     const FIELD_INDEX = {
-        previewSpeedMult: 4,
+        previewSpeedMult: 2,
     } as const;
 
     const form = new ModalFormData()
         .title("dbg.rc2.title.frame.settings")
-        .divider()
-        .label("dbg.rc2.lebel.particle.settings")
         .divider()
         .label("dbg.rc2.lebel.preview.settings")
         .slider({ translate: "dbg.rc2.slider.preview.speed.multiplier" }, 1, 10, {
@@ -40,7 +38,9 @@ export function frameSettings(player: Player) {
         settingsData.cinePrevSpeedMult = Number(values[FIELD_INDEX.previewSpeedMult]);
         settingsData.cinePrevSpeed = Math.round((1 / settingsData.cinePrevSpeedMult) * 10) / 10;
 
+        settingsDataMap.set(player.id, settingsData);
+        cinematicSettingsDB.set(player.id, settingsData);
+
         notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });
 }
-
