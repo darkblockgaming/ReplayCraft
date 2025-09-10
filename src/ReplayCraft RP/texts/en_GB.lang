@@ -8,11 +8,15 @@ dbg.rc2.button.add.position.frame=Add Position Frame
 dbg.rc2.body.create.path=Create camera path/place frames!
 dbg.rc2.button.preview=Preview
 dbg.rc2.button.stop.preview=Stop Preview
-dbg.rc2.button.remove.last.frame=Remove Last Frame
-dbg.rc2.button.remove.all.frames=Remove All Frames
+dbg.rc2.button.manage.frames=Manage Frames
 dbg.rc2.button.frame.settings=Frame Settings
 dbg.rc2.button.reset.frame.settings=Reset Settings
 dbg.rc2.button.next=Next --->>
+
+## "frameManagementMenu"
+dbg.rc2.body.manage.frames=Remove/manage frames.
+dbg.rc2.button.remove.last.frame=Remove Last Frame
+dbg.rc2.button.remove.all.frames=Remove All Frames
 
 ##"cameraPlaybackMenu"
 dbg.rc2.body.camera-playback=PlayBack and record!
