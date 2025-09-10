@@ -51,6 +51,11 @@ export function advancedFrameRemoval(player: Player) {
 
         refreshAllFrameEntities(player);
 
-        notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
+        player.sendMessage({
+            rawtext: [
+                { translate: "dbg.rc2.mes.removed.frame.no" },
+                { text: `: ${index}` }
+            ]
+        });
     });
 }
