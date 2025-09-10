@@ -3,6 +3,7 @@ import { ModalFormData } from "@minecraft/server-ui";
 import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
 import { easeTypes } from "../../../data/constants/constants";
 import { notifyPlayer } from "../../helpers/notify-player";
+import { cinematicSettingsDB } from "../../../cinematic";
 
 export function cameraSettings(player: Player) {
     const otherData = cineRuntimeDataMap.get(player.id);
@@ -19,7 +20,7 @@ export function cameraSettings(player: Player) {
         camFacingType: 6,
         camFacingX: 7,
         camFacingY: 8,
-        hideHud: 11
+        hideHud: 11,
     } as const;
 
     const form = new ModalFormData()
@@ -65,6 +66,9 @@ export function cameraSettings(player: Player) {
         settingsData.camFacingY = Number(values[FIELD_INDEX.camFacingY]);
 
         settingsData.hideHud = Boolean(values[FIELD_INDEX.hideHud]);
+
+        settingsDataMap.set(player.id, settingsData);
+        cinematicSettingsDB.set(player.id, settingsData);
 
         notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });

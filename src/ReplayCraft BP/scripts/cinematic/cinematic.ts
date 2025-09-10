@@ -3,7 +3,6 @@ import { world } from "@minecraft/server";
 import { frameDataMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
 //Import Functions
-import { initMaps } from "./data/init-maps";
 import { framePlacementMenu } from "./functions/ui/frame-placement";
 import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
 import { OptimizedDatabase } from "../replay/data/data-hive";
@@ -12,7 +11,7 @@ import { frameManagementMenu } from "./functions/ui/manage-frames";
 const cineUiHandlers = {
     framePlacementMenu: framePlacementMenu,
     cameraPlaybackMenu: cameraPlaybackMenu,
-    frameManagementMenu: frameManagementMenu
+    frameManagementMenu: frameManagementMenu,
 };
 
 //Initialise DataBase(s)
@@ -26,40 +25,35 @@ world.afterEvents.worldLoad.subscribe(() => {
 
 //ItemUse event
 world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
-    if (itemStack?.typeId === "minecraft:stick" && /^(Cinematic|cinematic|CINEMATIC|ReplayCraft1|replaycraft1|REPLAYCRAFT1|Replaycraft1)$/.test(itemStack.nameTag)) {
-        const savedFramesData = cinematicFramesDB.get(source.id);
-        if (savedFramesData) {
-            frameDataMap.set(source.id, savedFramesData);
-        } else {
-            frameDataMap.set(source.id, []);
-        }
+    if (!itemStack || itemStack.typeId !== "minecraft:stick" || !/^(cinematic|replaycraft1)$/i.test(itemStack.nameTag)) return;
 
-        const savedSettingsData = cinematicSettingsDB.get(source.id);
-        if (savedSettingsData) {
-            settingsDataMap.set(source.id, savedSettingsData);
-        } else {
-            settingsDataMap.set(source.id, {
-                hideHud: true,
-                easeType: 0,
-                easetime: 4,
-                camFacingType: 0,
-                camFacingX: 0,
-                camFacingY: 0,
-                cinePrevSpeed: 0.5,
-                cinePrevSpeedMult: 5,
-            });
-        }
+    frameDataMap.set(source.id, cinematicFramesDB.get(source.id) ?? []);
 
-        initMaps(source);
-        const cineRuntimeData = cineRuntimeDataMap.get(source.id);
-        const handler = cineUiHandlers[cineRuntimeData.state as keyof typeof cineUiHandlers];
-        if (handler) {
-            handler(source);
-        } else {
-            console.warn("Invalid State:", cineRuntimeData.state);
-            cineRuntimeData.state = "framePlacementMenu";
+    settingsDataMap.set(
+        source.id,
+        cinematicSettingsDB.get(source.id) ?? {
+            hideHud: true,
+            easeType: 0,
+            easetime: 4,
+            camFacingType: 0,
+            camFacingX: 0,
+            camFacingY: 0,
+            cinePrevSpeed: 0.5,
+            cinePrevSpeedMult: 5,
         }
-    }
+    );
+
+    const runtimeDefaults = {
+        state: "framePlacementMenu",
+        isCameraInMotion: false,
+    };
+
+    const cineRuntimeData = cineRuntimeDataMap.get(source.id) ?? runtimeDefaults;
+    cineRuntimeDataMap.set(source.id, cineRuntimeData);
+
+    const handler = cineUiHandlers[cineRuntimeData.state as keyof typeof cineUiHandlers] ?? cineUiHandlers.framePlacementMenu;
+
+    handler(source);
 });
 
 //Frame Particles Loop

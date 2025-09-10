@@ -2,7 +2,7 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
 import { notifyPlayer } from "../../helpers/notify-player";
-
+import { cinematicSettingsDB } from "../../../cinematic";
 
 export function frameSettings(player: Player) {
     const otherData = cineRuntimeDataMap.get(player.id);
@@ -38,7 +38,9 @@ export function frameSettings(player: Player) {
         settingsData.cinePrevSpeedMult = Number(values[FIELD_INDEX.previewSpeedMult]);
         settingsData.cinePrevSpeed = Math.round((1 / settingsData.cinePrevSpeedMult) * 10) / 10;
 
+        settingsDataMap.set(player.id, settingsData);
+        cinematicSettingsDB.set(player.id, settingsData);
+
         notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });
 }
-
