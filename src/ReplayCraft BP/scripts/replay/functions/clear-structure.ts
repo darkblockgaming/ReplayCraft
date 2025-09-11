@@ -34,7 +34,9 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
     const CHUNK_RADIUS = 4 * 16; // 4 chunks * 16 blocks per chunk = 64 blocks
     const visitedChunks = new Set<string>();
     const originalPos = player.location;
+    //check if this player is the controller
 
+    const isController = player === session.replayController;
     let playerTeleported = false;
 
     for (const playerId of session.allRecordedPlayerIds) {
@@ -50,6 +52,7 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
             console.warn(`Recording start position not found for playerId: ${playerId}`);
             continue;
         }
+        session.replayController;
 
         for (const tick of ticks) {
             const data = playerData.blockStateBeforeInteractions[tick];
@@ -76,7 +79,7 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
                 const distanceSquared = dx * dx + dz * dz;
                 const isFarAway = distanceSquared > CHUNK_RADIUS * CHUNK_RADIUS;
 
-                if (!visitedChunks.has(chunkKey) && isFarAway) {
+                if (isController && !visitedChunks.has(chunkKey) && isFarAway) {
                     visitedChunks.add(chunkKey);
 
                     let success = player.tryTeleport(blockPos, { checkForBlocks: false });
@@ -112,7 +115,7 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
     }
 
     // Return player to original position
-    if (playerTeleported) {
+    if (isController && playerTeleported) {
         player.tryTeleport(originalPos, { checkForBlocks: false });
     }
     /**
