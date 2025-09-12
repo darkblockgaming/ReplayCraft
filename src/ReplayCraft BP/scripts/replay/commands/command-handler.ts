@@ -8,6 +8,7 @@ import { debugDatabaseUiCmd } from "./debug/database-ui-cmd";
 import { debugPlayAnimationCmd } from "./debug/play-animation-cmd";
 import { debugDatabaseConsoleCmd } from "./debug/database-list-cmd";
 import { debugShowEntityComponentsCmd } from "./debug/debug-utils/show-entity-components";
+import { debugPrintSessionCmd } from "./debug/print-session-data";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -65,6 +66,11 @@ function init(event: StartupEvent) {
         permissionLevel: CommandPermissionLevel.GameDirectors,
         optionalParameters: [{ type: CustomCommandParamType.String, name: "Required Components." }],
     };
+    const replaycraftPrintSessionDataCommand: CustomCommand = {
+        name: "rc:printsessiondata",
+        description: "Prints the sessions data to the console.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+    };
     /*
      * Register commands
      **/
@@ -77,6 +83,7 @@ function init(event: StartupEvent) {
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
         event.customCommandRegistry.registerCommand(replaycraftDatabaseCommand, debugDatabaseConsoleCmd);
         event.customCommandRegistry.registerCommand(replaycraftShowEntityComponetsCommand, debugShowEntityComponentsCmd);
+        event.customCommandRegistry.registerCommand(replaycraftPrintSessionDataCommand, debugPrintSessionCmd);
     }
 }
 
