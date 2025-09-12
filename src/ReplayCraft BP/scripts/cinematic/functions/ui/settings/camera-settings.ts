@@ -64,7 +64,7 @@ export function cameraSettings(player: Player) {
         const value = Number(raw);
         if (typeof raw !== "string" || raw.trim() === "" || isNaN(value) || value <= 0) {
             notifyPlayer(player, "dbg.rc2.mes.invalid.speed.value", "note.bass");
-            settingsData.camSpeed = settingsData.camSpeed ?? 2;
+            settingsData.camSpeed = settingsData.camSpeed ?? 0.8;
             return;
         }
         settingsData.camSpeed = value;

@@ -10,6 +10,7 @@ import { frameManagementMenu } from "./functions/ui/manage-frames";
 import { refreshAllFrameEntities } from "./functions/entity/refresh-all-frame-entities";
 
 const cineUiHandlers = {
+    // cineMainMenu: cineMainMenu,
     framePlacementMenu: framePlacementMenu,
     cameraPlaybackMenu: cameraPlaybackMenu,
     frameManagementMenu: frameManagementMenu,
@@ -26,7 +27,7 @@ world.afterEvents.worldLoad.subscribe(() => {
 
 //ItemUse event
 world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
-    if (!itemStack || itemStack.typeId !== "minecraft:stick" || !/^(cinematic|replaycraft1)$/i.test(itemStack.nameTag)) return;
+    if (!itemStack || itemStack?.typeId !== "minecraft:stick" || !/^(cinematic|replaycraft1)$/i.test(itemStack.nameTag)) return;
 
     //get saved data from the database or init maps with default values
     frameDataMap.set(source.id, cinematicFramesDB.get(source.id) ?? []);
@@ -35,7 +36,7 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
         cinematicSettingsDB.get(source.id) ?? {
             hideHud: true,
             easeType: 0,
-            camSpeed: 2,
+            camSpeed: 0.8,
             camFacingType: 0,
             camFacingX: 0,
             camFacingY: 0,

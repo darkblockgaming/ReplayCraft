@@ -20,7 +20,7 @@ export function cineResetSettings(player: Player) {
         camFacingType: 0,
         camFacingX: 0,
         camFacingY: 0,
-        camSpeed: 2,
+        camSpeed: 0.8,
     };
     settingsDataMap.set(player.id, defaults);
     cinematicSettingsDB.set(player.id, defaults);

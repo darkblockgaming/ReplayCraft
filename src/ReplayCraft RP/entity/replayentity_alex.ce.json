@@ -1,201 +1,248 @@
 {
-  "format_version": "1.21.100",
-  "minecraft:client_entity": {
-    "description": {
-      "identifier": "dbg:replayentity_alex",
-      "materials": {
-        "default": "entity_alphatest"
-      },
-      "textures": {
-        "steve": "textures/entity/alex",
-        "cus1": "textures/entity/custom_skins/1",
-        "cus2": "textures/entity/custom_skins/2",
-        "cus3": "textures/entity/custom_skins/3",
-        "cus4": "textures/entity/custom_skins/4",
-        "cus5": "textures/entity/custom_skins/5",
-        "cus6": "textures/entity/custom_skins/6",
-        "cus7": "textures/entity/custom_skins/7",
-        "cus8": "textures/entity/custom_skins/8",
-        "cus9": "textures/entity/custom_skins/9",
-        "cus10": "textures/entity/custom_skins/10",
-        "cus11": "textures/entity/custom_skins/11",
-        "cus12": "textures/entity/custom_skins/12",
-        "cus13": "textures/entity/custom_skins/13",
-        "cus14": "textures/entity/custom_skins/14",
-        "cus15": "textures/entity/custom_skins/15",
-        "cus16": "textures/entity/custom_skins/16",
-        "cus17": "textures/entity/custom_skins/17",
-        "cus18": "textures/entity/custom_skins/18",
-        "cus19": "textures/entity/custom_skins/19",
-        "cus20": "textures/entity/custom_skins/20",
-        "cus21": "textures/entity/custom_skins/21",
-        "cus22": "textures/entity/custom_skins/22",
-        "cus23": "textures/entity/custom_skins/23",
-        "cus24": "textures/entity/custom_skins/24",
-        "cus25": "textures/entity/custom_skins/25",
-        "cus26": "textures/entity/custom_skins/26",
-        "cus27": "textures/entity/custom_skins/27",
-        "cus28": "textures/entity/custom_skins/28",
-        "cus29": "textures/entity/custom_skins/29",
-        "cus30": "textures/entity/custom_skins/30",
-        "cus31": "textures/entity/custom_skins/31",
-        "cus32": "textures/entity/custom_skins/32",
-        "cus33": "textures/entity/custom_skins/33",
-        "cus34": "textures/entity/custom_skins/34",
-        "cus35": "textures/entity/custom_skins/35",
-        "cus36": "textures/entity/custom_skins/36",
-        "cus37": "textures/entity/custom_skins/37",
-        "cus38": "textures/entity/custom_skins/38",
-        "cus39": "textures/entity/custom_skins/39",
-        "cus40": "textures/entity/custom_skins/40",
-        "cus41": "textures/entity/custom_skins/41",
-        "cus42": "textures/entity/custom_skins/42",
-        "cus43": "textures/entity/custom_skins/43",
-        "cus44": "textures/entity/custom_skins/44",
-        "cus45": "textures/entity/custom_skins/45",
-        "cus46": "textures/entity/custom_skins/46",
-        "cus47": "textures/entity/custom_skins/47",
-        "cus48": "textures/entity/custom_skins/48",
-        "cus49": "textures/entity/custom_skins/49",
-        "cus50": "textures/entity/custom_skins/50",
-        "cus51": "textures/entity/custom_skins/51",
-        "cus52": "textures/entity/custom_skins/52",
-        "cus53": "textures/entity/custom_skins/53",
-        "cus54": "textures/entity/custom_skins/54",
-        "cus55": "textures/entity/custom_skins/55",
-        "cus56": "textures/entity/custom_skins/56",
-        "cus57": "textures/entity/custom_skins/57",
-        "cus58": "textures/entity/custom_skins/58",
-        "cus59": "textures/entity/custom_skins/59",
-        "cus60": "textures/entity/custom_skins/60",
-        "cus61": "textures/entity/custom_skins/61",
-        "cus62": "textures/entity/custom_skins/62",
-        "cus63": "textures/entity/custom_skins/63",
-        "cus64": "textures/entity/custom_skins/64"
-      },
-      "geometry": {
-        "default": "geometry.humanoid.customSlim"
-      },
-      "scripts": {
-        "scale": "0.9375",
-        "initialize": [
-          "variable.is_holding_right = 0.0;",
-          "variable.is_blinking = 0.0;",
-          "variable.last_blink_time = 0.0;",
-          "variable.hand_bob = 0.0;"
-        ],
-        "pre_animation": [
-          "variable.helmet_layer_visible = 1.0;",
-          "variable.leg_layer_visible = 1.0;",
-          "variable.boot_layer_visible = 1.0;",
-          "variable.chest_layer_visible = 1.0;",
-          "variable.attack_body_rot_y = Math.sin(360*Math.sqrt(variable.attack_time)) * 5.0;",
-          "variable.tcos0 = (math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;",
-          "variable.first_person_rotation_factor = math.sin((1 - variable.attack_time) * 180.0);",
-          "variable.hand_bob = query.life_time < 0.01 ? 0.0 : variable.hand_bob + ((query.is_on_ground && query.is_alive ? math.clamp(math.sqrt(math.pow(query.position_delta(0), 2.0) + math.pow(query.position_delta(2), 2.0)), 0.0, 0.1) : 0.0) - variable.hand_bob) * 0.02;",
-          "variable.item_use_normalized = query.main_hand_item_use_duration / query.main_hand_item_max_duration;"
-        ],
-        "animate": [
-          "humanoid_base_pose",
-          {
-            "look_at_target": "!query.property('dbg:is_sleeping')"
-          },
-          "move.arms",
-          "move.legs",
-          "cape",
-          {
-            "riding.arms": "query.is_riding"
-          },
-          {
-            "riding.legs": "query.is_riding"
-          },
-          "holding",
-          {
-            "brandish_spear": "variable.is_brandishing_spear"
-          },
-          {
-            "charging": "query.is_charging"
-          },
-          {
-            "sneaking": "query.is_sneaking && !query.property('dbg:is_sleeping')"
-          },
-          {
-            "sleeping": "query.property('dbg:is_sleeping') && query.is_alive"
-          },
-          "bob",
-          {
-            "damage_nearby_mobs": "variable.damage_nearby_mobs"
-          },
-          {
-            "bow_and_arrow": "query.has_target"
-          },
-          {
-            "use_item_progress": "( variable.use_item_interval_progress > 0.0 ) || ( variable.use_item_startup_progress > 0.0 ) && !variable.is_brandishing_spear"
-          },
-          {
-            "attack.positions": "variable.attack_time >= 0.0 && variable.item_use_normalized <= 0.0f"
-          },
-          {
-            "attack.rotations": "variable.attack_time >= 0.0 && variable.item_use_normalized <= 0.0f"
-          },
-          {
-            "shield_block_main_hand": "query.is_sneaking && query.get_equipped_item_name('off_hand') != 'shield' && query.get_equipped_item_name == 'shield'"
-          },
-          {
-            "shield_block_off_hand": "query.is_sneaking && query.get_equipped_item_name('off_hand') == 'shield'"
-          },
-          {
-            "crossbow_controller": "query.get_equipped_item_name == 'crossbow'"
-          },
-          {
-            "third_person_bow_equipped": "query.get_equipped_item_name == 'bow' && (variable.item_use_normalized > 0 && variable.item_use_normalized < 1.0)"
-          }
-        ]
-      },
-      "animations": {
-        "base_controller": "controller.animation.player.base",
-        "humanoid_base_pose": "animation.humanoid.base_pose",
-        "look_at_target": "controller.animation.humanoid.look_at_target",
-        "look_at_target_ui": "animation.player.look_at_target.ui",
-        "look_at_target_default": "animation.humanoid.look_at_target.default",
-        "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
-        "look_at_target_swimming": "animation.humanoid.look_at_target.swimming",
-        "look_at_target_inverted": "animation.player.look_at_target.inverted",
-        "cape": "animation.player.cape",
-        "move.arms": "animation.player.move.arms",
-        "move.legs": "animation.player.move.legs",
-        "swimming": "animation.player.swim",
-        "swimming.legs": "animation.player.swim.legs",
-        "swimming.legs.single": "animation.player.swim.legs.single",
-        "swimming.legs.stationary": "animation.player.swim.legs.stationary",
-        "crawl": "animation.player.crawl",
-        "crawl.legs": "animation.player.crawl.legs",
-        "riding.arms": "animation.player.riding.arms",
-        "riding.legs": "animation.player.riding.legs",
-        "holding": "animation.player.holding",
-        "brandish_spear": "animation.humanoid.brandish_spear",
-        "charging": "animation.humanoid.charging",
-        "attack.positions": "animation.player.attack.positions",
-        "attack.rotations": "animation.player.attack.rotations",
-        "sneaking": "animation.player.sneaking",
-        "bob": "animation.player.bob",
-        "damage_nearby_mobs": "animation.humanoid.damage_nearby_mobs",
-        "bow_and_arrow": "animation.humanoid.bow_and_arrow",
-        "use_item_progress": "animation.humanoid.use_item_progress",
-        "skeleton_attack": "animation.skeleton.attack",
-        "sleeping": "animation.player.sleeping",
-        "third_person_crossbow_equipped": "animation.player.crossbow_equipped",
-        "third_person_bow_equipped": "animation.player.bow_equipped",
-        "crossbow_hold": "animation.player.crossbow_hold",
-        "crossbow_controller": "controller.animation.player.crossbow",
-        "shield_block_main_hand": "animation.player.shield_block_main_hand",
-        "shield_block_off_hand": "animation.player.shield_block_off_hand",
-        "blink": "controller.animation.persona.blink"
-      },
-      "render_controllers": [
-        "controller.render.replayentity"
-      ],
-      "enable_attachables": true
+    "format_version": "1.21.100",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "dbg:replayentity_alex",
+            "materials": {
+                "default": "entity_alphatest",
+                "cape": "entity_alphatest",
+                "animated": "player_animated"
+            },
+            "textures": {
+                "steve": "textures/entity/alex",
+                "cus1": "textures/entity/custom_skins/1",
+                "cus2": "textures/entity/custom_skins/2",
+                "cus3": "textures/entity/custom_skins/3",
+                "cus4": "textures/entity/custom_skins/4",
+                "cus5": "textures/entity/custom_skins/5",
+                "cus6": "textures/entity/custom_skins/6",
+                "cus7": "textures/entity/custom_skins/7",
+                "cus8": "textures/entity/custom_skins/8",
+                "cus9": "textures/entity/custom_skins/9",
+                "cus10": "textures/entity/custom_skins/10",
+                "cus11": "textures/entity/custom_skins/11",
+                "cus12": "textures/entity/custom_skins/12",
+                "cus13": "textures/entity/custom_skins/13",
+                "cus14": "textures/entity/custom_skins/14",
+                "cus15": "textures/entity/custom_skins/15",
+                "cus16": "textures/entity/custom_skins/16",
+                "cus17": "textures/entity/custom_skins/17",
+                "cus18": "textures/entity/custom_skins/18",
+                "cus19": "textures/entity/custom_skins/19",
+                "cus20": "textures/entity/custom_skins/20",
+                "cus21": "textures/entity/custom_skins/21",
+                "cus22": "textures/entity/custom_skins/22",
+                "cus23": "textures/entity/custom_skins/23",
+                "cus24": "textures/entity/custom_skins/24",
+                "cus25": "textures/entity/custom_skins/25",
+                "cus26": "textures/entity/custom_skins/26",
+                "cus27": "textures/entity/custom_skins/27",
+                "cus28": "textures/entity/custom_skins/28",
+                "cus29": "textures/entity/custom_skins/29",
+                "cus30": "textures/entity/custom_skins/30",
+                "cus31": "textures/entity/custom_skins/31",
+                "cus32": "textures/entity/custom_skins/32",
+                "cus33": "textures/entity/custom_skins/33",
+                "cus34": "textures/entity/custom_skins/34",
+                "cus35": "textures/entity/custom_skins/35",
+                "cus36": "textures/entity/custom_skins/36",
+                "cus37": "textures/entity/custom_skins/37",
+                "cus38": "textures/entity/custom_skins/38",
+                "cus39": "textures/entity/custom_skins/39",
+                "cus40": "textures/entity/custom_skins/40",
+                "cus41": "textures/entity/custom_skins/41",
+                "cus42": "textures/entity/custom_skins/42",
+                "cus43": "textures/entity/custom_skins/43",
+                "cus44": "textures/entity/custom_skins/44",
+                "cus45": "textures/entity/custom_skins/45",
+                "cus46": "textures/entity/custom_skins/46",
+                "cus47": "textures/entity/custom_skins/47",
+                "cus48": "textures/entity/custom_skins/48",
+                "cus49": "textures/entity/custom_skins/49",
+                "cus50": "textures/entity/custom_skins/50",
+                "cus51": "textures/entity/custom_skins/51",
+                "cus52": "textures/entity/custom_skins/52",
+                "cus53": "textures/entity/custom_skins/53",
+                "cus54": "textures/entity/custom_skins/54",
+                "cus55": "textures/entity/custom_skins/55",
+                "cus56": "textures/entity/custom_skins/56",
+                "cus57": "textures/entity/custom_skins/57",
+                "cus58": "textures/entity/custom_skins/58",
+                "cus59": "textures/entity/custom_skins/59",
+                "cus60": "textures/entity/custom_skins/60",
+                "cus61": "textures/entity/custom_skins/61",
+                "cus62": "textures/entity/custom_skins/62",
+                "cus63": "textures/entity/custom_skins/63",
+                "cus64": "textures/entity/custom_skins/64"
+            },
+            "geometry": {
+                "default": "geometry.humanoid.customSlim",
+                "cape": "geometry.cape"
+            },
+            "scripts": {
+                "scale": "0.9375",
+                "initialize": [
+                    "variable.is_holding_right = 0.0;",
+                    "variable.is_blinking = 0.0;",
+                    "variable.last_blink_time = 0.0;",
+                    "variable.hand_bob = 0.0;",
+                    "variable.charge_amount = 0.0;"
+                ],
+                "pre_animation": [
+                    "variable.helmet_layer_visible = 1.0;",
+                    "variable.leg_layer_visible = 1.0;",
+                    "variable.boot_layer_visible = 1.0;",
+                    "variable.chest_layer_visible = 1.0;",
+                    "variable.attack_body_rot_y = Math.sin(360*Math.sqrt(variable.attack_time)) * 5.0;",
+                    "variable.tcos0 = (math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;",
+                    "variable.first_person_rotation_factor = math.sin((1 - variable.attack_time) * 180.0);",
+                    "variable.hand_bob = query.life_time < 0.01 ? 0.0 : variable.hand_bob + ((query.is_on_ground && query.is_alive ? math.clamp(math.sqrt(math.pow(query.position_delta(0), 2.0) + math.pow(query.position_delta(2), 2.0)), 0.0, 0.1) : 0.0) - variable.hand_bob) * 0.02;",
+                    //vanilla variables
+                    "variable.item_use_normalized = query.property('rc:item_use_duration') / query.main_hand_item_max_duration;",
+                    "variable.charge_amount =  math.clamp((query.main_hand_item_max_duration - (query.property('rc:item_use_duration') - query.frame_alpha + 1.0)) / 10.0, 0.0, 1.0f);",
+                    //Custom variables
+                    "variable.is_holding_chargeable_item = query.property('rc:holding_chargeable_item');"
+                ],
+                "animate": [
+                    "humanoid_base_pose",
+                    "move.arms",
+                    "move.legs",
+                    "cape",
+                    {
+                        "look_at_target": "!query.property('rc:is_sleeping') && !query.is_emoting"
+                    },
+                    {
+                        "riding.root": "query.property('rc:is_riding')"
+                    },
+                    {
+                        "riding.arms": "query.property('rc:is_riding')"
+                    },
+                    {
+                        "riding.legs": "query.property('rc:is_riding')"
+                    },
+                    "holding",
+                    {
+                        "charging": "query.is_charging"
+                    },
+                    {
+                        "holding_spyglass": "variable.is_holding_spyglass"
+                    },
+                    {
+                        "sneaking": "query.is_sneaking && !query.is_sleeping"
+                    },
+                    {
+                        "bob": "!variable.is_holding_spyglass && !variable.is_tooting_goat_horn && !variable.is_using_brush"
+                    },
+                    {
+                        "damage_nearby_mobs": "variable.damage_nearby_mobs"
+                    },
+                    {
+                        "swimming": "query.property('rc:is_swimming') && query.is_alive"
+                    },
+                    {
+                        "crawling": "query.property('rc:is_crawling')"
+                    },
+                    {
+                        "gliding": "query.property('rc:is_gliding')"
+                    },
+                    {
+                        "glidpose": "query.property('rc:is_gliding')"
+                    },
+                    {
+                        "use_item_progress": "( variable.use_item_interval_progress > 0.0 ) || ( variable.use_item_startup_progress > 0.0 ) && !variable.is_brandishing_spear && !variable.is_holding_spyglass && !variable.is_tooting_goat_horn && !variable.is_using_brush && !query.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow')"
+                    },
+                    {
+                        "sleeping": "query.property('rc:is_sleeping') && query.is_alive"
+                    },
+                    {
+                        "attack.positions": "variable.attack_time >= 0.0"
+                    },
+                    {
+                        "attack.rotations": "variable.attack_time >= 0.0"
+                    },
+                    {
+                        "shield_block_main_hand": "query.is_sneaking && query.get_equipped_item_name('off_hand') != 'shield' && query.get_equipped_item_name == 'shield'"
+                    },
+                    {
+                        "shield_block_off_hand": "query.is_sneaking && query.get_equipped_item_name('off_hand') == 'shield'"
+                    },
+                    {
+                        "tooting_goat_horn": "variable.is_tooting_goat_horn"
+                    },
+                    {
+                        "holding_brush": "query.get_equipped_item_name == 'brush'"
+                    },
+                    {
+                        "brushing": "variable.is_using_brush"
+                    },
+                    {
+                        "holding_heavy_core": "query.is_item_name_any('slot.weapon.mainhand', 'minecraft:heavy_core')"
+                    },
+                    {
+                        "third_person_bow_equipped": "variable.is_holding_chargeable_item && q.is_item_name_any('slot.weapon.mainhand', 'minecraft:bow', 'rc:bow_0', 'rc:bow_1', 'rc:bow_2')"
+                    },
+                    {
+                        "brandish_spear": "variable.is_holding_chargeable_item && query.is_item_name_any('slot.weapon.mainhand', 'rc:trident_1')"
+                    },
+                    {
+                        "third_person_crossbow_equipped": "variable.is_holding_chargeable_item && !q.property('rc:crossbow_charged') && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:crossbow')"
+                    },
+                    {
+                        "crossbow_hold": "q.property('rc:crossbow_charged') && query.is_item_name_any('slot.weapon.mainhand', 'minecraft:crossbow')"
+                    }
+                ]
+            },
+            "animations": {
+                "wield_third_person_raise": "animation.trident.wield_third_person_raise",
+                "base_controller": "controller.animation.player.base",
+                "hudplayer": "controller.animation.player.hudplayer",
+                "humanoid_base_pose": "animation.humanoid.base_pose",
+                "look_at_target": "controller.animation.rchumanoid.look_at_target",
+                "look_at_target_ui": "animation.player.look_at_target.ui",
+                "look_at_target_default": "animation.humanoid.look_at_target.default",
+                "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
+                "look_at_target_swimming": "animation.rchumanoid.look_at_target.swimming",
+                "look_at_target_inverted": "animation.player.look_at_target.inverted",
+                "cape": "animation.player.cape",
+                "move.arms": "animation.player.move.arms",
+                "move.legs": "animation.player.move.legs",
+                "swimming": "animation.player.swim_dynamic",
+                "swim_dive": "animation.player.swim_dive",
+                "crawling": "animation.player.crawl_dynamic",
+                "gliding": "animation.player.glide",
+                "glidpose": "animation.player.glidpose",
+                "riding.arms": "animation.player.riding.arms",
+                "riding.legs": "animation.player.riding.legs",
+                "riding.root": "animation.player.riding_dynamic",
+                "holding": "animation.player.holding",
+                "sneaking": "animation.player.sneaking",
+                "bob": "animation.player.bob",
+                "sleeping": "animation.rc.sleeping_dynamic",
+                "shield_block_main_hand": "animation.player.shield_block_main_hand",
+                "shield_block_off_hand": "animation.player.shield_block_off_hand",
+                "holding_heavy_core": "animation.player.holding_heavy_core",
+                "holding_spyglass": "animation.humanoid.holding_spyglass",
+                "holding_brush": "animation.humanoid.holding_brush",
+                "blink": "controller.animation.persona.blink",
+                "tooting_goat_horn": "animation.humanoid.tooting_goat_horn",
+                "brushing": "animation.humanoid.brushing",
+                "brandish_spear": "animation.humanoid.brandish_spear",
+                "charging": "animation.humanoid.charging",
+                "attack.positions": "animation.player.attack.positions",
+                "attack.rotations": "animation.player.attack.rotations",
+                "damage_nearby_mobs": "animation.humanoid.damage_nearby_mobs",
+                "use_item_progress": "animation.humanoid.use_item_progress",
+                "third_person_crossbow_equipped": "animation.player.crossbow_equipped",
+                "crossbow_hold": "animation.player.crossbow_hold",
+                "third_person_bow_equipped": "animation.player.bow_equipped",
+                "bow_and_arrow": "animation.humanoid.bow_and_arrow",
+                "fishing_rod": "animation.humanoid.fishing_rod",
+                "skeleton_attack": "animation.skeleton.attack"
+            },
+            "render_controllers": [
+                "controller.render.replayentity"
+            ],
+            "enable_attachables": true
+        }
     }
-  }
 }
