@@ -78,7 +78,7 @@ export function deleteCinematic(player: Player) {
         .divider()
         .label("rc2.lebel.delete.cine.path")
         .dropdown("rc2.dropdown.select.cine.path", displayList, { defaultValueIndex: 0 })
-        .toggle("rc2.toggle.delete.all", { defaultValue: false, tooltip: "rc2.toggle.tooltip.this.will.delete.all.cine"})
+        .toggle({ translate: "rc2.toggle.delete.all" }, { defaultValue: false, tooltip: { translate: "rc2.toggle.tooltip.this.will.delete.all.cine" } })
         .divider()
         .submitButton("rc2.button.delete");
 
