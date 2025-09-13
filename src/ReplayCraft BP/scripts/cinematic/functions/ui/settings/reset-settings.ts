@@ -8,7 +8,7 @@ export function cineResetSettings(player: Player) {
     if (otherData.isCameraInMotion === true) {
         player.playSound("note.bass");
         player.sendMessage({
-            translate: "dbg.rc2.mes.cannot.reset.settings.while.camera.is.in.motion",
+            translate: "rc2.mes.cannot.reset.settings.while.camera.is.in.motion",
         });
         return;
     }
@@ -26,6 +26,6 @@ export function cineResetSettings(player: Player) {
     cinematicSettingsDB.set(player.id, defaults);
 
     player.sendMessage({
-        translate: "dbg.rc2.mes.all.settings.have.been.reset.to.default",
+        translate: "rc2.mes.all.settings.have.been.reset.to.default",
     });
 }

@@ -7,7 +7,7 @@ import { cinematicSettingsDB } from "../../../cinematic";
 export function frameSettings(player: Player) {
     const otherData = cineRuntimeDataMap.get(player.id);
     if (otherData?.isCameraInMotion) {
-        notifyPlayer(player, "dbg.rc2.mes.cannot.change.settings.while.camera.is.in.motion");
+        notifyPlayer(player, "rc2.mes.cannot.change.settings.while.camera.is.in.motion");
         return;
     }
 
@@ -19,10 +19,10 @@ export function frameSettings(player: Player) {
     } as const;
 
     const form = new ModalFormData()
-        .title("dbg.rc2.title.frame.settings")
+        .title("rc2.title.frame.settings")
         .divider()
-        .label("dbg.rc2.lebel.preview.settings")
-        .slider({ translate: "dbg.rc2.slider.preview.speed.multiplier" }, 1, 10, {
+        .label("rc2.lebel.preview.settings")
+        .slider({ translate: "rc2.slider.preview.speed.multiplier" }, 1, 10, {
             valueStep: 1,
             defaultValue: settingsData.cinePrevSpeedMult,
         })
@@ -30,7 +30,7 @@ export function frameSettings(player: Player) {
 
     form.show(player).then((response) => {
         if (response.canceled) {
-            notifyPlayer(player, "dbg.rc2.mes.please.click.submit");
+            notifyPlayer(player, "rc2.mes.please.click.submit");
             return;
         }
 
@@ -41,6 +41,6 @@ export function frameSettings(player: Player) {
         settingsDataMap.set(player.id, settingsData);
         cinematicSettingsDB.set(player.id, settingsData);
 
-        notifyPlayer(player, "dbg.rc2.mes.settings.have.been.saved.successfully", "random.orb");
+        notifyPlayer(player, "rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });
 }

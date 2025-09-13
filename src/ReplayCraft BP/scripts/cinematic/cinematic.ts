@@ -1,26 +1,28 @@
-import { world } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 //Import maps
-import { frameDataMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
+import { cinematicListMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
 //Import Functions
 import { framePlacementMenu } from "./functions/ui/frame-placement";
 import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
 import { OptimizedDatabase } from "../replay/data/data-hive";
 import { frameManagementMenu } from "./functions/ui/manage-frames";
-import { refreshAllFrameEntities } from "./functions/entity/refresh-all-frame-entities";
+import { cineMainMenu } from "./functions/ui/cine-main-menu";
 
 const cineUiHandlers = {
-    // cineMainMenu: cineMainMenu,
-    framePlacementMenu: framePlacementMenu,
-    cameraPlaybackMenu: cameraPlaybackMenu,
-    frameManagementMenu: frameManagementMenu,
+    cineMainMenu: (player: Player) => cineMainMenu(player),
+    framePlacementMenu: (player: Player) => framePlacementMenu(player),
+    cameraPlaybackMenu: (player: Player) => cameraPlaybackMenu(player),
+    frameManagementMenu: (player: Player) => frameManagementMenu(player),
 };
 
 //Initialise DataBase(s)
+export let cinematicListDB: OptimizedDatabase;
 export let cinematicFramesDB: OptimizedDatabase;
 export let cinematicSettingsDB: OptimizedDatabase;
 
 world.afterEvents.worldLoad.subscribe(() => {
+    cinematicListDB = new OptimizedDatabase("cinematicList");
     cinematicFramesDB = new OptimizedDatabase("cinematicFramesData");
     cinematicSettingsDB = new OptimizedDatabase("cinematicSettingsData");
 });
@@ -29,8 +31,10 @@ world.afterEvents.worldLoad.subscribe(() => {
 world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
     if (!itemStack || itemStack?.typeId !== "minecraft:stick" || !/^(cinematic|replaycraft1)$/i.test(itemStack.nameTag)) return;
 
-    //get saved data from the database or init maps with default values
-    frameDataMap.set(source.id, cinematicFramesDB.get(source.id) ?? []);
+    // get saved data or init defaults
+    const cinematicList = cinematicListDB.get(source.id) ?? [];
+    cinematicListMap.set(source.id, cinematicList);
+
     settingsDataMap.set(
         source.id,
         cinematicSettingsDB.get(source.id) ?? {
@@ -44,15 +48,16 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
             cinePrevSpeedMult: 5,
         }
     );
+    
+    cinematicListMap.set(source.id, cinematicListDB.get(source.id) ?? []);
+
     const runtimeDefaults = {
-        state: "framePlacementMenu",
+        state: "cineMainMenu",
         isCameraInMotion: false,
     };
+
     const cineRuntimeData = cineRuntimeDataMap.get(source.id) ?? runtimeDefaults;
     cineRuntimeDataMap.set(source.id, cineRuntimeData);
-
-    //refresh the frame entities
-    refreshAllFrameEntities(source);
 
     //show the ui depending on the ui state
     const handler = cineUiHandlers[cineRuntimeData.state as keyof typeof cineUiHandlers] ?? cineUiHandlers.framePlacementMenu;

@@ -13,20 +13,20 @@ export function cameraPlaybackMenu(player: Player) {
     const isCameraInMotion = cineRuntimeData.isCameraInMotion;
 
     const replayForm = new ActionFormData()
-        .title("dbg.rc2.title.cinematic.menu")
-        .body("dbg.rc2.body.camera-playback");
+        .title("rc2.title.cinematic.menu")
+        .body("rc2.body.camera-playback");
 
     // Conditional button: Start or Stop
     if (isCameraInMotion) {
-        replayForm.button("dbg.rc2.button.stop.camera");
+        replayForm.button("rc2.button.stop.camera");
     } else {
-        replayForm.button("dbg.rc2.button.start.camera");
+        replayForm.button("rc2.button.start.camera");
     }
 
     replayForm
-        .button("dbg.rc2.button.camera.settings")
-        .button("dbg.rc2.button.reset.camera.settings")
-        .button("dbg.rc2.button.go.back");
+        .button("rc2.button.camera.settings")
+        .button("rc2.button.reset.camera.settings")
+        .button("rc2.button.go.back");
 
     replayForm.show(player).then((result) => {
         if (result.canceled) return;

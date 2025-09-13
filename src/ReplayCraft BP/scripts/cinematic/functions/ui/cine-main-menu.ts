@@ -1,0 +1,30 @@
+import { Player } from "@minecraft/server";
+import { ActionFormData } from "@minecraft/server-ui";
+import { cineRuntimeDataMap } from "../../data/maps";
+import { nameCinematic } from "./name-cinematic";
+import { loadCinematic } from "./load-delete-cinematic";
+//Import functions
+
+export function cineMainMenu(player: Player) {
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    cineRuntimeData.state = "cineMainMenu";
+    const replayForm = new ActionFormData()
+        .title("rc2.title.cinematic.menu")
+        .body("rc2.body.main.menu")
+        .button("rc2.button.create.new.cine")
+        .button("rc2.button.load.a.cine")
+        .button("rc2.button.delete.a.cine");
+    replayForm.show(player).then((result) => {
+        if (result.canceled) return;
+        const actions = {
+            0: () => nameCinematic(player),
+            1: () => loadCinematic(player),
+            // 2: () => advancedFrameRemoval(player),
+            // 3: () => framePlacementMenu(player),
+        };
+        const selectedAction = actions[result.selection as keyof typeof actions];
+        if (selectedAction) {
+            selectedAction();
+        }
+    });
+}

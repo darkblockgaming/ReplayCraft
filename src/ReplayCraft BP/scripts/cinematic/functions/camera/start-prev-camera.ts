@@ -6,8 +6,9 @@ import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
 import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 
 export function startPreview(player: Player) {
-    const frames = frameDataMap.get(player.id) ?? [];
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
+
     const settingsData = settingsDataMap.get(player.id);
 
     if (!settingsData || !cineRuntimeData) {
@@ -17,18 +18,18 @@ export function startPreview(player: Player) {
 
     if (cineRuntimeData.isCameraInMotion) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.camera.is.already.moving" });
+        player.sendMessage({ translate: "rc2.mes.camera.is.already.moving" });
         return;
     }
 
     if (frames.length === 0) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.no.frames.found" });
+        player.sendMessage({ translate: "rc2.mes.no.frames.found" });
         return;
     }
     if (frames.length === 1) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.add.more.frames" });
+        player.sendMessage({ translate: "rc2.mes.add.more.frames" });
         return;
     }
 
@@ -41,7 +42,7 @@ export function startPreview(player: Player) {
     // Clear any old intervals
     const existing = cameraIntervalMap.get(player.id);
     if (existing) {
-        existing.forEach(id => system.clearRun(id));
+        existing.forEach((id) => system.clearRun(id));
     }
     cameraIntervalMap.set(player.id, []);
 
@@ -55,9 +56,9 @@ export function startPreview(player: Player) {
 
     function moveNextCameraFrame(player: Player, frames: FrameData[], index: number) {
         if (index >= frames.length) {
+            cineRuntimeData.isCameraInMotion = false;
             refreshAllFrameEntities(player);
             player.camera.clear();
-            cineRuntimeData.isCameraInMotion = false;
             return;
         }
 

@@ -1,8 +1,9 @@
 import { Player, world } from "@minecraft/server";
-import { frameDataMap } from "../../data/maps";
+import { cineRuntimeDataMap, frameDataMap } from "../../data/maps";
 
 export function removeAllFrameEntities(player: Player) {
-    const frames = frameDataMap.get(player.id);
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic);
     if (!frames || frames.length === 0) return;
 
     for (const frame of frames) {

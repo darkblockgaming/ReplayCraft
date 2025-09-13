@@ -5,7 +5,7 @@ import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 export function stopCamera(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (!cineRuntimeData.isCameraInMotion) {
-        player.sendMessage({ translate: "dbg.rc2.mes.no.active.camera.movement.to.stop" });
+        player.sendMessage({ translate: "rc2.mes.no.active.camera.movement.to.stop" });
         return;
     }
 
@@ -23,7 +23,7 @@ export function stopCamera(player: Player) {
     }
 
     player.camera.clear();
-    player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.stopped" });
+    player.sendMessage({ translate: "rc2.mes.camera.movement.stopped" });
 
     cineRuntimeData.isCameraInMotion = false;
     refreshAllFrameEntities(player);

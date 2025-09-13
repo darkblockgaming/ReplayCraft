@@ -4,13 +4,13 @@ import { removeAllFrameEntities } from "./entity/remove-all-frame-entities";
 import { cinematicFramesDB } from "../cinematic";
 
 export function removeAllFrames(player: Player) {
-    const frames = frameDataMap.get(player.id) ?? [];
-
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
+    
     if (cineRuntimeData.isCameraInMotion === true) {
         player.playSound("note.bass");
         player.sendMessage({
-            translate: "dbg.rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion",
+            translate: "rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion",
         });
         return;
     }
@@ -18,16 +18,16 @@ export function removeAllFrames(player: Player) {
     if (frames.length === 0) {
         player.playSound("note.bass");
         player.sendMessage({
-            translate: "dbg.rc2.mes.no.frames.to.remove",
+            translate: "rc2.mes.no.frames.to.remove",
         });
         return;
     }
     removeAllFrameEntities(player);
 
-    frameDataMap.set(player.id, []);
-    cinematicFramesDB.set(player.id, []);
+    frameDataMap.set(cineRuntimeData.loadedCinematic, []);
+    cinematicFramesDB.set(cineRuntimeData.loadedCinematic, []);
 
     player.sendMessage({
-        translate: "dbg.rc2.mes.all.frames.have.been.removed",
+        translate: "rc2.mes.all.frames.have.been.removed",
     });
 }

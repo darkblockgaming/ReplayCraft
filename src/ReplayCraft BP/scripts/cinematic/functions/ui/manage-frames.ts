@@ -11,12 +11,12 @@ export function frameManagementMenu(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     cineRuntimeData.state = "frameManagementMenu";
     const replayForm = new ActionFormData()
-        .title("dbg.rc2.title.cinematic.menu")
-        .body("dbg.rc2.body.manage.frames")
-        .button("dbg.rc2.button.remove.last.frame")
-        .button("dbg.rc2.button.remove.all.frames")
-        .button("dbg.rc2.button.selective.removal")
-        .button("dbg.rc2.button.go.back");
+        .title("rc2.title.cinematic.menu")
+        .body("rc2.body.manage.frames")
+        .button("rc2.button.remove.last.frame")
+        .button("rc2.button.remove.all.frames")
+        .button("rc2.button.selective.removal")
+        .button("rc2.button.go.back");
     replayForm.show(player).then((result) => {
         if (result.canceled) return;
         const actions = {

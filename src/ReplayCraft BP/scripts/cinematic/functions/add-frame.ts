@@ -10,7 +10,7 @@ export function addCameraFrame(player: Player) {
     if (cineRuntimeData?.isCameraInMotion) {
         player.playSound("note.bass");
         player.sendMessage({
-            translate: "dbg.rc2.mes.cannot.add.frames.while.camera.is.in.motion",
+            translate: "rc2.mes.cannot.add.frames.while.camera.is.in.motion",
         });
         return;
     }
@@ -18,7 +18,7 @@ export function addCameraFrame(player: Player) {
     const pos = player.getHeadLocation();
     const rot = player.getRotation();
 
-    const frames = frameDataMap.get(player.id) ?? [];
+    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
 
     // the new frame will be at index = frames.length
     const entity = spawnFrameEntity(player, pos, rot, frames.length);
@@ -30,6 +30,6 @@ export function addCameraFrame(player: Player) {
     };
 
     frames.push(frame);
-    frameDataMap.set(player.id, frames);
-    cinematicFramesDB.set(player.id, frames);
+    frameDataMap.set(cineRuntimeData.loadedCinematic, frames);
+    cinematicFramesDB.set(cineRuntimeData.loadedCinematic, frames);
 }

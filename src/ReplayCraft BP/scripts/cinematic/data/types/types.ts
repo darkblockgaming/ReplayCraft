@@ -3,6 +3,7 @@ import { Vector3, Vector2 } from "@minecraft/server";
 export interface CineRuntimeData {
     state: string;
     isCameraInMotion: boolean;
+    loadedCinematic?: string;
 }
 
 export interface FrameData {

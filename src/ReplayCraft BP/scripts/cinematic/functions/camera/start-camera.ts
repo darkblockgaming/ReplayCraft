@@ -24,8 +24,8 @@ function applyCamera(player: Player, pos: Vector3, rot: Vector2, facingType: num
 }
 
 export function startCamera(player: Player) {
-    const frames = frameDataMap.get(player.id) ?? [];
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
     const settingsData = settingsDataMap.get(player.id);
 
     if (!settingsData || !cineRuntimeData) {
@@ -35,19 +35,19 @@ export function startCamera(player: Player) {
 
     if (cineRuntimeData.isCameraInMotion) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.camera.is.already.moving" });
+        player.sendMessage({ translate: "rc2.mes.camera.is.already.moving" });
         return;
     }
 
     if (frames.length === 0) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.no.frames.found" });
+        player.sendMessage({ translate: "rc2.mes.no.frames.found" });
         return;
     }
 
     if (frames.length === 1) {
         player.playSound("note.bass");
-        player.sendMessage({ translate: "dbg.rc2.mes.add.more.frames" });
+        player.sendMessage({ translate: "rc2.mes.add.more.frames" });
         return;
     }
 
@@ -92,7 +92,7 @@ export function startCamera(player: Player) {
     //             if (settingsData.hideHud) {
     //                 player.onScreenDisplay.setHudVisibility(1);
     //             }
-    //             player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.complete" });
+    //             player.sendMessage({ translate: "rc2.mes.camera.movement.complete" });
     //             refreshAllFrameEntities(player);
     //             cineRuntimeData.isCameraInMotion = false;
     //         }, 10);
@@ -120,13 +120,13 @@ export function startCamera(player: Player) {
         } else {
             // last frame cleanup
             const intervalId = system.runTimeout(() => {
+                cineRuntimeData.isCameraInMotion = false;
                 player.camera.clear();
                 if (settingsData.hideHud) {
                     player.onScreenDisplay.setHudVisibility(1);
                 }
-                player.sendMessage({ translate: "dbg.rc2.mes.camera.movement.complete" });
+                player.sendMessage({ translate: "rc2.mes.camera.movement.complete" });
                 refreshAllFrameEntities(player);
-                cineRuntimeData.isCameraInMotion = false;
             }, 10);
             cameraIntervalMap.get(player.id)!.push(intervalId);
         }
