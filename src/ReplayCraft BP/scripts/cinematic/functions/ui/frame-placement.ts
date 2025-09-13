@@ -8,12 +8,15 @@ import { cineRuntimeDataMap, frameDataMap } from "../../data/maps";
 import { cameraPlaybackMenu } from "./camera-playback-menu";
 import { stopCamera } from "../camera/stop-camera";
 import { frameManagementMenu } from "./manage-frames";
+import { cineMainMenu } from "./cine-main-menu";
+import { clearOtherFrameEntities } from "../entity/clear-other-frame-entities";
+import { notifyPlayer } from "../helpers/notify-player";
 
 export function framePlacementMenu(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     cineRuntimeData.state = "framePlacementMenu";
     const isCameraInMotion = cineRuntimeData.isCameraInMotion;
-    
+
     const replayForm = new ActionFormData().title("rc2.title.cinematic.menu").body("rc2.body.create.path").button("rc2.button.add.position.frame");
 
     // Only add one button depending on motion state
@@ -23,7 +26,7 @@ export function framePlacementMenu(player: Player) {
         replayForm.button("rc2.button.preview"); // start
     }
 
-    replayForm.button("rc2.button.manage.frames").button("rc2.button.frame.settings").button("rc2.button.next");
+    replayForm.button("rc2.button.manage.frames").button("rc2.button.frame.settings").button("rc2.button.next").button("rc2.button.go.back");
 
     replayForm.show(player).then((result) => {
         if (result.canceled) return;
@@ -61,7 +64,15 @@ export function framePlacementMenu(player: Player) {
             }
             cameraPlaybackMenu(player);
         };
-
+        actions[index++] = () => {
+            if (cineRuntimeData?.isCameraInMotion) {
+                notifyPlayer(player, "rc2.mes.cannot.go.back.while.camera.is.in.motion", "note.bass");
+                return;
+            }
+            //cineRuntimeDataMap.delete(player.id);
+            clearOtherFrameEntities(player);
+            cineMainMenu(player);
+        };
         const selectedAction = actions[result.selection as keyof typeof actions];
         if (selectedAction) selectedAction();
     });

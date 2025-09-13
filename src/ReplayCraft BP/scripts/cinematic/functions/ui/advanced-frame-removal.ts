@@ -53,10 +53,7 @@ export function advancedFrameRemoval(player: Player) {
         refreshAllFrameEntities(player);
 
         player.sendMessage({
-            rawtext: [
-                { translate: "rc2.mes.removed.frame.no" },
-                { text: `: ${index}` }
-            ]
+            rawtext: [{ translate: "rc2.mes.removed.frame.no" }, { text: `: ${index + 1}` }],
         });
     });
 }

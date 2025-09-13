@@ -4,7 +4,7 @@
 rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v3.0.0§r
 
 ## "cineMainMenu"
-rc2.body.main.menu=Main Menu
+rc2.body.main.menu=Create/Manage Cinematics
 rc2.button.create.new.cine=Create New Cinematic
 rc2.button.load.a.cine=Load A  Cinematic
 rc2.button.delete.a.cine=Delete A  Cinematic
@@ -17,6 +17,12 @@ rc2.textfield.name.cine.path=Name This Cinematic Path
 rc2.lebel.load.cine.path=§l§g- Load A Cinematic Path
 rc2.dropdown.select.cine.path=Select Cinematic Path
 rc2.button.load=Load
+
+## deleteCinematic
+rc2.lebel.delete.cine.path=§l§g- Delete A Cinematic Path
+rc2.button.delete=Delete
+rc2.toggle.delete.all=Delete All??
+rc2.toggle.tooltip.this.will.delete.all.cine=If enabled, all cinematic paths will be deleted permanently!
 
 ## "framePlacementMenu"
 rc2.body.create.path=Create camera path/place frames!
@@ -90,6 +96,9 @@ rc2.mes.removed.frame.no=§f§4[ReplayCraft] §fRemoved Frame no
 rc2.mes.invalid.speed.value=§f§4[ReplayCraft] §f§cInvalid Speed Value, Type positive nummbers only (Ex: 0.1, 0.5, 1, 2, 3, etc..)
 rc2.mes.type.a.valid.cine.name=§f§4[ReplayCraft] §f§cType A Valid Name For The new Cinematic Path
 rc2.mes.no.cine.path.found=§f§4[ReplayCraft] §f§cNo Cinematic Paths Found
+rc2.mes.cannot.go.back.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't go back while camera is in motion§r
+rc2.mes.cine.deleted=§f§4[ReplayCraft] §f§cDeleted Cinematic Path§r
+rc2.mes.all.cine.deleted=§f§4[ReplayCraft] §f§cAll cinematic paths has been deleted!
 
 ##-----------------------------------------------
 ##------------- Replay Menu Section -------------

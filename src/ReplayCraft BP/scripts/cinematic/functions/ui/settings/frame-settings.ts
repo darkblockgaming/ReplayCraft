@@ -5,8 +5,8 @@ import { notifyPlayer } from "../../helpers/notify-player";
 import { cinematicSettingsDB } from "../../../cinematic";
 
 export function frameSettings(player: Player) {
-    const otherData = cineRuntimeDataMap.get(player.id);
-    if (otherData?.isCameraInMotion) {
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    if (cineRuntimeData?.isCameraInMotion) {
         notifyPlayer(player, "rc2.mes.cannot.change.settings.while.camera.is.in.motion");
         return;
     }

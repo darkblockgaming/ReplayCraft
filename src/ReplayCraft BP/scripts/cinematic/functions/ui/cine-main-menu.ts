@@ -2,7 +2,7 @@ import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { cineRuntimeDataMap } from "../../data/maps";
 import { nameCinematic } from "./name-cinematic";
-import { loadCinematic } from "./load-delete-cinematic";
+import { deleteCinematic, loadCinematic } from "./load-delete-cinematic";
 //Import functions
 
 export function cineMainMenu(player: Player) {
@@ -19,7 +19,7 @@ export function cineMainMenu(player: Player) {
         const actions = {
             0: () => nameCinematic(player),
             1: () => loadCinematic(player),
-            // 2: () => advancedFrameRemoval(player),
+            2: () => deleteCinematic(player),
             // 3: () => framePlacementMenu(player),
         };
         const selectedAction = actions[result.selection as keyof typeof actions];
