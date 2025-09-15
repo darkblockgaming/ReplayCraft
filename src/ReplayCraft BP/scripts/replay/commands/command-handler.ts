@@ -9,6 +9,7 @@ import { debugPlayAnimationCmd } from "./debug/play-animation-cmd";
 import { debugDatabaseConsoleCmd } from "./debug/database-list-cmd";
 import { debugShowEntityComponentsCmd } from "./debug/debug-utils/show-entity-components";
 import { debugPrintSessionCmd } from "./debug/print-session-data";
+import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -71,6 +72,13 @@ function init(event: StartupEvent) {
         description: "Prints the sessions data to the console.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
+    const replaycraftUpdatePlaybackHudCommand: CustomCommand = {
+        name: "rc:playbackhud",
+        description: "enable or disable the playback HUD, and cycle through display modes.",
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
+        optionalParameters: [{ type: CustomCommandParamType.Integer, name: "element to use 0 for actionbar 1 for title." }],
+    };
     /*
      * Register commands
      **/
@@ -78,6 +86,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftSkinCommand, playerSetSkinCmd);
     event.customCommandRegistry.registerCommand(replaycraftAddCameraPointCommand, playerSetCameraPointCmd);
     event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManagerCmd);
+    event.customCommandRegistry.registerCommand(replaycraftUpdatePlaybackHudCommand, updatePlaybackHudCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);

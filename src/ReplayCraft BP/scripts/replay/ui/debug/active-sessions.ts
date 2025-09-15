@@ -36,34 +36,70 @@ export function showActiveSessionsUI(player: Player, playerLabels: string[], pla
 
 export function showSessionExplorerUI(player: Player, session: any, sessionId: string) {
     const keys = Object.keys(session);
-    const form = new ActionFormData().title(`Session: ${sessionId}`).body("Select a key to view its value:");
+    const pageLimit = 25; // number of keys per page
+    const totalPages = Math.ceil(keys.length / pageLimit);
+    let currentPage = 0;
 
-    for (const key of keys.slice(0, 25)) {
-        let label = key;
+    function showPage(page: number) {
+        const start = page * pageLimit;
+        const end = start + pageLimit;
+        const pageKeys = keys.slice(start, end);
 
-        // Show map size if this key is a Map
-        const value = session[key];
-        if (value instanceof Map) {
-            const bytes = estimateMapMemory(value);
-            label += ` §7(${formatBytes(bytes)})`;
+        const form = new ActionFormData().title(`Session: ${sessionId} (Page ${page + 1}/${totalPages})`).body("Select a key to view its value:");
+
+        for (const key of pageKeys) {
+            let label = key;
+
+            const value = session[key];
+            if (value instanceof Map) {
+                const bytes = estimateMapMemory(value);
+                label += ` §7(${formatBytes(bytes)})`;
+            }
+
+            form.button(label);
         }
 
-        form.button(label);
+        // Navigation buttons
+        if (totalPages > 1) {
+            if (page > 0) form.button("⬅ Previous Page");
+            if (page + 1 < totalPages) form.button("Next Page ➡");
+        }
+
+        // Delete session button always last
+        form.button("§cDelete Session");
+
+        form.show(player).then((result) => {
+            if (result.canceled || result.selection === undefined) return;
+
+            const selection = result.selection;
+
+            // Navigate pages
+            if (totalPages > 1) {
+                if (page > 0 && selection === pageKeys.length) {
+                    showPage(page - 1);
+                    return;
+                }
+                if (page + 1 < totalPages && selection === pageKeys.length + (page > 0 ? 1 : 0)) {
+                    showPage(page + 1);
+                    return;
+                }
+            }
+
+            // Delete session
+            if (selection === pageKeys.length + (totalPages > 1 ? (page > 0 ? 2 : 1) : 0)) {
+                confirmDeleteSession(player, sessionId);
+                return;
+            }
+
+            // Show selected key value
+            const selectedKey = pageKeys[selection];
+            showSessionKeyValueUI(player, session, selectedKey, sessionId);
+        });
     }
 
-    form.button("§cDelete Session");
-
-    form.show(player).then((result) => {
-        if (result.canceled || result.selection === undefined) return;
-
-        if (result.selection === keys.length) {
-            confirmDeleteSession(player, sessionId);
-        } else {
-            const selectedKey = keys[result.selection];
-            showSessionKeyValueUI(player, session, selectedKey, sessionId);
-        }
-    });
+    showPage(currentPage);
 }
+
 function showSessionKeyValueUI(player: Player, session: any, key: string, sessionId: string) {
     const value = session[key];
     const json = safeStringify(value, 2);
