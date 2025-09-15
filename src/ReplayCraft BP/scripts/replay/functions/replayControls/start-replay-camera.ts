@@ -54,6 +54,13 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
             const relativeTick = from.tick - baseTick;
 
             const timeOut2Id = system.runTimeout(() => {
+                session.currentCamTransitionData = {
+                    fromIndex: i,
+                    toIndex: i + 1,
+                    startTick: from.tick,
+                    endTick: to.tick,
+                    easeTime: easingTime,
+                };
                 player.camera.setCamera("minecraft:free", {
                     location: to.position,
                     rotation: toRot.rotation,

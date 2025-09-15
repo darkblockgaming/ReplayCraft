@@ -20,4 +20,5 @@ export function doStopCamera(player: Player) {
         system.clearRun(timeOut2Id);
     });
     session.cameraTransitionTimeoutsMap.delete(player.id);
+    delete session.currentCamTransitionData;
 }

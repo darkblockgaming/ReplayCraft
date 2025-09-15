@@ -260,6 +260,12 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         showCameraSetupUI: false,
         currentEditingCamIndex: undefined,
         useFullRecordingRange: true,
+        currentCamTransitionData: {},
+        playbackHUD: {
+            isVisible: false,
+            compactMode: true,
+            elementToUse: 0,
+        },
     } as PlayerReplaySession;
     // Add the session to the active sessions database?
     replayCraftActiveSessionsDB.set(_playerId, session);

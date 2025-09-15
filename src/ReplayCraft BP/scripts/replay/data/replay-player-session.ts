@@ -92,6 +92,18 @@ export interface PlayerReplaySession {
     affectCameraSelection: number;
     buildName: string;
     hideHUD: boolean;
+    playbackHUD: {
+        isVisible: boolean;
+        compactMode: boolean;
+        elementToUse: number;
+    };
+    currentCamTransitionData: {
+        fromIndex: number;
+        toIndex: number;
+        startTick: number;
+        endTick: number;
+        easeTime: number;
+    };
     showCameraSetupUI: boolean;
     currentEditingCamIndex: number;
     useFullRecordingRange: boolean;
