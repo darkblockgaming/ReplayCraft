@@ -960,18 +960,20 @@ system.runInterval(() => {
 
             let camInfo = "";
             if (session.currentCamTransitionData) {
-                const { fromIndex, toIndex, endTick, easeTime } = session.currentCamTransitionData;
+                const { fromIndex, toIndex, endTick, easeTime, speedBPS } = session.currentCamTransitionData;
                 const ticksRemaining = Math.max(0, endTick - session.currentTick);
                 const secsRemaining = (ticksRemaining / 20).toFixed(1);
 
                 // Find next point index (if exists)
                 const nextIndex = toIndex + 1 < session.replayCamPos.length ? toIndex + 1 : null;
+
                 if (session.playbackHUD.compactMode) {
-                    camInfo = ` | P${fromIndex}→P${toIndex} ${secsRemaining}s/${easeTime.toFixed(1)}s` + (nextIndex !== null ? ` | Next: P${nextIndex}` : "");
+                    camInfo = ` | P${fromIndex}→P${toIndex} ${secsRemaining}s/${easeTime.toFixed(1)}s (${speedBPS?.toFixed(1)} B/s)` + (nextIndex !== null ? ` | Next: P${nextIndex}` : "");
                 } else {
-                    camInfo = `Camera Transition \nFrom: P${fromIndex}\nTo: P${toIndex}\nTime: ${secsRemaining}s / ${easeTime.toFixed(1)}s` + (nextIndex !== null ? `\nNext: P${nextIndex}` : "");
+                    camInfo = `Camera Transition\nFrom: P${fromIndex}\nTo: P${toIndex}\nTime: ${secsRemaining}s / ${easeTime.toFixed(1)}s\nSpeed: ${speedBPS?.toFixed(1)} B/s` + (nextIndex !== null ? `\nNext: P${nextIndex}` : "");
                 }
             }
+
             switch (session.playbackHUD.elementToUse) {
                 case 0:
                     session.replayController.onScreenDisplay.setActionBar(`${currentSec}s / ${totalSec}s${camInfo}`);

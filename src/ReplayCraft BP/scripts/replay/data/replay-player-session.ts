@@ -103,6 +103,7 @@ export interface PlayerReplaySession {
         startTick: number;
         endTick: number;
         easeTime: number;
+        speedBPS: number;
     };
     showCameraSetupUI: boolean;
     currentEditingCamIndex: number;

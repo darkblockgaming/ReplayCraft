@@ -54,12 +54,15 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
             const relativeTick = from.tick - baseTick;
 
             const timeOut2Id = system.runTimeout(() => {
+                const distance = calculateDistance(from.position, to.position); // in blocks
+                const speedBPS = distance / easingTime; // blocks per second
                 session.currentCamTransitionData = {
                     fromIndex: i,
                     toIndex: i + 1,
                     startTick: from.tick,
                     endTick: to.tick,
                     easeTime: easingTime,
+                    speedBPS: speedBPS,
                 };
                 player.camera.setCamera("minecraft:free", {
                     location: to.position,
@@ -100,5 +103,11 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
             session.isTopDownDynamicCamActive = true;
         }, 0);
         session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
+    }
+    function calculateDistance(pos1: { x: number; y: number; z: number }, pos2: { x: number; y: number; z: number }): number {
+        const dx = pos2.x - pos1.x;
+        const dy = pos2.y - pos1.y;
+        const dz = pos2.z - pos1.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 }
