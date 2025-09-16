@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player, VanillaEntityIdentifier, world } from "@minecraft/server";
 //Import maps
 import { cinematicListMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
@@ -48,7 +48,7 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
             cinePrevSpeedMult: 5,
         }
     );
-    
+
     cinematicListMap.set(source.id, cinematicListDB.get(source.id) ?? []);
 
     const runtimeDefaults = {
@@ -83,3 +83,19 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
 //         });
 //     }
 // }, 8);
+
+let entID: string | undefined = undefined;
+
+world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
+    if (itemStack?.typeId === "minecraft:dirt") {
+        if (!entID) {
+            const ent = source.dimension.spawnEntity("dbg:replayentity_steve" as VanillaEntityIdentifier, source.location);
+            entID = ent.id;
+        } else {
+            const ent = world.getEntity(entID);
+            ent.applyDamage(1);
+            //ent.runCommand("damage @s 0");
+            world.sendMessage(`sdfhjjjujjjghsdfshjdf`);
+        }
+    }
+});
