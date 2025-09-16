@@ -109,7 +109,7 @@ function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
         }
     }
 
-    const isBucket = itemStack.typeId === "minecraft:water_bucket" || itemStack.typeId === "minecraft:powder_snow_bucket" || itemStack.typeId === "minecraft:lava_bucket";
+    const isBucket = itemStack?.typeId === "minecraft:water_bucket" || itemStack?.typeId === "minecraft:powder_snow_bucket" || itemStack?.typeId === "minecraft:lava_bucket";
 
     if (isBucket) {
         const normalizedFace = blockFace.toLowerCase();

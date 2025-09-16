@@ -112,6 +112,7 @@ system.runInterval(() => {
             settingReplayType,
             replayBlockStateMap,
             replayBlockInteractionAfterMap,
+            replayBlockInteractionBeforeMap,
             replayPositionDataMap,
             replayRotationDataMap,
             replayActionDataMap,
@@ -205,6 +206,18 @@ system.runInterval(() => {
                 // --- Block Interactions (after map) ---
                 const interactionData = replayBlockInteractionAfterMap.get(playerId);
                 const interactionBlock = interactionData?.blockSateAfterInteractions[currentTick];
+                const beforeInteractionData = replayBlockInteractionBeforeMap.get(playerId);
+                let beforeBlock = beforeInteractionData?.blockStateBeforeInteractions[currentTick];
+                if (beforeBlock) {
+                    // Handle multi-part entries
+                    if ("lowerPart" in beforeBlock && "upperPart" in beforeBlock) {
+                        beforeBlock = beforeBlock.lowerPart; // pick one part for sound
+                    } else if ("thisPart" in beforeBlock && "otherPart" in beforeBlock) {
+                        beforeBlock = beforeBlock.thisPart;
+                    }
+
+                    playBlockSound(beforeBlock as BlockData, player, true);
+                }
 
                 if (interactionBlock) {
                     const applyInteractionPermutation = (part: BlockData) => {
@@ -223,7 +236,7 @@ system.runInterval(() => {
                         customEntity.playAnimation("animation.replayentity.attack");
                     }
 
-                    playBlockSound(blockData, player, true);
+                    playBlockSound(beforeBlock as BlockData, player, true);
                 }
             }
         }

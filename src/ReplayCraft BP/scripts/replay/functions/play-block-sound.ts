@@ -20,13 +20,31 @@ import { debugError } from "../data/util/debug";
  */
 export function playBlockSound(blockData: BlockData, player: Player, interact?: boolean): void {
     const session = replaySessions.playerSessions.get(player.id);
-    if (!session) return;
+    if (!session) {
+        console.warn(`[ReplayCraft DEBUG] No replay session found for player ${player.name}`);
+        return;
+    }
+
+    if (!blockData) {
+        debugError(`[ReplayCraft DEBUG] playBlockSound called with undefined blockData for ${player.name}`);
+        return;
+    }
+
+    if (!blockData.typeId) {
+        debugError(`[ReplayCraft DEBUG] blockData has no typeId for ${player.name}`, blockData);
+        return;
+    }
+
     try {
         if (interact) {
             const blockId = blockData.typeId.replace("minecraft:", "");
             const location = blockData.location;
             const states = blockData.states ?? {};
             const soundData = blockInteractSounds[blockId];
+
+            if (!soundData) {
+                console.warn(`[ReplayCraft DEBUG] No interact sound mapping for blockId "${blockId}" (player: ${player.name})`);
+            }
 
             // Play interact sound (e.g., door open/close)
             if (soundData && "open_bit" in states) {
@@ -39,7 +57,9 @@ export function playBlockSound(blockData: BlockData, player: Player, interact?: 
             // Play break sound
             if (blockData.eventType === "break") {
                 const breakSound = blockBreakSounds[blockId];
-                if (breakSound) {
+                if (!breakSound) {
+                    console.warn(`[ReplayCraft DEBUG] No break sound mapping for blockId "${blockId}" (player: ${player.name})`);
+                } else {
                     session.replayController.playSound(breakSound.sound, {
                         location,
                         pitch: breakSound.pitch,
@@ -48,22 +68,22 @@ export function playBlockSound(blockData: BlockData, player: Player, interact?: 
             }
         }
     } catch (error) {
-        debugError(`Error playing block break/interact sound for player ${player.name}:`, error);
+        debugError(`Error playing block break/interact sound for player ${player.name}:`, error, blockData);
     }
 
     // Play default placement sound
     try {
         const { location, typeId } = blockData;
-        const blockId = typeId.replace("minecraft:", ""); // normalize block ID
+        const blockId = typeId.replace("minecraft:", "");
         const soundData = blockPlaceSounds[blockId];
 
         if (!soundData) {
-            console.warn(`No place sound found for block: ${blockId}`);
+            console.warn(`[ReplayCraft DEBUG] No placement sound mapping for blockId "${blockId}" (player: ${player.name})`);
             return;
         }
 
         session.replayController.playSound(soundData.sound, { location, pitch: soundData.pitch });
     } catch (error) {
-        debugError(`Error playing block placement sound for player ${player.name}:`, error);
+        debugError(`Error playing block placement sound for player ${player.name}:`, error, blockData);
     }
 }
