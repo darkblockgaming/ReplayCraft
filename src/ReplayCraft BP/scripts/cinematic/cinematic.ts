@@ -1,4 +1,4 @@
-import { Player, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { Player, world } from "@minecraft/server";
 //Import maps
 import { cinematicListMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
