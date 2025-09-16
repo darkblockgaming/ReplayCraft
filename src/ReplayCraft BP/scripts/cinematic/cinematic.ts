@@ -84,18 +84,3 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
 //     }
 // }, 8);
 
-let entID: string | undefined = undefined;
-
-world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
-    if (itemStack?.typeId === "minecraft:dirt") {
-        if (!entID) {
-            const ent = source.dimension.spawnEntity("dbg:replayentity_steve" as VanillaEntityIdentifier, source.location);
-            entID = ent.id;
-        } else {
-            const ent = world.getEntity(entID);
-            ent.applyDamage(1);
-            //ent.runCommand("damage @s 0");
-            world.sendMessage(`sdfhjjjujjjghsdfshjdf`);
-        }
-    }
-});
