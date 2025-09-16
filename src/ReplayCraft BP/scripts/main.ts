@@ -493,9 +493,28 @@ system.runInterval(() => {
                 const joinTick = joinData.joinTick;
                 const pos = replayPositionDataMap.get(playerId);
                 const rot = replayRotationDataMap.get(playerId);
-                const entity = replayEntityDataMap.get(playerId)?.customEntity;
 
-                if (pos && rot && entity) {
+                // --- entity check + respawn ---
+                let entityWrapper = replayEntityDataMap.get(playerId);
+                let entity = entityWrapper?.customEntity;
+
+                if (!entity || !entity.isValid) {
+                    if (!session.isReplayActive) continue;
+                    if (config.debugEntityPlayback === true) {
+                        debugWarn(`[ReplayCraft] Replay entity for ${playerId} missing or invalid, respawning...`);
+                    }
+                    summonReplayEntity(session, session.replayController, playerId); // respawn using existing session
+                    entity = replayEntityDataMap.get(playerId)?.customEntity;
+
+                    if (!entity) {
+                        if (config.debugEntityPlayback === true) {
+                            debugWarn(`[ReplayCraft] Failed to respawn entity for ${playerId}, skipping this tick.`);
+                        }
+                        continue; // don’t crash playback, just skip this tick
+                    }
+                }
+
+                if (pos && rot) {
                     const tickOffset = session.currentTick - joinTick;
 
                     if (tickOffset >= 0 && tickOffset < pos.recordedPositions.length && tickOffset < rot.recordedRotations.length) {
@@ -519,12 +538,10 @@ system.runInterval(() => {
                         }
                     } else if (tickOffset >= 0) {
                         if (config.debugEntityPlayback === true) {
-                            // Only log out-of-bounds if we expected to be within range
                             debugWarn(`[ReplayCraft] Tick ${session.currentTick} out of bounds for ${playerId} (tickOffset=${tickOffset}, posLen=${pos.recordedPositions.length}, rotLen=${rot.recordedRotations.length})`);
                         }
                     } else {
                         if (config.debugEntityPlayback === true) {
-                            //early skip logging
                             debugLog(`[ReplayCraft] Skipping movement for ${playerId} — joinTick ${joinTick} > currentTick ${session.currentTick}`);
                         }
                     }
