@@ -176,7 +176,7 @@ dbg.rc1.toggle.block.placing.sound=Block Placing Sound
 dbg.rc1.toggle.multiplayer.replay=Multiplayer Replay
 dbg.rc1.toggle.hide.hud.on.replay=Hide HUD During Replay? 
 
-dbg.rc1.mes.thanks=§f§4[ReplayCraft] §f§gThanks for downloading ReplayCraft, I hope you'll enjoy it!
+dbg.rc1.mes.thanks=§f§4[ReplayCraft] §f§gThanks for downloading ReplayCraft, We hope you'll enjoy it!
 
 dbg.rc1.mes.please.load.a.frame.before.adding.camera.point=§f§4[ReplayCraft] §f§cPlease load a frame before adding camera point
 dbg.rc1.mes.a.camera.point.already.exists.at.this.tick=§f§4[ReplayCraft] §f§cA camera point already exists at this tick!
