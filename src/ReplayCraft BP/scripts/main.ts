@@ -18,7 +18,7 @@ import "./cinematic/cinematic.js";
 import { removeEntities } from "./replay/functions/remove-entities";
 import config from "./replay/data/util/config";
 import { replaySessions } from "./replay/data/replay-player-session";
-import { BlockData, BlockInteractionEntry } from "./replay/classes/types/types";
+import { BlockData } from "./replay/classes/types/types";
 import { removeOwnedAmbientEntities } from "./replay/entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./replay/data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./replay/entity/is-riding";

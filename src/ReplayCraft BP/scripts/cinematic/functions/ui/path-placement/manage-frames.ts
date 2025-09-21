@@ -1,9 +1,9 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 //Import functions
-import { removeLastFrame } from "../remove-last-frame";
-import { removeAllFrames } from "../remove-all-frames";
-import { cineRuntimeDataMap } from "../../data/maps";
+import { removeLastFrame } from "../../remove-last-frame";
+import { removeAllFrames } from "../../remove-all-frames";
+import { cineRuntimeDataMap } from "../../../data/maps";
 import { framePlacementMenu } from "./frame-placement";
 import { advancedFrameRemoval } from "./advanced-frame-removal";
 

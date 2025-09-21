@@ -1,12 +1,12 @@
 import { ModalFormData } from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { cinematicListMap, cineRuntimeDataMap, frameDataMap } from "../../data/maps";
-import { framePlacementMenu } from "./frame-placement";
-import { cinematicFramesDB, cinematicListDB } from "../../cinematic";
-import { clearOtherFrameEntities } from "../entity/clear-other-frame-entities";
+import { cinematicListMap } from "../../../data/maps";
+import { cinematicListDB } from "../../../cinematic";
+import { panoramicCinematic } from "./panoramic-cinematic";
+import { loadInstance } from "../../load-instance";
 
-export function nameCinematic(player: Player) {
-    const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.cine.path", "rc2.textfield.name.cine.path");
+export function namePanorama(player: Player) {
+    const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.pano.cine.path", "rc2.textfield.name.pano.cine.path");
 
     form.show(player)
         .then((formData) => {
@@ -21,24 +21,19 @@ export function nameCinematic(player: Player) {
 
             const cinematicList = cinematicListMap.get(player.id);
 
-            const cinematicName = `cineData_${player.id}_${trimmedName}`;
+            const cinematicName = `t${1}_cineData_${player.id}_${trimmedName}`; //t1 = panoramic
 
             if (!cinematicList.includes(cinematicName)) {
                 cinematicList.push(cinematicName);
 
-                const cineRuntimeData = cineRuntimeDataMap.get(player.id);
-                cineRuntimeData.loadedCinematic = cinematicName;
-                cineRuntimeDataMap.set(player.id, cineRuntimeData);
-
+                //Update list in map and database
                 cinematicListMap.set(player.id, cinematicList);
                 cinematicListDB.set(player.id, cinematicList);
 
-                clearOtherFrameEntities(player);
-
-                frameDataMap.set(cinematicName, cinematicFramesDB.get(cinematicName) ?? []);
+                loadInstance(player, cinematicName);
 
                 // open frame placement menu
-                framePlacementMenu(player);
+                panoramicCinematic(player);
             } else {
                 // TODO: handle duplicate name case
             }

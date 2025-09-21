@@ -1,16 +1,16 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 //Import functions
-import { addCameraFrame } from "../add-frame";
-import { startPreview } from "../camera/start-prev-camera";
-import { frameSettings } from "./settings/frame-settings";
-import { cineRuntimeDataMap, frameDataMap } from "../../data/maps";
+import { addCameraFrame } from "../../add-frame";
+import { startPreview } from "../../camera/start-prev-camera";
+import { frameSettings } from "../settings/frame-settings";
+import { cineRuntimeDataMap, frameDataMap } from "../../../data/maps";
 import { cameraPlaybackMenu } from "./camera-playback-menu";
-import { stopCamera } from "../camera/stop-camera";
+import { stopCamera } from "../../camera/stop-camera";
 import { frameManagementMenu } from "./manage-frames";
-import { cineMainMenu } from "./cine-main-menu";
-import { clearOtherFrameEntities } from "../entity/clear-other-frame-entities";
-import { notifyPlayer } from "../helpers/notify-player";
+import { cineMainMenu } from "../cine-main-menu";
+import { clearOtherFrameEntities } from "../../entity/clear-other-frame-entities";
+import { notifyPlayer } from "../../helpers/notify-player";
 
 export function framePlacementMenu(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);

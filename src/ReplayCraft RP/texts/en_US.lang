@@ -6,23 +6,24 @@ rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v3.0.0§r
 ## "cineMainMenu"
 rc2.body.main.menu=Create/Manage Cinematics
 rc2.button.create.new.cine=Create New Cinematic
-rc2.button.load.a.cine=Load A  Cinematic
-rc2.button.delete.a.cine=Delete A  Cinematic
+rc2.button.load.saved.paths=Load Saved Paths
+rc2.button.delete.saved.paths=Delete Saved Paths
+rc2.button.panoramic.cinematic=Panoramic Cinematic
 
 ##cnameCinematic
 rc2.title.create.new.cine.path=Create New Cinematic Path
 rc2.textfield.name.cine.path=Name This Cinematic Path
 
 ## loadCinematic
-rc2.lebel.load.cine.path=§l§g- Load A Cinematic Path
-rc2.dropdown.select.cine.path=Select Cinematic Path
+rc2.lebel.load.cine.path=§l§g- Load A Saved Path
+rc2.dropdown.select.cine.path=Select Path
 rc2.button.load=Load
 
 ## deleteCinematic
-rc2.lebel.delete.cine.path=§l§g- Delete A Cinematic Path
+rc2.lebel.delete.cine.path=§l§g- Delete A Saved Path
 rc2.button.delete=Delete
 rc2.toggle.delete.all=Delete All??
-rc2.toggle.tooltip.this.will.delete.all.cine=If enabled, all cinematic paths will be deleted permanently!
+rc2.toggle.tooltip.this.will.delete.all.cine=If enabled, all saved paths (Normal Cinematic and Panoramic Cinematic) will be deleted permanently!
 
 ## "framePlacementMenu"
 rc2.body.create.path=Create camera path/place frames!
@@ -71,6 +72,14 @@ rc2.slider.pitch=Pitch (X-rotation)
 rc2.slider.yaw=Yaw (Y-rotation)
 rc2.lebel.screen.settings=§l§g- Screen Options
 rc2.toggle.hide.hud=Hide Hud During Cinematic
+
+## "panoramicCinematic"
+rc2.body.create.panoramic.cine=Create Panoramic Cinematics
+rc2.button.add.focus.point=Add Focus Point
+
+## namePanorama
+rc2.title.create.new.pano.cine.path=Create New Panoramic Cinematic Path
+rc2.textfield.name.pano.cine.path=Name Panoramic Cinematic
 
 ##Messages
 rc2.mes.add.cam.frame=§f§4[ReplayCraft] §f§cAdd camera frames first!! §r

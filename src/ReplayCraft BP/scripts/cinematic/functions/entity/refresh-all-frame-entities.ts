@@ -19,7 +19,7 @@ function isSameRotation(a: { x: number; y: number }, b: { x: number; y: number }
     return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance;
 }
 
-export async function refreshAllFrameEntities(player: Player) {
+export async function refreshAllFrameEntities(player: Player, isFocusPoint: boolean = false) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (cineRuntimeData?.isCameraInMotion) return;
 
@@ -31,7 +31,7 @@ export async function refreshAllFrameEntities(player: Player) {
 
         // Case 1: entity missing → respawn
         if (!entity) {
-            const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index);
+            const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index, isFocusPoint);
             frame.entityId = newEntity.id;
             frames[index] = frame;
             return;
@@ -40,7 +40,7 @@ export async function refreshAllFrameEntities(player: Player) {
         // Case 2: entity exists but is out of sync → remove & respawn
         if (!isSamePosition(entity.location, frame.pos) || !isSameRotation(entity.getRotation(), frame.rot)) {
             entity.remove();
-            const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index);
+            const newEntity = spawnFrameEntity(player, frame.pos, frame.rot, index, isFocusPoint);
             frame.entityId = newEntity.id;
             frames[index] = frame;
         }

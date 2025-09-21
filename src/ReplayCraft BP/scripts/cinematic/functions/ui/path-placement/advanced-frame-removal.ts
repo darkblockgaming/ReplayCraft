@@ -1,9 +1,9 @@
 import { Player, world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { cineRuntimeDataMap, frameDataMap } from "../../data/maps";
-import { notifyPlayer } from "../helpers/notify-player";
-import { cinematicFramesDB } from "../../cinematic";
-import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
+import { cineRuntimeDataMap, frameDataMap } from "../../../data/maps";
+import { notifyPlayer } from "../../helpers/notify-player";
+import { cinematicFramesDB } from "../../../cinematic";
+import { refreshAllFrameEntities } from "../../entity/refresh-all-frame-entities";
 
 export function advancedFrameRemoval(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
