@@ -30,7 +30,7 @@ export function nameCinematic(player: Player) {
                 cinematicListMap.set(player.id, cinematicList);
                 cinematicListDB.set(player.id, cinematicList);
 
-                loadInstance(player, cinematicName);
+                loadInstance(player, cinematicName, 0);
 
                 // open frame placement menu
                 framePlacementMenu(player);
