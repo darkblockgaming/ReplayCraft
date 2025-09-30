@@ -100,13 +100,22 @@ export type AmbientEntityMap = Map<string, AmbientEntityData>; // entityId -> da
 
 export type ReplayAmbientEntityMap = Map<string, AmbientEntityMap>; // playerId -> entityMap
 
-export interface PlayerEquipmentData {
+/*export interface PlayerEquipmentData {
     weapon1: string[]; // Mainhand
     weapon2: string[]; // Offhand
     armor1: string[]; // Head
     armor2: string[]; // Chest
     armor3: string[]; // Legs
     armor4: string[]; // Feet
+    
+}*/
+export interface PlayerEquipmentData {
+    weapon1: { tick: number; item: string }[];
+    weapon2: { tick: number; item: string }[];
+    armor1: { tick: number; item: string }[];
+    armor2: { tick: number; item: string }[];
+    armor3: { tick: number; item: string }[];
+    armor4: { tick: number; item: string }[];
 }
 
 export interface BuildOption {

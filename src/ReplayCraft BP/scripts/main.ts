@@ -18,7 +18,7 @@ import "./cinematic/cinematic.js";
 import { removeEntities } from "./replay/functions/remove-entities";
 import config from "./replay/data/util/config";
 import { replaySessions } from "./replay/data/replay-player-session";
-import { BlockData, BlockInteractionEntry } from "./replay/classes/types/types";
+import { BlockData, PlayerEquipmentData } from "./replay/classes/types/types";
 import { removeOwnedAmbientEntities } from "./replay/entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./replay/data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./replay/entity/is-riding";
@@ -750,16 +750,30 @@ system.runInterval(() => {
             trackedPlayers.forEach((player) => {
                 const playerData = replayEquipmentDataMap.get(player.id);
                 if (!playerData) return;
+
                 const eqComp = player.getComponent("minecraft:equippable");
-                playerData.weapon1.push(eqComp.getEquipment(EquipmentSlot.Mainhand)?.typeId || "air");
-                playerData.weapon2.push(eqComp.getEquipment(EquipmentSlot.Offhand)?.typeId || "air");
-                playerData.armor1.push(eqComp.getEquipment(EquipmentSlot.Head)?.typeId || "air");
-                playerData.armor2.push(eqComp.getEquipment(EquipmentSlot.Chest)?.typeId || "air");
-                playerData.armor3.push(eqComp.getEquipment(EquipmentSlot.Legs)?.typeId || "air");
-                playerData.armor4.push(eqComp.getEquipment(EquipmentSlot.Feet)?.typeId || "air");
+
+                type EquipmentKey = keyof PlayerEquipmentData;
+
+                const slots: { key: EquipmentKey; slot: EquipmentSlot }[] = [
+                    { key: "weapon1", slot: EquipmentSlot.Mainhand },
+                    { key: "weapon2", slot: EquipmentSlot.Offhand },
+                    { key: "armor1", slot: EquipmentSlot.Head },
+                    { key: "armor2", slot: EquipmentSlot.Chest },
+                    { key: "armor3", slot: EquipmentSlot.Legs },
+                    { key: "armor4", slot: EquipmentSlot.Feet },
+                ];
+                slots.forEach(({ key, slot }) => {
+                    const current = eqComp.getEquipment(slot)?.typeId || "air";
+                    const arr = playerData[key];
+
+                    // only push if different from last recorded state
+                    if (arr.length === 0 || arr[arr.length - 1].item !== current) {
+                        arr.push({ tick: recordingEndTick, item: current });
+                    }
+                });
             });
         }
-
         // --- Equipment Playback ---
         /**
          * Re-equips recorded items (mainhand, offhand, and armor slots) for a replaying entity at the current tick offset.
@@ -784,34 +798,52 @@ system.runInterval(() => {
                     const playerData = replayEquipmentDataMap.get(playerId);
                     const entityData = replayEntityDataMap.get(playerId);
                     if (!playerData || !entityData) return;
+
                     try {
                         const entity = entityData.customEntity;
                         const joinData = session.trackedPlayerJoinTicks.get(playerId);
                         const joinTick = joinData.joinTick;
                         const tickOffset = session.currentTick - joinTick;
+
                         if (tickOffset < 0) {
-                            if (config.debugEquipmentPlayback === true) {
+                            if (config.debugEquipmentPlayback) {
                                 debugLog("Haven't reached this player's join tick yet");
                             }
-
-                            return; // Haven't reached this player's join tick yet
+                            return;
                         }
-                        if (tickOffset >= playerData.weapon1.length) {
-                            if (config.debugEquipmentPlayback === true) {
-                                debugLog("Out of recorded data range");
+
+                        // helper function: get last known value up to current tick
+                        function getItem(arr: { tick: number; item: string }[]): string {
+                            if (arr.length === 0) return "air";
+                            // fast path: if last recorded tick <= tickOffset
+                            if (arr[arr.length - 1].tick <= tickOffset) {
+                                return arr[arr.length - 1].item;
                             }
-
-                            return; // Out of recorded data range
+                            // otherwise binary search for last entry <= tickOffset
+                            let low = 0,
+                                high = arr.length - 1,
+                                result = "air";
+                            while (low <= high) {
+                                const mid = (low + high) >> 1;
+                                if (arr[mid].tick <= tickOffset) {
+                                    result = arr[mid].item;
+                                    low = mid + 1;
+                                } else {
+                                    high = mid - 1;
+                                }
+                            }
+                            return result;
                         }
-                        entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${playerData.weapon1[tickOffset]}`);
-                        entity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${playerData.weapon2[tickOffset]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.head 0 ${playerData.armor1[tickOffset]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${playerData.armor2[tickOffset]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${playerData.armor3[tickOffset]}`);
-                        entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${playerData.armor4[tickOffset]}`);
+
+                        entity.runCommand(`replaceitem entity @s slot.weapon.mainhand 0 ${getItem(playerData.weapon1)}`);
+                        entity.runCommand(`replaceitem entity @s slot.weapon.offhand 0 ${getItem(playerData.weapon2)}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.head 0 ${getItem(playerData.armor1)}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.chest 0 ${getItem(playerData.armor2)}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.legs 0 ${getItem(playerData.armor3)}`);
+                        entity.runCommand(`replaceitem entity @s slot.armor.feet 0 ${getItem(playerData.armor4)}`);
                     } catch (e) {
                         if (config.debugEquipmentPlayback) {
-                            debugWarn(` Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
+                            debugWarn(`Skipped equipment update: Entity removed or invalid (${entityData?.customEntity?.id})`, e);
                         }
                     }
                 }
