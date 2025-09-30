@@ -1,9 +1,9 @@
 import { ModalFormData } from "@minecraft/server-ui";
 import { Player } from "@minecraft/server";
-import { cinematicListMap, cineRuntimeDataMap, frameDataMap } from "../../data/maps";
+import { cinematicListMap } from "../../../data/maps";
 import { framePlacementMenu } from "./frame-placement";
-import { cinematicFramesDB, cinematicListDB } from "../../cinematic";
-import { clearOtherFrameEntities } from "../entity/clear-other-frame-entities";
+import { loadInstance } from "../../load-instance";
+import { cinematicListDB } from "../../../cinematic";
 
 export function nameCinematic(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.cine.path", "rc2.textfield.name.cine.path");
@@ -19,23 +19,18 @@ export function nameCinematic(player: Player) {
                 return;
             }
 
+            const cinematicName = `t${0}_cineData_${player.id}_${trimmedName}`; //t0 = cinematic
+
+
             const cinematicList = cinematicListMap.get(player.id);
-
-            const cinematicName = `cineData_${player.id}_${trimmedName}`;
-
             if (!cinematicList.includes(cinematicName)) {
                 cinematicList.push(cinematicName);
 
-                const cineRuntimeData = cineRuntimeDataMap.get(player.id);
-                cineRuntimeData.loadedCinematic = cinematicName;
-                cineRuntimeDataMap.set(player.id, cineRuntimeData);
-
+                //Update list in map and database
                 cinematicListMap.set(player.id, cinematicList);
                 cinematicListDB.set(player.id, cinematicList);
 
-                clearOtherFrameEntities(player);
-
-                frameDataMap.set(cinematicName, cinematicFramesDB.get(cinematicName) ?? []);
+                loadInstance(player, cinematicName, 0);
 
                 // open frame placement menu
                 framePlacementMenu(player);

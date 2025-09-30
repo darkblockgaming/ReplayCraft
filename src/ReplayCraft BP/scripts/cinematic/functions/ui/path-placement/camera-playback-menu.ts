@@ -1,12 +1,12 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
-import { cineRuntimeDataMap } from "../../data/maps";
-import { cameraSettings } from "./settings/camera-settings";
-import { cineResetSettings } from "./settings/reset-settings";
-import { startCamera } from "../camera/start-camera";
-import { stopCamera } from "../camera/stop-camera";
+import { cineRuntimeDataMap } from "../../../data/maps";
+import { cameraSettings } from "../settings/camera-settings";
+import { cineResetSettings } from "../settings/reset-settings";
+import { startCamera } from "../../camera/start-camera";
+import { stopCamera } from "../../camera/stop-camera";
 import { framePlacementMenu } from "./frame-placement";
-import { notifyPlayer } from "../helpers/notify-player";
+import { notifyPlayer } from "../../helpers/notify-player";
 
 export function cameraPlaybackMenu(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);

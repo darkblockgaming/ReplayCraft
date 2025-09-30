@@ -3,17 +3,19 @@ import { Player, world } from "@minecraft/server";
 import { cinematicListMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
 
 //Import Functions
-import { framePlacementMenu } from "./functions/ui/frame-placement";
-import { cameraPlaybackMenu } from "./functions/ui/camera-playback-menu";
+import { framePlacementMenu } from "./functions/ui/path-placement/frame-placement";
+import { cameraPlaybackMenu } from "./functions/ui/path-placement/camera-playback-menu";
 import { OptimizedDatabase } from "../replay/data/data-hive";
-import { frameManagementMenu } from "./functions/ui/manage-frames";
+import { frameManagementMenu } from "./functions/ui/path-placement/manage-frames";
 import { cineMainMenu } from "./functions/ui/cine-main-menu";
+import { panoramicCinematic } from "./functions/ui/panorama/panoramic-cinematic";
 
 const cineUiHandlers = {
     cineMainMenu: (player: Player) => cineMainMenu(player),
     framePlacementMenu: (player: Player) => framePlacementMenu(player),
     cameraPlaybackMenu: (player: Player) => cameraPlaybackMenu(player),
     frameManagementMenu: (player: Player) => frameManagementMenu(player),
+    panoramicCinematic: (player: Player) => panoramicCinematic(player),
 };
 
 //Initialise DataBase(s)
@@ -83,4 +85,3 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
 //         });
 //     }
 // }, 8);
-

@@ -12,7 +12,7 @@
                     "client_sync": true,
                     "range": [
                         0,
-                        1
+                        2
                     ]
                 },
                 "rc:rot_x": {

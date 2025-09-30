@@ -4,8 +4,9 @@ import { FrameData } from "../data/types/types";
 import { spawnFrameEntity } from "./entity/spawn-frame-entity";
 import { refreshAllFrameEntities } from "./entity/refresh-all-frame-entities";
 import { cinematicFramesDB } from "../cinematic";
+import { clearOtherFrameEntities } from "./entity/clear-other-frame-entities";
 
-export function addCameraFrame(player: Player) {
+export function addCameraFrame(player: Player, isFocusPoint: boolean = false) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (cineRuntimeData?.isCameraInMotion) {
         player.playSound("note.bass");
@@ -21,7 +22,10 @@ export function addCameraFrame(player: Player) {
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
 
     // the new frame will be at index = frames.length
-    const entity = spawnFrameEntity(player, pos, rot, frames.length);
+    if (isFocusPoint) {
+        clearOtherFrameEntities(player);
+    }
+    const entity = spawnFrameEntity(player, pos, rot, frames.length, isFocusPoint);
 
     const frame: FrameData = {
         pos,
@@ -29,7 +33,12 @@ export function addCameraFrame(player: Player) {
         entityId: entity.id,
     };
 
-    frames.push(frame);
+    if (isFocusPoint) {
+        frames[0] = frame;
+    } else {
+        frames.push(frame);
+    }
+
     frameDataMap.set(cineRuntimeData.loadedCinematic, frames);
     cinematicFramesDB.set(cineRuntimeData.loadedCinematic, frames);
 }

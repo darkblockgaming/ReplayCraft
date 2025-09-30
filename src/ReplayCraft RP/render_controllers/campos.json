@@ -6,7 +6,8 @@
                 "textures": {
                     "array.skin": [
                         "texture.default",
-                        "texture.default2"
+                        "texture.default2",
+                        "texture.default3"
                     ]
                 }
             },

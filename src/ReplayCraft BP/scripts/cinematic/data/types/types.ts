@@ -4,6 +4,7 @@ export interface CineRuntimeData {
     state: string;
     isCameraInMotion: boolean;
     loadedCinematic?: string;
+    loadedCinematicType?: number; // 0="cinematic" | 1="panorama";
 }
 
 export interface FrameData {

@@ -8,7 +8,8 @@
       },
       "textures": {
         "default": "textures/entity/others/campos.png",
-        "default2": "textures/entity/others/campos2.png"
+        "default2": "textures/entity/others/campos2.png",
+        "default3": "textures/entity/others/campos3.png"
       },
       "geometry": {
         "default": "geometry.dbg_rccampos"
