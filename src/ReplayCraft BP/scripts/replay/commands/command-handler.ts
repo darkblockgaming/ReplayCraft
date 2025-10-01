@@ -10,6 +10,8 @@ import { debugDatabaseConsoleCmd } from "./debug/database-list-cmd";
 import { debugShowEntityComponentsCmd } from "./debug/debug-utils/show-entity-components";
 import { debugPrintSessionCmd } from "./debug/print-session-data";
 import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
+import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
+import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -27,6 +29,16 @@ function init(event: StartupEvent) {
     const replaycraftAddCameraPointCommand: CustomCommand = {
         name: "rc:add",
         description: "Add a camera point.",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftPauseRecordingCommand: CustomCommand = {
+        name: "rc:pause",
+        description: "Pause an active recording",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftResumeRecordingCommand: CustomCommand = {
+        name: "rc:resume",
+        description: "Resume's an active recording",
         permissionLevel: CommandPermissionLevel.Any,
     };
     /*
@@ -87,6 +99,8 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftAddCameraPointCommand, playerSetCameraPointCmd);
     event.customCommandRegistry.registerCommand(replaycraftSessionManagerCommand, sessionManagerCmd);
     event.customCommandRegistry.registerCommand(replaycraftUpdatePlaybackHudCommand, updatePlaybackHudCmd);
+    event.customCommandRegistry.registerCommand(replaycraftPauseRecordingCommand, playerPauseRecordingCmd);
+    event.customCommandRegistry.registerCommand(replaycraftResumeRecordingCommand, playerResumeRecordingCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
