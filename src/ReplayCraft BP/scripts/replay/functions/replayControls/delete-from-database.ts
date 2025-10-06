@@ -1,5 +1,19 @@
 import { Player } from "@minecraft/server";
-import { replayCraftBeforeBlockInteractionsDB, replayCraftBlockDB, replayCraftBlockInteractionsDB, replayCraftPlaybackEntityDB, replayCraftPlayerActionsDB, replayCraftPlayerArmorWeaponsDB, replayCraftPlayerPosDB, replayCraftPlayerRotDB, replayCraftSettingsDB } from "../../classes/subscriptions/world-initialize";
+import {
+    replayCraftAllRecordedPlayerIdsDB,
+    replayCraftAmbientEntityDB,
+    replayCraftBeforeBlockInteractionsDB,
+    replayCraftBlockDB,
+    replayCraftBlockInteractionsDB,
+    replayCraftPlaybackEntityDB,
+    replayCraftPlayerActionsDB,
+    replayCraftPlayerArmorWeaponsDB,
+    replayCraftPlayerDamageEventsDB,
+    replayCraftPlayerItemUseEventsDB,
+    replayCraftPlayerPosDB,
+    replayCraftPlayerRotDB,
+    replayCraftSettingsDB,
+} from "../../classes/subscriptions/world-initialize";
 
 export function deleteFromDB(player: Player, buildName: string) {
     replayCraftBlockDB.delete(player.id + buildName);
@@ -11,4 +25,8 @@ export function deleteFromDB(player: Player, buildName: string) {
     replayCraftPlayerPosDB.delete(player.id + buildName);
     replayCraftPlayerRotDB.delete(player.id + buildName);
     replayCraftSettingsDB.delete(player.id + buildName);
+    replayCraftAllRecordedPlayerIdsDB.delete(player.id + buildName);
+    replayCraftAmbientEntityDB.delete(player.id + buildName);
+    replayCraftPlayerDamageEventsDB.delete(player.id + buildName);
+    replayCraftPlayerItemUseEventsDB.delete(player.id + buildName);
 }

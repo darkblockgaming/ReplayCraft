@@ -12,6 +12,7 @@ import { debugPrintSessionCmd } from "./debug/print-session-data";
 import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
 import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
 import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
+import { debugUtilityCommand } from "./debug/debug-utlility";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -84,6 +85,11 @@ function init(event: StartupEvent) {
         description: "Prints the sessions data to the console.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
+    const replaycraftdebugMemory: CustomCommand = {
+        name: "rc:debugmemory",
+        description: "dev debug command to print memory usage to console.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+    };
     const replaycraftUpdatePlaybackHudCommand: CustomCommand = {
         name: "rc:playbackhud",
         description: "enable or disable the playback HUD, and cycle through display modes.",
@@ -107,6 +113,7 @@ function init(event: StartupEvent) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseCommand, debugDatabaseConsoleCmd);
         event.customCommandRegistry.registerCommand(replaycraftShowEntityComponetsCommand, debugShowEntityComponentsCmd);
         event.customCommandRegistry.registerCommand(replaycraftPrintSessionDataCommand, debugPrintSessionCmd);
+        event.customCommandRegistry.registerCommand(replaycraftdebugMemory, debugUtilityCommand);
     }
 }
 
