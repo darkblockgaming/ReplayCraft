@@ -13,6 +13,7 @@ import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
 import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
 import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
 import { debugUtilityCommand } from "./debug/debug-utlility";
+import { dbDeleteCmd } from "./admin commands/db-delete-entry";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -90,6 +91,15 @@ function init(event: StartupEvent) {
         description: "dev debug command to print memory usage to console.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
+    const replaycraftDeleteDatabasEntry: CustomCommand = {
+        name: "rc:dbdelete",
+        description: "Allows you to delete an entry from a database.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+        mandatoryParameters: [
+            { type: CustomCommandParamType.String, name: "Database ID" },
+            { type: CustomCommandParamType.String, name: "Value" },
+        ],
+    };
     const replaycraftUpdatePlaybackHudCommand: CustomCommand = {
         name: "rc:playbackhud",
         description: "enable or disable the playback HUD, and cycle through display modes.",
@@ -107,6 +117,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftUpdatePlaybackHudCommand, updatePlaybackHudCmd);
     event.customCommandRegistry.registerCommand(replaycraftPauseRecordingCommand, playerPauseRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftResumeRecordingCommand, playerResumeRecordingCmd);
+    event.customCommandRegistry.registerCommand(replaycraftDeleteDatabasEntry, dbDeleteCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
