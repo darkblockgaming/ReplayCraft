@@ -13,13 +13,13 @@ ReplayCraft now utilizes the <b>2.3.0-Beta server</b> and <b>2.1.0-Beta server-u
 
 ## ⬇️ Download
 
-# [Download v2.2.0-beta](https://darkblockgaming.github.io/addons/replaycraft/)
-### For Minecraft Bedrock 1.21.9x only
+# [Download v2.4.1-beta](https://darkblockgaming.github.io/addons/replaycraft/)
+### For Minecraft Bedrock 1.21.111 - 112
 
 ---
 
-## ⬇️ 2.2.0 Changelog
-# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v2.1.5)
+## ⬇️ 2.4.1 Changelog
+# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v2.4.1)
 
 ---
 
