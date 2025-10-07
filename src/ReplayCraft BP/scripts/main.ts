@@ -565,6 +565,8 @@ system.runInterval(() => {
         // --- Ambient Entity Playback ---
         if (isReplaying && settingReplayType === 0) {
             trackedPlayers.forEach((player) => {
+                //Skip Offline players.
+                if (!player || !player.isValid) return;
                 const dimension = player.dimension;
                 const playerId = player.id;
                 const ambientMap = session.replayAmbientEntityMap.get(playerId);
