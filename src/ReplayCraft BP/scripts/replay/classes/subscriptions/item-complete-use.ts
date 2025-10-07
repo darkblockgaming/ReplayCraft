@@ -11,6 +11,7 @@ function captureCompleteData(eventData: ItemCompleteUseAfterEvent) {
     if (!bowEvents?.length) return;
     const tick = session.recordingEndTick;
     const lastEvent = bowEvents[bowEvents.length - 1];
+    const excludedTypes = ["minecraft:bow", "minecraft:crossbow", "minecraft:trident"];
 
     // Special handling for crossbows
     if (lastEvent.typeId === "minecraft:crossbow") {
@@ -30,6 +31,18 @@ function captureCompleteData(eventData: ItemCompleteUseAfterEvent) {
             lastEvent.isCharged = false; // consumed
             if (config.debugItemUseEvents === true) {
                 console.log(`[ReplayCraft DEBUG] Crossbow fired: ${JSON.stringify(lastEvent)}`);
+            }
+        }
+    }
+
+    //Handle other items
+    if (!excludedTypes.includes(eventData.itemStack.typeId)) {
+        if (lastEvent.endTime === 0) {
+            lastEvent.endTime = tick;
+            lastEvent.chargeTime = lastEvent.endTime - lastEvent.startTime;
+
+            if (config.debugItemUseEvents) {
+                console.log(`[ReplayCraft DEBUG] Item completed: ${eventData.itemStack.typeId} at tick ${tick}`);
             }
         }
     }
