@@ -14,6 +14,7 @@ import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
 import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
 import { debugUtilityCommand } from "./debug/debug-utlility";
 import { dbDeleteCmd } from "./admin commands/db-delete-entry";
+import { dbClearAllCmd } from "./admin commands/wipe-database";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -107,6 +108,11 @@ function init(event: StartupEvent) {
         mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
         optionalParameters: [{ type: CustomCommandParamType.Integer, name: "element to use 0 for actionbar 1 for title." }],
     };
+    const replaycraftwipeDatabase: CustomCommand = {
+        name: "rc:wipealldatabases",
+        description: "Allows you to wipe all databases, this action is irreversible.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+    };
     /*
      * Register commands
      **/
@@ -118,6 +124,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftPauseRecordingCommand, playerPauseRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftResumeRecordingCommand, playerResumeRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftDeleteDatabasEntry, dbDeleteCmd);
+    event.customCommandRegistry.registerCommand(replaycraftwipeDatabase, dbClearAllCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
