@@ -2,8 +2,8 @@
 <div align="center">
   <img src="Media\logo.webp" alt="ReplayCraft">
   <br><br>
-  <p><b>Updated for Minecraft Bedrock 1.21.70</b><br>
-ReplayCraft now utilizes the 2.0.0-Beta server and 2.0.0-Beta server-ui APIs, enhancing compatibility and performance for Minecraft Bedrock.</p>
+  <p><b>Updated for Minecraft Bedrock 1.21.111</b><br>
+ReplayCraft now utilizes the 2.3.0-Beta server and 2.1.0-Beta server-ui APIs, enhancing compatibility and performance for Minecraft Bedrock.</p>
   <br><br>
 </div>
 <div>
