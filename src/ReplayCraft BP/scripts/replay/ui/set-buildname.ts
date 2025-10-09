@@ -1,9 +1,8 @@
 import { ModalFormData } from "@minecraft/server-ui";
 import { replaySessions } from "../data/replay-player-session";
 import { doStart } from "../functions/replayControls/start-replay-recording";
-
 import { Player } from "@minecraft/server";
-import { createPlayerSession } from "../data/create-session"; // make sure to import this
+import { createPlayerSession } from "../data/create-session";
 
 export function setBuildName(player: Player) {
     const form = new ModalFormData().title("replaycraftsetbuildname.title").textField("replaycraftsetbuildname.textField", "replaycraftsetbuildname.textField2");

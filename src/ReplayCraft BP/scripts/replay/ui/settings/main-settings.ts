@@ -12,7 +12,6 @@ export function mainSettings(player: Player) {
         .title("dbg.rc1.title.replaycraft.settings")
         .toggle(`dbg.rc1.toggle.sound.cues`, { defaultValue: session.soundCue })
         .toggle(`dbg.rc1.toggle.text.prompts`, { defaultValue: session.textPrompt })
-        .toggle(`dbg.rc1.toggle.block.placing.sound`, { defaultValue: session.toggleSound })
         .toggle(`dbg.rc1.toggle.hide.hud.on.replay`, { defaultValue: session.hideHUD });
 
     replaySettingsForm.show(player).then((response) => {
