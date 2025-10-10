@@ -122,7 +122,7 @@ rc2.mes.no.cine.path.found=§f§4[ReplayCraft] §f§cNo Cinematic Paths Found
 rc2.mes.cannot.go.back.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't go back while camera is in motion§r
 rc2.mes.cine.deleted=§f§4[ReplayCraft] §f§cDeleted Cinematic Path§r
 rc2.mes.all.cine.deleted=§f§4[ReplayCraft] §f§cAll cinematic paths has been deleted!
-"rc2.mes.pano.add.anchor.point"=§f§4[ReplayCraft] §f§cAdd Anchor Point First!
+rc2.mes.pano.add.anchor.point"=§f§4[ReplayCraft] §f§cAdd Anchor Point First!
 
 ##-----------------------------------------------
 ##------------- Replay Menu Section -------------
