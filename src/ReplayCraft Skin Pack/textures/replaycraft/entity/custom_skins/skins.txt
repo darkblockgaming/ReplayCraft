@@ -1,0 +1,11 @@
+Skins should be named numerically for example 1, 2, 3, 4..... upto 64 and they must be generic 64*64 Minecraft Bedrock Edition Skins in png form.
+
+so the final fine names will be..
+- 1.png
+- 2.png
+- 3.png
+- 4.png
+.
+.
+.
+- 64.png
