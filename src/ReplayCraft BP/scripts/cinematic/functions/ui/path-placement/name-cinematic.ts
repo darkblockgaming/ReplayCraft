@@ -4,6 +4,7 @@ import { cinematicListMap } from "../../../data/maps";
 import { framePlacementMenu } from "./frame-placement";
 import { loadInstance } from "../../load-instance";
 import { cinematicListDB } from "../../../cinematic";
+import { CinematicBasicData } from "../../../data/types/types";
 
 export function nameCinematic(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.cine.path", "rc2.textfield.name.cine.path");
@@ -19,18 +20,25 @@ export function nameCinematic(player: Player) {
                 return;
             }
 
-            const cinematicName = `t${0}_cineData_${player.id}_${trimmedName}`; //t0 = cinematic
+            const cinematicName = `cineData_${player.id}_${trimmedName}`;
+            const cinematicType = "path_placement";
 
+            const cinematicBasicData: CinematicBasicData = {
+                name: cinematicName,
+                type: cinematicType
+            }
+
+            
 
             const cinematicList = cinematicListMap.get(player.id);
-            if (!cinematicList.includes(cinematicName)) {
-                cinematicList.push(cinematicName);
+            if (!cinematicList.some(obj => obj.name === cinematicName)) {
+                cinematicList.push(cinematicBasicData);
 
                 //Update list in map and database
                 cinematicListMap.set(player.id, cinematicList);
                 cinematicListDB.set(player.id, cinematicList);
 
-                loadInstance(player, cinematicName, 0);
+                loadInstance(player, cinematicBasicData);
 
                 // open frame placement menu
                 framePlacementMenu(player);

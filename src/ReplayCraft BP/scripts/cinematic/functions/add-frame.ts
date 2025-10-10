@@ -1,12 +1,12 @@
 import { Player } from "@minecraft/server";
 import { frameDataMap, cineRuntimeDataMap } from "../data/maps";
-import { FrameData } from "../data/types/types";
+import { CinematicType, FrameData } from "../data/types/types";
 import { spawnFrameEntity } from "./entity/spawn-frame-entity";
 import { refreshAllFrameEntities } from "./entity/refresh-all-frame-entities";
 import { cinematicFramesDB } from "../cinematic";
 import { clearOtherFrameEntities } from "./entity/clear-other-frame-entities";
 
-export function addCameraFrame(player: Player, isFocusPoint: boolean = false) {
+export function addCameraFrame(player: Player, cinematicType: CinematicType) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (cineRuntimeData?.isCameraInMotion) {
         player.playSound("note.bass");
@@ -15,17 +15,17 @@ export function addCameraFrame(player: Player, isFocusPoint: boolean = false) {
         });
         return;
     }
-    refreshAllFrameEntities(player);
+    refreshAllFrameEntities(player, cinematicType);
     const pos = player.getHeadLocation();
     const rot = player.getRotation();
 
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
 
     // the new frame will be at index = frames.length
-    if (isFocusPoint) {
+    if (cinematicType === "panoramic") {
         clearOtherFrameEntities(player);
     }
-    const entity = spawnFrameEntity(player, pos, rot, frames.length, isFocusPoint);
+    const entity = spawnFrameEntity(player, pos, rot, frames.length, cinematicType);
 
     const frame: FrameData = {
         pos,
@@ -33,9 +33,9 @@ export function addCameraFrame(player: Player, isFocusPoint: boolean = false) {
         entityId: entity.id,
     };
 
-    if (isFocusPoint) {
+    if (cinematicType === "panoramic") {
         frames[0] = frame;
-    } else {
+    } else if (cinematicType === "path_placement") {
         frames.push(frame);
     }
 

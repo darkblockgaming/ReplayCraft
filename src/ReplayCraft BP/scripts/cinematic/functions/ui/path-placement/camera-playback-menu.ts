@@ -31,7 +31,7 @@ export function cameraPlaybackMenu(player: Player) {
         const actions: { [key: number]: () => void } = {};
 
         if (isCameraInMotion) {
-            actions[index++] = () => stopCamera(player);
+            actions[index++] = () => stopCamera(player, "path_placement");
         } else {
             actions[index++] = () => startCamera(player);
         }

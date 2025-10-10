@@ -1,10 +1,17 @@
 import { Vector3, Vector2 } from "@minecraft/server";
 
+export type CinematicType = "none" | "path_placement" | "panoramic" | "orbital";
+
 export interface CineRuntimeData {
     state: string;
     isCameraInMotion: boolean;
     loadedCinematic?: string;
-    loadedCinematicType?: number; // 0="cinematic" | 1="panorama";
+    loadedCinematicType: CinematicType;
+}
+
+export interface CinematicBasicData {
+    name: string;
+    type: CinematicType
 }
 
 export interface FrameData {
@@ -23,3 +30,4 @@ export interface SettingsData {
     cinePrevSpeed: number;
     cinePrevSpeedMult: number;
 }
+

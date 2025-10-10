@@ -4,6 +4,7 @@ import { cinematicListMap } from "../../../data/maps";
 import { cinematicListDB } from "../../../cinematic";
 import { panoramicCinematic } from "./panoramic-cinematic";
 import { loadInstance } from "../../load-instance";
+import { CinematicBasicData } from "../../../data/types/types";
 
 export function namePanorama(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.pano.cine.path", "rc2.textfield.name.pano.cine.path");
@@ -19,18 +20,24 @@ export function namePanorama(player: Player) {
                 return;
             }
 
+            const cinematicName = `cineData_${player.id}_${trimmedName}`;
+            const cinematicType = "panoramic";
+
+            const cinematicBasicData: CinematicBasicData = {
+                name: cinematicName,
+                type: cinematicType,
+            };
+
             const cinematicList = cinematicListMap.get(player.id);
 
-            const cinematicName = `t${1}_cineData_${player.id}_${trimmedName}`; //t1 = panoramic
-
-            if (!cinematicList.includes(cinematicName)) {
-                cinematicList.push(cinematicName);
+            if (!cinematicList.some((obj) => obj.name === cinematicName)) {
+                cinematicList.push(cinematicBasicData);
 
                 //Update list in map and database
                 cinematicListMap.set(player.id, cinematicList);
                 cinematicListDB.set(player.id, cinematicList);
 
-                loadInstance(player, cinematicName, 0);
+                loadInstance(player, cinematicBasicData);
 
                 // open frame placement menu
                 panoramicCinematic(player);

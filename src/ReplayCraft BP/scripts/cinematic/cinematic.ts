@@ -9,6 +9,7 @@ import { OptimizedDatabase } from "../replay/data/data-hive";
 import { frameManagementMenu } from "./functions/ui/path-placement/manage-frames";
 import { cineMainMenu } from "./functions/ui/cine-main-menu";
 import { panoramicCinematic } from "./functions/ui/panorama/panoramic-cinematic";
+import { CineRuntimeData } from "./data/types/types";
 
 const cineUiHandlers = {
     cineMainMenu: (player: Player) => cineMainMenu(player),
@@ -53,9 +54,10 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
 
     cinematicListMap.set(source.id, cinematicListDB.get(source.id) ?? []);
 
-    const runtimeDefaults = {
+    const runtimeDefaults: CineRuntimeData = {
         state: "cineMainMenu",
         isCameraInMotion: false,
+        loadedCinematicType: "none"
     };
 
     const cineRuntimeData = cineRuntimeDataMap.get(source.id) ?? runtimeDefaults;

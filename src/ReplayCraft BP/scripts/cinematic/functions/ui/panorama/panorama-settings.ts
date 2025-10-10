@@ -5,27 +5,24 @@ import { notifyPlayer } from "../../helpers/notify-player";
 import { cinematicFramesDB } from "../../../cinematic";
 import { refreshAllFrameEntities } from "../../entity/refresh-all-frame-entities";
 
-export function advancedFrameRemoval(player: Player) {
+export function panoramaSettings(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
-    if (frames.length === 0) {
-        player.playSound("note.bass");
-        player.sendMessage({ translate: "rc2.mes.no.frames.to.remove" });
-        return;
-    }
 
     const FIELD_INDEX = {
         selectedFrame: 2,
     } as const;
 
     const form = new ModalFormData()
-        .title("rc2.title.advanced.frame.removal")
+        .title("rc2.title.pano.type")
         .divider()
-        .label("rc2.lebel.selective.removal")
-        .slider({ rawtext: [{ translate: "rc2.slider.select.a.frame" }] }, 1, frames.length, {
-            valueStep: 1,
-            defaultValue: frames.length,
-        })
+        .label("rc2.lebel.facing.orientation")
+        .label("rc2.lebel.C")
+        //.dropdown({ rawtext: [{ translate: "rc2.dropdown.camera.faces.towards" }] }, [{ rawtext: [{ translate: "rc2.dropdown.value.faces.towards.focus.point" }] }, { rawtext: [{ translate: "rc2.dropdown.value.faces.away.from.focus.point" }] }], { defaultValueIndex: 0 })
+        // .slider({ rawtext: [{ translate: "rc2.slider.select.a.frame" }] }, 1, frames.length, {
+        //     valueStep: 1,
+        //     defaultValue: frames.length,
+        // })
         .divider();
 
     form.show(player).then((response) => {
@@ -50,7 +47,7 @@ export function advancedFrameRemoval(player: Player) {
         frameDataMap.set(cineRuntimeData.loadedCinematic, frames);
         cinematicFramesDB.set(cineRuntimeData.loadedCinematic, frames);
 
-        refreshAllFrameEntities(player, "path_placement");
+        refreshAllFrameEntities(player, "panoramic");
 
         player.sendMessage({
             rawtext: [{ translate: "rc2.mes.removed.frame.no" }, { text: `: ${index + 1}` }],

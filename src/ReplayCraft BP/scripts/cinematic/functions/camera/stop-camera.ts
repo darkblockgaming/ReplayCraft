@@ -1,8 +1,9 @@
 import { Player, system } from "@minecraft/server";
 import { settingsDataMap, cineRuntimeDataMap, cameraIntervalMap } from "../../data/maps";
 import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
+import { CinematicType } from "../../data/types/types";
 
-export function stopCamera(player: Player) {
+export function stopCamera(player: Player, cinematicType: CinematicType) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (!cineRuntimeData.isCameraInMotion) {
         player.sendMessage({ translate: "rc2.mes.no.active.camera.movement.to.stop" });
@@ -26,5 +27,5 @@ export function stopCamera(player: Player) {
     player.sendMessage({ translate: "rc2.mes.camera.movement.stopped" });
 
     cineRuntimeData.isCameraInMotion = false;
-    refreshAllFrameEntities(player);
+    refreshAllFrameEntities(player, cinematicType);
 }

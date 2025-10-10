@@ -5,7 +5,8 @@
     "description": "ReplayCraft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Created by §gDarkBlock Gaming",
     "min_engine_version": [1, 21, 111],
     "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
-    "version": [3, 0, 0]
+    "version": [3, 0, 0],
+    "pack_scope": "world"
   },
   "modules": [
     {

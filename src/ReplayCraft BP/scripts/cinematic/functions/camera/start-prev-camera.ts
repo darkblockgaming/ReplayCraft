@@ -57,7 +57,7 @@ export function startPreview(player: Player) {
     function moveNextCameraFrame(player: Player, frames: FrameData[], index: number) {
         if (index >= frames.length) {
             cineRuntimeData.isCameraInMotion = false;
-            refreshAllFrameEntities(player);
+            refreshAllFrameEntities(player, "path_placement");
             player.camera.clear();
             return;
         }

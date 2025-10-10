@@ -75,33 +75,6 @@ export function startCamera(player: Player) {
     let index = 1;
     cineRuntimeData.isCameraInMotion = true;
 
-    // function moveNextCameraFrame() {
-    //     if (index < frames.length) {
-    //         const next = frames[index];
-    //         applyCamera(player, next.pos, next.rot, settingsData.camFacingType, settingsData, easeTime, easeEnum);
-
-    //         const intervalId = system.runTimeout(() => {
-    //             index++;
-    //             moveNextCameraFrame();
-    //         }, easeTime * 20);
-    //         cameraIntervalMap.get(player.id)!.push(intervalId);
-    //     } else {
-    //         // last frame cleanup
-    //         const intervalId = system.runTimeout(() => {
-    //             player.camera.clear();
-    //             if (settingsData.hideHud) {
-    //                 player.onScreenDisplay.setHudVisibility(1);
-    //             }
-    //             player.sendMessage({ translate: "rc2.mes.camera.movement.complete" });
-    //             refreshAllFrameEntities(player);
-    //             cineRuntimeData.isCameraInMotion = false;
-    //         }, 10);
-    //         cameraIntervalMap.get(player.id)!.push(intervalId);
-    //     }
-    // }
-
-    // start moving after small delay
-
     function moveNextCameraFrame() {
         if (index < frames.length) {
             const prev = frames[index - 1];
@@ -126,7 +99,7 @@ export function startCamera(player: Player) {
                     player.onScreenDisplay.setHudVisibility(1);
                 }
                 player.sendMessage({ translate: "rc2.mes.camera.movement.complete" });
-                refreshAllFrameEntities(player);
+                refreshAllFrameEntities(player, "path_placement");
             }, 10);
             cameraIntervalMap.get(player.id)!.push(intervalId);
         }

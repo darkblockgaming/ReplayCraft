@@ -34,10 +34,10 @@ export function framePlacementMenu(player: Player) {
         let index = 0;
         const actions: { [key: number]: () => void } = {};
 
-        actions[index++] = () => addCameraFrame(player);
+        actions[index++] = () => addCameraFrame(player, "path_placement");
 
         if (isCameraInMotion) {
-            actions[index++] = () => stopCamera(player);
+            actions[index++] = () => stopCamera(player, "path_placement");
         } else {
             actions[index++] = () => startPreview(player);
         }
