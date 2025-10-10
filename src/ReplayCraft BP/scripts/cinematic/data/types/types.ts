@@ -20,6 +20,7 @@ export interface FrameData {
     entityId: string;
 }
 
+
 export interface SettingsData {
     hideHud: boolean;
     easeType: number;
@@ -29,5 +30,7 @@ export interface SettingsData {
     camFacingY: number;
     cinePrevSpeed: number;
     cinePrevSpeedMult: number;
+    panoRPM?: number,
+    panoRotationType?: "clockwise" | "anticlockwise";
 }
 

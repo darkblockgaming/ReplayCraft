@@ -1,28 +1,34 @@
-import { Player, world } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { cineRuntimeDataMap, frameDataMap } from "../../../data/maps";
+import { cineRuntimeDataMap, settingsDataMap } from "../../../data/maps";
 import { notifyPlayer } from "../../helpers/notify-player";
-import { cinematicFramesDB } from "../../../cinematic";
-import { refreshAllFrameEntities } from "../../entity/refresh-all-frame-entities";
+import { cinematicSettingsDB } from "../../../cinematic";
 
 export function panoramaSettings(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
-    const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
+    if (cineRuntimeData?.isCameraInMotion) {
+        notifyPlayer(player, "rc2.mes.cannot.change.settings.while.camera.is.in.motion");
+        return;
+    }
+
+    const settingsData = settingsDataMap.get(player.id);
 
     const FIELD_INDEX = {
-        selectedFrame: 2,
+        panoRPM: 2,
+        panoRotationType: 3,
     } as const;
 
     const form = new ModalFormData()
-        .title("rc2.title.pano.type")
+        .title("rc2.title.pano.settings")
         .divider()
-        .label("rc2.lebel.facing.orientation")
-        .label("rc2.lebel.C")
-        //.dropdown({ rawtext: [{ translate: "rc2.dropdown.camera.faces.towards" }] }, [{ rawtext: [{ translate: "rc2.dropdown.value.faces.towards.focus.point" }] }, { rawtext: [{ translate: "rc2.dropdown.value.faces.away.from.focus.point" }] }], { defaultValueIndex: 0 })
-        // .slider({ rawtext: [{ translate: "rc2.slider.select.a.frame" }] }, 1, frames.length, {
-        //     valueStep: 1,
-        //     defaultValue: frames.length,
-        // })
+        .label("rc2.lebel.pano.rotation")
+        .slider({ rawtext: [{ translate: "rc2.slider.pano.rmp" }] }, 1, 150, {
+            valueStep: 1,
+            defaultValue: settingsData.panoRPM,
+        })
+        .dropdown({ rawtext: [{ translate: "rc2.dropdown.pano.rotation.type" }] }, [{ rawtext: [{ translate: "rc2.dropdown.value.clockwise" }] }, { rawtext: [{ translate: "rc2.dropdown.value.anticlockwise" }] }], {
+            defaultValueIndex: settingsData.panoRotationType === "anticlockwise" ? 1 : 0,
+        })
         .divider();
 
     form.show(player).then((response) => {
@@ -32,25 +38,11 @@ export function panoramaSettings(player: Player) {
         }
 
         const values = response.formValues;
-        const selectedFrame = Number(values[FIELD_INDEX.selectedFrame]);
 
-        if (selectedFrame < 1) return;
+        settingsData.panoRPM = Number(values[FIELD_INDEX.panoRPM]);
+        settingsData.panoRotationType = Number(values[FIELD_INDEX.panoRotationType] === 0) ? "clockwise" : "anticlockwise";
 
-        const index = selectedFrame - 1;
-        const entityId = frames[index]?.entityId;
-
-        if (entityId) {
-            world.getEntity(entityId)?.remove();
-        }
-
-        frames.splice(index, 1);
-        frameDataMap.set(cineRuntimeData.loadedCinematic, frames);
-        cinematicFramesDB.set(cineRuntimeData.loadedCinematic, frames);
-
-        refreshAllFrameEntities(player, "panoramic");
-
-        player.sendMessage({
-            rawtext: [{ translate: "rc2.mes.removed.frame.no" }, { text: `: ${index + 1}` }],
-        });
+        settingsDataMap.set(player.id, settingsData);
+        cinematicSettingsDB.set(player.id, settingsData);
     });
 }

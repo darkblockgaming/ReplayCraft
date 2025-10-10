@@ -85,6 +85,16 @@ rc2.button.start.panoramic.cam=Start Panoramic Camera
 rc2.button.stop.panoramic.cam=Stop Panoramic Camera
 rc2.button.pano.settings=Panoramic Settings
 
+## panoramaSettings
+rc2.title.pano.settings=Panorama Settings
+rc2.lebel.pano.rotation=§l§g- Panorama Rotation
+rc2.slider.pano.rmp=Rotations Per Minute [RPM]
+
+rc2.dropdown.pano.rotation.type=Panorama Rotation Type
+rc2.dropdown.value.clockwise=Clockwise Rotation
+rc2.dropdown.value.anticlockwise=Anti-Clockwise Rotation
+rc2.slider.pano.pitch=Camera Pitch (Up-Down) Direction
+
 ##Messages
 rc2.mes.add.cam.frame=§f§4[ReplayCraft] §f§cAdd camera frames first!! §r
 rc2.mes.cannot.add.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Add Frames While Camera Is In Motion§r

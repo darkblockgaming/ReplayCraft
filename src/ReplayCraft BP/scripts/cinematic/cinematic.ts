@@ -49,6 +49,8 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
             camFacingY: 0,
             cinePrevSpeed: 0.5,
             cinePrevSpeedMult: 5,
+            panoRPM: 8,
+            panoRotationType: "clockwise"
         }
     );
 
