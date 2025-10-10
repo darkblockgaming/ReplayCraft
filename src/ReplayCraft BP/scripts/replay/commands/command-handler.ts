@@ -15,6 +15,8 @@ import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd
 import { debugUtilityCommand } from "./debug/debug-utlility";
 import { dbDeleteCmd } from "./admin commands/db-delete-entry";
 import { dbClearAllCmd } from "./admin commands/wipe-database";
+import { loadSecondsCmd } from "./player commands/load-seconds-cmd";
+import { flyCmd } from "./player commands/fly-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -42,6 +44,24 @@ function init(event: StartupEvent) {
     const replaycraftResumeRecordingCommand: CustomCommand = {
         name: "rc:resume",
         description: "Resume's an active recording",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftUpdatePlaybackHudCommand: CustomCommand = {
+        name: "rc:playbackhud",
+        description: "enable or disable the playback HUD, and cycle through display modes.",
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
+        optionalParameters: [{ type: CustomCommandParamType.Integer, name: "element to use 0 for actionbar 1 for title." }],
+    };
+    const replaycraftLoadSecondsCommand: CustomCommand = {
+        name: "rc:load",
+        description: "Loads the next X seconds of replay data for the executing player.",
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{ type: CustomCommandParamType.Integer, name: "Amount" }],
+    };
+    const replaycraftflightCommand: CustomCommand = {
+        name: "rc:fly",
+        description: "puts the player into spectator mode for easier camera placement.",
         permissionLevel: CommandPermissionLevel.Any,
     };
     /*
@@ -101,13 +121,7 @@ function init(event: StartupEvent) {
             { type: CustomCommandParamType.String, name: "Value" },
         ],
     };
-    const replaycraftUpdatePlaybackHudCommand: CustomCommand = {
-        name: "rc:playbackhud",
-        description: "enable or disable the playback HUD, and cycle through display modes.",
-        permissionLevel: CommandPermissionLevel.Any,
-        mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
-        optionalParameters: [{ type: CustomCommandParamType.Integer, name: "element to use 0 for actionbar 1 for title." }],
-    };
+
     const replaycraftwipeDatabase: CustomCommand = {
         name: "rc:wipealldatabases",
         description: "Allows you to wipe all databases, this action is irreversible.",
@@ -125,6 +139,8 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftResumeRecordingCommand, playerResumeRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftDeleteDatabasEntry, dbDeleteCmd);
     event.customCommandRegistry.registerCommand(replaycraftwipeDatabase, dbClearAllCmd);
+    event.customCommandRegistry.registerCommand(replaycraftLoadSecondsCommand, loadSecondsCmd);
+    event.customCommandRegistry.registerCommand(replaycraftflightCommand, flyCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
