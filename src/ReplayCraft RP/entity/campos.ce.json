@@ -7,9 +7,9 @@
         "default": "entity_alphatest"
       },
       "textures": {
-        "default": "textures/entity/others/campos.png",
-        "default2": "textures/entity/others/campos2.png",
-        "default3": "textures/entity/others/campos3.png"
+        "default": "textures/replaycraft/entity/others/campos.png",
+        "default2": "textures/replaycraft/entity/others/campos2.png",
+        "default3": "textures/replaycraft/entity/others/campos3.png"
       },
       "geometry": {
         "default": "geometry.dbg_rccampos"

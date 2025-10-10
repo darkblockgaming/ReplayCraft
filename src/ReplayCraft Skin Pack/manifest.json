@@ -1,0 +1,27 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "ReplayCraft Skins Pack",
+    "description": "This resource pack must be used along side with Replaycraft Add-on v3 or above and must be on the top, this pack contains player skins and this pack can be generated via the 'ReplayCraft Skin Pack Generator Web Tool'",
+    "min_engine_version": [1, 21, 100],
+    "uuid": "3d75ddf1-fabe-4cb0-86a9-22afcba8376b",
+    "version": [1, 0, 0],
+    "pack_scope": "any"
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "ad9719e4-a909-4887-8076-612d0f205712",
+      "version": [1, 0, 0]
+    }
+  ],
+  "metadata": {
+    "product_type": "addon",
+    "authors": [
+      "DarkBlock Gaming",
+      "Pete9xi"
+    ],
+    "url": "https://github.com/darkblockgaming/ReplayCraft",
+    "license": "GNU GENERAL PUBLIC LICENSE Version 3"
+  }
+}
