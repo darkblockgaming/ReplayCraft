@@ -9,7 +9,8 @@
       "textures": {
         "default": "textures/replaycraft/entity/others/campos.png",
         "default2": "textures/replaycraft/entity/others/campos2.png",
-        "default3": "textures/replaycraft/entity/others/campos3.png"
+        "default3": "textures/replaycraft/entity/others/campos3.png",
+        "default4": "textures/replaycraft/entity/others/campos4.png"
       },
       "geometry": {
         "default": "geometry.dbg_rccampos"
@@ -22,7 +23,9 @@
           "facing"
         ]
       },
-      "render_controllers": [ "controller.render.dbg_rccampos" ]
+      "render_controllers": [
+        "controller.render.dbg_rccampos"
+      ]
     }
   }
 }

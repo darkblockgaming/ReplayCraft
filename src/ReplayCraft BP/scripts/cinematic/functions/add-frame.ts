@@ -22,7 +22,7 @@ export function addCameraFrame(player: Player, cinematicType: CinematicType) {
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
 
     // the new frame will be at index = frames.length
-    if (cinematicType === "panoramic") {
+    if (cinematicType !== "path_placement") {
         clearOtherFrameEntities(player);
     }
     const entity = spawnFrameEntity(player, pos, rot, frames.length, cinematicType);
@@ -33,7 +33,7 @@ export function addCameraFrame(player: Player, cinematicType: CinematicType) {
         entityId: entity.id,
     };
 
-    if (cinematicType === "panoramic") {
+    if (cinematicType === "panoramic" || cinematicType === "orbital") {
         frames[0] = frame;
     } else if (cinematicType === "path_placement") {
         frames.push(frame);

@@ -10,6 +10,7 @@ import { frameManagementMenu } from "./functions/ui/path-placement/manage-frames
 import { cineMainMenu } from "./functions/ui/cine-main-menu";
 import { panoramicCinematic } from "./functions/ui/panorama/panoramic-cinematic";
 import { CineRuntimeData } from "./data/types/types";
+import { orbitalCinematic } from "./functions/ui/orbital-cine/orbital-cinematic";
 
 const cineUiHandlers = {
     cineMainMenu: (player: Player) => cineMainMenu(player),
@@ -17,6 +18,7 @@ const cineUiHandlers = {
     cameraPlaybackMenu: (player: Player) => cameraPlaybackMenu(player),
     frameManagementMenu: (player: Player) => frameManagementMenu(player),
     panoramicCinematic: (player: Player) => panoramicCinematic(player),
+    orbitalCinematic: (player: Player) => orbitalCinematic(player),
 };
 
 //Initialise DataBase(s)

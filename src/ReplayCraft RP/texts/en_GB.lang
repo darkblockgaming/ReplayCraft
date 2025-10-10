@@ -95,6 +95,22 @@ rc2.dropdown.value.clockwise=Clockwise Rotation
 rc2.dropdown.value.anticlockwise=Anti-Clockwise Rotation
 rc2.slider.pano.pitch=Camera Pitch (Up-Down) Direction
 
+## nameOrbital
+rc2.title.create.new.orbital.cine.path=Create New Orbital Cinematic Path
+rc2.textfield.name.orbital.cine.path=Name Orbital Cinematic
+
+## "orbitalCinematic"
+rc2.body.create.orbital.cine=Create Orbital Cinematics
+rc2.button.add.focus.point=Add Focus Point
+rc2.button.move.focus.point=Move Focus Point
+rc2.button.start.orbital.cam=Start Orbital Camera
+rc2.button.stop.orbital.cam=Stop Orbital Camera
+rc2.button.orbital.settings=Orbital Settings
+
+
+
+
+
 ##Messages
 rc2.mes.add.cam.frame=§f§4[ReplayCraft] §f§cAdd camera frames first!! §r
 rc2.mes.cannot.add.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't Add Frames While Camera Is In Motion§r
@@ -122,7 +138,9 @@ rc2.mes.no.cine.path.found=§f§4[ReplayCraft] §f§cNo Cinematic Paths Found
 rc2.mes.cannot.go.back.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cCan't go back while camera is in motion§r
 rc2.mes.cine.deleted=§f§4[ReplayCraft] §f§cDeleted Cinematic Path§r
 rc2.mes.all.cine.deleted=§f§4[ReplayCraft] §f§cAll cinematic paths has been deleted!
-rc2.mes.pano.add.anchor.point"=§f§4[ReplayCraft] §f§cAdd Anchor Point First!
+rc2.mes.pano.add.anchor.point=§f§4[ReplayCraft] §f§cAdd Anchor Point First!
+rc2.mes.pano.add.focus.point=§f§4[ReplayCraft] §f§cAdd Focus Point First!
+
 
 ##-----------------------------------------------
 ##------------- Replay Menu Section -------------
