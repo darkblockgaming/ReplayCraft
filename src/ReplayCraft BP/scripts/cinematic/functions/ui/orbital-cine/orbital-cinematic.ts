@@ -49,8 +49,7 @@ export function orbitalCinematic(player: Player) {
                 stopCamera(player, "orbital");
             } else {
                 if (frames.length === 0) {
-                    player.playSound("note.bass");
-                    player.sendMessage({ translate: "rc2.mes.pano.add.focus.point" });
+                    notifyPlayer(player,"rc2.mes.pano.add.focus.point", "note.bass");
                     return;
                 }
                 startOrbitalCamera(player);
@@ -58,8 +57,7 @@ export function orbitalCinematic(player: Player) {
         };
         actions[index++] = () => {
             if (frames.length === 0) {
-                player.playSound("note.bass");
-                player.sendMessage({ translate: "rc2.mes.pano.add.focus.point" });
+                notifyPlayer(player, "rc2.mes.pano.add.focus.point", "note.bass");
                 return;
             }
             orbitalSettings(player);

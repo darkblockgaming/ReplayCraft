@@ -5,6 +5,7 @@ import { framePlacementMenu } from "./frame-placement";
 import { loadInstance } from "../../load-instance";
 import { cinematicListDB } from "../../../cinematic";
 import { CinematicBasicData } from "../../../data/types/types";
+import { notifyPlayer } from "../../helpers/notify-player";
 
 export function nameCinematic(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.cine.path", "rc2.textfield.name.cine.path");
@@ -15,8 +16,7 @@ export function nameCinematic(player: Player) {
             const trimmedName = String(inputCinematicName ?? "").trim();
 
             if (trimmedName === "") {
-                player.sendMessage({ rawtext: [{ translate: "rc2.mes.type.a.valid.cine.name" }] });
-                player.playSound("note.bass");
+                notifyPlayer(player, "rc2.mes.type.a.valid.cine.name", "note.bass");
                 return;
             }
 
@@ -25,12 +25,11 @@ export function nameCinematic(player: Player) {
 
             const cinematicBasicData: CinematicBasicData = {
                 name: cinematicName,
-                type: cinematicType
-            }
+                type: cinematicType,
+            };
 
-            
             const cinematicList = cinematicListMap.get(player.id);
-            if (!cinematicList.some(obj => obj.name === cinematicName)) {
+            if (!cinematicList.some((obj) => obj.name === cinematicName)) {
                 cinematicList.push(cinematicBasicData);
 
                 //Update list in map and database
@@ -47,7 +46,7 @@ export function nameCinematic(player: Player) {
         })
         .catch((error: Error) => {
             console.error("Failed to show form: " + error);
-            player.sendMessage({ rawtext: [{ translate: "replaycraft.ui.error.message" }] });
+            notifyPlayer(player, "replaycraft.ui.error.message");
             return -1;
         });
 }

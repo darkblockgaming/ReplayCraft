@@ -21,7 +21,7 @@ export function framePlacementMenu(player: Player) {
 
     // Only add one button depending on motion state
     if (isCameraInMotion) {
-        replayForm.button({rawtext: [{ text: "§c"}, {translate: "rc2.button.stop.preview"}]}); // stop
+        replayForm.button({ rawtext: [{ text: "§c" }, { translate: "rc2.button.stop.preview" }] }); // stop
     } else {
         replayForm.button("rc2.button.preview"); // start
     }
@@ -46,20 +46,16 @@ export function framePlacementMenu(player: Player) {
         actions[index++] = () => frameSettings(player);
         actions[index++] = () => {
             if (isCameraInMotion) {
-                player.playSound("note.bass");
-                player.sendMessage({ translate: "rc2.mes.camera.is.already.moving" });
-                return;
+                notifyPlayer(player, "rc2.mes.camera.is.already.moving", "note.bass");
             }
             const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
             if (frames.length === 0) {
-                player.playSound("note.bass");
-                player.sendMessage({ translate: "rc2.mes.no.frames.found" });
+                notifyPlayer(player, "rc2.mes.no.frames.found", "note.bass");
                 return;
             }
 
             if (frames.length === 1) {
-                player.playSound("note.bass");
-                player.sendMessage({ translate: "rc2.mes.add.more.frames" });
+                notifyPlayer(player, "rc2.mes.add.more.frames", "note.bass");
                 return;
             }
             cameraPlaybackMenu(player);

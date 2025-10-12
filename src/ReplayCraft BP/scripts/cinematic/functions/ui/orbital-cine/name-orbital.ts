@@ -5,6 +5,7 @@ import { cinematicListDB } from "../../../cinematic";
 import { orbitalCinematic } from "./orbital-cinematic";
 import { loadInstance } from "../../load-instance";
 import { CinematicBasicData } from "../../../data/types/types";
+import { notifyPlayer } from "../../helpers/notify-player";
 
 export function nameOrbital(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.orbital.cine.path", "rc2.textfield.name.orbital.cine.path");
@@ -15,8 +16,7 @@ export function nameOrbital(player: Player) {
             const trimmedName = String(inputCinematicName ?? "").trim();
 
             if (trimmedName === "") {
-                player.sendMessage({ rawtext: [{ translate: "rc2.mes.type.a.valid.cine.name" }] });
-                player.playSound("note.bass");
+                notifyPlayer(player, "rc2.mes.type.a.valid.cine.name", "note.bass");
                 return;
             }
 

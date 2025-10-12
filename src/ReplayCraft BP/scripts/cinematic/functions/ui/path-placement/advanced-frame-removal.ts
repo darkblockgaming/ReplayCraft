@@ -9,8 +9,7 @@ export function advancedFrameRemoval(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
     if (frames.length === 0) {
-        player.playSound("note.bass");
-        player.sendMessage({ translate: "rc2.mes.no.frames.to.remove" });
+        notifyPlayer(player,"rc2.mes.no.frames.to.remove", "note.bass");
         return;
     }
 

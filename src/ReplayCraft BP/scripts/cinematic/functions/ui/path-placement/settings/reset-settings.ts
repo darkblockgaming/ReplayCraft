@@ -1,15 +1,14 @@
 import { Player } from "@minecraft/server";
 import { settingsDataMap, cineRuntimeDataMap } from "../../../../data/maps";
 import { cinematicSettingsDB } from "../../../../cinematic";
+import { notifyPlayer } from "../../../helpers/notify-player";
 
 export function cineResetSettings(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
 
     if (cineRuntimeData.isCameraInMotion === true) {
         player.playSound("note.bass");
-        player.sendMessage({
-            translate: "rc2.mes.cannot.reset.settings.while.camera.is.in.motion",
-        });
+        notifyPlayer(player, "rc2.mes.cannot.reset.settings.while.camera.is.in.motion");
         return;
     }
     const current = settingsDataMap.get(cineRuntimeData.loadedCinematic);
@@ -25,7 +24,5 @@ export function cineResetSettings(player: Player) {
     settingsDataMap.set(cineRuntimeData.loadedCinematic, defaults);
     cinematicSettingsDB.set(cineRuntimeData.loadedCinematic, defaults);
 
-    player.sendMessage({
-        translate: "rc2.mes.all.settings.have.been.reset.to.default",
-    });
+    notifyPlayer(player, "rc2.mes.all.settings.have.been.reset.to.default");
 }

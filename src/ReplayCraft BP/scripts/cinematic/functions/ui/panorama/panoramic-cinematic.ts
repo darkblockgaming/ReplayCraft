@@ -49,8 +49,7 @@ export function panoramicCinematic(player: Player) {
                 stopCamera(player, "panoramic");
             } else {
                 if (frames.length === 0) {
-                    player.playSound("note.bass");
-                    player.sendMessage({ translate: "rc2.mes.pano.add.anchor.point" });
+                    notifyPlayer(player,"rc2.mes.pano.add.anchor.point", "note.bass");
                     return;
                 }
                 startPanoramicCamera(player);
@@ -58,8 +57,7 @@ export function panoramicCinematic(player: Player) {
         };
         actions[index++] = () => {
             if (frames.length === 0) {
-                player.playSound("note.bass");
-                player.sendMessage({ translate: "rc2.mes.pano.add.anchor.point" });
+                notifyPlayer(player,"rc2.mes.pano.add.anchor.point", "note.bass");
                 return;
             }
             panoramaSettings(player);

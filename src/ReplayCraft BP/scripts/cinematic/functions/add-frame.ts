@@ -5,14 +5,12 @@ import { spawnFrameEntity } from "./entity/spawn-frame-entity";
 import { refreshAllFrameEntities } from "./entity/refresh-all-frame-entities";
 import { cinematicFramesDB } from "../cinematic";
 import { clearOtherFrameEntities } from "./entity/clear-other-frame-entities";
+import { notifyPlayer } from "./helpers/notify-player";
 
 export function addCameraFrame(player: Player, cinematicType: CinematicType) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     if (cineRuntimeData?.isCameraInMotion) {
-        player.playSound("note.bass");
-        player.sendMessage({
-            translate: "rc2.mes.cannot.add.frames.while.camera.is.in.motion",
-        });
+        notifyPlayer(player, "rc2.mes.cannot.add.frames.while.camera.is.in.motion", "note.bass");
         return;
     }
     refreshAllFrameEntities(player, cinematicType);

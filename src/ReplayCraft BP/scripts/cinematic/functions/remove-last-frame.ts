@@ -1,23 +1,18 @@
 import { Player, world } from "@minecraft/server";
 import { frameDataMap, cineRuntimeDataMap } from "../data/maps";
 import { cinematicFramesDB } from "../cinematic";
+import { notifyPlayer } from "./helpers/notify-player";
 
 export function removeLastFrame(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
 
     if (cineRuntimeData.isCameraInMotion === true) {
-        player.playSound("note.bass");
-        player.sendMessage({
-            translate: "rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion",
-        });
+        notifyPlayer(player, "rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion", "note.bass");
         return;
     }
     if (frames.length === 0) {
-        player.playSound("note.bass");
-        player.sendMessage({
-            translate: "rc2.mes.no.frames.to.remove",
-        });
+        notifyPlayer(player, "rc2.mes.no.frames.to.remove", "note.bass");
         return;
     }
 
@@ -29,7 +24,5 @@ export function removeLastFrame(player: Player) {
     frameDataMap.set(cineRuntimeData.loadedCinematic, frames);
     cinematicFramesDB.set(cineRuntimeData.loadedCinematic, frames);
 
-    player.sendMessage({
-        translate: "rc2.mes.removed.last.frame",
-    });
+    notifyPlayer(player, "rc2.mes.removed.last.frame");
 }
