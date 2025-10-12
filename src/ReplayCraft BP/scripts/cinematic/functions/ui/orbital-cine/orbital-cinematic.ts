@@ -9,8 +9,8 @@ import { cineMainMenu } from "../cine-main-menu";
 import { clearOtherFrameEntities } from "../../entity/clear-other-frame-entities";
 import { notifyPlayer } from "../../helpers/notify-player";
 import { startOrbitalCamera } from "../../camera/start-orbital-camera";
-//import { panoramaSettings } from "./panorama-settings";
 import { stopCamera } from "../../camera/stop-camera";
+import { orbitalSettings } from "./orbital-settings";
 
 export function orbitalCinematic(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
@@ -21,13 +21,13 @@ export function orbitalCinematic(player: Player) {
     const replayForm = new ActionFormData().title("rc2.title.cinematic.menu").body("rc2.body.create.orbital.cine");
 
     if (frames.length === 1) {
-        replayForm.button("rc2.button.move.focus.point");
+        replayForm.button({rawtext: [{ text: "§d"}, {translate: "rc2.button.move.focus.point"}]});
     } else {
         replayForm.button("rc2.button.add.focus.point");
     }
 
     if (cineRuntimeData?.isCameraInMotion) {
-        replayForm.button("rc2.button.stop.orbital.cam");
+        replayForm.button({rawtext: [{ text: "§c"}, {translate: "rc2.button.stop.orbital.cam"}]});
     } else {
         replayForm.button("rc2.button.start.orbital.cam");
     }
@@ -62,7 +62,7 @@ export function orbitalCinematic(player: Player) {
                 player.sendMessage({ translate: "rc2.mes.pano.add.focus.point" });
                 return;
             }
-            //panoramaSettings(player);
+            orbitalSettings(player);
         };
 
         //GO Next

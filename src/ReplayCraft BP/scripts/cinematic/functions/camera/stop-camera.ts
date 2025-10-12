@@ -10,7 +10,7 @@ export function stopCamera(player: Player, cinematicType: CinematicType) {
         return;
     }
 
-    const settingsData = settingsDataMap.get(player.id);
+    const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
     if (settingsData.hideHud === true) {
         player.onScreenDisplay.setHudVisibility(1);
     }

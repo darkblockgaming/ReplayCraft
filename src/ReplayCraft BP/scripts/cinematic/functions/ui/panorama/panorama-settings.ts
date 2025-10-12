@@ -11,7 +11,7 @@ export function panoramaSettings(player: Player) {
         return;
     }
 
-    const settingsData = settingsDataMap.get(player.id);
+    const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
 
     const FIELD_INDEX = {
         panoRPM: 2,
@@ -27,7 +27,7 @@ export function panoramaSettings(player: Player) {
             defaultValue: settingsData.panoRPM,
         })
         .dropdown({ rawtext: [{ translate: "rc2.dropdown.pano.rotation.type" }] }, [{ rawtext: [{ translate: "rc2.dropdown.value.clockwise" }] }, { rawtext: [{ translate: "rc2.dropdown.value.anticlockwise" }] }], {
-            defaultValueIndex: settingsData.panoRotationType === "anticlockwise" ? 1 : 0,
+            defaultValueIndex: settingsData.panoRotDir === "anticlockwise" ? 1 : 0,
         })
         .divider();
 
@@ -40,9 +40,9 @@ export function panoramaSettings(player: Player) {
         const values = response.formValues;
 
         settingsData.panoRPM = Number(values[FIELD_INDEX.panoRPM]);
-        settingsData.panoRotationType = Number(values[FIELD_INDEX.panoRotationType] === 0) ? "clockwise" : "anticlockwise";
+        settingsData.panoRotDir = Number(values[FIELD_INDEX.panoRotationType] === 0) ? "clockwise" : "anticlockwise";
 
-        settingsDataMap.set(player.id, settingsData);
-        cinematicSettingsDB.set(player.id, settingsData);
+        settingsDataMap.set(cineRuntimeData.loadedCinematic, settingsData);
+        cinematicSettingsDB.set(cineRuntimeData.loadedCinematic, settingsData);
     });
 }

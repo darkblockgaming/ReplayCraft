@@ -1,18 +1,18 @@
 import { Player } from "@minecraft/server";
-import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
-import { cinematicSettingsDB } from "../../../cinematic";
+import { settingsDataMap, cineRuntimeDataMap } from "../../../../data/maps";
+import { cinematicSettingsDB } from "../../../../cinematic";
 
 export function cineResetSettings(player: Player) {
-    const otherData = cineRuntimeDataMap.get(player.id);
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
 
-    if (otherData.isCameraInMotion === true) {
+    if (cineRuntimeData.isCameraInMotion === true) {
         player.playSound("note.bass");
         player.sendMessage({
             translate: "rc2.mes.cannot.reset.settings.while.camera.is.in.motion",
         });
         return;
     }
-    const current = settingsDataMap.get(player.id);
+    const current = settingsDataMap.get(cineRuntimeData.loadedCinematic);
     const defaults = {
         ...current,
         hideHud: true,
@@ -22,8 +22,8 @@ export function cineResetSettings(player: Player) {
         camFacingY: 0,
         camSpeed: 0.8,
     };
-    settingsDataMap.set(player.id, defaults);
-    cinematicSettingsDB.set(player.id, defaults);
+    settingsDataMap.set(cineRuntimeData.loadedCinematic, defaults);
+    cinematicSettingsDB.set(cineRuntimeData.loadedCinematic, defaults);
 
     player.sendMessage({
         translate: "rc2.mes.all.settings.have.been.reset.to.default",

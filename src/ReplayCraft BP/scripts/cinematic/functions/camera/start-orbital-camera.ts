@@ -2,68 +2,76 @@ import { Player, EasingType, system } from "@minecraft/server";
 import { frameDataMap, cineRuntimeDataMap, cameraIntervalMap, settingsDataMap } from "../../data/maps";
 import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
 
-const DEFAULT_STEP_ANGLE = 90; // degrees per eased segment (90° -> 4 segments per full spin)
-
 /**
- * Start an infinite vertical panoramic camera.
- * @param player Player to apply camera to
+ * Start an infinite orbital camera around the first frame.
  */
 export function startOrbitalCamera(player: Player) {
-    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
-    const frames = frameDataMap.get(cineRuntimeData?.loadedCinematic ?? "") ?? [];
-    const settingsData = settingsDataMap.get(player.id);
+  const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+  const frames = frameDataMap.get(cineRuntimeData?.loadedCinematic ?? "") ?? [];
+  const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
 
-    if (!cineRuntimeData || !settingsData) return;
+  if (!cineRuntimeData || !settingsData) return;
+  const focusPoint = frames[0];
+  if (!focusPoint) return;
 
-    const anchorPoint = frames[0];
-    if (!anchorPoint) return;
+  removeAllFrameEntities(player);
 
-    removeAllFrameEntities(player);
+  // Clear any existing camera intervals
+  const existing = cameraIntervalMap.get(player.id);
+  if (existing) existing.forEach((id) => system.clearRun(id));
+  cameraIntervalMap.set(player.id, []);
 
-    // clear previous scheduled runs for this player
-    const existing = cameraIntervalMap.get(player.id);
-    if (existing) existing.forEach((id) => system.clearRun(id));
-    cameraIntervalMap.set(player.id, []);
+  cineRuntimeData.isCameraInMotion = true;
 
-    cineRuntimeData.isCameraInMotion = true;
+  // Customisable parameters
+  const orbitalSpeedBlocks = settingsData.orbitalSpeed ?? 2.0; // blocks per second
+  const orbitalRadius = settingsData.orbitalRadius ?? 6;
+  const orbitalHeightOffset = settingsData.orbitalHeightOffset ?? 0;
 
-    const rpm = settingsData.panoRPM ?? 8;
-    const rotationType = settingsData.panoRotationType ?? "clockwise"; // "clockwise" or "anticlockwise"
+  // Prevent divide-by-zero if radius = 0
+  const safeRadius = Math.max(0.001, orbitalRadius);
 
-    const desiredPitch = anchorPoint.rot.x ?? 0;
-    let currentYaw = anchorPoint.rot.y ?? 0;
+  // Angular speed (radians per second)
+  const radiansPerSec = orbitalSpeedBlocks / safeRadius;
 
-    // Place initial camera
-    player.camera.setCamera("minecraft:free", {
-        location: anchorPoint.pos,
-        rotation: { x: desiredPitch, y: currentYaw },
-    });
+  // Convert to radians per tick (20 ticks per sec)
+  const radiansPerTick = radiansPerSec / 20;
 
-    // Time per step calculation
-    const timePerStep = (DEFAULT_STEP_ANGLE / 360) * (60 / rpm);
+  // Ease time — automatically scale with speed but clamp between 0.1s and 0.5s
+  const ORBITAL_EASE_TIME = Math.max(0.1, Math.min(0.5, 0.3 - orbitalSpeedBlocks * 0.005));
 
-    const rotateStep = () => {
-        // Change direction based on rotation type
-        currentYaw += rotationType === "clockwise" ? DEFAULT_STEP_ANGLE : -DEFAULT_STEP_ANGLE;
+  const directionMultiplier = settingsData.orbitalRotDir === "clockwise" ? 1 : -1;
+  let angle = 0;
 
-        // Wrap into [-180, 180]
-        if (currentYaw > 180) currentYaw -= 360;
-        if (currentYaw <= -180) currentYaw += 360;
+  // Initial setup
+  player.camera.setCamera("minecraft:free", {
+    location: {
+      x: focusPoint.pos.x + orbitalRadius,
+      y: focusPoint.pos.y + orbitalHeightOffset,
+      z: focusPoint.pos.z,
+    },
+    facingLocation: focusPoint.pos,
+  });
 
-        // Apply eased rotation
-        player.camera.setCamera("minecraft:free", {
-            location: anchorPoint.pos,
-            rotation: { x: desiredPitch, y: currentYaw },
-            easeOptions: {
-                easeTime: timePerStep,
-                easeType: EasingType.Linear,
-            },
-        });
+  // Orbit motion
+  const intervalId = system.runInterval(() => {
+    angle += radiansPerTick * directionMultiplier;
 
-        const timeoutId = system.runTimeout(rotateStep, Math.max(1, Math.round(timePerStep * 20)));
-        cameraIntervalMap.get(player.id)!.push(timeoutId);
+    const cameraPos = {
+      x: focusPoint.pos.x + orbitalRadius * Math.cos(angle),
+      y: focusPoint.pos.y + orbitalHeightOffset,
+      z: focusPoint.pos.z + orbitalRadius * Math.sin(angle),
     };
 
-    // kickoff
-    rotateStep();
+    player.camera.setCamera("minecraft:free", {
+      location: cameraPos,
+      facingLocation: focusPoint.pos,
+      easeOptions: {
+        easeTime: ORBITAL_EASE_TIME,
+        easeType: EasingType.Linear,
+      },
+    });
+  }, 1);
+
+  cameraIntervalMap.get(player.id)!.push(intervalId);
 }

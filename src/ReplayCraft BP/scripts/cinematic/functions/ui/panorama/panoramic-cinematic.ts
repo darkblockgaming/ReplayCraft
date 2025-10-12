@@ -21,13 +21,13 @@ export function panoramicCinematic(player: Player) {
     const replayForm = new ActionFormData().title("rc2.title.cinematic.menu").body("rc2.body.create.panoramic.cine");
 
     if (frames.length === 1) {
-        replayForm.button("rc2.button.move.anchor.point");
+        replayForm.button({rawtext: [{ text: "§d"}, {translate: "rc2.button.move.anchor.point"}]});
     } else {
         replayForm.button("rc2.button.add.anchor.point");
     }
 
     if (cineRuntimeData?.isCameraInMotion) {
-        replayForm.button("rc2.button.stop.panoramic.cam");
+        replayForm.button({rawtext: [{ text: "§c"}, {translate: "rc2.button.stop.panoramic.cam"}]});
     } else {
         replayForm.button("rc2.button.start.panoramic.cam");
     }

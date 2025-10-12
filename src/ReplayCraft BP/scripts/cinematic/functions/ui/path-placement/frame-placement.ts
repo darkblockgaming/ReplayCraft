@@ -3,7 +3,7 @@ import { ActionFormData } from "@minecraft/server-ui";
 //Import functions
 import { addCameraFrame } from "../../add-frame";
 import { startPreview } from "../../camera/start-prev-camera";
-import { frameSettings } from "../settings/frame-settings";
+import { frameSettings } from "./settings/frame-settings";
 import { cineRuntimeDataMap, frameDataMap } from "../../../data/maps";
 import { cameraPlaybackMenu } from "./camera-playback-menu";
 import { stopCamera } from "../../camera/stop-camera";
@@ -21,7 +21,7 @@ export function framePlacementMenu(player: Player) {
 
     // Only add one button depending on motion state
     if (isCameraInMotion) {
-        replayForm.button("rc2.button.stop.preview"); // stop
+        replayForm.button({rawtext: [{ text: "§c"}, {translate: "rc2.button.stop.preview"}]}); // stop
     } else {
         replayForm.button("rc2.button.preview"); // start
     }

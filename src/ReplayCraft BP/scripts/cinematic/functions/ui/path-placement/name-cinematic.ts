@@ -29,7 +29,6 @@ export function nameCinematic(player: Player) {
             }
 
             
-
             const cinematicList = cinematicListMap.get(player.id);
             if (!cinematicList.some(obj => obj.name === cinematicName)) {
                 cinematicList.push(cinematicBasicData);

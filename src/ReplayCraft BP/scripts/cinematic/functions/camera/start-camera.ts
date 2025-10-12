@@ -26,7 +26,7 @@ function applyCamera(player: Player, pos: Vector3, rot: Vector2, facingType: num
 export function startCamera(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const frames = frameDataMap.get(cineRuntimeData.loadedCinematic) ?? [];
-    const settingsData = settingsDataMap.get(player.id);
+    const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
 
     if (!settingsData || !cineRuntimeData) {
         player.sendMessage("§cMissing camera settings or state.");

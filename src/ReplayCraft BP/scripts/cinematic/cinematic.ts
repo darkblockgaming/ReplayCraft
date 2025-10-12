@@ -1,6 +1,6 @@
 import { Player, world } from "@minecraft/server";
 //Import maps
-import { cinematicListMap, cineRuntimeDataMap, settingsDataMap } from "./data/maps";
+import { cinematicListMap, cineRuntimeDataMap } from "./data/maps";
 
 //Import Functions
 import { framePlacementMenu } from "./functions/ui/path-placement/frame-placement";
@@ -40,28 +40,10 @@ world.afterEvents.itemUse.subscribe(({ source, itemStack }) => {
     const cinematicList = cinematicListDB.get(source.id) ?? [];
     cinematicListMap.set(source.id, cinematicList);
 
-    settingsDataMap.set(
-        source.id,
-        cinematicSettingsDB.get(source.id) ?? {
-            hideHud: true,
-            easeType: 0,
-            camSpeed: 0.8,
-            camFacingType: 0,
-            camFacingX: 0,
-            camFacingY: 0,
-            cinePrevSpeed: 0.5,
-            cinePrevSpeedMult: 5,
-            panoRPM: 8,
-            panoRotationType: "clockwise"
-        }
-    );
-
-    cinematicListMap.set(source.id, cinematicListDB.get(source.id) ?? []);
-
     const runtimeDefaults: CineRuntimeData = {
         state: "cineMainMenu",
         isCameraInMotion: false,
-        loadedCinematicType: "none"
+        loadedCinematicType: "none",
     };
 
     const cineRuntimeData = cineRuntimeDataMap.get(source.id) ?? runtimeDefaults;

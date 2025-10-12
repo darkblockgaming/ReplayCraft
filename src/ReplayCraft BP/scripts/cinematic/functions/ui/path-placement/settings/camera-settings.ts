@@ -1,18 +1,18 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import { settingsDataMap, cineRuntimeDataMap } from "../../../data/maps";
-import { easeTypes } from "../../../data/constants/constants";
-import { notifyPlayer } from "../../helpers/notify-player";
-import { cinematicSettingsDB } from "../../../cinematic";
+import { settingsDataMap, cineRuntimeDataMap } from "../../../../data/maps";
+import { easeTypes } from "../../../../data/constants/constants";
+import { notifyPlayer } from "../../../helpers/notify-player";
+import { cinematicSettingsDB } from "../../../../cinematic";
 
 export function cameraSettings(player: Player) {
-    const otherData = cineRuntimeDataMap.get(player.id);
-    if (otherData?.isCameraInMotion) {
+    const cineRuntimeData = cineRuntimeDataMap.get(player.id);
+    if (cineRuntimeData?.isCameraInMotion) {
         notifyPlayer(player, "rc2.mes.cannot.change.settings.while.camera.is.in.motion");
         return;
     }
 
-    const settingsData = settingsDataMap.get(player.id);
+    const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
 
     const FIELD_INDEX = {
         camSpeed: 2,
@@ -77,8 +77,8 @@ export function cameraSettings(player: Player) {
 
         settingsData.hideHud = Boolean(values[FIELD_INDEX.hideHud]);
 
-        settingsDataMap.set(player.id, settingsData);
-        cinematicSettingsDB.set(player.id, settingsData);
+        settingsDataMap.set(cineRuntimeData.loadedCinematic, settingsData);
+        cinematicSettingsDB.set(cineRuntimeData.loadedCinematic, settingsData);
 
         notifyPlayer(player, "rc2.mes.settings.have.been.saved.successfully", "random.orb");
     });

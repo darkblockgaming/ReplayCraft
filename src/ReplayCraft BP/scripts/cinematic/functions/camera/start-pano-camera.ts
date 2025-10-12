@@ -11,7 +11,7 @@ const DEFAULT_STEP_ANGLE = 90; // degrees per eased segment (90° -> 4 segments 
 export function startPanoramicCamera(player: Player) {
     const cineRuntimeData = cineRuntimeDataMap.get(player.id);
     const frames = frameDataMap.get(cineRuntimeData?.loadedCinematic ?? "") ?? [];
-    const settingsData = settingsDataMap.get(player.id);
+    const settingsData = settingsDataMap.get(cineRuntimeData.loadedCinematic);
 
     if (!cineRuntimeData || !settingsData) return;
 
@@ -28,7 +28,7 @@ export function startPanoramicCamera(player: Player) {
     cineRuntimeData.isCameraInMotion = true;
 
     const rpm = settingsData.panoRPM ?? 8;
-    const rotationType = settingsData.panoRotationType ?? "clockwise"; // "clockwise" or "anticlockwise"
+    const rotationType = settingsData.panoRotDir ?? "clockwise"; // "clockwise" or "anticlockwise"
 
     const desiredPitch = anchorPoint.rot.x ?? 0;
     let currentYaw = anchorPoint.rot.y ?? 0;

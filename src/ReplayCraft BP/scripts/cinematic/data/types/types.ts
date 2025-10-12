@@ -30,7 +30,14 @@ export interface SettingsData {
     camFacingY: number;
     cinePrevSpeed: number;
     cinePrevSpeedMult: number;
-    panoRPM?: number,
-    panoRotationType?: "clockwise" | "anticlockwise";
+    //panoramic
+    panoRPM: number,
+    panoRotDir: "clockwise" | "anticlockwise";
+    //orbital 
+    orbitalSpeed: number;
+    orbitalRotDir: "clockwise" | "anticlockwise";
+    orbitalRadius: number; //In blocks
+    orbitalHeightOffset: number;
 }
+
 

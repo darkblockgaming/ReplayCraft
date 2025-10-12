@@ -1,8 +1,8 @@
 import { Player } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { cineRuntimeDataMap } from "../../../data/maps";
-import { cameraSettings } from "../settings/camera-settings";
-import { cineResetSettings } from "../settings/reset-settings";
+import { cameraSettings } from "./settings/camera-settings";
+import { cineResetSettings } from "./settings/reset-settings";
 import { startCamera } from "../../camera/start-camera";
 import { stopCamera } from "../../camera/stop-camera";
 import { framePlacementMenu } from "./frame-placement";
@@ -17,7 +17,7 @@ export function cameraPlaybackMenu(player: Player) {
 
     // Conditional button: Start or Stop
     if (isCameraInMotion) {
-        replayForm.button("rc2.button.stop.camera");
+        replayForm.button({rawtext: [{ text: "§c"}, {translate: "rc2.button.stop.camera"}]});
     } else {
         replayForm.button("rc2.button.start.camera");
     }

@@ -90,7 +90,6 @@ rc2.button.pano.settings=Panoramic Settings
 rc2.title.pano.settings=Panorama Settings
 rc2.lebel.pano.rotation=§l§g- Panorama Rotation
 rc2.slider.pano.rmp=Rotations Per Minute [RPM]
-
 rc2.dropdown.pano.rotation.type=Panorama Rotation Type
 rc2.dropdown.value.clockwise=Clockwise Rotation
 rc2.dropdown.value.anticlockwise=Anti-Clockwise Rotation
@@ -108,8 +107,13 @@ rc2.button.start.orbital.cam=Start Orbital Camera
 rc2.button.stop.orbital.cam=Stop Orbital Camera
 rc2.button.orbital.settings=Orbital Settings
 
-
-
+## orbitalSettings
+rc2.title.orbital.settings=Orbital Settings
+rc2.lebel.orbital.speed.n.orientation=§l§g- Speed and Orientation
+rc2.textfield.orbital.orbitalSpeed=Orbital Camera Speed [blocks/sec]
+rc2.textfield.orbital.radius=Orbital Radius [Blocks]
+rc2.dropdown.orbital.rotation.type=Orbital Rotation Type
+rc2.slider.orbital.height.offset=Orbital Height Offset
 
 
 ##Messages
@@ -141,6 +145,7 @@ rc2.mes.cine.deleted=§f§4[ReplayCraft] §f§cDeleted Cinematic Path§r
 rc2.mes.all.cine.deleted=§f§4[ReplayCraft] §f§cAll cinematic paths has been deleted!
 rc2.mes.pano.add.anchor.point=§f§4[ReplayCraft] §f§cAdd Anchor Point First!
 rc2.mes.pano.add.focus.point=§f§4[ReplayCraft] §f§cAdd Focus Point First!
+rc2.mes.invalid.orbital.radius.value=§f§4[ReplayCraft] §f§cInvalid Orbital Radius Value, Type positive nummbers only (Ex: 0.1, 0.5, 1, 2, 3, etc..)
 
 
 ##-----------------------------------------------
