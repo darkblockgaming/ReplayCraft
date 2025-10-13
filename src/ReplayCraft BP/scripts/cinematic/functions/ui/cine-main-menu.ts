@@ -6,6 +6,7 @@ import { cineRuntimeDataMap } from "../../data/maps";
 import { nameCinematic } from "./path-placement/name-cinematic";
 import { namePanorama } from "./panorama/name-panorama";
 import { nameOrbital } from "./orbital-cine/name-orbital";
+import { deleteCinematic, loadCinematic } from "./load-delete-cinematic";
 //Import functions
 
 export function cineMainMenu(player: Player) {
@@ -25,8 +26,8 @@ export function cineMainMenu(player: Player) {
             0: () => nameCinematic(player),
             1: () => namePanorama(player),
             2: () => nameOrbital(player),
-            // 3: () => loadCinematic(player),
-            // 4: () => deleteCinematic(player),
+            3: () => loadCinematic(player),
+            4: () => deleteCinematic(player),
             
         };
         const selectedAction = actions[result.selection as keyof typeof actions];
