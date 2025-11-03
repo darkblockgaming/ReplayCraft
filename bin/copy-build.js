@@ -2,12 +2,13 @@ import path from "path";
 import fs from "fs";
 import fse from "fs-extra";
 
-const appDataPath = process.env.LOCALAPPDATA;
+const appDataPath = process.env.APPDATA;
+
 const mcPath = path.join(
   appDataPath,
-  "Packages",
-  "Microsoft.MinecraftUWP_8wekyb3d8bbwe",
-  "LocalState",
+  "Minecraft Bedrock",
+  "Users",
+  "Shared",
   "games",
   "com.mojang"
 );
