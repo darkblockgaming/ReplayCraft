@@ -73,7 +73,8 @@
                 "cus61": "textures/replaycraft/entity/custom_skins/61",
                 "cus62": "textures/replaycraft/entity/custom_skins/62",
                 "cus63": "textures/replaycraft/entity/custom_skins/63",
-                "cus64": "textures/replaycraft/entity/custom_skins/64"
+                "cus64": "textures/replaycraft/entity/custom_skins/64",
+                "cape": "textures/cape1"
             },
             "geometry": {
                 "default": "geometry.humanoid.custom",
@@ -90,7 +91,7 @@
                 "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
                 "look_at_target_swimming": "animation.rchumanoid.look_at_target.swimming",
                 "look_at_target_inverted": "animation.player.look_at_target.inverted",
-                "cape": "animation.player.cape",
+                "cape": "animation.player.cape00",
                 "move.arms": "animation.player.move.arms",
                 "move.legs": "animation.player.move.legs",
                 "swimming": "animation.player.swim_dynamic",
@@ -244,7 +245,10 @@
                 ]
             },
             "render_controllers": [
-                "controller.render.replayentity"
+                "controller.render.replayentity",
+                {
+                    "controller.render.replayentity.cape": "q.property('rc:cape')"
+                }
             ],
             "enable_attachables": true
         }

@@ -23,6 +23,11 @@
                         64
                     ]
                 },
+                "rc:cape": {
+                    "type": "bool",
+                    "default": true,
+                    "client_sync": true
+                },
                 "rc:item_use_duration": {
                     "type": "int",
                     "range": [

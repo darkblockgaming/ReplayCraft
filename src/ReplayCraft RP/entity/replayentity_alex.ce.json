@@ -73,7 +73,8 @@
                 "cus61": "textures/replaycraft/entity/custom_skins/61",
                 "cus62": "textures/replaycraft/entity/custom_skins/62",
                 "cus63": "textures/replaycraft/entity/custom_skins/63",
-                "cus64": "textures/replaycraft/entity/custom_skins/64"
+                "cus64": "textures/replaycraft/entity/custom_skins/64",
+                "cape": "textures/cape1"
             },
             "geometry": {
                 "default": "geometry.humanoid.customSlim",
@@ -244,7 +245,10 @@
                 ]
             },
             "render_controllers": [
-                "controller.render.replayentity"
+                "controller.render.replayentity",
+                {
+                    "controller.render.replayentity.cape": "q.property('rc:cape')"
+                }
             ],
             "enable_attachables": true
         }
