@@ -91,7 +91,7 @@
                 "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
                 "look_at_target_swimming": "animation.rchumanoid.look_at_target.swimming",
                 "look_at_target_inverted": "animation.player.look_at_target.inverted",
-                "cape": "animation.player.cape00",
+                "cape": "animation.rc_player.cape",
                 "move.arms": "animation.player.move.arms",
                 "move.legs": "animation.player.move.legs",
                 "swimming": "animation.player.swim_dynamic",
@@ -159,7 +159,9 @@
                     {
                         "move.legs": "!query.property('rc:is_riding')"
                     },
-                    "cape",
+                    {
+                        "cape": "q.property('rc:cape')"
+                    },
                     {
                         "look_at_target": "!query.property('rc:is_sleeping') && !query.is_emoting"
                     },

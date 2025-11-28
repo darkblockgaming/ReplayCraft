@@ -1,0 +1,22 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.rc_player.cape": {
+      "loop": true,
+      "bones": {
+        "cape": {
+          "position": [
+            0.0,
+            "query.get_root_locator_offset('armor_offset.default_neck', 1)",
+            0.0
+          ],
+          "rotation": [
+            "math.lerp(0.0, -126.0, math.clamp((query.modified_move_speed/1.5), 0.0, 1.0)) - 6.0",
+            0.0,
+            0.0
+          ]
+        }
+      }
+    }
+  }
+}
