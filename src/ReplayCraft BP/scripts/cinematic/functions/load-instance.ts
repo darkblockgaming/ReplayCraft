@@ -40,5 +40,5 @@ export function loadInstance(player: Player, cinematicBasicData: CinematicBasicD
     frameDataMap.set(cinematicBasicData.name, cinematicFramesDB.get(cinematicBasicData.name) ?? []);
     refreshAllFrameEntities(player, cinematicBasicData.type);
 
-    //console.warn(`loaded instance`);
+    //debugWarn(`loaded instance`);
 }

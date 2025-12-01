@@ -1,5 +1,6 @@
 import { CustomCommandOrigin, CustomCommandStatus, system, world, Player } from "@minecraft/server";
 import { collectRuntimeStats, collectPluginStats, RuntimeStats, PluginStats } from "@minecraft/debug-utilities";
+import { debugLog } from "../../data/util/debug";
 
 const activeOverlays = new Set<string>(); // track player IDs who want live stats
 
@@ -25,15 +26,15 @@ export function debugUtilityCommand(origin: CustomCommandOrigin) {
         const runtime: RuntimeStats = collectRuntimeStats();
         const plugins: PluginStats = collectPluginStats();
 
-        console.log("==== Runtime Stats Dump ====");
+        debugLog("==== Runtime Stats Dump ====");
         for (const [key, value] of Object.entries(runtime)) {
-            console.log(`${key}: ${typeof value === "object" ? JSON.stringify(value) : value}`);
+            debugLog(`${key}: ${typeof value === "object" ? JSON.stringify(value) : value}`);
         }
-        console.log("==== End Runtime Dump ====");
+        debugLog("==== End Runtime Dump ====");
 
-        console.log("==== Plugin Stats Dump ====");
-        console.log(JSON.stringify(plugins, null, 2));
-        console.log("==== End Plugin Dump ====");
+        debugLog("==== Plugin Stats Dump ====");
+        debugLog(JSON.stringify(plugins, null, 2));
+        debugLog("==== End Plugin Dump ====");
 
         return {
             status: CustomCommandStatus.Success,

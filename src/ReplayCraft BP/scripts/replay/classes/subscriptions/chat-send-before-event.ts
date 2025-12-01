@@ -24,6 +24,7 @@ import { isPlayerRiding } from "../../entity/is-riding";
 import { addCameraPoint } from "../../functions/camera/add-camera-point";
 import { safeSet } from "../../../main";
 import { toggle } from "../../ui/debug/debug-box";
+import { debugLog, debugWarn } from "../../data/util/debug";
 
 function findPlaybackEntityNear(sender: Entity): Entity | undefined {
     // Get all entities within a radius (e.g., 10 blocks)
@@ -99,7 +100,7 @@ function giveItems(event: ChatSendBeforeEvent) {
             for (const [playerId, session] of sessionEntries) {
                 // Fallback to the current player’s name if the session is missing a name
                 const name = session?.playerName ?? "(unknown)";
-                console.warn(`[Debug] session.playerName for ${playerId}: ${name}`);
+                debugWarn(`[Debug] session.playerName for ${playerId}: ${name}`);
                 playerLabels.push(`${playerId} (${name})`);
                 playerIds.push(playerId);
             }
@@ -139,7 +140,7 @@ function giveItems(event: ChatSendBeforeEvent) {
 
         if (message === "?riding") {
             system.run(() => {
-                console.log(isPlayerRiding(sender));
+                debugLog(isPlayerRiding(sender));
             });
             event.cancel = true;
             return;
@@ -156,14 +157,14 @@ function giveItems(event: ChatSendBeforeEvent) {
                 for (const entity of nearbyEntities) {
                     if (entity.hasTag(`replay:${sender.id}`)) {
                         found++;
-                        console.log(`[Replay Entity] Type: ${entity.typeId}, Location: ${JSON.stringify(entity.location)}, ID Tag: replay:${sender.id}`);
+                        debugLog(`[Replay Entity] Type: ${entity.typeId}, Location: ${JSON.stringify(entity.location)}, ID Tag: replay:${sender.id}`);
                     }
                 }
 
                 if (found === 0) {
-                    console.log(`[Replay Entity] No entities found with tag replay:${sender.id}`);
+                    debugLog(`[Replay Entity] No entities found with tag replay:${sender.id}`);
                 } else {
-                    console.log(`[Replay Entity] Total found: ${found}`);
+                    debugLog(`[Replay Entity] Total found: ${found}`);
                 }
             });
 
@@ -208,7 +209,7 @@ function giveItems(event: ChatSendBeforeEvent) {
         if (message === "?dblist") {
             system.run(() => {
                 for (const [key, value] of replayCraftAmbientEntityDB.entries()) {
-                    console.log(`[${key}]`, JSON.stringify(value, null, 2));
+                    debugLog(`[${key}]`, JSON.stringify(value, null, 2));
                 }
             });
             event.cancel = true;
@@ -228,7 +229,7 @@ function giveItems(event: ChatSendBeforeEvent) {
                     return { playerId, data };
                 });
 
-                console.log(JSON.stringify(entries, null, 2));
+                debugLog(JSON.stringify(entries, null, 2));
                 sender.sendMessage("§aInteraction map printed to console.");
             });
 
@@ -255,11 +256,11 @@ function giveItems(event: ChatSendBeforeEvent) {
                 allDatabases.forEach(([dbName, db]) => {
                     if (db) {
                         db.rebuildPointers();
-                        console.log(`Pointers for ${dbName}:`);
+                        debugLog(`Pointers for ${dbName}:`);
                         const pointers = db["entries"]().map(([k]) => k);
-                        pointers.forEach((pointer) => console.log(pointer));
+                        pointers.forEach((pointer) => debugLog(pointer));
                     } else {
-                        console.warn(`Database '${dbName}' is not defined, skipping.`);
+                        debugWarn(`Database '${dbName}' is not defined, skipping.`);
                     }
                 });
             });

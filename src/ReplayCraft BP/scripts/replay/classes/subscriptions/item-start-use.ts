@@ -2,6 +2,7 @@ import { ItemStartUseAfterEvent, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { itemUseData, PlayerItemUseDataMap } from "../types/types";
 import config from "../../data/util/config";
+import { debugLog } from "../../data/util/debug";
 function addBowEvent(map: PlayerItemUseDataMap, playerID: string, event: itemUseData) {
     let events = map.get(playerID);
     if (!events) {
@@ -27,7 +28,7 @@ function captureStartData(eventData: ItemStartUseAfterEvent) {
 
     addBowEvent(session.playerItemUseDataMap, player.id, itemStartData);
     if (config.debugItemUseEvents === true) {
-        console.log(`[ReplayCraft DEBUG] Bow started charging: ${JSON.stringify(itemStartData)}`);
+        debugLog(`[ReplayCraft DEBUG] Bow started charging: ${JSON.stringify(itemStartData)}`);
     }
 }
 

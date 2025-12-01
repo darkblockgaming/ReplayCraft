@@ -2,6 +2,7 @@ import * as ui from "@minecraft/server-ui";
 import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 import { replayCraftSkinDB } from "../../classes/subscriptions/world-initialize";
+import { debugError, debugWarn } from "../../data/util/debug";
 
 export function setSkin(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -35,7 +36,7 @@ export function setSkin(player: Player) {
             }
 
             if (!response.formValues || response.formValues[0] === undefined || response.formValues[1] === undefined || response.formValues[2] === undefined) {
-                console.warn("setSkin: formValues missing or incomplete");
+                debugWarn("setSkin: formValues missing or incomplete");
                 return;
             }
 
@@ -45,6 +46,6 @@ export function setSkin(player: Player) {
             replayCraftSkinDB.set(player.id, `${skinType},${skinSize}, ${capeType}`);
         })
         .catch((err) => {
-            console.error("setSkin error:", err);
+            debugError("setSkin error:", err);
         });
 }

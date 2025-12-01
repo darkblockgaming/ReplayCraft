@@ -1,4 +1,5 @@
 import { Vector3 } from "@minecraft/server";
+import { debugError } from "../data/util/debug";
 
 function normalize(vector: Vector3) {
     const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
@@ -21,7 +22,7 @@ export function calculateFallRatio(velocity: Vector3) {
 
         return 1;
     } catch (e) {
-        console.error("Error calculating fall ratio:", e);
+        debugError("Error calculating fall ratio:", e);
         return 1; // Default value in case of error
     }
 }

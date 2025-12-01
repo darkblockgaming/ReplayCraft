@@ -12,7 +12,7 @@ if (!userId) {
 
 // Function to generate the skin pack
 generateSkinPackButton.addEventListener('click', async () => {
-    console.log('Generating Skin Pack...');
+    debugLog('Generating Skin Pack...');
     const formData = new FormData();
     Array.from(skinFilesInput.files).forEach(file => formData.append('skinFiles', file));
 

@@ -5,6 +5,7 @@ import { loadFromDB } from "../functions/replayControls/load-from-database";
 import { replayCraftSettingsDB } from "../classes/subscriptions/world-initialize";
 import { createPlayerSession } from "../data/create-session";
 import { BuildOption, ReplayDataV3 } from "../classes/types/types";
+import { debugError } from "../data/util/debug";
 
 const PAGE_SIZE = 7;
 
@@ -103,7 +104,7 @@ export function loadBuildName(player: Player, page = 0): void {
             loadFromDB(player, fullBuildName, true);
         })
         .catch((error) => {
-            console.error("Failed to show form:", error);
+            debugError("Failed to show form:", error);
             player.sendMessage({
                 rawtext: [{ translate: "replaycraft.ui.error.message" }],
             });

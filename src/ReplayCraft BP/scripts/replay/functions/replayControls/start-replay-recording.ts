@@ -2,6 +2,7 @@ import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { removeEntities } from "../remove-entities";
 import { resetRec } from "./reset-replay";
+import { debugLog } from "../../data/util/debug";
 
 export function doStart(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -15,7 +16,7 @@ export function doStart(player: Player) {
     });
     session.replayStateMachine.setState("recPending");
     session.replayController = player;
-    console.log(`dbgRecController: `, `${session.replayController.id}`);
+    debugLog(`dbgRecController: `, `${session.replayController.id}`);
     if (session.multiPlayerReplayEnabled === false) {
         session.cameraFocusPlayer = session.replayController;
         session.cameraAffectedPlayers[0] = session.replayController;
@@ -36,5 +37,5 @@ export function doStart(player: Player) {
             ],
         });
     }
-    console.log(`ReplayCraft: log session `);
+    debugLog(`ReplayCraft: log session `);
 }

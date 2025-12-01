@@ -5,6 +5,7 @@ import { summonReplayEntity } from "../summon-replay-entity";
 import { waitForChunkLoad } from "../wait-for-chunk-load";
 import { startReplayCam } from "./start-replay-camera";
 import { removeEntities } from "../remove-entities";
+import { debugError, debugLog, debugWarn } from "../../data/util/debug";
 
 export async function doReplay(player: Player, pointIndex?: number) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -54,7 +55,7 @@ export async function doReplay(player: Player, pointIndex?: number) {
 
     const posData = session.replayPositionDataMap.get(player.id);
     if (!posData || !posData.recordedPositions || posData.recordedPositions.length === 0) {
-        console.warn(`No recorded positions found for player ${player.name}`);
+        debugWarn(`No recorded positions found for player ${player.name}`);
         return;
     }
 
@@ -68,14 +69,14 @@ export async function doReplay(player: Player, pointIndex?: number) {
 
     // Ensure chunk is loaded before proceeding
     if (!isChunkLoaded(firstRecordedPos, player)) {
-        console.log(`Chunk not loaded for ${player.name}, teleporting...`);
+        debugLog(`Chunk not loaded for ${player.name}, teleporting...`);
 
         const success = player.tryTeleport(firstRecordedPos, { checkForBlocks: false });
 
         if (success) {
             await waitForChunkLoad(firstRecordedPos, player);
         } else {
-            console.error(`Failed to teleport ${player.name} to load chunk at ${firstRecordedPos.x}, ${firstRecordedPos.y}, ${firstRecordedPos.z}`);
+            debugError(`Failed to teleport ${player.name} to load chunk at ${firstRecordedPos.x}, ${firstRecordedPos.y}, ${firstRecordedPos.z}`);
             return;
         }
     }

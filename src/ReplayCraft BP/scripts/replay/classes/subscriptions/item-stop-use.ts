@@ -1,9 +1,10 @@
 import { ItemStopUseAfterEvent, world } from "@minecraft/server";
+import { debugLog } from "../../data/util/debug";
 //import { replaySessions } from "../../data/replay-player-session";
 //import config from "../../data/util/config";
 
 function captureStopData(eventData: ItemStopUseAfterEvent) {
-    console.log(`itemStopUseAfterEvent: ${eventData.itemStack.typeId}`);
+    debugLog(`itemStopUseAfterEvent: ${eventData.itemStack.typeId}`);
 }
 
 const replayCraftItemStopUseAfterEvent = () => {

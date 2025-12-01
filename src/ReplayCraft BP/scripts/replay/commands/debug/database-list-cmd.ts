@@ -1,6 +1,7 @@
 import { CustomCommandOrigin, CustomCommandStatus, Player, system } from "@minecraft/server";
 import { OptimizedDatabase } from "../../data/data-hive";
 import { fetchDatabase } from "../../functions/database/fetch-database";
+import { debugLog } from "../../data/util/debug";
 
 export function debugDatabaseConsoleCmd(_origin: CustomCommandOrigin, targetDatabase: string) {
     let db: OptimizedDatabase;
@@ -18,7 +19,7 @@ export function debugDatabaseConsoleCmd(_origin: CustomCommandOrigin, targetData
 
     system.run(() => {
         for (const [key, value] of db.entries()) {
-            console.log(`[${key}]`, JSON.stringify(value, null, 2));
+            debugLog(`[${key}]`, JSON.stringify(value, null, 2));
         }
     });
     return {

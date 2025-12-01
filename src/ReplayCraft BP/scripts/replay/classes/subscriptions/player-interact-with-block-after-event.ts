@@ -25,10 +25,10 @@ import config from "../../data/util/config";
         };
         const placedBlock = block.dimension.getBlock(placePos);
 
-        console.log(`[DEBUG] Player ${player.name} placed block at: x=${placePos.x}, y=${placePos.y}, z=${placePos.z}`);
-        console.log(`[DEBUG] blockFace: ${blockFace}, normalized: ${normalizedFace}, offset: x=${offset.x}, y=${offset.y}, z=${offset.z}`);
+        debugLog(`[DEBUG] Player ${player.name} placed block at: x=${placePos.x}, y=${placePos.y}, z=${placePos.z}`);
+        debugLog(`[DEBUG] blockFace: ${blockFace}, normalized: ${normalizedFace}, offset: x=${offset.x}, y=${offset.y}, z=${offset.z}`);
 
-        console.log(`[DEBUG] Block at placePos: ${placedBlock.typeId}`);
+        debugLog(`[DEBUG] Block at placePos: ${placedBlock.typeId}`);
 
         const playerData = session.replayBlockStateMap.get(player.id);
         if (!playerData) return;
@@ -121,9 +121,9 @@ function recordBlocks(event: PlayerInteractWithBlockAfterEvent) {
         };
         const placedBlock = block.dimension.getBlock(placePos);
         if (config.debugPlayerInteractWithBlockAfterEvent === true) {
-            console.log(`[DEBUG] Player ${player.name} placed block at: x=${placePos.x}, y=${placePos.y}, z=${placePos.z}`);
-            console.log(`[DEBUG] blockFace: ${blockFace}, normalized: ${normalizedFace}, offset: x=${offset.x}, y=${offset.y}, z=${offset.z}`);
-            console.log(`[DEBUG] Block at placePos: ${placedBlock.typeId}`);
+            debugLog(`[DEBUG] Player ${player.name} placed block at: x=${placePos.x}, y=${placePos.y}, z=${placePos.z}`);
+            debugLog(`[DEBUG] blockFace: ${blockFace}, normalized: ${normalizedFace}, offset: x=${offset.x}, y=${offset.y}, z=${offset.z}`);
+            debugLog(`[DEBUG] Block at placePos: ${placedBlock.typeId}`);
         }
         let playerData = session.replayBlockStateMap.get(player.id);
         if (!playerData) {

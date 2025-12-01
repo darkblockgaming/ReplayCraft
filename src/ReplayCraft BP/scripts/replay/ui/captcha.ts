@@ -1,5 +1,6 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData, ModalFormResponse } from "@minecraft/server-ui";
+import { debugLog } from "../data/util/debug";
 //import { debugLog } from "../data/util/debug";
 
 /**
@@ -17,40 +18,40 @@ export async function captchaUI(player: Player, captchaText: string): Promise<nu
         const formData: ModalFormResponse = await messageForm.show(player);
 
         // DEBUG: log the full response
-        console.log(`[DEBUG] formData for ${player.name}:`, JSON.stringify(formData, null, 2));
+        debugLog(`[DEBUG] formData for ${player.name}:`, JSON.stringify(formData, null, 2));
 
         // Retry automatically if the player has another UI open
         if (formData.canceled && formData.cancelationReason === "UserBusy") {
-            console.log(`[DEBUG] ${player.name} is busy, retrying captcha UI...`);
+            debugLog(`[DEBUG] ${player.name} is busy, retrying captcha UI...`);
             return captchaUI(player, captchaText);
         }
 
         // Safely extract the first string value from formValues
         const formValues = formData.formValues ?? [];
-        console.log(`[DEBUG] formValues for ${player.name}:`, JSON.stringify(formValues, null, 2));
+        debugLog(`[DEBUG] formValues for ${player.name}:`, JSON.stringify(formValues, null, 2));
 
         const rawValue = formValues.find((v) => typeof v === "string") ?? "";
-        console.log(`[DEBUG] rawValue for ${player.name}:`, rawValue);
+        debugLog(`[DEBUG] rawValue for ${player.name}:`, rawValue);
 
         const userInput = rawValue.trim();
 
         // Player closed UI or typed nothing
         if (userInput === "") {
-            console.log(`[DEBUG] Captcha cancelled by ${player.name}`);
+            debugLog(`[DEBUG] Captcha cancelled by ${player.name}`);
             return -1;
         }
 
         // Correct captcha
         if (userInput === captchaText) {
-            console.log(`[DEBUG] Captcha passed by ${player.name}`);
+            debugLog(`[DEBUG] Captcha passed by ${player.name}`);
             return 1;
         }
 
         // Incorrect input
-        console.log(`[DEBUG] Captcha failed by ${player.name} (entered: "${userInput}")`);
+        debugLog(`[DEBUG] Captcha failed by ${player.name} (entered: "${userInput}")`);
         return 0;
     } catch (error) {
-        console.log(`[DEBUG] Failed to show captcha UI for ${player.name}:`, error);
+        debugLog(`[DEBUG] Failed to show captcha UI for ${player.name}:`, error);
         return -2;
     }
 }

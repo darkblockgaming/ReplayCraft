@@ -1,6 +1,7 @@
 import { world } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session";
 import { ensureReplayDataForPlayer } from "./replay-data-init";
+import { debugLog } from "../data/util/debug";
 
 const MAX_TRACK_RADIUS = 16;
 
@@ -68,7 +69,7 @@ export function updateTrackedPlayers() {
 
             // Optionally handle removed players (e.g., clean up visuals, stop anims)
             for (const p of playersRemoved) {
-                console.log(`§7[ReplayCraft] Player ${p.name} (${p.id}) is no longer being tracked.`);
+                debugLog(`§7[ReplayCraft] Player ${p.name} (${p.id}) is no longer being tracked.`);
             }
         }
     }

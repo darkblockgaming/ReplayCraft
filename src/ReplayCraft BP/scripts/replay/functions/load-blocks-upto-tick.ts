@@ -3,6 +3,7 @@ import { replaySessions } from "../data/replay-player-session";
 import { isChunkLoaded } from "./is-chunk-loaded";
 import { waitForChunkLoad } from "./wait-for-chunk-load";
 import { PlayerBlockData, PlayerBlockInteractionData } from "../classes/types/types";
+import { debugError, debugWarn } from "../data/util/debug";
 
 type BlockState = Record<string, any>;
 
@@ -19,13 +20,13 @@ type BlockData = {
 export async function loadBlocksUpToTick(targetTick: number, player: Player): Promise<void> {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        console.warn(`No replay session found for player ${player.name}`);
+        debugWarn(`No replay session found for player ${player.name}`);
         return;
     }
 
     const playerData: PlayerBlockData | undefined = session.replayBlockStateMap.get(player.id);
     if (!playerData) {
-        console.warn(`No block replay data for player ${player.name}`);
+        debugWarn(`No block replay data for player ${player.name}`);
         return;
     }
 
@@ -33,14 +34,14 @@ export async function loadBlocksUpToTick(targetTick: number, player: Player): Pr
 
     async function setBlock(location: Vector3, typeId: string, states: BlockState): Promise<void> {
         if (!isChunkLoaded(location, player)) {
-            console.warn(`Chunk not loaded for block at ${location.x}, ${location.y}, ${location.z}. Teleporting player...`);
+            debugWarn(`Chunk not loaded for block at ${location.x}, ${location.y}, ${location.z}. Teleporting player...`);
 
             const success = player.tryTeleport({ x: location.x, y: location.y + 2, z: location.z }, { checkForBlocks: false });
 
             if (success) {
                 await waitForChunkLoad(location, player);
             } else {
-                console.error(`Failed to teleport ${player.name} to load chunk at ${location.x}, ${location.y}, ${location.z}`);
+                debugError(`Failed to teleport ${player.name} to load chunk at ${location.x}, ${location.y}, ${location.z}`);
                 return;
             }
         }
@@ -48,7 +49,7 @@ export async function loadBlocksUpToTick(targetTick: number, player: Player): Pr
         const dimension: Dimension = world.getDimension(session.replayController.dimension.id);
         const block = dimension.getBlock(location);
         if (!block) {
-            console.error(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);
+            debugError(`Failed to get block at ${location.x}, ${location.y}, ${location.z}`);
             return;
         }
 

@@ -1,5 +1,6 @@
 import { Block, Player } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session";
+import { debugLog } from "../data/util/debug";
 
 export function saveDoorPartsB(block: Block, player: Player, session: PlayerReplaySession) {
     const isUpper = block.permutation.getState("upper_block_bit");
@@ -43,7 +44,7 @@ export function saveDoorPartsB(block: Block, player: Player, session: PlayerRepl
     if (!playerData) {
         playerData = { blockSateAfterInteractions: {} };
         session.replayBlockInteractionAfterMap.set(player.id, playerData);
-        console.log(`[ReplayCraft DEBUG] Initialized replayBlockInteractionAfterMap for player ${player.name}`);
+        debugLog(`[ReplayCraft DEBUG] Initialized replayBlockInteractionAfterMap for player ${player.name}`);
     }
 
     playerData.blockSateAfterInteractions[session.recordingEndTick] = {
@@ -51,5 +52,5 @@ export function saveDoorPartsB(block: Block, player: Player, session: PlayerRepl
         upperPart,
     };
 
-    console.log(`[ReplayCraft DEBUG] Recorded door parts for player ${player.name} at tick ${session.recordingEndTick}`);
+    debugLog(`[ReplayCraft DEBUG] Recorded door parts for player ${player.name} at tick ${session.recordingEndTick}`);
 }

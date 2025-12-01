@@ -1,6 +1,7 @@
 import { Block, Player, Vector3 } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session";
 import { BlockData } from "../classes/types/types";
+import { debugWarn } from "../data/util/debug";
 
 export function saveBedParts(block: Block, player: Player, session: PlayerReplaySession) {
     const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
@@ -48,7 +49,7 @@ export function saveBedParts(block: Block, player: Player, session: PlayerReplay
         if (!playerData) {
             playerData = { blockStateChanges: {} };
             session.replayBlockStateMap.set(player.id, playerData);
-            console.warn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name} (from saveDoorParts)`);
+            debugWarn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name} (from saveDoorParts)`);
         }
         playerData.blockStateChanges[session.recordingEndTick] = {
             location: block.location,

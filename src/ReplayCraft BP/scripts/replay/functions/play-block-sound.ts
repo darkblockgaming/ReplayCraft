@@ -4,7 +4,7 @@ import { blockPlaceSounds } from "../data/util/sounds-place-map";
 import { BlockData } from "../classes/types/types";
 import { blockInteractSounds } from "../data/util/sounds-interact-map";
 import { blockBreakSounds } from "../data/util/sounds-break-map";
-import { debugError } from "../data/util/debug";
+import { debugError, debugWarn } from "../data/util/debug";
 
 /**
  * Plays the appropriate sound for a block interaction, placement, or destruction.
@@ -21,7 +21,7 @@ import { debugError } from "../data/util/debug";
 export function playBlockSound(blockData: BlockData, player: Player, interact?: boolean): void {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        console.warn(`[ReplayCraft DEBUG] No replay session found for player ${player.name}`);
+        debugWarn(`[ReplayCraft DEBUG] No replay session found for player ${player.name}`);
         return;
     }
 
@@ -43,7 +43,7 @@ export function playBlockSound(blockData: BlockData, player: Player, interact?: 
             const soundData = blockInteractSounds[blockId];
 
             if (!soundData) {
-                console.warn(`[ReplayCraft DEBUG] No interact sound mapping for blockId "${blockId}" (player: ${player.name})`);
+                debugWarn(`[ReplayCraft DEBUG] No interact sound mapping for blockId "${blockId}" (player: ${player.name})`);
             }
 
             // Play interact sound (e.g., door open/close)
@@ -58,7 +58,7 @@ export function playBlockSound(blockData: BlockData, player: Player, interact?: 
             if (blockData.eventType === "break") {
                 const breakSound = blockBreakSounds[blockId];
                 if (!breakSound) {
-                    console.warn(`[ReplayCraft DEBUG] No break sound mapping for blockId "${blockId}" (player: ${player.name})`);
+                    debugWarn(`[ReplayCraft DEBUG] No break sound mapping for blockId "${blockId}" (player: ${player.name})`);
                 } else {
                     session.replayController.playSound(breakSound.sound, {
                         location,
@@ -78,7 +78,7 @@ export function playBlockSound(blockData: BlockData, player: Player, interact?: 
         const soundData = blockPlaceSounds[blockId];
 
         if (!soundData) {
-            console.warn(`[ReplayCraft DEBUG] No placement sound mapping for blockId "${blockId}" (player: ${player.name})`);
+            debugWarn(`[ReplayCraft DEBUG] No placement sound mapping for blockId "${blockId}" (player: ${player.name})`);
             return;
         }
 

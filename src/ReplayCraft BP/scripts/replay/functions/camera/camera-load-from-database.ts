@@ -1,6 +1,7 @@
 import { Player, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { loadFromDB } from "../replayControls/load-from-database";
+import { debugWarn } from "../../data/util/debug";
 
 export async function respawnCameraEntities(player: Player) {
     /**
@@ -69,7 +70,7 @@ export async function respawnCameraEntities(player: Player) {
             entity.nameTag = `Camera Point ${i + 1}`;
             entity.addTag("owner:" + player.id);
         } else {
-            console.warn(`[ReplayCraft] Failed to spawn camera entity at ${spawnLocation.x}, ${spawnLocation.y}, ${spawnLocation.z}`);
+            debugWarn(`[ReplayCraft] Failed to spawn camera entity at ${spawnLocation.x}, ${spawnLocation.y}, ${spawnLocation.z}`);
         }
     }
 

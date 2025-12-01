@@ -1,6 +1,7 @@
 import { BlockPermutation, Player, system, Vector3 } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session";
 import { BlockInteractionEntry, twoPartBlocks } from "../classes/types/types";
+import { debugError, debugLog, debugWarn } from "../data/util/debug";
 
 // Helper to compare two locations
 function positionsEqual(a: Vector3, b: Vector3): boolean {
@@ -49,7 +50,7 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
 
         const recordingStartPos = session.replayPositionDataMap.get(playerId)?.recordedPositions?.[0];
         if (!recordingStartPos) {
-            console.warn(`Recording start position not found for playerId: ${playerId}`);
+            debugWarn(`Recording start position not found for playerId: ${playerId}`);
             continue;
         }
         session.replayController;
@@ -67,7 +68,7 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
             } else if ("location" in data && data.location) {
                 blockPositions.push(data.location);
             } else {
-                console.error("Invalid block data:", JSON.stringify(data, null, 2));
+                debugError("Invalid block data:", JSON.stringify(data, null, 2));
                 continue;
             }
 
@@ -102,13 +103,13 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
                             const permutation = BlockPermutation.resolve(partData.typeId, partData.states || {});
                             block.setPermutation(permutation);
                         } catch (e) {
-                            console.error(`BlockPermutation failed for ${JSON.stringify(partData, null, 2)}: ${e}`);
+                            debugError(`BlockPermutation failed for ${JSON.stringify(partData, null, 2)}: ${e}`);
                         }
                     } else {
-                        console.error("Invalid block part data:", JSON.stringify(data, null, 2));
+                        debugError("Invalid block part data:", JSON.stringify(data, null, 2));
                     }
                 } else {
-                    console.log(`Block not found at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
+                    debugLog(`Block not found at: ${blockPos.x}, ${blockPos.y}, ${blockPos.z}`);
                 }
             }
         }

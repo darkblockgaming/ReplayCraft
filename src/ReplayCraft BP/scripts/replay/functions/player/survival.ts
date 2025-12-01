@@ -1,4 +1,5 @@
 import { GameMode, Player } from "@minecraft/server";
+import { debugLog } from "../../data/util/debug";
 
 export function enableFlight(player: Player) {
     let coordsx = player.location.x;
@@ -17,13 +18,13 @@ export function disableFlight(player: Player) {
     const tags = player.getTags();
     const tagsLength = tags.length;
     for (let i = 0; i < tagsLength; i++) {
-        console.log(tags[i]);
+        debugLog(tags[i]);
         if (tags[i].startsWith("freecamcoords")) {
             let coordsTag = tags[i];
-            console.log("Grabbed Tag: " + coordsTag[i]);
+            debugLog("Grabbed Tag: " + coordsTag[i]);
             player.removeTag(coordsTag);
             coordsTag = coordsTag.replace("freecamcoords", "");
-            console.log("replaced tag: " + coordsTag);
+            debugLog("replaced tag: " + coordsTag);
             const coordsArray = coordsTag.trim().split(" ").map(Number);
             const coordsTagAsVector3 = { x: coordsArray[0], y: coordsArray[1], z: coordsArray[2] };
             player.teleport(coordsTagAsVector3);

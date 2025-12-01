@@ -3,6 +3,7 @@ import { replaySessions } from "../data/replay-player-session";
 import { doStart } from "../functions/replayControls/start-replay-recording";
 import { Player } from "@minecraft/server";
 import { createPlayerSession } from "../data/create-session";
+import { debugError } from "../data/util/debug";
 
 export function setBuildName(player: Player) {
     const form = new ModalFormData().title("replaycraftsetbuildname.title").textField("replaycraftsetbuildname.textField", "replaycraftsetbuildname.textField2");
@@ -38,7 +39,7 @@ export function setBuildName(player: Player) {
             doStart(player);
         })
         .catch((error: Error) => {
-            console.error("Failed to show form: " + error);
+            debugError("Failed to show form: " + error);
             player.sendMessage({
                 rawtext: [
                     {

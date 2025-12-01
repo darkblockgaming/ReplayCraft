@@ -1,5 +1,6 @@
 import { Block, Player } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session";
+import { debugWarn } from "../data/util/debug";
 export function saveBedParts1(block: Block, player: Player, session: PlayerReplaySession) {
     //Calculate Orher Part Of Bed
     const isHead = block.permutation.getState("head_piece_bit"); // true if head, false if foot
@@ -72,7 +73,7 @@ export function saveBedParts1(block: Block, player: Player, session: PlayerRepla
         if (!playerData) {
             playerData = { blockStateBeforeInteractions: {} };
             session.replayBlockInteractionBeforeMap.set(player.id, playerData);
-            console.warn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for ${player.name}`);
+            debugWarn(`[ReplayCraft] Initialized replayBlockInteractionBeforeMap for ${player.name}`);
         }
         playerData.blockStateBeforeInteractions[session.recordingEndTick] = {
             upperPart: {

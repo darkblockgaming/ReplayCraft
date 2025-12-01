@@ -1,7 +1,7 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
-import { debugError } from "../data/util/debug.js";
+import { debugError, debugWarn } from "../data/util/debug.js";
 
 //@ts-check
 export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string, offlinePlayerName?: string) {
@@ -56,7 +56,7 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         const customEntity = onlinePlayer.dimension.spawnEntity(entityType, spawnPos);
 
         if (!customEntity) {
-            console.error(`[ReplayCraft] Failed to spawn replay entity for ${onlinePlayer.name}`);
+            debugError(`[ReplayCraft] Failed to spawn replay entity for ${onlinePlayer.name}`);
             return;
         }
 
@@ -79,7 +79,7 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
 
         // Store entity keyed by the online player ID
         session.replayEntityDataMap.set(targetPlayerId, { customEntity });
-        console.warn(`[ReplayCraft] Stored replay entity for ${targetPlayerId} at tick ${startTick}`);
+        debugWarn(`[ReplayCraft] Stored replay entity for ${targetPlayerId} at tick ${startTick}`);
 
         // Sync entity position and rotation at the start tick
         const posAtTick = posData.recordedPositions[startTick];
@@ -93,7 +93,7 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
                 customEntity.isSneaking = pData.isSneaking[startTick] === 1;
             }
         } else {
-            console.warn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for player ${targetPlayerId}`);
+            debugWarn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for player ${targetPlayerId}`);
         }
     }
 }

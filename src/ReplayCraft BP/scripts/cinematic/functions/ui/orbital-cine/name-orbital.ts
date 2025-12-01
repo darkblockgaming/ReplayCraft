@@ -6,6 +6,7 @@ import { orbitalCinematic } from "./orbital-cinematic";
 import { loadInstance } from "../../load-instance";
 import { CinematicBasicData } from "../../../data/types/types";
 import { notifyPlayer } from "../../helpers/notify-player";
+import { debugError } from "../../../../replay/data/util/debug";
 
 export function nameOrbital(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.orbital.cine.path", "rc2.textfield.name.orbital.cine.path");
@@ -46,7 +47,7 @@ export function nameOrbital(player: Player) {
             }
         })
         .catch((error: Error) => {
-            console.error("Failed to show form: " + error);
+            debugError("Failed to show form: " + error);
             player.sendMessage({ rawtext: [{ translate: "replaycraft.ui.error.message" }] });
             return -1;
         });

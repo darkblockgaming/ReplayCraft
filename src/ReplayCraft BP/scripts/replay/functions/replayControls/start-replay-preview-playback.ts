@@ -1,6 +1,7 @@
 import { Player, system } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { summonReplayEntity } from "../summon-replay-entity";
+import { debugError } from "../../data/util/debug";
 
 export async function doViewReplay(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -35,7 +36,7 @@ export async function doViewReplay(player: Player) {
 
     const posData = session.replayPositionDataMap.get(controller.id);
     if (!posData || !posData.recordedPositions) {
-        console.error(`Replay position data not found for controller player ${controller.name}`);
+        debugError(`Replay position data not found for controller player ${controller.name}`);
         return;
     }
 
@@ -53,7 +54,7 @@ export async function doViewReplay(player: Player) {
         if (success) {
             await new Promise<void>((resolve) => system.runTimeout(() => resolve(), 5));
         } else {
-            console.error(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
+            debugError(`Teleport failed to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
         }
     }
 

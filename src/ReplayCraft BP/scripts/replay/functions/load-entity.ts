@@ -4,17 +4,18 @@ import { isChunkLoaded } from "./is-chunk-loaded.js";
 import { waitForChunkLoad } from "./wait-for-chunk-load.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
 import { removeEntities } from "./remove-entities.js";
+import { debugError, debugLog } from "../data/util/debug.js";
 
 export async function loadEntity(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        console.error(`No session found for player ${player.name}`);
+        debugError(`No session found for player ${player.name}`);
         return;
     }
     const posData = session.replayPositionDataMap.get(player.id);
     const rotData = session.replayRotationDataMap.get(player.id);
     if (!posData || !rotData || posData.recordedPositions.length === 0) {
-        console.error(`Replay data missing for player ${player.name}`);
+        debugError(`Replay data missing for player ${player.name}`);
         return;
     }
 
@@ -24,7 +25,7 @@ export async function loadEntity(player: Player) {
 
     // Ensure chunk is loaded
     if (!isChunkLoaded(summonPos, player)) {
-        console.log(`Chunk not loaded for ${player.name}, teleporting...`);
+        debugLog(`Chunk not loaded for ${player.name}, teleporting...`);
 
         // Teleport player near the chunk to load it
         const success = player.tryTeleport(summonPos, { checkForBlocks: false });
@@ -32,7 +33,7 @@ export async function loadEntity(player: Player) {
         if (success) {
             await waitForChunkLoad(summonPos, player);
         } else {
-            console.error(`Failed to teleport ${player.name} to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
+            debugError(`Failed to teleport ${player.name} to load chunk at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}`);
             return;
         }
     }
@@ -42,7 +43,7 @@ export async function loadEntity(player: Player) {
         removeEntities(player, true);
         let skinData = replayCraftSkinDB.get(player.id);
         if (!skinData) {
-            console.error(`[ReplayCraft] Failed to retrieve skin data for ${player.id}, have they set a skin?`);
+            debugError(`[ReplayCraft] Failed to retrieve skin data for ${player.id}, have they set a skin?`);
             skinData = "0,0";
         }
         const [skinIDStr, modelIDStr] = skinData.split(",");
@@ -68,7 +69,7 @@ export async function loadEntity(player: Player) {
             customEntity.nameTag = session.settingCustomName;
         }
     } catch (error) {
-        console.error(`Error spawning entity at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}:`, error);
+        debugError(`Error spawning entity at ${summonPos.x}, ${summonPos.y}, ${summonPos.z}:`, error);
         return;
     }
 

@@ -127,7 +127,8 @@ function cleanUp() {
     const isCopyMode = process.argv.includes("--copy");
 
     let buildNumber;
-    if (isCopyMode) { //Dont update the build number for build --copy
+    if (isCopyMode) {
+        //Dont update the build number for build --copy
         const buildInfo = fs.existsSync(buildInfoPath) ? fs.readJsonSync(buildInfoPath) : { build: 0 };
         buildNumber = buildInfo.build;
     } else {

@@ -6,6 +6,7 @@ import { panoramicCinematic } from "./panoramic-cinematic";
 import { loadInstance } from "../../load-instance";
 import { CinematicBasicData } from "../../../data/types/types";
 import { notifyPlayer } from "../../helpers/notify-player";
+import { debugError } from "../../../../replay/data/util/debug";
 
 export function namePanorama(player: Player) {
     const form = new ModalFormData().title("rc2.title.cinematic.menu").textField("rc2.title.create.new.pano.cine.path", "rc2.textfield.name.pano.cine.path");
@@ -47,7 +48,7 @@ export function namePanorama(player: Player) {
             }
         })
         .catch((error: Error) => {
-            console.error("Failed to show form: " + error);
+            debugError("Failed to show form: " + error);
             notifyPlayer(player, "replaycraft.ui.error.message");
             return -1;
         });

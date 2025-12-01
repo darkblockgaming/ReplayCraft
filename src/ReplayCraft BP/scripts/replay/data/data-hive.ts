@@ -1,4 +1,5 @@
 import { world } from "@minecraft/server";
+import { debugLog, debugWarn } from "./util/debug";
 
 const CHUNK_SIZE = 30000;
 
@@ -95,7 +96,7 @@ export class OptimizedDatabase {
      *
      * @example
      * const value = db.get('key1');
-     * console.log(value); // { name: 'item', value: 100 }
+     * debugLog(value); // { name: 'item', value: 100 }
      */
     public get<T = any>(key: string): T | undefined {
         const dynamicKeyBase = `${this.name}/${key}`;
@@ -148,7 +149,7 @@ export class OptimizedDatabase {
      *
      * @example
      * const entries = db.entries();
-     * console.log(entries); // [['key1', { name: 'item', value: 100 }], ['key2', { name: 'another item', value: 50 }]]
+     * debugLog(entries); // [['key1', { name: 'item', value: 100 }], ['key2', { name: 'another item', value: 50 }]]
      */
     public entries(): [string, any][] {
         return this._getPointers().map((ptr) => {
@@ -204,12 +205,12 @@ export class OptimizedDatabase {
             const isValid = validator ? validator(key, value) : defaultValidator(value);
             if (!isValid) {
                 this.delete(key);
-                console.warn(`[${this.name}] Deleted invalid entry "${key}" with value:`, value);
+                debugWarn(`[${this.name}] Deleted invalid entry "${key}" with value:`, value);
                 deletedCount++;
             }
         }
 
-        console.log(`[${this.name}] Cleanup complete. Total deleted entries: ${deletedCount}`);
+        debugLog(`[${this.name}] Cleanup complete. Total deleted entries: ${deletedCount}`);
     }
 
     /**
@@ -225,77 +226,75 @@ export class OptimizedDatabase {
         }
     }
     /**
- * Gets the size of a single entry in bytes and MB (approximate).
- * Assumes UTF-16 (2 bytes per character).
- */
-public getEntrySizeInBytes(key: string): number {
-    const dynamicKeyBase = `${this.name}/${key}`;
-    let size = 0;
-    for (let i = 0; ; i++) {
-        const chunk = world.getDynamicProperty(`${dynamicKeyBase}/${i}`) as string | null;
-        if (chunk === null || chunk === undefined) break;
-        size += chunk.length * 2; // 2 bytes per UTF-16 character
+     * Gets the size of a single entry in bytes and MB (approximate).
+     * Assumes UTF-16 (2 bytes per character).
+     */
+    public getEntrySizeInBytes(key: string): number {
+        const dynamicKeyBase = `${this.name}/${key}`;
+        let size = 0;
+        for (let i = 0; ; i++) {
+            const chunk = world.getDynamicProperty(`${dynamicKeyBase}/${i}`) as string | null;
+            if (chunk === null || chunk === undefined) break;
+            size += chunk.length * 2; // 2 bytes per UTF-16 character
+        }
+        return size;
     }
-    return size;
-}
 
-/**
- * Same as getEntrySizes but returns size in MB.
- */
-public getEntrySizesMB(): [string, number][] {
-    return this._getPointers().map((ptr) => {
-        const key = ptr.split("/").pop()!;
-        const sizeBytes = this.getEntrySizeInBytes(key);
-        const sizeMB = sizeBytes / (1024 * 1024);
-        return [key, parseFloat(sizeMB.toFixed(3))]; // round to 3 decimals
-    });
-}
+    /**
+     * Same as getEntrySizes but returns size in MB.
+     */
+    public getEntrySizesMB(): [string, number][] {
+        return this._getPointers().map((ptr) => {
+            const key = ptr.split("/").pop()!;
+            const sizeBytes = this.getEntrySizeInBytes(key);
+            const sizeMB = sizeBytes / (1024 * 1024);
+            return [key, parseFloat(sizeMB.toFixed(3))]; // round to 3 decimals
+        });
+    }
 
-/**
- * Gets total size of the database in MB.
- */
-public getTotalSizeMB(): number {
-    const sizes = this.getEntrySizesMB();
-    return parseFloat(
-        sizes.reduce((sum, [, mb]) => sum + mb, 0).toFixed(3)
-    );
-}
+    /**
+     * Gets total size of the database in MB.
+     */
+    public getTotalSizeMB(): number {
+        const sizes = this.getEntrySizesMB();
+        return parseFloat(sizes.reduce((sum, [, mb]) => sum + mb, 0).toFixed(3));
+    }
 
-/**
- * Rebuilds the pointer list by scanning existing dynamic properties.
- * This is useful if the pointer list is lost or out of sync.
- */
-public rebuildPointers(): void {
-    const basePrefix = `${this.name}/`;
-    const rawKeys = world.getDynamicPropertyIds(); // Get all keys
-    const pointerSet = new Set<string>();
+    /**
+     * Rebuilds the pointer list by scanning existing dynamic properties.
+     * This is useful if the pointer list is lost or out of sync.
+     */
+    public rebuildPointers(): void {
+        const basePrefix = `${this.name}/`;
+        const rawKeys = world.getDynamicPropertyIds(); // Get all keys
+        const pointerSet = new Set<string>();
 
-    for (const key of rawKeys) {
-        if (typeof key !== "string") continue;
-        if (!key.startsWith(basePrefix)) continue;
+        for (const key of rawKeys) {
+            if (typeof key !== "string") continue;
+            if (!key.startsWith(basePrefix)) continue;
 
-        // Remove chunk index if present
-        const parts = key.split("/");
-        if (parts.length >= 3 && !isNaN(Number(parts[parts.length - 1]))) {
-            parts.pop(); // Remove chunk number
+            // Remove chunk index if present
+            const parts = key.split("/");
+            if (parts.length >= 3 && !isNaN(Number(parts[parts.length - 1]))) {
+                parts.pop(); // Remove chunk number
+            }
+
+            const baseKey = parts.join("/");
+            pointerSet.add(baseKey);
         }
 
-        const baseKey = parts.join("/");
-        pointerSet.add(baseKey);
+        const rebuiltPointers = [...pointerSet];
+        this._setPointers(rebuiltPointers);
+        debugLog(`[${this.name}] Rebuilt pointers. Total entries: ${rebuiltPointers.length}`);
     }
 
-    const rebuiltPointers = [...pointerSet];
-    this._setPointers(rebuiltPointers);
-    console.log(`[${this.name}] Rebuilt pointers. Total entries: ${rebuiltPointers.length}`);
-}
+    // Add this method to get entry keys (user-visible keys)
+    public getEntryKeys(): string[] {
+        return this._getPointers().map((ptr) => ptr.split("/").pop()!);
+    }
 
-// Add this method to get entry keys (user-visible keys)
-public getEntryKeys(): string[] {
-    return this._getPointers().map(ptr => ptr.split("/").pop()!);
-}
-
-// Alias for `get()`, clearer for data viewing
-public getData<T = any>(key: string): T | undefined {
-    return this.get<T>(key);
-}
+    // Alias for `get()`, clearer for data viewing
+    public getData<T = any>(key: string): T | undefined {
+        return this.get<T>(key);
+    }
 }

@@ -69,7 +69,7 @@ export function newSession(player: Player) {
                     }
                     session.replayController = player;
                     if (config.debugPlayerItemUseAfterEvent === true) {
-                        console.log(`[Replay Init] Controller set to ${player.name}`);
+                        debugLog(`[Replay Init] Controller set to ${player.name}`);
                     }
                 }
                 debugLog("Player clicked Button 1");

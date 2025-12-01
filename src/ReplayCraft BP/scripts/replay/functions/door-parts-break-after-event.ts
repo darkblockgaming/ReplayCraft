@@ -1,5 +1,6 @@
 import { PlayerReplaySession } from "../data/replay-player-session";
 import { Block, Player, Vector3 } from "@minecraft/server";
+import { debugLog, debugWarn } from "../data/util/debug";
 
 export function saveDoorParts(block: Block, player: Player, session: PlayerReplaySession) {
     // Check if the block is the lower part of the door
@@ -34,12 +35,12 @@ export function saveDoorParts(block: Block, player: Player, session: PlayerRepla
         // Get player data
         let playerData = session.replayBlockStateMap.get(player.id);
         if (!playerData) {
-            console.log(`[ReplayCraft] not able to find playerData for ${player.name}, initializing...`);
+            debugLog(`[ReplayCraft] not able to find playerData for ${player.name}, initializing...`);
             playerData = { blockStateChanges: {} };
             session.replayBlockStateMap.set(player.id, playerData);
-            console.warn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name} (from saveDoorParts)`);
+            debugWarn(`[ReplayCraft] Initialized replayBlockStateMap for guest ${player.name} (from saveDoorParts)`);
         }
-        console.log(`[ReplayCraft - saveDoorParts] Recording door parts for ${player.name} at ${block.location.x}, ${block.location.y}, ${block.location.z}`);
+        debugLog(`[ReplayCraft - saveDoorParts] Recording door parts for ${player.name} at ${block.location.x}, ${block.location.y}, ${block.location.z}`);
 
         // Save with a top-level structure
         playerData.blockStateChanges[session.recordingEndTick] = {
