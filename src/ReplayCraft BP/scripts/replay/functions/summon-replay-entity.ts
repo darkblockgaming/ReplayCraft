@@ -66,7 +66,7 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         // Set skin and name tag
         customEntity.setProperty("dbg:skin", skinID);
         // Set cape property
-        customEntity.setProperty("dbg:cape", capeID);
+        customEntity.setProperty("rc:cape", capeID);
         switch (session.settingNameType) {
             case 0:
             case 1:

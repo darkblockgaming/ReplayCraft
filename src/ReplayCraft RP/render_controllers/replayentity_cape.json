@@ -10,12 +10,7 @@
         }
       ],
       "textures": [
-        "Texture.cape"
-      ],
-      "part_visibility": [
-        {
-          "cape": "query.property('rc:cape')"
-        }
+        "Texture.cape1"
       ],
       "is_hurt_color": {
         "r": 0.0,

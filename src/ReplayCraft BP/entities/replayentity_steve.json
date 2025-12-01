@@ -24,9 +24,13 @@
                     ]
                 },
                 "rc:cape": {
-                    "type": "bool",
-                    "default": true,
-                    "client_sync": true
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [
+                        0,
+                        64
+                    ]
                 },
                 "rc:item_use_duration": {
                     "type": "int",
@@ -185,20 +189,20 @@
                 "radius": 6
             },
             "minecraft:damage_sensor": {
-              "triggers": [
-                {
-                    "cause": "projectile",
-                    "deals_damage": "no"
-                },
-                {
-                    "cause": "entity_attack",
-                    "deals_damage": "no"
-                },
-                {
-                    "cause": "suffocation",
-                    "deals_damage": "no"
-                }
-              ]
+                "triggers": [
+                    {
+                        "cause": "projectile",
+                        "deals_damage": "no"
+                    },
+                    {
+                        "cause": "entity_attack",
+                        "deals_damage": "no"
+                    },
+                    {
+                        "cause": "suffocation",
+                        "deals_damage": "no"
+                    }
+                ]
             },
             "minecraft:equip_item": {}
         },
