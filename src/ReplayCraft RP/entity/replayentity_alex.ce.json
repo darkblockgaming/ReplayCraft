@@ -9,7 +9,7 @@
                 "animated": "player_animated"
             },
             "textures": {
-                "steve": "textures/entity/alex",
+                "steve": "textures/entity/steve",
                 "cus1": "textures/replaycraft/entity/custom_skins/1",
                 "cus2": "textures/replaycraft/entity/custom_skins/2",
                 "cus3": "textures/replaycraft/entity/custom_skins/3",
@@ -74,7 +74,7 @@
                 "cus62": "textures/replaycraft/entity/custom_skins/62",
                 "cus63": "textures/replaycraft/entity/custom_skins/63",
                 "cus64": "textures/replaycraft/entity/custom_skins/64",
-                "cape": "textures/cape1"
+                "cape1": "textures/replaycraft/entity/capes/1"
             },
             "geometry": {
                 "default": "geometry.humanoid.customSlim",
@@ -249,7 +249,7 @@
             "render_controllers": [
                 "controller.render.replayentity",
                 {
-                    "controller.render.replayentity.cape": "q.property('rc:cape')"
+                    "controller.render.replayentity.cape":  "query.property('rc:cape')"
                 }
             ],
             "enable_attachables": true
