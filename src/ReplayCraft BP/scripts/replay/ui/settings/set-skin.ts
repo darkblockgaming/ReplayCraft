@@ -19,7 +19,7 @@ export function setSkin(player: Player) {
 
     if (skinData) {
         const parts = skinData.split(",");
-        // verfiy if we have all parts and parse them
+        // verify if we have all parts and parse them
         skinID = parseInt(parts[0] ?? "0") || 0;
         modelID = parseInt(parts[1] ?? "0") || 0;
         capeID = parseInt(parts[2] ?? "0") || 0;

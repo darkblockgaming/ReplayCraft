@@ -40,8 +40,10 @@ import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 import { doSave } from "./replay/functions/replayControls/save-replay-recording";
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
 
-//Chat events
-beforeChatSend();
+/**
+ * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
+ */
+
 //Events
 replaycraftBreakBlockAfterEvent();
 replaycraftBreakBlockBeforeEvent();
