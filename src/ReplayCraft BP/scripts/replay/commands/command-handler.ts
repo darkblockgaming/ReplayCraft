@@ -17,6 +17,7 @@ import { dbDeleteCmd } from "./admin commands/db-delete-entry";
 import { dbClearAllCmd } from "./admin commands/wipe-database";
 import { loadSecondsCmd } from "./player commands/load-seconds-cmd";
 import { flyCmd } from "./player commands/fly-cmd";
+import { environmentCmd } from "./player commands/enviroment-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -127,6 +128,17 @@ function init(event: StartupEvent) {
         description: "Allows you to wipe all databases, this action is irreversible.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
+    /* Environment command
+     */
+    const replaycraftEnvironmentCommand: CustomCommand = {
+        name: "rc:environment",
+        description: "Allows you to delete an entry from a database.",
+        permissionLevel: CommandPermissionLevel.GameDirectors,
+        mandatoryParameters: [
+            { type: CustomCommandParamType.Boolean, name: "Day Cycle" },
+            { type: CustomCommandParamType.Boolean, name: "Weather Cycle" },
+        ],
+    };
     /*
      * Register commands
      **/
@@ -141,6 +153,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftwipeDatabase, dbClearAllCmd);
     event.customCommandRegistry.registerCommand(replaycraftLoadSecondsCommand, loadSecondsCmd);
     event.customCommandRegistry.registerCommand(replaycraftflightCommand, flyCmd);
+    event.customCommandRegistry.registerCommand(replaycraftEnvironmentCommand, environmentCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
