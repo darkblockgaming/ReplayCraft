@@ -14,13 +14,17 @@ export function setSkin(player: Player) {
     let skinID: number = 0;
     let modelID: number = 0;
     let capeID: number = 0;
-    let skinData = replayCraftSkinDB.get(player.id);
+
+    const skinData = replayCraftSkinDB.get(player.id);
+
     if (skinData) {
-        const [skinIDStr, modelIDStr, capeIDStr] = skinData.split(",");
-        skinID = parseInt(skinIDStr);
-        modelID = parseInt(modelIDStr);
-        capeID = parseInt(capeIDStr);
+        const parts = skinData.split(",");
+        // verfiy if we have all parts and parse them
+        skinID = parseInt(parts[0] ?? "0") || 0;
+        modelID = parseInt(parts[1] ?? "0") || 0;
+        capeID = parseInt(parts[2] ?? "0") || 0;
     }
+
     const replaySettingsForm = new ui.ModalFormData()
         .title("dbg.rc1.title.replaycraft.settings")
         .dropdown("dbg.rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: skinID })
