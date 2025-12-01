@@ -180,6 +180,7 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
             "Custom Skin63",
             "Custom Skin64",
         ],
+        capeTypes: ["Cape Disabled", "Cape Enabled"],
 
         replayController: undefined,
         recordingEndTick: 0,

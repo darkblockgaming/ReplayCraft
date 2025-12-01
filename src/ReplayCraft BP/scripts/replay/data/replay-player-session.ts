@@ -22,6 +22,7 @@ export interface PlayerReplaySession {
     soundIds: string[];
     easeTypes: string[];
     skinTypes: string[];
+    capeTypes: string[];
     /**
      * @param replayController? - The player who is controlling the replay.
      */

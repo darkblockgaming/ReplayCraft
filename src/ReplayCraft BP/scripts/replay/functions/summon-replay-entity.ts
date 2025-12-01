@@ -1,6 +1,7 @@
 import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
+import { debugError } from "../data/util/debug.js";
 
 //@ts-check
 export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string, offlinePlayerName?: string) {
@@ -23,13 +24,20 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         // Get skin and model data keyed by offline player ID
         let skinData = replayCraftSkinDB.get(targetPlayerId);
         if (!skinData) {
-            console.error(`[ReplayCraft] Failed to retrieve skin data for ${targetPlayerId}, have they set a skin?`);
-            skinData = "0,0";
+            debugError(`[ReplayCraft] Failed to retrieve skin data for ${targetPlayerId}, have they set a skin?`);
+            skinData = "0,0,0";
         }
 
-        const [skinIDStr, modelIDStr] = skinData.split(",");
+        const [skinIDStr, modelIDStr, capeIDStr] = skinData.split(",");
         const skinID = parseInt(skinIDStr);
         const modelID = parseInt(modelIDStr);
+        let capeID: number;
+        if (capeIDStr === undefined || capeIDStr === "") {
+            debugError(`[ReplayCraft] Failed to retrieve cape data for ${targetPlayerId}, have they set a cape?`);
+            capeID = 0;
+        } else {
+            capeID = parseInt(capeIDStr);
+        }
 
         const startTick = session.targetFrameTick;
         const totalTicks = Math.min(posData.recordedPositions.length, session.recordingEndTick);
@@ -57,6 +65,8 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
 
         // Set skin and name tag
         customEntity.setProperty("dbg:skin", skinID);
+        // Set cape property
+        customEntity.setProperty("dbg:cape", capeID);
         switch (session.settingNameType) {
             case 0:
             case 1:
