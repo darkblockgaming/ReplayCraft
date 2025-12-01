@@ -1,8 +1,8 @@
 export default {
     // This flag controls the actions animations that are currently being developed.
-    devAnimations: true,
-    devChatCommands: true,
-    debugEnabled: true,
+    devAnimations: false,
+    devChatCommands: false,
+    debugEnabled: false,
     debugEntityTracking: false, //Used for Ambient Entity Playback Logic (This is a busy flag!)
     debugEntityHurt: false, //Entity damage events are logged when enabled (This is a busy flag!)
     debugPlayerHurt: false, //PvP Hurt Data are logged when enabled.
