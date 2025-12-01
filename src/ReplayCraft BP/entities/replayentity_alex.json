@@ -16,7 +16,7 @@
             "properties": {
                 "dbg:skin": {
                     "type": "int",
-                    "default": 1,
+                    "default": 0,
                     "client_sync": true,
                     "range": [
                         0,
