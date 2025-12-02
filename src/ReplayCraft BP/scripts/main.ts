@@ -1,4 +1,3 @@
-import { beforeChatSend } from "./replay/classes/subscriptions/chat-send-before-event";
 import { replaycraftBreakBlockAfterEvent } from "./replay/classes/subscriptions/player-break-block-after-event";
 import { replaycraftBreakBlockBeforeEvent } from "./replay/classes/subscriptions/player-break-block-before-event";
 import { replaycraftInteractWithBlockAfterEvent } from "./replay/classes/subscriptions/player-interact-with-block-after-event";

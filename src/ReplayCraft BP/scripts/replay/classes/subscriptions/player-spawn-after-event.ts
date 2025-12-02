@@ -37,6 +37,13 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
             player.sendMessage({
                 rawtext: [
                     {
+                        translate: "replaycraft.isactive.message",
+                    },
+                ],
+            });
+            player.sendMessage({
+                rawtext: [
+                    {
                         translate: "replaycraft.welcome.message",
                     },
                 ],
@@ -46,8 +53,8 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
             }
         }, 140); // 20 ticks = 1 second
 
-        system.runTimeout(() => {
-            player.sendMessage(`§f§4[ReplayCraft]§fV3.0.0 Dev Build`);
-        }, 145); // 20 ticks = 1 second
+        // system.runTimeout(() => {
+        //     player.sendMessage(`§f§4[ReplayCraft]§fV3.0.0 Dev Build`);
+        // }, 145); // 20 ticks = 1 second
     }
 }

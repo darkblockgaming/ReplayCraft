@@ -180,6 +180,7 @@ dbg.rc1.button.resume.recording=Resume Recording
 
 dbg.rc1.button.preview.replay=Preview Replay [Free Cam]
 dbg.rc1.button.stop.preview=Stop Preview
+replaycarft.setskin.button=Skin Setup
 dbg.rc1.button.preview.settings=Preview Settings
 dbg.rc1.button.start.camera.setup=Start Camera Setup
 dbg.rc1.button.cancel.recording=Cancel Recording
@@ -264,7 +265,8 @@ replaycraftloadbuildname.textField2=Enter Your Replay Name Here.
 replaycraftsetbuildname.title=Set Your Replay Name.
 replaycraftsetbuildname.textField=Replay Name:
 replaycraftsetbuildname.textField2=Enter Your Replay Name Here.
-replaycraft.welcome.message=§f§4[ReplayCraft]§f Type ?rc in chat to be given the ReplayCraft control sticks!
+replaycraft.isactive.message=§f§4[ReplayCraft]§g Is Active
+replaycraft.welcome.message=§f§4[ReplayCraft]§f Type /rc:controls in chat to be given the ReplayCraft control sticks!
 replaycraftsetbuildname.error.message=§f§4[ReplayCraft]§f You must provide a valid name to start a new replay session.
 replaycraftdeletebuild.title=Please choose a replay to delete.
 
