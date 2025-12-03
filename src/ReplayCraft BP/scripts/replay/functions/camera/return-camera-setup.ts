@@ -12,7 +12,7 @@ export function doCamSetupGoBack(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.please.wait.for.replay.to.be.completed",
+                        translate: "rc1.mes.please.wait.for.replay.to.be.completed",
                     },
                 ],
             });
@@ -30,7 +30,7 @@ export function doCamSetupGoBack(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.please.do.the.cinematic.camera.setup",
+                    translate: "rc1.mes.please.do.the.cinematic.camera.setup",
                 },
             ],
         });

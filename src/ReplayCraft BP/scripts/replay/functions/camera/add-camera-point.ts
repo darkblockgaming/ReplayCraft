@@ -14,7 +14,7 @@ export function addCameraPoint(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.please.load.a.frame.before.adding.camera.point",
+                        translate: "rc1.mes.please.load.a.frame.before.adding.camera.point",
                     },
                 ],
             });
@@ -31,7 +31,7 @@ export function addCameraPoint(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.a.camera.point.already.exists.at.this.tick",
+                        translate: "rc1.mes.a.camera.point.already.exists.at.this.tick",
                     },
                 ],
             });

@@ -12,7 +12,7 @@ export function doCamSetup(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.please.wait.for.replay.prev.to.be.completed",
+                        translate: "rc1.mes.please.wait.for.replay.prev.to.be.completed",
                     },
                 ],
             });
@@ -27,7 +27,7 @@ export function doCamSetup(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.cam.setup",
+                    translate: "rc1.mes.cam.setup",
                 },
             ],
         });

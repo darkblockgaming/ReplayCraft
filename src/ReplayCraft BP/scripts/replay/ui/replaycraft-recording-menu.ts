@@ -6,11 +6,11 @@ import { doPause } from "../functions/replayControls/pause-replay-playback";
 export function ReplayCraft2B(player: Player) {
     //if SharedVariables.replayStateMachine.state = recPending
     const replayForm = new ui.ActionFormData()
-        .title("replaycraft.recordingmenu.title")
-        .button("dbg.rc1.button.save.recording") //0
-        .button("dbg.rc1.button.pause.recording") //1
-        .button("dbg.rc1.button.cancel.recording") //2
-        .body("dbg.rc1.body.2b");
+        .title("rc1.recordingmenu.title")
+        .button("rc1.button.save.recording") //0
+        .button("rc1.button.pause.recording") //1
+        .button("rc1.button.cancel.recording") //2
+        .body("rc1.body.2b");
     replayForm.show(player).then((result) => {
         if (result.canceled) return;
         const actions = {

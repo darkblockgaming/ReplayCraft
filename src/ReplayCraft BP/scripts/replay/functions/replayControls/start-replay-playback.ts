@@ -18,7 +18,7 @@ export async function doReplay(player: Player, pointIndex?: number) {
     if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
-                rawtext: [{ translate: "dbg.rc1.mes.replay.is.already.in.progress" }],
+                rawtext: [{ translate: "rc1.mes.replay.is.already.in.progress" }],
             });
         }
         if (session.soundCue) {

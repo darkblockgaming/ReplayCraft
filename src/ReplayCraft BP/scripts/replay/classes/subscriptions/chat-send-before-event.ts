@@ -73,7 +73,7 @@ function giveItems(event: ChatSendBeforeEvent) {
                 container.setItem(freeSlots[1], item2);
 
                 sender.sendMessage({
-                    rawtext: [{ translate: "dbg.rc1.mes.thanks" }],
+                    rawtext: [{ translate: "rc1.mes.thanks" }],
                 });
             }
         });

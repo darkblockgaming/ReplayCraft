@@ -30,7 +30,7 @@ export function newSession(player: Player) {
         return;
     }
 
-    const messageForm = new MessageFormData().title("replaycraft.new.session.title").body("replaycraft.new.session.body").button1("replaycraft.ui.yes.button").button2("replaycraft.ui.no.button");
+    const messageForm = new MessageFormData().title("rc1.new.session.title").body("rc1.new.session.body").button1("rc1.ui.yes.button").button2("rc1.ui.no.button");
 
     messageForm
         .show(player)

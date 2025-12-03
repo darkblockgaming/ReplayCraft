@@ -14,7 +14,7 @@ export function doProceedFurther(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.at.least.two.camera.points.are.recommended",
+                        translate: "rc1.mes.at.least.two.camera.points.are.recommended",
                     },
                 ],
             });

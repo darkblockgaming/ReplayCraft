@@ -14,7 +14,7 @@ export function doSave(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.rec.saved.successfully",
+                    translate: "rc1.mes.rec.saved.successfully",
                 },
             ],
         });

@@ -13,7 +13,7 @@ export function replaySettings(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.please.wait.for.replay.to.be.completed",
+                        translate: "rc1.mes.please.wait.for.replay.to.be.completed",
                     },
                 ],
             });
@@ -25,15 +25,15 @@ export function replaySettings(player: Player) {
     }
     const playerName = session.trackedPlayers.map((player: Player) => player.name);
     const replaySettingsForm = new ui.ModalFormData()
-        .title("dbg.rc1.title.replay.settings")
-        .dropdown("dbg.rc1.dropdown.title.replay.type", ["Default Replay", "Ghost Replay"], { defaultValueIndex: session.settingReplayType })
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
-        .dropdown("dbg.rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
-        .textField("dbg.rc1.textfield.custom.name", session.settingCustomName)
-        .dropdown("dbg.rc1.dropdown.title.camera.ease.type", session.easeTypes, { defaultValueIndex: session.replayCamEase })
-        .dropdown("dbg.rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)"], { defaultValueIndex: session.settingCameraType })
-        .dropdown("dbg.rc1.dropdown.title.focus.on.player", playerName, { defaultValueIndex: session.focusPlayerSelection })
-        .dropdown("dbg.rc1.dropdown.title.affect.camera.of.players", ["All Players", ...playerName], { defaultValueIndex: session.affectCameraSelection })
+        .title("rc1.title.replay.settings")
+        .dropdown("rc1.dropdown.title.replay.type", ["Default Replay", "Ghost Replay"], { defaultValueIndex: session.settingReplayType })
+        .dropdown("rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
+        .dropdown("rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
+        .textField("rc1.textfield.custom.name", session.settingCustomName)
+        .dropdown("rc1.dropdown.title.camera.ease.type", session.easeTypes, { defaultValueIndex: session.replayCamEase })
+        .dropdown("rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)"], { defaultValueIndex: session.settingCameraType })
+        .dropdown("rc1.dropdown.title.focus.on.player", playerName, { defaultValueIndex: session.focusPlayerSelection })
+        .dropdown("rc1.dropdown.title.affect.camera.of.players", ["All Players", ...playerName], { defaultValueIndex: session.affectCameraSelection })
         .slider("drop.title.topdown.cam.height", 2, 20, { valueStep: 1, defaultValue: session.topDownCamHight });
 
     replaySettingsForm.show(player).then((response) => {
@@ -42,7 +42,7 @@ export function replaySettings(player: Player) {
                 player.sendMessage({
                     rawtext: [
                         {
-                            translate: "dbg.rc1.mes.please.click.submit",
+                            translate: "rc1.mes.please.click.submit",
                         },
                     ],
                 });

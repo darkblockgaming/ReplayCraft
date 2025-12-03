@@ -17,7 +17,7 @@ export function deletePro(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed",
+                        translate: "rc1.mes.please.wait.for.replay.or.preview.to.be.completed",
                     },
                 ],
             });

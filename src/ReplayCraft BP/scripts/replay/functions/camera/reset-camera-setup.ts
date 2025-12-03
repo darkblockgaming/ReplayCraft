@@ -22,7 +22,7 @@ export function resetCamSetup(player: Player) {
     player.sendMessage({
         rawtext: [
             {
-                translate: "dbg.rc1.mes.interaction.successfull",
+                translate: "rc1.mes.interaction.successfull",
             },
         ],
     });

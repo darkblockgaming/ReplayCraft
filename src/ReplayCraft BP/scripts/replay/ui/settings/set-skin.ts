@@ -26,10 +26,10 @@ export function setSkin(player: Player) {
     }
 
     const replaySettingsForm = new ui.ModalFormData()
-        .title("dbg.rc1.title.replaycraft.settings")
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: skinID })
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.type.size", ["Steve 4px", "Alex 3px"], { defaultValueIndex: modelID })
-        .dropdown("dbg.rc1.dropdown.title.replay.skin.cape", session.capeTypes, { defaultValueIndex: capeID });
+        .title("rc1.title.rc1.settings")
+        .dropdown("rc1.dropdown.title.replay.skin.type", session.skinTypes, { defaultValueIndex: skinID })
+        .dropdown("rc1.dropdown.title.replay.skin.type.size", ["Steve 4px", "Alex 3px"], { defaultValueIndex: modelID })
+        .dropdown("rc1.dropdown.title.replay.skin.cape", session.capeTypes, { defaultValueIndex: capeID });
 
     replaySettingsForm
         .show(player)

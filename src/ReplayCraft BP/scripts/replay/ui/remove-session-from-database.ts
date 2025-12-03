@@ -38,7 +38,7 @@ export function deleteBuildUI(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "replaycraft.ui.error.message",
+                        translate: "rc1.ui.error.message",
                     },
                 ],
             });

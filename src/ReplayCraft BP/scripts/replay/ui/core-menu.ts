@@ -5,7 +5,7 @@ import { uiReplayCraftMainMenu } from "./replaycraft-main-menu";
 export function uiReplayCraftCore(player: Player) {
     //Default
     const replayForm = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
+        .title("rc1.title.replay.menu")
         .button("Open ReplayCraft") //0
         .button("Open Cinematic "); //1
     replayForm.show(player).then((result) => {

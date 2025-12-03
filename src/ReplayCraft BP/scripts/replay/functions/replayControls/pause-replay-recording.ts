@@ -12,7 +12,7 @@ export function doResume(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.rec.resumed.successfully",
+                    translate: "rc1.mes.rec.resumed.successfully",
                 },
             ],
         });

@@ -11,7 +11,7 @@ export function replayMenuAfterLoad(player: Player) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         return;
     }
-    const form = new ActionFormData().title("replaymenueafterload.title").button("replaymenueafterload.button1").button("replaymenueafterload.button2").button("replaymenueafterload.button3");
+    const form = new ActionFormData().title("rc1.replay.menu.after.load.title").button("rc1.replay.menu.after.load.button1").button("rc1.replay.menu.after.load.button2").button("rc1.replay.menu.after.load.button3");
     form.show(player)
         .then(async (response: ActionFormResponse) => {
             if (response.selection === 0) {

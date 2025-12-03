@@ -49,7 +49,7 @@ export function namePanorama(player: Player) {
         })
         .catch((error: Error) => {
             debugError("Failed to show form: " + error);
-            notifyPlayer(player, "replaycraft.ui.error.message");
+            notifyPlayer(player, "rc1.ui.error.message");
             return -1;
         });
 }

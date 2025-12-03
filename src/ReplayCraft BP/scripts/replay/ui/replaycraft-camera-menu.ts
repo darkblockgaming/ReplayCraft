@@ -16,11 +16,11 @@ import { enableFlight } from "../functions/player/survival";
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
     const form = new ui.ActionFormData()
-        .title("replaycraft.cameramainmenu.title")
-        .body("replaycraft.cameramainmenu.body")
-        .button("replaycraft.timelineplayback.button") // 0
-        .button("replaycraft.recordingcontrols.button") // 1
-        .button("replaycraft.savaload.button"); // 2
+        .title("rc1.cameramainmenu.title")
+        .body("rc1.cameramainmenu.body")
+        .button("rc1.timelineplayback.button") // 0
+        .button("rc1.recordingcontrols.button") // 1
+        .button("rc1.savaload.button"); // 2
 
     form.show(player).then((result) => {
         if (result.canceled) return;
@@ -40,13 +40,13 @@ export function ReplayCraft2E(player: Player) {
 
 function showTimelineMenu(player: Player) {
     const form = new ui.ActionFormData()
-        .title("replaycraft.TimelinePlaybackMenu.title")
-        .button("dbg.rc1.button.load.frame.t") // 0
-        .button("dbg.rc1.button.load.frame.s") // 1
-        .button("dbg.rc1.button.add.camera.point") // 2
-        .button("replaycraft.timelineticks.button") // 3
-        .button("replaycraft.timelineseconds.button") // 4
-        .button("replaycraft.ui.back.button"); // 5
+        .title("rc1.TimelinePlaybackMenu.title")
+        .button("rc1.button.load.frame.t") // 0
+        .button("rc1.button.load.frame.s") // 1
+        .button("rc1.button.add.camera.point") // 2
+        .button("rc1.timelineticks.button") // 3
+        .button("rc1.timelineseconds.button") // 4
+        .button("rc1.ui.back.button"); // 5
 
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 5) return ReplayCraft2E(player);
@@ -63,7 +63,7 @@ function showTimelineMenu(player: Player) {
                     if (world.isHardcore) {
                         player.sendMessage({
                             //flight cannot be enabled in hardcore mode
-                            rawtext: [{ translate: "replaycraft.hardcore.mode.check" }],
+                            rawtext: [{ translate: "rc1.hardcore.mode.check" }],
                         });
                         //do the same as ceative mode you will need to get creative with blocks to get the right angle
                         return addCameraPoint(player);
@@ -83,11 +83,11 @@ function showTimelineMenu(player: Player) {
 
 function showRecordingMenu(player: Player) {
     const form = new ui.ActionFormData()
-        .title("replaycraft.recodingcontrolsmenu.title")
-        .button("dbg.rc1.button.cancel.recording") // 0
-        .button("dbg.rc1.button.reset.camera.setup") // 1
-        .button("dbg.rc1.button.proceed.further") // 2
-        .button("replaycraft.ui.back.button"); // 3
+        .title("rc1.recodingcontrolsmenu.title")
+        .button("rc1.button.cancel.recording") // 0
+        .button("rc1.button.reset.camera.setup") // 1
+        .button("rc1.button.proceed.further") // 2
+        .button("rc1.ui.back.button"); // 3
 
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 3) return ReplayCraft2E(player);
@@ -100,10 +100,10 @@ function showRecordingMenu(player: Player) {
 
 function showAdvancedMenu(player: Player) {
     const form = new ui.ActionFormData()
-        .title("replaycraft.saveloadmenue.title")
-        .button("dbg.rc1.button.save.current.camera.points") // 0
-        .button("dbg.rc1.button.load.existing.camera.points") // 1
-        .button("replaycraft.ui.back.button"); // 2
+        .title("rc1.saveloadmenue.title")
+        .button("rc1.button.save.current.camera.points") // 0
+        .button("rc1.button.load.existing.camera.points") // 1
+        .button("rc1.ui.back.button"); // 2
 
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 2) return ReplayCraft2E(player);

@@ -48,7 +48,7 @@ export function nameOrbital(player: Player) {
         })
         .catch((error: Error) => {
             debugError("Failed to show form: " + error);
-            player.sendMessage({ rawtext: [{ translate: "replaycraft.ui.error.message" }] });
+            player.sendMessage({ rawtext: [{ translate: "rc1.ui.error.message" }] });
             return -1;
         });
 }

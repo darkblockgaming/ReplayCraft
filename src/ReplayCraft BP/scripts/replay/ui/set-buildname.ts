@@ -6,7 +6,7 @@ import { createPlayerSession } from "../data/create-session";
 import { debugError } from "../data/util/debug";
 
 export function setBuildName(player: Player) {
-    const form = new ModalFormData().title("replaycraftsetbuildname.title").textField("replaycraftsetbuildname.textField", "replaycraftsetbuildname.textField2");
+    const form = new ModalFormData().title("rc1.set.build.name.title").textField("rc1.set.build.name.textField", "rc1.set.build.name.textField2");
 
     form.show(player)
         .then((formData) => {
@@ -15,7 +15,7 @@ export function setBuildName(player: Player) {
                 player.sendMessage({
                     rawtext: [
                         {
-                            translate: "replaycraftsetbuildname.error.message",
+                            translate: "rc1.set.build.name.error.message",
                         },
                     ],
                 });
@@ -43,7 +43,7 @@ export function setBuildName(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "replaycraft.ui.error.message",
+                        translate: "rc1.ui.error.message",
                     },
                 ],
             });

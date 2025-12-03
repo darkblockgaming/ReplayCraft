@@ -15,7 +15,7 @@ export function doStopReplay(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.replay.is.already.stopped",
+                        translate: "rc1.mes.replay.is.already.stopped",
                     },
                 ],
             });
@@ -49,7 +49,7 @@ export function doStopReplay(player: Player) {
         player.onScreenDisplay.setActionBar({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.replay.stopped",
+                    translate: "rc1.mes.replay.stopped",
                 },
             ],
         });

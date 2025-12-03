@@ -15,7 +15,7 @@ export async function doViewReplay(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.replay.preview.is.already.on",
+                        translate: "rc1.mes.replay.preview.is.already.on",
                     },
                 ],
             });

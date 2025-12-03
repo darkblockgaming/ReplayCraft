@@ -9,12 +9,12 @@ import { deleteBuildUI } from "./remove-session-from-database";
 export function uiReplayCraftMainMenu(player: Player) {
     //Default
     const replayForm = new ui.ActionFormData()
-        .title("dbg.rc1.title.replay.menu")
-        .button("dbg.rc1.button.start.recording") //0
-        .button("dbg.rc1.button.load.session") //1
-        .button("dbg.rc1.button.delete.session") //2
-        .button("dbg.rc1.button.settings") //3
-        .body("dbg.rc1.body.2a");
+        .title("rc1.title.replay.menu")
+        .button("rc1.button.start.recording") //0
+        .button("rc1.button.load.session") //1
+        .button("rc1.button.delete.session") //2
+        .button("rc1.button.settings") //3
+        .body("rc1.body.2a");
 
     replayForm.show(player).then((result) => {
         if (result.canceled) return;

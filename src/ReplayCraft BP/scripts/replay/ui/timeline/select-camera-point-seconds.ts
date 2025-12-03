@@ -27,7 +27,7 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
 
     if (session.replayCamPos.length === 0) {
         player.sendMessage({
-            rawtext: [{ translate: "dbg.rc1.mes.no.camera.points" }],
+            rawtext: [{ translate: "rc1.mes.no.camera.points" }],
         });
         return;
     }

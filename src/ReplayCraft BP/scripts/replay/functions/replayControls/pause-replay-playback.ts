@@ -12,7 +12,7 @@ export function doPause(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.rec.paused.successfully",
+                    translate: "rc1.mes.rec.paused.successfully",
                 },
             ],
         });

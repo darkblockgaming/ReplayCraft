@@ -86,7 +86,7 @@ export function loadBuildName(player: Player, page = 0): void {
 
             const selectedOption = pageOptions[selection];
             if (!selectedOption.isValid) {
-                player.sendMessage("§cThis build is incompatible with the current version of ReplayCraft.");
+                player.sendMessage("§cThis build is incompatible with the current version of rc1.");
                 system.run(() => loadBuildName(player, page)); // reload current page
                 return;
             }
@@ -106,7 +106,7 @@ export function loadBuildName(player: Player, page = 0): void {
         .catch((error) => {
             debugError("Failed to show form:", error);
             player.sendMessage({
-                rawtext: [{ translate: "replaycraft.ui.error.message" }],
+                rawtext: [{ translate: "rc1.ui.error.message" }],
             });
         });
 }

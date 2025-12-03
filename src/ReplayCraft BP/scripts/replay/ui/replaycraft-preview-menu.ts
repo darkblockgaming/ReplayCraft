@@ -11,15 +11,15 @@ import { setSkin } from "./settings/set-skin";
 export function ReplayCraft2D(player: Player) {
     //if SharedVariables.replayStateMachine.state = recSaved
     const replayForm = new ui.ActionFormData()
-        .title("replaycraft.previewmenu.title")
-        .button("dbg.rc1.button.preview.replay") //0
-        .button("dbg.rc1.button.stop.preview") //1
+        .title("rc1.previewmenu.title")
+        .button("rc1.button.preview.replay") //0
+        .button("rc1.button.stop.preview") //1
         .button("replaycarft.setskin.button") //2
-        .button("dbg.rc1.button.preview.settings") //3
-        .button("dbg.rc1.button.start.camera.setup") //4
-        .button("dbg.rc1.button.cancel.recording") //5
-        .button("dbg.rc1.button.load.session") //6
-        .body("dbg.rc1.body.2d");
+        .button("rc1.button.preview.settings") //3
+        .button("rc1.button.start.camera.setup") //4
+        .button("rc1.button.cancel.recording") //5
+        .button("rc1.button.load.session") //6
+        .body("rc1.body.2d");
     replayForm.show(player).then((result) => {
         if (result.canceled) return;
         const actions = {

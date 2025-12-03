@@ -15,7 +15,7 @@ export function doStopPreview(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.replay.preview.has.stopped.successfully",
+                        translate: "rc1.mes.replay.preview.has.stopped.successfully",
                     },
                 ],
             });
@@ -38,7 +38,7 @@ export function doStopPreview(player: Player) {
             player.onScreenDisplay.setActionBar({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.replay.preview.is.already.off",
+                        translate: "rc1.mes.replay.preview.is.already.off",
                     },
                 ],
             });

@@ -32,7 +32,7 @@ export function doStart(player: Player) {
         player.sendMessage({
             rawtext: [
                 {
-                    translate: "dbg.rc1.mes.rec.has.started",
+                    translate: "rc1.mes.rec.has.started",
                 },
             ],
         });

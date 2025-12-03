@@ -10,7 +10,7 @@ export function flyCmd(_origin: CustomCommandOrigin) {
         if (world.isHardcore) {
             sender.sendMessage({
                 //flight cannot be enabled in hardcore mode
-                rawtext: [{ translate: "replaycraft.hardcore.mode.check" }],
+                rawtext: [{ translate: "rc1.hardcore.mode.check" }],
             });
             //do the same as ceative mode you will need to get creative with blocks to get the right angle
             return addCameraPoint(sender);

@@ -9,10 +9,10 @@ export function mainSettings(player: Player) {
         return;
     }
     const replaySettingsForm = new ui.ModalFormData()
-        .title("dbg.rc1.title.replaycraft.settings")
-        .toggle(`dbg.rc1.toggle.sound.cues`, { defaultValue: session.soundCue })
-        .toggle(`dbg.rc1.toggle.text.prompts`, { defaultValue: session.textPrompt })
-        .toggle(`dbg.rc1.toggle.hide.hud.on.replay`, { defaultValue: session.hideHUD });
+        .title("rc1.title.rc1.settings")
+        .toggle(`rc1.toggle.sound.cues`, { defaultValue: session.soundCue })
+        .toggle(`rc1.toggle.text.prompts`, { defaultValue: session.textPrompt })
+        .toggle(`rc1.toggle.hide.hud.on.replay`, { defaultValue: session.hideHUD });
 
     replaySettingsForm.show(player).then((response) => {
         if (response.canceled) {
@@ -20,7 +20,7 @@ export function mainSettings(player: Player) {
                 player.sendMessage({
                     rawtext: [
                         {
-                            translate: "dbg.rc1.mes.please.click.submit",
+                            translate: "rc1.mes.please.click.submit",
                         },
                     ],
                 });

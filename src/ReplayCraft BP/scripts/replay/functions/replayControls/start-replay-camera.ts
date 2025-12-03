@@ -4,7 +4,7 @@ import { replaySessions } from "../../data/replay-player-session";
 export function startReplayCam(player: Player, startPoint: number = 0) {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        player.sendMessage({ rawtext: [{ translate: "dbg.rc1.mes.no.replay.session.found" }] });
+        player.sendMessage({ rawtext: [{ translate: "rc1.mes.no.replay.session.found" }] });
         return;
     }
 
@@ -24,7 +24,7 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
 
     if (camPos.length === 0 || startPoint >= camPos.length) {
         if (session.textPrompt) {
-            player.sendMessage({ rawtext: [{ translate: "dbg.rc1.mes.no.camera.points.found" }] });
+            player.sendMessage({ rawtext: [{ translate: "rc1.mes.no.camera.points.found" }] });
         }
         if (session.soundCue) player.playSound("note.bass");
         return;

@@ -17,7 +17,7 @@ export async function doSaveReset(player: Player) {
     if (session.isReplayActive === true) {
         if (session.textPrompt) {
             player.sendMessage({
-                rawtext: [{ translate: "dbg.rc1.mes.please.wait.for.replay.or.preview.to.be.completed" }],
+                rawtext: [{ translate: "rc1.mes.please.wait.for.replay.or.preview.to.be.completed" }],
             });
         }
         if (session.soundCue) {

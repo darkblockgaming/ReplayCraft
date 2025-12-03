@@ -1,6 +1,6 @@
 import config from "./config";
 
-/* * Debugging utility functions for ReplayCraft.
+/* * Debugging utility functions for rc1.
  * These functions log messages to the console only if debugging is enabled in the config.
  **/
 

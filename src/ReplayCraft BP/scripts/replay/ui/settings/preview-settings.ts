@@ -12,7 +12,7 @@ export function previewSettings(player: Player) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "dbg.rc1.mes.wait.for.replay.preview.end",
+                        translate: "rc1.mes.wait.for.replay.preview.end",
                     },
                 ],
             });
@@ -23,11 +23,11 @@ export function previewSettings(player: Player) {
         return;
     }
     const replaySettingsForm = new ui.ModalFormData()
-        .title("dbg.rc1.title.preview.settings")
-        .dropdown("dbg.rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], { defaultValueIndex: session.settingReplayType })
-        .dropdown("dbg.rc1.dropdown.title.preview.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
-        .dropdown("dbg.rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
-        .textField("dbg.rc1.textfield.title.custom.name", session.settingCustomName);
+        .title("rc1.title.preview.settings")
+        .dropdown("rc1.dropdown.title.preview.type", ["Default Preview", "Ghost Preview"], { defaultValueIndex: session.settingReplayType })
+        .dropdown("rc1.dropdown.title.preview.skin.type", session.skinTypes, { defaultValueIndex: session.chosenReplaySkin })
+        .dropdown("rc1.dropdown.title.name.of.preview.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
+        .textField("rc1.textfield.title.custom.name", session.settingCustomName);
 
     replaySettingsForm.show(player).then((response) => {
         if (response.canceled) {
@@ -35,7 +35,7 @@ export function previewSettings(player: Player) {
                 player.sendMessage({
                     rawtext: [
                         {
-                            translate: "dbg.rc1.mes.please.click.submit",
+                            translate: "rc1.mes.please.click.submit",
                         },
                     ],
                 });
