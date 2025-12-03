@@ -67,6 +67,7 @@ rc2.dropdown.ease.type=Ease Type (Transition Animation)
 rc2.slider.camspeed=Camera Speed [blocks/sec]
 rc2.slider.camspeed.multiplier=Speed Multiplier
 rc2.lebel.camera.speed.options=§l§g- Camera Speed Options
+rc2.lebel.camera.options=§l§g- Camera Options
 rc2.lebel.camera.rot.options=§l§g- Camera Rotation Options
 rc2.dropdown.camera.facing.type=Camera Facing Type
 rc2.slider.pitch=Pitch (X-rotation)

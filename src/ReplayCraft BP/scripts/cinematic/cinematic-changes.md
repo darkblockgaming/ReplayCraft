@@ -59,7 +59,7 @@ Once you have placed at least **two frames**, you can switch to playback. Here, 
 
 ---
 
-✨ Overall, the new cinematic menu is cleaner, easier to use, and produces higher-quality results thanks to constant speed playback and better frame visualization.
+Overall, the new cinematic menu is cleaner, easier to use, and produces better results thanks to constant speed playback and better frame visualization.
 
 ---
 
