@@ -254,11 +254,11 @@ rc1.mes.no.other.players.available=§f§4[ReplayCraft] §f§cNo other players av
 rc1.mes.you.have.to.select.multiple.players=§f§4[ReplayCraft] §f§cYou Have To Select Multiple Players
 rc1.mes.multiplayer.replay.is.off=§f§4[ReplayCraft] §f§aMultiplayer replay is off.
 
-rc1.replay.menu.after.load.title= How To Continue?
-rc1.replay.menu.after.load= How To Continue?
+rc1.replay.menu.after.load.title=How To Continue?
+rc1.replay.menu.after.load=How ToContinue?
 rc1.replay.menu.after.load.button1=Continue Recording 
 rc1.replay.menu.after.load.button2=Continue Freecam Playback
-rc1.replay.menu.after.load.button3= Camera Setup
+rc1.replay.menu.after.load.button3=Camera Setup
 rc1.load.build.name.title=Enter Replay Name
 rc1.load.build.name.textField=Replay Name To Be Loaded?
 rc1.load.build.name.textField2=Enter Your Replay Name Here.

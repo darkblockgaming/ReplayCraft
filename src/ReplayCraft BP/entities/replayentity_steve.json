@@ -172,7 +172,7 @@
                 "allow_name_tag_renaming": false
             },
             "minecraft:physics": {
-                "push_towards_closest_space": true
+                "has_gravity": false
             },
             // "minecraft:physics": {
             //   "has_gravity": false,
