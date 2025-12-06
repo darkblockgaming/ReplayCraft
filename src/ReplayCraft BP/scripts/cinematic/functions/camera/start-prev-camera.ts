@@ -1,8 +1,9 @@
 import { Player, system, EasingType } from "@minecraft/server";
 import { frameDataMap, settingsDataMap, cineRuntimeDataMap, cameraIntervalMap } from "../../data/maps";
 import { easeTypes } from "../../data/constants/constants";
-import { FrameData } from "../../data/types/types";
 import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
+import { applyCamera } from "./start-camera";
+import { calculateEaseTime } from "./camera-utils";
 import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 
 export function startPreview(player: Player) {
@@ -35,47 +36,49 @@ export function startPreview(player: Player) {
 
     removeAllFrameEntities(player);
 
-    const easeTime = settingsData.cinePrevSpeed;
-    const easeTypeKey = easeTypes[settingsData.easeType];
-    const easeEnum = EasingType[easeTypeKey as keyof typeof EasingType] ?? EasingType.Linear;
-
-    // Clear any old intervals
+    // clear any leftover intervals
     const existing = cameraIntervalMap.get(player.id);
     if (existing) {
         existing.forEach((id) => system.clearRun(id));
     }
     cameraIntervalMap.set(player.id, []);
 
-    // start at frame 0
-    player.camera.setCamera("minecraft:free", {
-        location: frames[0].pos,
-        rotation: frames[0].rot,
-    });
+    const easeTypeKey = easeTypes[settingsData.easeType];
+    const easeEnum = EasingType[easeTypeKey as keyof typeof EasingType] ?? EasingType.Linear;
 
+    // place camera at first frame
+    applyCamera(player, frames[0].pos, frames[0].rot, settingsData.camFacingType, settingsData);
+
+    let index = 1;
     cineRuntimeData.isCameraInMotion = true;
 
-    function moveNextCameraFrame(player: Player, frames: FrameData[], index: number) {
-        if (index >= frames.length) {
-            cineRuntimeData.isCameraInMotion = false;
-            refreshAllFrameEntities(player, "path_placement");
-            player.camera.clear();
-            return;
+    function moveNextCameraFrame() {
+        if (index < frames.length) {
+            const prev = frames[index - 1];
+            const next = frames[index];
+
+            // dynamic ease time based on distance
+            const segmentEaseTime = calculateEaseTime(prev.pos, next.pos, settingsData.cinePrevSpeed);
+
+            applyCamera(player, next.pos, next.rot, settingsData.camFacingType, settingsData, segmentEaseTime, easeEnum);
+
+            const intervalId = system.runTimeout(() => {
+                index++;
+                moveNextCameraFrame();
+            }, segmentEaseTime * 20);
+            cameraIntervalMap.get(player.id)!.push(intervalId);
+        } else {
+            // last frame cleanup
+            const intervalId = system.runTimeout(() => {
+                cineRuntimeData.isCameraInMotion = false;
+                player.camera.clear();
+                refreshAllFrameEntities(player, "path_placement");
+            }, 2);
+            
+            cameraIntervalMap.get(player.id)!.push(intervalId);
         }
-
-        const frame = frames[index];
-        player.camera.setCamera("minecraft:free", {
-            location: frame.pos,
-            rotation: frame.rot,
-            easeOptions: { easeTime, easeType: easeEnum },
-        });
-
-        const intervalId = system.runTimeout(() => {
-            moveNextCameraFrame(player, frames, index + 1);
-        }, easeTime * 20);
-
-        cameraIntervalMap.get(player.id)!.push(intervalId);
     }
 
-    // start transition from frame 1
-    moveNextCameraFrame(player, frames, 1);
+    const initialIntervalId = system.runTimeout(() => moveNextCameraFrame(), 5);
+    cameraIntervalMap.get(player.id)!.push(initialIntervalId);
 }

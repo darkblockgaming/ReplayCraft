@@ -15,17 +15,14 @@ export function frameSettings(player: Player) {
 
     // Keep track of indices so we don’t rely on magic numbers
     const FIELD_INDEX = {
-        previewSpeedMult: 2,
+        cinePrevSpeed: 2,
     } as const;
 
     const form = new ModalFormData()
         .title("rc2.title.frame.settings")
         .divider()
         .label("rc2.lebel.preview.settings")
-        .slider({ translate: "rc2.slider.preview.speed.multiplier" }, 1, 10, {
-            valueStep: 1,
-            defaultValue: settingsData.cinePrevSpeedMult,
-        })
+        .textField("rc2.slider.camspeed", "Numbers only: 0.1, 0.5, 1, 2, 3, etc...", { defaultValue: String(settingsData.cinePrevSpeed) })
         .divider();
 
     form.show(player).then((response) => {
@@ -35,8 +32,16 @@ export function frameSettings(player: Player) {
         }
 
         const values = response.formValues;
-        settingsData.cinePrevSpeedMult = Number(values[FIELD_INDEX.previewSpeedMult]);
-        settingsData.cinePrevSpeed = Math.round((1 / settingsData.cinePrevSpeedMult) * 10) / 10;
+
+        // Manage speed
+        const raw = values[FIELD_INDEX.cinePrevSpeed];
+        const value = Number(raw);
+        if (typeof raw !== "string" || raw.trim() === "" || isNaN(value) || value <= 0) {
+            notifyPlayer(player, "rc2.mes.invalid.speed.value", "note.bass");
+            settingsData.cinePrevSpeed = settingsData.cinePrevSpeed ?? 45.5;
+            return;
+        }
+        settingsData.cinePrevSpeed = value;
 
         settingsDataMap.set(cineRuntimeData.loadedCinematic, settingsData);
         cinematicSettingsDB.set(cineRuntimeData.loadedCinematic, settingsData);

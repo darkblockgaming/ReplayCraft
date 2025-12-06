@@ -5,7 +5,7 @@ import { refreshAllFrameEntities } from "../entity/refresh-all-frame-entities";
 import { removeAllFrameEntities } from "../entity/remove-all-frame-entities";
 import { calculateEaseTime } from "./camera-utils";
 
-function applyCamera(player: Player, pos: Vector3, rot: Vector2, facingType: number, settingsData: any, easeTime?: number, easeEnum?: EasingType) {
+export function applyCamera(player: Player, pos: Vector3, rot: Vector2, facingType: number, settingsData: any, easeTime?: number, easeEnum?: EasingType) {
     const base: any = { location: pos };
 
     if (facingType === 1) {
@@ -65,7 +65,6 @@ export function startCamera(player: Player) {
     }
     cameraIntervalMap.set(player.id, []);
 
-    //const easeTime = settingsData.easetime || 1;
     const easeTypeKey = easeTypes[settingsData.easeType];
     const easeEnum = EasingType[easeTypeKey as keyof typeof EasingType] ?? EasingType.Linear;
 

@@ -25,7 +25,7 @@ export function loadInstance(player: Player, cinematicBasicData: CinematicBasicD
             camFacingType: 0,
             camFacingX: 0,
             camFacingY: 0,
-            cinePrevSpeed: 0.5,
+            cinePrevSpeed: 45.5,
             cinePrevSpeedMult: 5,
             panoRPM: 8,
             panoRotDir: "clockwise",
