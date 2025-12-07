@@ -24,7 +24,7 @@ rc2.button.load=Load
 rc2.lebel.delete.cine.path=§l§g- Delete A Saved Path
 rc2.button.delete=Delete
 rc2.toggle.delete.all=Delete All??
-rc2.toggle.tooltip.this.will.delete.all.cine=If enabled, all saved paths (Normal Cinematic and Panoramic Cinematic) will be deleted permanently!
+rc2.toggle.tooltip.this.will.delete.all.cine=If enabled, all saved paths will be deleted permanently!
 
 ## "framePlacementMenu"
 rc2.body.create.path=Create camera path/place frames!
