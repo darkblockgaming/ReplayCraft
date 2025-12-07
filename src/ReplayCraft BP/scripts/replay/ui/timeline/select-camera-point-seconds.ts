@@ -81,7 +81,7 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
                 session.currentEditingCamIndex = pointIndex;
                 const cam = session.replayCamPos[pointIndex];
                 player.teleport(cam.position, { rotation: session.replayCamRot[pointIndex].rotation });
-                player.sendMessage({rawtext: [{ translate: "rc1.mes.you.have.been.teleported" }]});
+                player.sendMessage({rawtext: [{ translate: "rc1.mes.you.have.been.teleported.to.camera.point" }]});
 
                 // Set the state so the next item use triggers confirmation
                 session.replayStateMachine.setState("editingCameraPos");

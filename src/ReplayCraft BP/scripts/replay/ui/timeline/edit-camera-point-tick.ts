@@ -10,7 +10,7 @@ export async function editCameraPointTick(player: Player, index: number) {
     }
     const oldTick = session.replayCamPos[index].tick;
 
-    const form = new ui.ModalFormData().title("Edit Camera Point").textField("Enter new tick value:", "e.g. 240", oldTick.toString());
+    const form = new ui.ModalFormData().title("Edit Camera Point").textField("Enter new tick value:", "e.g. 240", { defaultValue: `${oldTick}` });
 
     const response = await form.show(player);
     if (response.canceled) return;

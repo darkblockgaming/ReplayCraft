@@ -69,6 +69,8 @@ export async function respawnCameraEntities(player: Player) {
         if (entity) {
             entity.nameTag = `Camera Point ${i + 1}`;
             entity.addTag("owner:" + player.id);
+            entity.setProperty("rc:rot_x", session.replayCamRot[i].rotation.x);
+            entity.setProperty("rc:rot_y", session.replayCamRot[i].rotation.y);
         } else {
             debugWarn(`[ReplayCraft] Failed to spawn camera entity at ${spawnLocation.x}, ${spawnLocation.y}, ${spawnLocation.z}`);
         }
