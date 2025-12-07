@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.rchumanoid.look_at_target": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "animations": [ "look_at_target_default" ],
+          "transitions": [
+            {
+              "gliding": "query.property('rc:is_gliding')"
+            },
+            {
+              "swimming": "query.property('rc:is_swimming') || query.property('rc:is_crawling')"
+            }
+          ]
+        },
+        "gliding": {
+          "animations": [ "look_at_target_gliding" ],
+          "transitions": [
+            {
+              "swimming": "query.property('rc:is_swimming') || query.property('rc:is_crawling')"
+            },
+            {
+              "default": "!query.property('rc:is_gliding')"
+            }
+          ]
+        },
+        "swimming": {
+          "animations": [ "look_at_target_swimming" ],
+          "transitions": [
+            {
+              "gliding": "query.property('rc:is_gliding')"
+            },
+            {
+              "default": "!query.property('rc:is_swimming') && !query.property('rc:is_crawling')"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

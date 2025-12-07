@@ -8,7 +8,7 @@
         "module": "esnext",
         "sourceMap": false,
         "moduleResolution": "node",
-        "outDir": "build/scripts",
+        "outDir": "build/addon/ReplayCraft_BP/scripts",
         "removeComments": false,
         "allowJs": true,
         "checkJs": false,
@@ -21,6 +21,6 @@
         "noImplicitThis": true,
         "noUnusedParameters": true
     },
-    "include": ["src", "src/scripts/classes/subscriptions/.ts"],
+    "include": ["src", "src/ReplayCraft_BP/scripts/"],
     "exclude": ["node_modules"]
 }

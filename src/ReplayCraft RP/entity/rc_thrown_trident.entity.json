@@ -1,0 +1,28 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "rc:thrown_trident",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/trident"
+      },
+      "geometry": {
+        "default": "geometry.trident"
+      },
+      "animations": {
+        "basic": "animation.rc_thrown_trident"
+      },
+      "scripts": {
+        "animate": [
+          "basic"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.rc_thrown_trident"
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+    "resource_pack_name": "vanilla",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "rc:bow_pulling_0": {
+            "textures": [
+                "textures/items/bow_pulling_0"
+            ]
+        },
+        "rc:bow_pulling_1": {
+            "textures": [
+                "textures/items/bow_pulling_1"
+            ]
+        },
+        "rc:bow_pulling_2": {
+            "textures": [
+                "textures/items/bow_pulling_2"
+            ]
+        }
+    }
+}

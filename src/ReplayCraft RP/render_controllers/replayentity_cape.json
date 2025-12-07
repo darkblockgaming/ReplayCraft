@@ -1,0 +1,23 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.replayentity.cape": {
+      "rebuild_animation_matrices": true,
+      "geometry": "Geometry.cape",
+      "materials": [
+        {
+          "*": "Material.cape"
+        }
+      ],
+      "textures": [
+        "Texture.cape1"
+      ],
+      "is_hurt_color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      }
+    }
+  }
+}

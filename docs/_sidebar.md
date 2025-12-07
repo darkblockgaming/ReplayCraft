@@ -7,7 +7,7 @@
 -   <a href="#" onclick="return false;" title="Documentation" style="color: white; font-size: larger; font-weight: bolder">Documentation</a>
 
     -   [Intro](docs.md "Overview")
-    -   [Chat Commands](commands.md "Chat Commands")
+    -   [Slash Commands](commands.md "Slash Commands")
     -   [Supported Actions](supported-actions.md "Supported Actions")
     -   [Camera Types](camera-types.md "Camera Types")
 

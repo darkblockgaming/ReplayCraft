@@ -1,0 +1,215 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.rcelytra.default": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"scale": 1.067
+				},
+				"left_wing": {
+					"position": [
+						4.5,
+						4,
+						-2
+					],
+					"rotation": [
+						15,
+						0,
+						-13
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				},
+				"right_wing": {
+					"position": [
+						-4.5,
+						4,
+						-2
+					],
+					"rotation": [
+						15,
+						0,
+						13
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				}
+			}
+		},
+		"animation.rcelytra.gliding": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"scale": 1.067
+				},
+				"left_wing": {
+					"position": [
+						2,
+						2,
+						-2
+					],
+					"rotation": [
+						"math.lerp(15, 20, query.property('rc:elytra_ratio'));",
+						0,
+						"math.lerp(-15, -90, query.property('rc:elytra_ratio'))"
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				},
+				"right_wing": {
+					"position": [
+						-2,
+						2,
+						-2
+					],
+					"rotation": [
+						"math.lerp(15, 20, query.property('rc:elytra_ratio'));",
+						0,
+						"math.lerp(15, 90, query.property('rc:elytra_ratio'))"
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				}
+			}
+		},
+		"animation.rcelytra.sneaking": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"scale": 1.067
+				},
+				"left_wing": {
+					"position": [
+						2,
+						3,
+						-2
+					],
+					"rotation": [
+						20,
+						-15,
+						-45
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				},
+				"right_wing": {
+					"position": [
+						-2,
+						3,
+						-2
+					],
+					"rotation": [
+						20,
+						15,
+						45
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				}
+			}
+		},
+		"animation.rcelytra.sleeping": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"scale": 1.067
+				},
+				"left_wing": {
+					"position": [
+						5,
+						4,
+						-2
+					],
+					"rotation": [
+						0,
+						0,
+						-15
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				},
+				"right_wing": {
+					"position": [
+						-5,
+						4,
+						-2
+					],
+					"rotation": [
+						0,
+						0,
+						15
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				}
+			}
+		},
+		"animation.rcelytra.swimming": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"scale": 1.067
+				},
+				"left_wing": {
+					"position": [
+						5,
+						2,
+						-2
+					],
+					"rotation": [
+						"query.property('rc:swim_amt') * 15",
+						0,
+						-15
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				},
+				"right_wing": {
+					"position": [
+						-5,
+						2,
+						-2
+					],
+					"rotation": [
+						"query.property('rc:swim_amt') * 15",
+						0,
+						15
+					],
+					"scale": [
+						1,
+						1,
+						2
+					]
+				}
+			}
+		}
+	}
+}

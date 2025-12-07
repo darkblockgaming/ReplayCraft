@@ -1,0 +1,17 @@
+{
+    "format_version": "1.10.0",
+    "animations": {
+        "animation.campos_facing": {
+            "loop": true,
+            "bones": {
+                "root": {
+                    "rotation": [
+                        "q.property('rc:rot_x')", //Vertical
+                        "q.property('rc:rot_y')", //Horizontal
+                        0
+                    ]
+                }
+            }
+        }
+    }
+}

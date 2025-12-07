@@ -1,0 +1,69 @@
+{
+    "format_version": "1.21.100",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "dbg:rccampos",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "properties": {
+                "rc:skin": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [
+                        0,
+                        3
+                    ]
+                },
+                "rc:rot_x": {
+                    "type": "float",
+                    "range": [
+                        -90.0,
+                        90.0
+                    ],
+                    "default": 0.0,
+                    "client_sync": true
+                },
+                "rc:rot_y": {
+                    "type": "float",
+                    "range": [
+                        -180.0,
+                        180.0
+                    ],
+                    "default": 180.0,
+                    "client_sync": true
+                }
+            }
+        },
+        "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "other"
+                ]
+            },
+            "minecraft:damage_sensor": {
+                "triggers": {
+                    "cause": "all",
+                    "deals_damage": "no"
+                }
+            },
+            "minecraft:collision_box": {
+                "height": 0.0,
+                "width": 0.0
+            },
+            "minecraft:physics": {
+                "has_gravity": false,
+                "has_collision": false
+            },
+            "minecraft:pushable": {
+                "is_pushable": false,
+                "is_pushable_by_piston": false
+            },
+            "minecraft:nameable": {
+                "always_show": true,
+                "allow_name_tag_renaming": true
+            },
+            "minecraft:conditional_bandwidth_optimization": {}
+        }
+    }
+}

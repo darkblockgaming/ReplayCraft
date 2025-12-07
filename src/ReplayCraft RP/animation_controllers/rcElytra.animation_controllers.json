@@ -1,0 +1,64 @@
+{
+	"format_version" : "1.10.0",
+	"animation_controllers": {
+		"controller.animation.rcelytra.default": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [ "rcelytra_default" ],
+					"transitions": [
+						{ "gliding": "query.property('rc:is_gliding')" },
+						{ "sneaking": "query.is_sneaking" },
+						{ "sleeping": "query.property('rc:is_sleeping')" },
+						{ "swimming": "query.property('rc:is_swimming')" }
+					],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+				},
+				"gliding": {
+					"animations": [ "rcelytra_gliding" ],
+					"transitions": [
+						{ "sleeping": "query.property('rc:is_sleeping')" },
+						{ "swimming": "query.property('rc:is_swimming')" },
+						{ "default": "!query.property('rc:is_gliding')" }
+					],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+				},
+				"sneaking": {
+					"animations": [ "rcelytra_sneaking" ],
+					"transitions": [
+						{ "gliding": "query.property('rc:is_gliding')" },
+						{ "sleeping": "query.property('rc:is_sleeping')" },
+						{ "swimming": "query.property('rc:is_swimming')" },
+						{ "default": "!query.is_sneaking" }
+					],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+				},
+				"sleeping": {
+					"animations": [ "rcelytra_sleeping" ],
+					"transitions": [
+						{ "gliding": "query.property('rc:is_gliding')" },
+						{ "sneaking": "query.is_sneaking" },
+						{ "swimming": "query.property('rc:is_swimming')" },
+						{ "default": "!query.property('rc:is_sleeping')" }
+					],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+				},
+				"swimming": {
+					"animations": [ "rcelytra_swimming" ],
+					"transitions": [
+						{ "gliding": "query.property('rc:is_gliding')" },
+						{ "sneaking": "query.is_sneaking" },
+						{ "sleeping": "query.property('rc:is_sleeping')" },
+						{ "default": "!query.property('rc:is_swimming')" }
+					],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+				}
+			}
+		}
+	}
+}

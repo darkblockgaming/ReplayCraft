@@ -11,7 +11,7 @@ import os from "os";
  * @returns {Promise<string>} - The latest version of BDS.
  */
 function getLatestVersion() {
-    const apiURL = "https://ssk.taiyu.workers.dev/zh-hans/download/server/bedrock";
+    const apiURL = "https://osh01.oshosting.co.uk:3100/latest";
     return new Promise((resolve, reject) => {
         https
             .get(apiURL, (res) => {

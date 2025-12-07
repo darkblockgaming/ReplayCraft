@@ -1,0 +1,72 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "ReplayCraft BP v3.0.0",
+    "description": "ReplayCraft is a powerful Minecraft Bedrock Edition add-on that enables players to record and replay their in-game actions, similar to the popular ReplayMod for Java Edition. Created by §gDarkBlock Gaming",
+    "min_engine_version": [
+      1,
+      21,
+      121
+    ],
+    "uuid": "f374ff83-9d6a-4493-bf30-b1537d0b4505",
+    "version": [
+      3,
+      0,
+      0
+    ],
+    "pack_scope": "world"
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "2edf142b-ad88-4403-bdf4-c1841da3ddc3",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "024617b4-65df-42f7-a865-c9e1c47b0a33",
+      "entry": "scripts/main.js",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "6aef535d-b1e7-4995-b4db-ddf24712fde2",
+      "version": [
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.4.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.1.0-beta"
+    },
+    {
+      "module_name": "@minecraft/debug-utilities",
+      "version": "1.0.0-beta"
+    }
+  ],
+  "metadata": {
+    "product_type": "addon",
+    "authors": [
+      "DarkBlock Gaming",
+      "Pete9xi"
+    ],
+    "url": "https://github.com/darkblockgaming/ReplayCraft",
+    "license": "GNU GENERAL PUBLIC LICENSE Version 3"
+  }
+}

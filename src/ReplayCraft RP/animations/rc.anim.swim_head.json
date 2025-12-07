@@ -1,0 +1,17 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.rchumanoid.look_at_target.swimming": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "math.lerp(query.target_x_rotation, -45.0, query.property('rc:swim_amt'))",
+            "query.target_y_rotation",
+            0.0
+          ]
+        }
+      }
+    }
+  }
+}

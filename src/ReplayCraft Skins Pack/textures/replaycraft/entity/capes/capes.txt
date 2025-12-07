@@ -1,0 +1,1 @@
+Cape Texture should be a png file and named as: 1.png, vanilla cape files are 64*32 so that is the recommended resolution, but lower res images that only contain the cape texture should work fine as well.

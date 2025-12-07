@@ -1,0 +1,17 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.player.glidpose": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "query.target_x_rotation(0)+90",
+            0,
+            0
+          ]
+        }
+      }
+    }
+  }
+}

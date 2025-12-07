@@ -253,7 +253,7 @@
 
     function install() {
         if (!window.$docsify) {
-            console.error("这是一个docsify插件，请先引用docsify库！");
+            debugError("这是一个docsify插件，请先引用docsify库！");
         } else {
             for (var _len = arguments.length, plugins = new Array(_len), _key = 0; _key < _len; _key++) {
                 plugins[_key] = arguments[_key];
