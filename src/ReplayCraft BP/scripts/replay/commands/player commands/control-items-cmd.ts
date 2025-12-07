@@ -35,6 +35,6 @@ export function givePlayerControlsCmd(_origin: CustomCommandOrigin) {
     });
     return {
         status: CustomCommandStatus.Success,
-        message: `You have been give the custom items.`,
+        message: `§f§4[ReplayCraft]§f You have been given the controll items.`,
     };
 }

@@ -253,6 +253,7 @@ rc1.mes.interaction.successfull=§f§4[ReplayCraft] §fInteraction Successfull
 rc1.mes.no.other.players.available=§f§4[ReplayCraft] §f§cNo other players available.
 rc1.mes.you.have.to.select.multiple.players=§f§4[ReplayCraft] §f§cYou Have To Select Multiple Players
 rc1.mes.multiplayer.replay.is.off=§f§4[ReplayCraft] §f§aMultiplayer replay is off.
+rc1.mes.you.have.been.teleported.to.camera.point="§f§4[ReplayCraft]§fYou have been Teleported to camera point. Use the Replay stick to confirm the new location and rotation."
 
 rc1.replay.menu.after.load.title=How To Continue?
 rc1.replay.menu.after.load=How To Continue?
