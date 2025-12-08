@@ -22,7 +22,7 @@ function transferPack(buildPath, devPath) {
         console.log(`🩹 Cleared existing: ${devPath}`);
     }
     fse.copySync(buildPath, devPath);
-    console.log(`📦 Copied ${path.basename(buildPath)} to Minecraft dev folder.`);
+    console.log(`📦 Copied ${path.basename(buildPath)} to ${mcType} dev folder.`);
 }
 
 function transferToMinecraft() {
@@ -33,7 +33,7 @@ function transferToMinecraft() {
         transferPack(buildBP, devBP);
         transferPack(buildRP, devRP);
 
-        console.log("✅ Transfer to Minecraft dev folders complete.");
+        console.log(`✅ Transfer to ${mcType} dev folders complete.`);
     } catch (err) {
         console.error("❌ Transfer failed:", err);
     }
