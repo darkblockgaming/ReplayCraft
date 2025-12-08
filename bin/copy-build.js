@@ -4,7 +4,11 @@ import fse from "fs-extra";
 
 const appDataPath = process.env.APPDATA;
 
-const mcPath = path.join(appDataPath, "Minecraft Bedrock", "Users", "Shared", "games", "com.mojang");
+const isPreview = false;
+
+const mcType = isPreview ? "Minecraft Bedrock Preview" : "Minecraft Bedrock";
+
+const mcPath = path.join(appDataPath, mcType, "Users", "Shared", "games", "com.mojang");
 
 const devBP = path.join(mcPath, "development_behavior_packs", "ReplayCraft_BP");
 const devRP = path.join(mcPath, "development_resource_packs", "ReplayCraft_RP");

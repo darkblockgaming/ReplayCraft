@@ -37,7 +37,7 @@ function handlePlayerSpawn(event: PlayerSpawnAfterEvent) {
             player.sendMessage({
                 rawtext: [
                     {
-                        translate: "replaycraft.welcome.message",
+                        translate: "rc.welcome.message",
                     },
                 ],
             });

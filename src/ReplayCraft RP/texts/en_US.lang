@@ -1,3 +1,5 @@
+rc.welcome.message=§f§4[ReplayCraft]§f Type /rc:controls in chat to be given the ReplayCraft control sticks!
+
 ##-----------------------------------------------
 ##------------- Cinematic Menu Section (Prefix 'rc2') -------------
 
@@ -267,7 +269,6 @@ rc1.set.build.name.title=Set Your Replay Name.
 rc1.set.build.name.textField=Replay Name:
 rc1.set.build.name.textField2=Enter Your Replay Name Here.
 rc1.isactive.message=§f§4[ReplayCraft]§g Is Active
-rc1.welcome.message=§f§4[ReplayCraft]§f Type /rc:controls in chat to be given the ReplayCraft control sticks!
 rc1.set.build.name.error.message=§f§4[ReplayCraft]§f You must provide a valid name to start a new replay session.
 replaycraftdeletebuild.title=Please choose a replay to delete.
 
