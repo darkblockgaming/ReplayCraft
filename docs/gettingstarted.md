@@ -30,7 +30,7 @@ The behavior pack is another essential component of ReplayCraft. It includes
 all the scripting required to make the mod functional is contained within this pack.
 
 !> Applying the Packs
-Make sure both the Resource Pack and the Behavior Pack are installed and applied.
+Make sure both the Resource Pack and the Behavior Pack are installed and applied. The skin Pack must be above the core pack.
 
 With everything in place, you're ready to explore the possibilities of custom replay's in Minecraft using ReplayCraft.
 
