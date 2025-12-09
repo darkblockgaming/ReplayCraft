@@ -3,6 +3,8 @@
 
 ReplayCraft is an innovative Minecraft Bedrock Edition add-on that enables players to record build actions performed in the game and play them back cinematic cameras. Follow this guide to ensure everything is set up correctly.
 
+!> **Cheats** must be **enabled** in order to use the addon, this is due to **Mojangs requirement** for slash commands to be accessible 
+
 ## Required Experimental Features
 
 ReplayCraft utilizes cutting-edge features from the 2.3.0-Beta server and 2.1.0-Beta server-ui APIs. To enable these features, make sure the following experimental toggle is activated in your world settings:
