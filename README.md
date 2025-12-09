@@ -32,7 +32,7 @@ ReplayCraft now utilizes the <b>2.5.0-Beta server</b> and <b>2.1.0-Beta server-u
 ---
 
 ## ✅ Installation
-# [Quick Guide] (https://darkblockgaming.github.io/ReplayCraft/#/gettingstarted)
+# [Quick Guide](https://darkblockgaming.github.io/ReplayCraft/#/gettingstarted)
 
 ## Full Documentation 
 # [View Documentation](https://darkblockgaming.github.io/ReplayCraft/#/)
