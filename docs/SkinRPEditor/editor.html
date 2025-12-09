@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skin Pack Editor</title>
+    <title>Skin & Cape Pack Editor</title>
     
     <!-- Docsify Theme -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0.9.0/dist/css/theme-simple-dark.css">
@@ -17,14 +17,8 @@
             text-align: center;
         }
 
-        h1 {
-            font-size: 3rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-top: 20px;
-        }
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2rem; margin-top: 20px; }
 
         .container {
             width: 90%;
@@ -75,12 +69,13 @@
     <div class="container">
         <img src="../Media/logo.webp" alt="ReplayCraft">
 
-        <h1>Welcome to the Skin Pack Editor</h1>
+        <h1>Welcome to the Skin & Cape Pack Editor</h1>
         <p>
-            This tool enables you to upload and manage custom skin files for ReplayCraft. 
-            Once completed, you can download an updated skin pack, ready to be used in your Minecraft world.
+            Upload custom skins and capes for ReplayCraft.  
+            Then generate and download a complete McPack.
         </p>
 
+        <!-- SKINS -->
         <section>
             <h2>Upload Skin Files</h2>
             <form id="skinUploadForm" enctype="multipart/form-data">
@@ -89,9 +84,18 @@
             </form>
         </section>
 
+        <!-- CAPES -->
         <section>
-            <h2>Generate Skin Pack</h2>
-            <button type="button" id="generateSkinPackButton">Generate Skin Pack</button>
+            <h2>Upload Cape Files</h2>
+            <form id="capeUploadForm" enctype="multipart/form-data">
+                <label for="capeFiles">Upload Cape Files (.png):</label>
+                <input type="file" id="capeFiles" accept=".png" multiple>
+            </form>
+        </section>
+
+        <section>
+            <h2>Generate Pack</h2>
+            <button type="button" id="generateSkinPackButton">Generate Skin/Cape Pack</button>
         </section>
 
         <section>
@@ -102,7 +106,7 @@
 
     <!-- Loading Indicator -->
     <div id="loading">
-        <p>Generating the skin pack...</p>
+        <p>Generating the pack...</p>
         <div class="spinner"></div>
     </div>
 
