@@ -13,7 +13,7 @@ ReplayCraft now utilizes the <b>2.5.0-Beta server</b> and <b>2.1.0-Beta server-u
 
 ## ⬇️ Download
 
-# [Download v3.0.0](https://github.com/darkblockgaming/ReplayCraft/releases)
+# [Download v3.0.1](https://github.com/darkblockgaming/ReplayCraft/releases)
 ### For Minecraft Bedrock 1.21.130
 
 ---
