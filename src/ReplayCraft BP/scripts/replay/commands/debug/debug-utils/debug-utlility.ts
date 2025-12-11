@@ -1,6 +1,6 @@
 import { CustomCommandOrigin, CustomCommandStatus, system, world, Player } from "@minecraft/server";
 import { collectRuntimeStats, collectPluginStats, RuntimeStats, PluginStats } from "@minecraft/debug-utilities";
-import { debugLog } from "../../data/util/debug";
+import { debugLog } from "../../../data/util/debug";
 
 const activeOverlays = new Set<string>(); // track player IDs who want live stats
 

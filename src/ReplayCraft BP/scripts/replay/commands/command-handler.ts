@@ -12,7 +12,7 @@ import { debugPrintSessionCmd } from "./debug/print-session-data";
 import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
 import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
 import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
-import { debugUtilityCommand } from "./debug/debug-utlility";
+import { debugUtilityCommand } from "./debug/debug-utils/debug-utlility";
 import { dbDeleteCmd } from "./admin commands/db-delete-entry";
 import { dbClearAllCmd } from "./admin commands/wipe-database";
 import { loadSecondsCmd } from "./player commands/load-seconds-cmd";
