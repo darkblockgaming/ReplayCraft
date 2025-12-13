@@ -11,14 +11,26 @@
 - block interaction
 - armour
 - shield
-- elytra (Not during flight)
-
-## Un-Supported Actions
-?> These actions are currently not supported but are being worked on:
+- elytra
 - sleeping
 - flying 
 - swimming
 - climbing
 - gliding
-- block placement via items ie Powder Snow
+- Powder snow
+- lava source blocks
+- water source blocks
+- Entity Tracking
+- PVE
+- PVP
+
+!> Source blocks created by the games mechanics are not recorded. Ie placing two source blocks to create four source blocks of water only two will be cleared and played back via the replay system.
+
+
+## Un-Supported Actions
+?> These actions are currently not supported but might be possible at some point.
 - Some redstone items and actions 
+- Crossbow
+- Brush
+- Food items
+
