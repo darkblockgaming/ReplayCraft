@@ -10,6 +10,8 @@
     -   [Slash Commands](commands.md "Slash Commands")
     -   [Supported Actions](supported-actions.md "Supported Actions")
     -   [Camera Types](camera-types.md "Camera Types")
+    -   [Bedrock Dedicated Server](Support/BDS.md)
+    -   [Debugging](Support/Debugging.md)
 
 -    <a href="#" onclick="return false;" title="Documentation" style="color: white; font-size: larger; font-weight: bolder">Video Tutorials</a>
     -   [In-Depth Tutorial](tutorials/HowTo.md "Overview")
