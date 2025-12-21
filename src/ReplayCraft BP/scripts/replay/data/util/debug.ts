@@ -6,18 +6,18 @@ import config from "./config";
 
 export function debugLog(...args: any[]) {
     if (config.debugEnabled) {
-        debugLog("[ReplayCraft DEBUG]", ...args);
+        console.log("[ReplayCraft DEBUG]", ...args);
     }
 }
 
 export function debugWarn(...args: any[]) {
     if (config.debugEnabled) {
-        debugWarn("[ReplayCraft DEBUG]", ...args);
+        console.warn("[ReplayCraft DEBUG]", ...args);
     }
 }
 
 export function debugError(...args: any[]) {
     if (config.debugEnabled) {
-        debugError("[ReplayCraft DEBUG]", ...args);
+        console.error("[ReplayCraft DEBUG]", ...args);
     }
 }
