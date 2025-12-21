@@ -320,16 +320,15 @@ system.runInterval(() => {
                 // Defensive check to make sure arrays have data for this tickOffset
                 if (
                     typeof playerData.isSneaking !== "object" ||
-                    !(tickOffset in playerData.isSneaking) ||
-                    !(tickOffset in playerData.isFalling) ||
-                    !(tickOffset in playerData.isClimbing) ||
-                    !(tickOffset in playerData.isSprinting) ||
-                    !(tickOffset in playerData.isFlying) ||
-                    !(tickOffset in playerData.isGliding) ||
-                    !(tickOffset in playerData.isSwimming) ||
-                    !(tickOffset in playerData.isSleeping) ||
-                    !(tickOffset in playerData.isRiding) ||
-                    !(tickOffset in playerData.ridingTypeId)
+                    typeof playerData.isFalling !== "object" ||
+                    typeof playerData.isClimbing !== "object" ||
+                    typeof playerData.isSprinting !== "object" ||
+                    typeof playerData.isFlying !== "object" ||
+                    typeof playerData.isGliding !== "object" ||
+                    typeof playerData.isSwimming !== "object" ||
+                    typeof playerData.isSleeping !== "object" ||
+                    typeof playerData.isRiding !== "object" ||
+                    typeof playerData.ridingTypeId !== "object"
                 ) {
                     continue;
                 }
