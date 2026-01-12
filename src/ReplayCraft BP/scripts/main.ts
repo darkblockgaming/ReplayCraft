@@ -281,19 +281,17 @@ system.runInterval(() => {
                 const data = replayActionDataMap.get(player.id);
                 if (!data) return;
                 data.isSneaking.push(player.isSneaking ? 1 : 0);
-                if (config.devAnimations === true) {
-                    data.isSleeping.push(player.isSleeping ? 1 : 0);
-                    data.isClimbing.push(player.isClimbing ? 1 : 0);
-                    data.isFalling.push(player.isFalling ? 1 : 0);
-                    data.isFlying.push(player.isFlying ? 1 : 0);
-                    data.isGliding.push(player.isGliding ? 1 : 0);
-                    data.isSprinting.push(player.isSprinting ? 1 : 0);
-                    data.isSwimming.push(player.isSwimming ? 1 : 0);
-                    data.isRiding.push(isPlayerRiding(player) ? 1 : 0);
-                    const ridden = getRiddenEntity(player);
-                    data.ridingTypeId.push(ridden?.typeId ?? null);
-                    data.isCrawling.push(isPlayerCrawling(player) ? 1 : 0);
-                }
+                data.isSleeping.push(player.isSleeping ? 1 : 0);
+                data.isClimbing.push(player.isClimbing ? 1 : 0);
+                data.isFalling.push(player.isFalling ? 1 : 0);
+                data.isFlying.push(player.isFlying ? 1 : 0);
+                data.isGliding.push(player.isGliding ? 1 : 0);
+                data.isSprinting.push(player.isSprinting ? 1 : 0);
+                data.isSwimming.push(player.isSwimming ? 1 : 0);
+                data.isRiding.push(isPlayerRiding(player) ? 1 : 0);
+                const ridden = getRiddenEntity(player);
+                data.ridingTypeId.push(ridden?.typeId ?? null);
+                data.isCrawling.push(isPlayerCrawling(player) ? 1 : 0);
             });
         }
 
