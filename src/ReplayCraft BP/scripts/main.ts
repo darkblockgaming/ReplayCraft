@@ -562,187 +562,175 @@ system.runInterval(() => {
 
         // --- Ambient Entity Playback ---
         if (isReplaying && settingReplayType === 0) {
-            trackedPlayers.forEach((player) => {
-                //Skip Offline players.
-                if (!player || !player.isValid) return;
-                const dimension = player.dimension;
-                const playerId = player.id;
-                const ambientMap = session.replayAmbientEntityMap.get(playerId);
-                if (!ambientMap) return;
+            const recorderEntry = [...session.replayAmbientEntityMap.entries()][0];
+            if (!recorderEntry) return;
 
-                // CLEANUP STEP at replay start: remove entities spawned during recording
-                if (currentTick === 0) {
-                    debugLog(`Running cleanup for player ${player.name}...`);
-                    for (const [id, data] of ambientMap.entries()) {
-                        if (!id.startsWith("entity:")) continue;
-                        if (config.debugEntityTracking === true) {
-                            debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
-                        }
+            const [recorderId, ambientMap] = recorderEntry;
 
-                        if (data.wasSpawned === false) {
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Skipping pre-existing entity ${id}`);
-                            }
+            const player = trackedPlayers.find((p) => p.id === recorderId && p.isValid);
+            if (!player) return;
 
-                            continue;
-                        }
+            const dimension = player.dimension;
 
-                        // Instead of relying on data.replayEntity, find entity in dimension directly
-                        const numericId = id.replace("entity:", "");
-                        const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
-
-                        if (foundEntity && foundEntity.isValid) {
-                            try {
-                                foundEntity.remove();
-                                if (config.debugEntityTracking === true) {
-                                    debugLog(`Removed spawned entity ${id} at replay start for player ${player.name}`);
-                                }
-                            } catch (err) {
-                                if (config.debugEntityTracking === true) {
-                                    debugWarn(`Failed to remove spawned entity ${id} at replay start for player ${player.name}:`, err);
-                                }
-                            }
-                        } else {
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`No valid entity found to remove for ${id}`);
-                            }
-                        }
-                    }
-                }
+            // CLEANUP STEP at replay start: remove entities spawned during recording
+            if (currentTick === 0) {
+                debugLog(`Running cleanup for recorder ${player.name}...`);
 
                 for (const [id, data] of ambientMap.entries()) {
                     if (!id.startsWith("entity:")) continue;
-                    if (data.typeId === "minecraft:item" || data.typeId === "minecraft:xp_orb") continue;
-                    const tickData = data.recordedData[currentTick];
 
-                    // Try to find existing entity by id in dimension if not assigned yet
-                    if (!data.replayEntity) {
-                        const numericId = id.replace("entity:", "");
-                        const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
-                        if (foundEntity) {
-                            data.replayEntity = foundEntity;
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Assigned existing entity ${id} to replayEntity for player ${player.name}`);
-                            }
-                        }
+                    if (config.debugEntityTracking === true) {
+                        debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
                     }
 
-                    const entity = data.replayEntity;
-                    const hasValidEntity = entity && entity.isValid;
+                    if (data.wasSpawned === false) {
+                        if (config.debugEntityTracking === true) {
+                            debugLog(`Skipping pre-existing entity ${id}`);
+                        }
+                        continue;
+                    }
 
-                    // Spawn if no entity exists and we have tickData
-                    if (!hasValidEntity && currentTick >= data.spawnTick && tickData) {
+                    const numericId = id.replace("entity:", "");
+                    const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
+
+                    if (foundEntity && foundEntity.isValid) {
                         try {
-                            let spawnedEntity;
-                            if (data.isProjectile) {
-                                if (currentTick === data.spawnTick) {
-                                    // Special handling for projectiles
-                                    //Some entities can not be summond so we use a lookup to return a custom copy that can be summoned.
-                                    const replayId = getReplayEntityId(data.typeId);
-                                    spawnedEntity = dimension.spawnEntity(replayId as VanillaEntityIdentifier, tickData.location);
-
-                                    const projComp = spawnedEntity.getComponent("minecraft:projectile");
-                                    if (projComp && data.velocity) {
-                                        projComp.shoot(data.velocity);
-                                    }
-
-                                    spawnedEntity.addTag(`replay:${player.id}`);
-                                    if (config.debugEntityTracking === true) {
-                                        debugLog(`Spawned projectile ${id} with velocity ${JSON.stringify(data.velocity)} for player ${player.name}`);
-                                    }
-                                }
-                            } else {
-                                spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
-                                spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
-                                spawnedEntity.addTag(`replay:${player.id}`);
-
-                                if (data.entityComponents && data.entityComponents.length > 0) {
-                                    debugLog(`Restoring ${data.entityComponents.length} components for entity ${id}`);
-
-                                    for (const comp of data.entityComponents) {
-                                        try {
-                                            const entityComponent = spawnedEntity.getComponent(comp.typeId);
-                                            if (!entityComponent) {
-                                                if (config.debugEntityTracking === true) {
-                                                    debugLog(`Component ${comp.typeId} not supported for ${id}, skipping`);
-                                                }
-
-                                                continue;
-                                            }
-                                            if (config.debugEntityTracking === true) {
-                                                debugLog(`comp.componentData: ${JSON.stringify(comp.componentData, null, 2)}`);
-                                            }
-
-                                            assignEntityComponents(spawnedEntity, comp);
-                                        } catch (err) {
-                                            if (config.debugEntityTracking === true) {
-                                                debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (config.debugEntityTracking === true) {
-                                        debugLog(`No components found to restore for entity ${id}`);
-                                    }
-                                }
-                                if (config.debugEntityTracking === true) {
-                                    debugLog(`Spawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
-                                }
-
-                                data.replayEntity = spawnedEntity;
+                            foundEntity.remove();
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Removed spawned entity ${id} at replay start`);
                             }
                         } catch (err) {
                             if (config.debugEntityTracking === true) {
-                                debugWarn(`Failed to spawn ambient entity ${id} for player ${player.name}:`, err);
-                            }
-                        }
-                    }
-
-                    if (hasValidEntity && tickData && !data.isProjectile) {
-                        try {
-                            entity.teleport(tickData.location, { rotation: tickData.rotation });
-                        } catch (err) {
-                            if (config.debugEntityTracking === true) {
-                                debugWarn(`Failed to move ambient entity ${id} for player ${player.name}:`, err);
-                            }
-
-                            data.replayEntity = undefined; // clear invalid reference
-                        }
-                    }
-
-                    // Damage and despawn logic unchanged...
-                    if (hasValidEntity && data.hurtTicks?.has(currentTick)) {
-                        try {
-                            const damageAmount = data.hurtTicks.get(currentTick);
-                            if (damageAmount !== undefined) {
-                                const customEntity = replayEntityDataMap.get(player.id)?.customEntity;
-                                customEntity?.playAnimation("animation.replayentity.attack");
-                                entity.applyDamage(damageAmount);
-                            }
-                        } catch (err) {
-                            if (config.debugEntityTracking === true) {
-                                debugWarn(`Failed to apply damage to ambient entity ${id} for player ${player.name}:`, err);
-                            }
-
-                            data.replayEntity = undefined;
-                        }
-                    }
-
-                    if (hasValidEntity && data.despawnTick === currentTick && entity.hasTag(`replay:${player.id}`)) {
-                        try {
-                            entity.remove();
-                            data.replayEntity = undefined;
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Despawned ambient entity ${id} for player ${player.name} at tick ${currentTick}`);
-                            }
-                        } catch (err) {
-                            if (config.debugEntityTracking === true) {
-                                debugWarn(`Failed to despawn ambient entity ${id} for player ${player.name}:`, err);
+                                debugWarn(`Failed to remove spawned entity ${id}:`, err);
                             }
                         }
                     }
                 }
-            });
+            }
+
+            for (const [id, data] of ambientMap.entries()) {
+                if (!id.startsWith("entity:")) continue;
+                if (data.typeId === "minecraft:item" || data.typeId === "minecraft:xp_orb") continue;
+
+                const tickData = data.recordedData[currentTick];
+
+                // Try to find existing entity by id in dimension if not assigned yet
+                if (!data.replayEntity) {
+                    const numericId = id.replace("entity:", "");
+                    const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
+                    if (foundEntity) {
+                        data.replayEntity = foundEntity;
+                        if (config.debugEntityTracking === true) {
+                            debugLog(`Assigned existing entity ${id} to replayEntity`);
+                        }
+                    }
+                }
+
+                const entity = data.replayEntity;
+                const hasValidEntity = entity && entity.isValid;
+
+                // Spawn if no entity exists and we have tickData
+                if (!hasValidEntity && currentTick >= data.spawnTick && tickData) {
+                    try {
+                        let spawnedEntity;
+
+                        if (data.isProjectile) {
+                            if (currentTick === data.spawnTick) {
+                                const replayId = getReplayEntityId(data.typeId);
+                                spawnedEntity = dimension.spawnEntity(replayId as VanillaEntityIdentifier, tickData.location);
+
+                                const projComp = spawnedEntity.getComponent("minecraft:projectile");
+                                if (projComp && data.velocity) {
+                                    projComp.shoot(data.velocity);
+                                }
+
+                                spawnedEntity.addTag(`replay:${recorderId}`);
+
+                                if (config.debugEntityTracking === true) {
+                                    debugLog(`Spawned projectile ${id}`);
+                                }
+                            }
+                        } else {
+                            spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
+
+                            spawnedEntity.teleport(tickData.location, {
+                                rotation: tickData.rotation,
+                            });
+
+                            spawnedEntity.addTag(`replay:${recorderId}`);
+
+                            if (data.entityComponents && data.entityComponents.length > 0) {
+                                for (const comp of data.entityComponents) {
+                                    try {
+                                        const entityComponent = spawnedEntity.getComponent(comp.typeId);
+                                        if (!entityComponent) continue;
+                                        assignEntityComponents(spawnedEntity, comp);
+                                    } catch (err) {
+                                        if (config.debugEntityTracking === true) {
+                                            debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (config.debugEntityTracking === true) {
+                                debugLog(`Spawned ambient entity ${id} at tick ${currentTick}`);
+                            }
+
+                            data.replayEntity = spawnedEntity;
+                        }
+                    } catch (err) {
+                        if (config.debugEntityTracking === true) {
+                            debugWarn(`Failed to spawn ambient entity ${id}:`, err);
+                        }
+                    }
+                }
+
+                // Movement
+                if (hasValidEntity && tickData && !data.isProjectile) {
+                    try {
+                        entity.teleport(tickData.location, { rotation: tickData.rotation });
+                    } catch (err) {
+                        if (config.debugEntityTracking === true) {
+                            debugWarn(`Failed to move ambient entity ${id}:`, err);
+                        }
+                        data.replayEntity = undefined;
+                    }
+                }
+
+                // Damage
+                if (hasValidEntity && data.hurtTicks?.has(currentTick)) {
+                    try {
+                        const damageAmount = data.hurtTicks.get(currentTick);
+                        if (damageAmount !== undefined) {
+                            const customEntity = replayEntityDataMap.get(recorderId)?.customEntity;
+
+                            customEntity?.playAnimation("animation.replayentity.attack");
+                            entity.applyDamage(damageAmount);
+                        }
+                    } catch (err) {
+                        if (config.debugEntityTracking === true) {
+                            debugWarn(`Failed to apply damage to ambient entity ${id}:`, err);
+                        }
+                        data.replayEntity = undefined;
+                    }
+                }
+
+                // Despawn
+                if (hasValidEntity && data.despawnTick === currentTick && entity.hasTag(`replay:${recorderId}`)) {
+                    try {
+                        entity.remove();
+                        data.replayEntity = undefined;
+                        if (config.debugEntityTracking === true) {
+                            debugLog(`Despawned ambient entity ${id} at tick ${currentTick}`);
+                        }
+                    } catch (err) {
+                        if (config.debugEntityTracking === true) {
+                            debugWarn(`Failed to despawn ambient entity ${id}:`, err);
+                        }
+                    }
+                }
+            }
         }
 
         // --- Equipment Recording ---
