@@ -38,6 +38,7 @@ import { playItemAnimation } from "./replay/items/item-animation-playback";
 import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 import { doSave } from "./replay/functions/replayControls/save-replay-recording";
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
+import { tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
 
 /**
  * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
@@ -406,10 +407,32 @@ system.runInterval(() => {
                 for (const entity of nearbyEntities) {
                     const id = entity.id;
                     const key = `entity:${id}`;
-                    let isProjectileDetected = false;
-                    if (entity.getComponent("minecraft:projectile")) {
-                        isProjectileDetected = true;
+                    let isProjectileDetected = !!entity.getComponent("minecraft:projectile");
+
+                    // --- Mount / Rider info ---
+                    const riding = entity.getComponent("minecraft:riding");
+                    let mountType: string | null = null;
+                    let riderType: string | null = null;
+                    let mountIndex: number | null = null;
+                    let riderIndex: number | null = null;
+
+                    if (riding?.entityRidingOn) {
+                        mountType = riding.entityRidingOn.typeId;
+                        riderType = entity.typeId;
+
+                        // Determine index: how many entities of this mount type already recorded
+                        const existingMounts = [...playerMap.values()].filter((e) => {
+                            const dataThisTick = e.recordedData[session.recordingEndTick];
+                            return dataThisTick?.mountType === mountType;
+                        });
+                        mountIndex = existingMounts.length;
+                        riderIndex = existingMounts.length;
                     }
+                    if (config.debugMounting) {
+                        console.log(`Recording: MountType: ${mountType ?? "null"}, RiderType: ${riderType ?? "null"}, MountIndex: ${mountIndex ?? "null"}, RiderIndex: ${riderIndex ?? "null"}`);
+                    }
+
+                    // --- Store / update entry ---
                     let entry = playerMap.get(key);
                     if (!entry) {
                         entry = {
@@ -419,31 +442,24 @@ system.runInterval(() => {
                             despawnTick: null,
                             lastSeenTick: session.recordingEndTick,
                             id: entity.id,
-                            entityComponents: [], // now contains type + values
+                            entityComponents: [],
                             wasSpawned: false,
                             isProjectile: isProjectileDetected,
                             velocity: entity.getVelocity(),
                         };
-
                         playerMap.set(key, entry);
                     }
-                    // If no components recorded yet, store them now
+
+                    // --- Record components if not already recorded ---
                     if (!entry.entityComponents || entry.entityComponents.length === 0) {
                         entry.entityComponents = entity.getComponents().map((component) => {
-                            /*Clone the data however this wont grab data that uses extra functions.
-                             * so we add those below as and when needed.
-                             **/
-
                             const clonedData = cloneComponentData(component) as Record<string, unknown>;
 
-                            // Special case to extract the familes data via getTypeFamilies()
                             if (component.typeId === "minecraft:type_family" && typeof (component as any).getTypeFamilies === "function") {
                                 try {
                                     clonedData.families = (component as any).getTypeFamilies();
                                 } catch (e) {
-                                    if (config.debugEnabled) {
-                                        debugWarn(`Failed to get type families for ${entity.typeId}:`, e);
-                                    }
+                                    if (config.debugEnabled) debugWarn(`Failed to get type families for ${entity.typeId}:`, e);
                                 }
                             }
 
@@ -454,20 +470,25 @@ system.runInterval(() => {
                         });
                     }
 
+                    // --- Record location, rotation, and mount/rider info per tick ---
                     entry.recordedData[session.recordingEndTick] = {
                         location: { ...entity.location },
                         rotation: entity.getRotation(),
+                        mountType: mountType,
+                        riderType: riderType,
+                        mountIndex: mountIndex,
+                        riderIndex: riderIndex,
                     };
 
+                    // Update last seen tick
                     entry.lastSeenTick = session.recordingEndTick;
                     seenThisTick.add(key);
                 }
 
+                // --- Handle despawns ---
                 for (const [key, data] of playerMap.entries()) {
-                    if (!seenThisTick.has(key) && data.despawnTick === null) {
-                        if (data.lastSeenTick !== session.recordingEndTick) {
-                            data.despawnTick = session.recordingEndTick;
-                        }
+                    if (!seenThisTick.has(key) && data.despawnTick === null && data.lastSeenTick !== session.recordingEndTick) {
+                        data.despawnTick = session.recordingEndTick;
                     }
                 }
             });
@@ -537,15 +558,33 @@ system.runInterval(() => {
                                 debugWarn(`Failed to set elytra ratio for entity ${entity.id}:`, e);
                             }
                         }
+                        const playerData = session.replayActionDataMap.get(playerId);
+                        if (!playerData) continue;
 
-                        try {
+                        const isRiding = playerData.isRiding[tickOffset] === 1;
+                        const ridingType = playerData.ridingTypeId[tickOffset];
+
+                        if (isRiding && ridingType) {
+                            tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
+
+                            // Force rider to match recorded rotation
+                            const tickOffset = session.currentTick - joinTick;
+                            const rotData = replayRotationDataMap.get(playerId);
+                            if (rotData && tickOffset >= 0 && tickOffset < rotData.recordedRotations.length) {
+                                const recordedRotation = rotData.recordedRotations[tickOffset];
+                                try {
+                                    entity.setRotation(recordedRotation);
+                                } catch (e) {
+                                    if (config.debugEntityPlayback) {
+                                        debugWarn(`Failed to apply recorded rotation to riding entity: ${entity.id}`, e);
+                                    }
+                                }
+                            }
+                        } else {
+                            // Player owns movement
                             entity.teleport(pos.recordedPositions[tickOffset], {
                                 rotation: rot.recordedRotations[tickOffset],
                             });
-                        } catch (e) {
-                            if (config.debugEntityPlayback === true) {
-                                debugWarn(`Skipped teleport for removed entity: ${entity.id}`);
-                            }
                         }
                     } else if (tickOffset >= 0) {
                         if (config.debugEntityPlayback === true) {
@@ -566,44 +605,24 @@ system.runInterval(() => {
             if (!recorderEntry) return;
 
             const [recorderId, ambientMap] = recorderEntry;
-
             const player = trackedPlayers.find((p) => p.id === recorderId && p.isValid);
             if (!player) return;
 
             const dimension = player.dimension;
 
-            // CLEANUP STEP at replay start: remove entities spawned during recording
+            // --- Cleanup step at replay start ---
             if (currentTick === 0) {
                 debugLog(`Running cleanup for recorder ${player.name}...`);
-
                 for (const [id, data] of ambientMap.entries()) {
                     if (!id.startsWith("entity:")) continue;
-
-                    if (config.debugEntityTracking === true) {
-                        debugLog(`Cleanup checking entity ${id} with spawnTick ${data.spawnTick}`);
-                    }
-
-                    if (data.wasSpawned === false) {
-                        if (config.debugEntityTracking === true) {
-                            debugLog(`Skipping pre-existing entity ${id}`);
-                        }
-                        continue;
-                    }
+                    if (data.wasSpawned === false) continue;
 
                     const numericId = id.replace("entity:", "");
                     const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
-
                     if (foundEntity && foundEntity.isValid) {
                         try {
                             foundEntity.remove();
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Removed spawned entity ${id} at replay start`);
-                            }
-                        } catch (err) {
-                            if (config.debugEntityTracking === true) {
-                                debugWarn(`Failed to remove spawned entity ${id}:`, err);
-                            }
-                        }
+                        } catch {}
                     }
                 }
             }
@@ -614,121 +633,85 @@ system.runInterval(() => {
 
                 const tickData = data.recordedData[currentTick];
 
-                // Try to find existing entity by id in dimension if not assigned yet
+                // --- Assign replay entity if missing ---
                 if (!data.replayEntity) {
                     const numericId = id.replace("entity:", "");
                     const foundEntity = dimension.getEntities().find((e) => e.id === numericId);
-                    if (foundEntity) {
-                        data.replayEntity = foundEntity;
-                        if (config.debugEntityTracking === true) {
-                            debugLog(`Assigned existing entity ${id} to replayEntity`);
-                        }
-                    }
+                    if (foundEntity) data.replayEntity = foundEntity;
                 }
 
                 const entity = data.replayEntity;
                 const hasValidEntity = entity && entity.isValid;
 
-                // Spawn if no entity exists and we have tickData
-                if (!hasValidEntity && currentTick >= data.spawnTick && tickData) {
+                // --- Spawn if missing ---
+                if (!hasValidEntity && tickData && currentTick >= data.spawnTick) {
                     try {
                         let spawnedEntity;
-
                         if (data.isProjectile) {
                             if (currentTick === data.spawnTick) {
                                 const replayId = getReplayEntityId(data.typeId);
                                 spawnedEntity = dimension.spawnEntity(replayId as VanillaEntityIdentifier, tickData.location);
-
                                 const projComp = spawnedEntity.getComponent("minecraft:projectile");
-                                if (projComp && data.velocity) {
-                                    projComp.shoot(data.velocity);
-                                }
-
+                                if (projComp && data.velocity) projComp.shoot(data.velocity);
                                 spawnedEntity.addTag(`replay:${recorderId}`);
-
-                                if (config.debugEntityTracking === true) {
-                                    debugLog(`Spawned projectile ${id}`);
-                                }
                             }
                         } else {
                             spawnedEntity = dimension.spawnEntity(data.typeId as VanillaEntityIdentifier, tickData.location);
-
-                            spawnedEntity.teleport(tickData.location, {
-                                rotation: tickData.rotation,
-                            });
-
+                            spawnedEntity.teleport(tickData.location, { rotation: tickData.rotation });
                             spawnedEntity.addTag(`replay:${recorderId}`);
 
-                            if (data.entityComponents && data.entityComponents.length > 0) {
-                                for (const comp of data.entityComponents) {
-                                    try {
-                                        const entityComponent = spawnedEntity.getComponent(comp.typeId);
-                                        if (!entityComponent) continue;
-                                        assignEntityComponents(spawnedEntity, comp);
-                                    } catch (err) {
-                                        if (config.debugEntityTracking === true) {
-                                            debugWarn(`Failed to apply component ${comp.typeId} to ${id}:`, err);
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (config.debugEntityTracking === true) {
-                                debugLog(`Spawned ambient entity ${id} at tick ${currentTick}`);
+                            if (data.entityComponents?.length) {
+                                for (const comp of data.entityComponents) assignEntityComponents(spawnedEntity, comp);
                             }
 
                             data.replayEntity = spawnedEntity;
                         }
                     } catch (err) {
-                        if (config.debugEntityTracking === true) {
-                            debugWarn(`Failed to spawn ambient entity ${id}:`, err);
-                        }
+                        if (config.debugEntityTracking) debugWarn(`Failed to spawn ambient entity ${id}:`, err);
                     }
                 }
 
-                // Movement
+                // --- Movement & mounting ---
                 if (hasValidEntity && tickData && !data.isProjectile) {
                     try {
-                        entity.teleport(tickData.location, { rotation: tickData.rotation });
+                        const isRider = tickData.mountType != null && tickData.mountIndex != null;
+
+                        // If this entity is a rider, only try to resolve mount
+                        if (isRider) {
+                            tryResolveMount(dimension, data, tickData.mountType!, tickData.mountIndex!);
+
+                            // DO NOT teleport riders
+                        } else {
+                            // Otherwise, this entity is free or a mount → teleport it
+                            entity.teleport(tickData.location, {
+                                rotation: tickData.rotation,
+                            });
+                        }
                     } catch (err) {
-                        if (config.debugEntityTracking === true) {
+                        if (config.debugEntityTracking) {
                             debugWarn(`Failed to move ambient entity ${id}:`, err);
                         }
                         data.replayEntity = undefined;
                     }
                 }
 
-                // Damage
+                // --- Damage & despawn ---
                 if (hasValidEntity && data.hurtTicks?.has(currentTick)) {
                     try {
-                        const damageAmount = data.hurtTicks.get(currentTick);
-                        if (damageAmount !== undefined) {
+                        const dmg = data.hurtTicks.get(currentTick);
+                        if (dmg !== undefined) {
                             const customEntity = replayEntityDataMap.get(recorderId)?.customEntity;
-
                             customEntity?.playAnimation("animation.replayentity.attack");
-                            entity.applyDamage(damageAmount);
+                            entity.applyDamage(dmg);
                         }
-                    } catch (err) {
-                        if (config.debugEntityTracking === true) {
-                            debugWarn(`Failed to apply damage to ambient entity ${id}:`, err);
-                        }
-                        data.replayEntity = undefined;
-                    }
+                    } catch {}
                 }
 
-                // Despawn
                 if (hasValidEntity && data.despawnTick === currentTick && entity.hasTag(`replay:${recorderId}`)) {
                     try {
                         entity.remove();
                         data.replayEntity = undefined;
-                        if (config.debugEntityTracking === true) {
-                            debugLog(`Despawned ambient entity ${id} at tick ${currentTick}`);
-                        }
-                    } catch (err) {
-                        if (config.debugEntityTracking === true) {
-                            debugWarn(`Failed to despawn ambient entity ${id}:`, err);
-                        }
-                    }
+                    } catch {}
                 }
             }
         }

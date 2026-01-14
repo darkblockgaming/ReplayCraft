@@ -83,6 +83,10 @@ export interface AmbientEntityData {
         [tick: number]: {
             location: Vector3;
             rotation: Vector2;
+            mountType?: string;
+            riderType?: string;
+            mountIndex?: number;
+            riderIndex?: number;
         };
     };
     spawnTick: number;
