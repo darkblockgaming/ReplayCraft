@@ -51,24 +51,33 @@ export function tryResolveMount(dimension: Dimension, riderData: AmbientEntityDa
 }
 
 /**
- * Attempts to mount a the replay-player entity onto a nearby replay-recorded mount.
+ * Attempts to resolve and apply a mount relationship for a replay-player entity.
  *
- * This is typically used when restoring player mounts during replay syncing,
- * matching mounts via a shared replay recorder tag.
+ * If the player is already riding an entity, the current mount is returned.
+ * Otherwise, this function searches for a nearby replay-recorded mount matching
+ * the given type and recorder tag, and attempts to mount the player onto it.
  *
- * The function will safely exit if:
- * - The player is already riding an entity
- * - No nearby mount matches the recorder tag
+ * The function will safely return `undefined` if:
+ * - No suitable mount is found nearby
  * - The resolved entity is not rideable
+ * - Mounting fails or throws
  *
  * @param dimension - The dimension in which the mount search should occur
- * @param playerEntity - The player entity attempting to mount
- * @param mountType - The entity type ID of the expected mount
+ * @param playerEntity - The replay-player entity attempting to mount
+ * @param mountType - The entity type ID of the expected mount (e.g. `minecraft:boat`)
  * @param recorderId - Replay recorder identifier used to tag mount entities
+ *
+ * @returns The mount entity the player is riding, or `undefined` if no mount
+ *          could be resolved or applied
  */
-export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity, mountType: string, recorderId: string) {
+
+export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity, mountType: string, recorderId: string): Entity | undefined {
     const ridingComp = playerEntity.getComponent("minecraft:riding");
-    if (ridingComp?.entityRidingOn) return; // already riding
+
+    // Already riding → return current mount
+    if (ridingComp?.entityRidingOn) {
+        return ridingComp.entityRidingOn;
+    }
 
     const candidates = dimension.getEntities({
         type: mountType,
@@ -78,18 +87,36 @@ export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity
     });
 
     const mount = candidates.find((e) => e.getComponent("minecraft:rideable"));
-    if (!mount) return;
+    if (!mount) return undefined;
 
     const rideable = mount.getComponent("minecraft:rideable");
-    if (!rideable) return;
+    if (!rideable) return undefined;
 
     try {
-        rideable.addRider(playerEntity);
+        const success = rideable.addRider(playerEntity);
 
-        if (config.debugMounting) {
+        if (success && config.debugMounting) {
             debugLog(`[ReplayCraft DEBUG] Mounted player onto ${mount.typeId} (${mount.id})`);
         }
+
+        return success ? mount : undefined;
     } catch (e) {
         debugError(`Failed to mount player onto ${mount.typeId}: ${e}`);
+        return undefined;
     }
+}
+
+export function getSeatIndex(mount: Entity, rider: Entity): number | undefined {
+    let result: number | undefined = undefined;
+
+    const rideable = mount.getComponent("minecraft:rideable");
+    if (!rideable) return result;
+
+    try {
+        const riders = rideable.getRiders();
+        const index = riders.findIndex((e) => e.id === rider.id);
+        if (index >= 0) result = index;
+    } catch {}
+
+    return result;
 }
