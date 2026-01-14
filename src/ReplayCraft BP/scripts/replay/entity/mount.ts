@@ -105,7 +105,20 @@ export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity
         return undefined;
     }
 }
-
+/**
+ * Resolves the seat index a rider entity occupies on a rideable mount.
+ *
+ * The function will return `undefined` if:
+ * - The mount does not have a rideable component
+ * - The rider is not currently mounted on the entity
+ * - The rider list cannot be accessed or throws
+ *
+ * @param mount - The rideable entity the rider is mounted on
+ * @param rider - The rider entity whose seat index should be resolved
+ *
+ * @returns The zero-based seat index of the rider, or `undefined` if it
+ *          cannot be determined
+ */
 export function getSeatIndex(mount: Entity, rider: Entity): number | undefined {
     let result: number | undefined = undefined;
 

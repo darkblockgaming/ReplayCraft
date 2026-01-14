@@ -38,7 +38,7 @@ import { playItemAnimation } from "./replay/items/item-animation-playback";
 import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 import { doSave } from "./replay/functions/replayControls/save-replay-recording";
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
-import { tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
+import { getSeatIndex, tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
 
 /**
  * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
@@ -517,6 +517,7 @@ system.runInterval(() => {
                 }
             }
         }
+
         // --- Entity Positioning Playback ---
         if (isReplaying && settingReplayType === 0) {
             for (const playerId of session.allRecordedPlayerIds) {
@@ -565,7 +566,14 @@ system.runInterval(() => {
                         const ridingType = playerData.ridingTypeId[tickOffset];
 
                         if (isRiding && ridingType) {
-                            tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
+                            const mount = tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
+
+                            if (mount) {
+                                const seatIndex = getSeatIndex(mount, entity);
+                                if (config.debugMounting) {
+                                    debugLog(`Seat index: ${seatIndex}`);
+                                }
+                            }
 
                             // Force rider to match recorded rotation
                             const tickOffset = session.currentTick - joinTick;
@@ -575,7 +583,7 @@ system.runInterval(() => {
                                 try {
                                     entity.setRotation(recordedRotation);
                                 } catch (e) {
-                                    if (config.debugEntityPlayback) {
+                                    if (config.debugMounting) {
                                         debugWarn(`Failed to apply recorded rotation to riding entity: ${entity.id}`, e);
                                     }
                                 }
