@@ -56,7 +56,7 @@ generateSkinPackButton.addEventListener('click', async () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'ReplayCraft_RP.mcpack');
+        link.setAttribute('download', 'ReplayCraft_SkinPack.mcpack');
         document.body.appendChild(link);
         link.click();
         link.remove();
