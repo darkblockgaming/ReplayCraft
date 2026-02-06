@@ -4,8 +4,7 @@ import { saveToExternalServer } from "../../functions/replayControls/save-to-dat
 import config from "../../data/util/config";
 
 /**
- * Command: /load <seconds>
- * Loads the next X seconds (or reloads current frame if 0) of replay data for the executing player.
+ * Command: Migrates the current replay session data to the external server. Useful for ensuring all data is saved before using other commands or for manual backups.
  */
 export function migrateReplayData(origin: CustomCommandOrigin) {
     const sender = origin.sourceEntity as Player;
