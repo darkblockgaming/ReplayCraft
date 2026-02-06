@@ -8,34 +8,8 @@
 <p align="center">
 ReplayCraft now utilizes the <b>2.5.0-Beta server</b> and <b>2.1.0-Beta server-ui APIs</b>, enhancing compatibility and performance for Minecraft Bedrock.
 </p>
+<p align="center">
+This branch is for the Bedrock Dedicated Server Software, it makes use of the server-net api to save the replay data to an external server and not filling up level.db which with multiple players and replays saved will crash the world. <b> There is no support for this version! </b>
+</p>
 
----
 
-## ⬇️ Download
-
-# [Download v3.0.1](https://github.com/darkblockgaming/ReplayCraft/releases)
-### For Minecraft Bedrock 1.21.130
-
----
-
-## ⬇️ 3.0.0 Changelog
-# [View Changelog](https://github.com/darkblockgaming/ReplayCraft/releases/tag/v3.0.0)
-
----
-
-## ✅ Installation
-# [Quick Guide](https://darkblockgaming.github.io/ReplayCraft/#/gettingstarted)
-
-## Full Documentation 
-# [View Documentation](https://darkblockgaming.github.io/ReplayCraft/#/)
-
----
-
-## 🌐 Community Discord  
-### Need assistance or have questions? Join our community on [Discord](https://discord.gg/zdG9Xwzudt).
-
----
-
-## 💸 Donate/Sponsor 
-
-### If you enjoy this project and would like to support its development—or simply show your appreciation with a donation—we’d be truly grateful. [Donate now...](https://darkblockgaming.github.io/donate-me/)
