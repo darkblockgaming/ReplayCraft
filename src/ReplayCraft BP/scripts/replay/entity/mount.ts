@@ -74,7 +74,7 @@ export function tryResolveMount(dimension: Dimension, riderData: AmbientEntityDa
 export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity, mountType: string, recorderId: string): Entity | undefined {
     const ridingComp = playerEntity.getComponent("minecraft:riding");
 
-    // Already riding → return current mount
+    // Already riding → just return the mount
     if (ridingComp?.entityRidingOn) {
         return ridingComp.entityRidingOn;
     }
@@ -94,17 +94,19 @@ export function tryResolvePlayerMount(dimension: Dimension, playerEntity: Entity
 
     try {
         const success = rideable.addRider(playerEntity);
+        if (!success) return undefined;
 
-        if (success && config.debugMounting) {
+        if (config.debugMounting) {
             debugLog(`[ReplayCraft DEBUG] Mounted player onto ${mount.typeId} (${mount.id})`);
         }
 
-        return success ? mount : undefined;
+        return mount;
     } catch (e) {
         debugError(`Failed to mount player onto ${mount.typeId}: ${e}`);
         return undefined;
     }
 }
+
 /**
  * Resolves the seat index a rider entity occupies on a rideable mount.
  *
@@ -132,4 +134,41 @@ export function getSeatIndex(mount: Entity, rider: Entity): number | undefined {
     } catch {}
 
     return result;
+}
+
+export function forceSeatIndexZero(mount: Entity, primaryRider: Entity) {
+    const rideable = mount.getComponent("minecraft:rideable");
+    if (!rideable) return;
+
+    const seatFixTag = `seat0_fixed:${primaryRider.id}`;
+    if (mount.hasTag(seatFixTag)) return;
+
+    try {
+        const riders = rideable.getRiders();
+
+        // Already seat 0
+        if (riders[0]?.id === primaryRider.id) {
+            mount.addTag(seatFixTag);
+            return;
+        }
+
+        // Eject all riders
+        for (const rider of riders) {
+            rideable.ejectRider(rider);
+        }
+
+        // Add PRIMARY rider FIRST → seat index 0
+        rideable.addRider(primaryRider);
+
+        // Add remaining riders in original order
+        for (const rider of riders) {
+            if (rider.id !== primaryRider.id && rider.isValid) {
+                rideable.addRider(rider);
+            }
+        }
+
+        mount.addTag(seatFixTag);
+    } catch {
+        // Bedrock can throw mid-tick; ignore safely
+    }
 }

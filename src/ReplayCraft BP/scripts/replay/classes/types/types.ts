@@ -126,3 +126,9 @@ export interface ReplayDataV3 {
     [key: string]: any;
 }
 //--------------------------------------------------------------------------------------------------------------//
+export interface PlayerReplayData {
+    trackedPlayers: any[]; // or Player[] if you can guarantee it
+    allRecordedPlayerIds: string[];
+    players: Record<string, any>;
+    settings: Record<string, any>;
+}

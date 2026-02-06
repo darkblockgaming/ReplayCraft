@@ -17,6 +17,7 @@ import {
 } from "../../classes/subscriptions/world-initialize";
 import { PlayerReplaySession } from "../../data/replay-player-session";
 import { debugLog, debugWarn } from "../../data/util/debug";
+import { HttpRequest, HttpRequestMethod, HttpHeader, http } from "@minecraft/server-net";
 
 export function saveToDB(player: Player, session: PlayerReplaySession) {
     // Safety check for multiplayer array in session
@@ -125,4 +126,112 @@ export function saveToDB(player: Player, session: PlayerReplaySession) {
     replayCraftSettingsDB.set(player.id + session.buildName, JSON.stringify(filteredSettings));
 
     debugLog(`PlayerReplaySession variables saved for all players.`);
+}
+/**
+ * Serialize a Map to an object recursively (handles nested Maps for ambient entities)
+ */
+function mapToObject(data: any): any {
+    if (data === undefined || data === null) return data;
+
+    if (data instanceof Map) {
+        const obj: Record<string, any> = {};
+        for (const [key, value] of data.entries()) {
+            obj[key] = mapToObject(value);
+        }
+        return obj;
+    } else if (Array.isArray(data)) {
+        return data.map((v) => mapToObject(v));
+    } else if (typeof data === "object") {
+        const obj: Record<string, any> = {};
+        for (const key of Object.keys(data)) {
+            const value = (data as any)[key];
+            obj[key] = mapToObject(value);
+        }
+        return obj;
+    }
+
+    return data;
+}
+
+/**
+ * Export a PlayerReplaySession to an external server
+ * @param session The session to export
+ * @param playerid The ID of the player exporting the replay
+ * @param backendUrl The full URL of your backend (e.g., http://192.168.1.x:3000)
+ */
+export async function saveToExternalServer(session: PlayerReplaySession, playerid: string, backendUrl: string) {
+    if (!Array.isArray(session.trackedPlayers) || session.trackedPlayers.length === 0) {
+        debugWarn("No tracked players in session.");
+        return;
+    }
+
+    // Build the payload
+    const payload: any = {
+        playerid,
+        buildName: session.buildName,
+        exportedAt: Date.now(),
+        trackedPlayers: session.trackedPlayers,
+        allRecordedPlayerIds: Array.from(session.allRecordedPlayerIds),
+        players: {},
+        settings: {},
+    };
+
+    // Convert per-player maps to plain objects
+    for (const playerId of session.allRecordedPlayerIds) {
+        payload.players[playerId] = {
+            blocks: mapToObject(session.replayBlockStateMap.get(playerId)),
+            positions: mapToObject(session.replayPositionDataMap.get(playerId)),
+            rotations: mapToObject(session.replayRotationDataMap.get(playerId)),
+            actions: mapToObject(session.replayActionDataMap.get(playerId)),
+            interactionsAfter: mapToObject(session.replayBlockInteractionAfterMap.get(playerId)),
+            interactionsBefore: mapToObject(session.replayBlockInteractionBeforeMap.get(playerId)),
+            entities: mapToObject(session.replayEntityDataMap.get(playerId)),
+            equipment: mapToObject(session.replayEquipmentDataMap.get(playerId)),
+            ambientEntities: mapToObject(session.replayAmbientEntityMap.get(playerId)),
+            joinTicks: mapToObject(session.trackedPlayerJoinTicks.get(playerId)),
+            damageEvents: mapToObject(session.playerDamageEventsMap.get(playerId)),
+            itemUseEvents: mapToObject(session.playerItemUseDataMap.get(playerId)),
+        };
+    }
+
+    // Filter session settings
+    const excludeKeys = new Set([
+        "replayStateMachine",
+        "replayBlockStateMap",
+        "replayBlockInteractionAfterMap",
+        "replayBlockInteractionBeforeMap",
+        "replayPositionDataMap",
+        "replayRotationDataMap",
+        "replayActionDataMap",
+        "replayEntityDataMap",
+        "replayEquipmentDataMap",
+        "replayAmbientEntityMap",
+        "allRecordedPlayerIds",
+        "trackedPlayerJoinTicks",
+        "playerDamageEventsMap",
+        "playerItemUseDataMap",
+    ]);
+
+    for (const [key, value] of Object.entries(session)) {
+        if (typeof value !== "function" && !excludeKeys.has(key)) {
+            payload.settings[key] = value;
+        }
+    }
+
+    try {
+        const req = new HttpRequest(`${backendUrl}/replays/import`);
+        req.method = HttpRequestMethod.Post;
+        req.body = JSON.stringify(payload);
+        req.headers = [new HttpHeader("Content-Type", "application/json")];
+
+        const res = await http.request(req);
+
+        if (res.status === 200) {
+            debugLog(`Replay exported successfully: ${playerid}_${session.buildName}.json`);
+        } else {
+            debugWarn(`Replay export failed with status ${res.status}, body: ${res.body}`);
+        }
+    } catch (err) {
+        debugWarn("Replay export failed:", err);
+    }
 }

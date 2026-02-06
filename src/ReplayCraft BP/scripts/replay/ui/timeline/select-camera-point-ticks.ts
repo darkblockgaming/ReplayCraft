@@ -5,11 +5,12 @@ import { doReplay } from "../../functions/replayControls/start-replay-playback";
 import { clearStructure } from "../../functions/clear-structure";
 import { loadEntity } from "../../functions/load-entity";
 import { loadBlocksUpToTick } from "../../functions/load-blocks-upto-tick";
-import { saveToDB } from "../../functions/replayControls/save-to-database";
+import { saveToExternalServer } from "../../functions/replayControls/save-to-database";
 import { editCameraPointTick } from "./edit-camera-point-tick";
 import { removeCameraPoint } from "./remove-camera-point";
 import { removeEntities } from "../../functions/remove-entities";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
+import config from "../../data/util/config";
 
 export async function openCameraReplaySelectFormTicks(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -22,7 +23,8 @@ export async function openCameraReplaySelectFormTicks(player: Player) {
     //reload the current data
     respawnCameraEntities(player);
     //save the current data
-    saveToDB(player, session);
+    //saveToDB(player, session);
+    saveToExternalServer(session, player.id, config.backendURL);
     if (session.replayCamPos.length === 0) {
         player.sendMessage({
             rawtext: [{ translate: "rc1.mes.no.camera.points" }],
@@ -77,7 +79,7 @@ export async function openCameraReplaySelectFormTicks(player: Player) {
                 session.currentEditingCamIndex = pointIndex;
                 const cam = session.replayCamPos[pointIndex];
                 player.teleport(cam.position, { rotation: session.replayCamRot[pointIndex].rotation });
-                player.sendMessage({rawtext: [{ translate: "rc1.mes.you.have.been.teleported.to.camera.point" }]});
+                player.sendMessage({ rawtext: [{ translate: "rc1.mes.you.have.been.teleported.to.camera.point" }] });
 
                 // Set the state so the next item use triggers confirmation
                 session.replayStateMachine.setState("editingCameraPos");

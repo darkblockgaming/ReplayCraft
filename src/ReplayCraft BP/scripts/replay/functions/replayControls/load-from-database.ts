@@ -19,7 +19,8 @@ import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog, debugWarn, debugError } from "../../data/util/debug";
-import { AmbientEntityData, RecordedEntityComponent } from "../../classes/types/types";
+import { AmbientEntityData, PlayerReplayData, RecordedEntityComponent } from "../../classes/types/types";
+import { http, HttpHeader, HttpRequest, HttpRequestMethod } from "@minecraft/server-net";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     const key = player.id + buildName;
@@ -303,5 +304,140 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
         if (showUI) replayMenuAfterLoad(player);
     } catch (err) {
         debugError(`Error showing UI for ${player.id}:`, err);
+    }
+}
+
+export async function loadFromExternalServerWithUI(player: Player, buildName: string, backendUrl: string, showUI: boolean) {
+    let session = replaySessions.playerSessions.get(player.id);
+    if (!session) {
+        session = createPlayerSession(player.id);
+        replaySessions.playerSessions.set(player.id, session);
+    }
+
+    try {
+        // Use HttpRequest and include playerId query parameter
+        const req = new HttpRequest(`${backendUrl}/replays/${buildName}?playerId=${player.id}`);
+        req.method = HttpRequestMethod.Get;
+        req.headers = [new HttpHeader("Accept", "application/json")];
+
+        const res = await http.request(req);
+
+        if (res.status !== 200) {
+            debugWarn(`Failed to fetch replay from backend. Status: ${res.status}`);
+            player.sendMessage(`§cFailed to load replay ${buildName}.`);
+            return;
+        }
+
+        const data = JSON.parse(res.body) as PlayerReplayData;
+
+        // Restore tracked players
+        if (Array.isArray(data.trackedPlayers)) session.trackedPlayers = data.trackedPlayers;
+
+        // Restore allRecordedPlayerIds
+        if (Array.isArray(data.allRecordedPlayerIds)) session.allRecordedPlayerIds = new Set(data.allRecordedPlayerIds);
+
+        // Clear previous maps
+        session.allRecordedPlayerIds.forEach((p) => {
+            session.replayBlockStateMap.delete(p);
+            session.replayPositionDataMap.delete(p);
+            session.replayRotationDataMap.delete(p);
+            session.replayActionDataMap.delete(p);
+            session.replayBlockInteractionAfterMap.delete(p);
+            session.replayBlockInteractionBeforeMap.delete(p);
+            session.replayEntityDataMap.delete(p);
+            session.replayEquipmentDataMap.delete(p);
+            session.replayAmbientEntityMap.delete(p);
+            session.trackedPlayerJoinTicks.delete(p);
+            session.playerDamageEventsMap.delete(p);
+            session.playerItemUseDataMap.delete(p);
+        });
+
+        // Restore per-player maps
+        for (const playerId of session.allRecordedPlayerIds) {
+            const pData = data.players[playerId];
+            if (!pData) continue;
+
+            if (pData.blocks) session.replayBlockStateMap.set(playerId, pData.blocks);
+            if (pData.positions) session.replayPositionDataMap.set(playerId, pData.positions);
+            if (pData.rotations) session.replayRotationDataMap.set(playerId, pData.rotations);
+            if (pData.actions) session.replayActionDataMap.set(playerId, pData.actions);
+            if (pData.interactionsAfter) session.replayBlockInteractionAfterMap.set(playerId, pData.interactionsAfter);
+            if (pData.interactionsBefore) session.replayBlockInteractionBeforeMap.set(playerId, pData.interactionsBefore);
+            if (pData.entities) session.replayEntityDataMap.set(playerId, pData.entities);
+            if (pData.equipment) session.replayEquipmentDataMap.set(playerId, pData.equipment);
+            if (pData.joinTicks) session.trackedPlayerJoinTicks.set(playerId, pData.joinTicks);
+            if (pData.damageEvents) session.playerDamageEventsMap.set(playerId, pData.damageEvents);
+            if (pData.itemUseEvents) session.playerItemUseDataMap.set(playerId, pData.itemUseEvents);
+
+            // Restore ambient entities if present
+            if (pData.ambientEntities) {
+                try {
+                    const ambientMap = new Map<string, AmbientEntityData>();
+                    for (const [entityId, val] of Object.entries(pData.ambientEntities)) {
+                        const ent = val as any;
+                        let hurtTicksMap: Map<number, number> | undefined;
+                        if (Array.isArray(ent.hurtTicks)) hurtTicksMap = new Map(ent.hurtTicks);
+                        else if (typeof ent.hurtTicks === "object") {
+                            hurtTicksMap = new Map(Object.entries(ent.hurtTicks).map(([k, v]) => [parseInt(k), v as number]));
+                        }
+
+                        ambientMap.set(entityId, {
+                            typeId: ent.typeId,
+                            recordedData: ent.recordedData,
+                            spawnTick: ent.spawnTick,
+                            despawnTick: ent.despawnTick,
+                            lastSeenTick: ent.lastSeenTick,
+                            replayEntity: undefined,
+                            hurtTicks: hurtTicksMap,
+                            entityComponents: ent.entityComponents,
+                            wasSpawned: ent.wasSpawned,
+                            isProjectile: ent.isProjectile,
+                            velocity: ent.velocity as Vector3,
+                        });
+                    }
+                    session.replayAmbientEntityMap.set(playerId, ambientMap);
+                } catch (err) {
+                    debugError(`Error restoring ambient entities for player (${playerId}):`, err);
+                }
+            }
+        }
+
+        // Apply session-level settings
+        if (data.settings && typeof data.settings === "object") {
+            Object.assign(session, data.settings);
+        }
+
+        // Resolve actual player references
+        try {
+            const players = world.getPlayers();
+
+            if (session.replayController) {
+                const actualController = players.find((p) => p.id === session.replayController.id);
+                if (actualController) session.replayController = actualController;
+            }
+
+            if (Array.isArray(session.cameraAffectedPlayers)) {
+                session.cameraAffectedPlayers = session.cameraAffectedPlayers.map((p) => players.find((pl) => pl.id === p.id)).filter(Boolean) as Player[];
+            }
+
+            if (Array.isArray(session.trackedPlayers)) {
+                session.trackedPlayers = session.trackedPlayers.map((p) => players.find((pl) => pl.id === p.id)).filter(Boolean) as Player[];
+            }
+        } catch (err) {
+            debugError("Error resolving player references:", err);
+        }
+
+        debugLog(`Replay loaded successfully from backend: ${buildName}`);
+
+        if (showUI) {
+            try {
+                replayMenuAfterLoad(player);
+            } catch (err) {
+                debugError(`Error showing replay UI for ${player.id}:`, err);
+            }
+        }
+    } catch (err) {
+        debugError(`Failed to load replay from backend:`, err);
+        player.sendMessage(`§cFailed to load replay ${buildName}.`);
     }
 }

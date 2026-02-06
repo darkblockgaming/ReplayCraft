@@ -7,11 +7,12 @@ import { addCameraPoint } from "../functions/camera/add-camera-point";
 import { doProceedFurther } from "../functions/camera/complete-camera-setup";
 import { resetCamSetup } from "../functions/camera/reset-camera-setup";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
-import { saveToDB } from "../functions/replayControls/save-to-database";
+import { saveToExternalServer } from "../functions/replayControls/save-to-database";
 import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-ticks";
 import { openCameraReplaySelectFormSeconds } from "./timeline/select-camera-point-seconds";
 import { replaySessions } from "../data/replay-player-session";
 import { enableFlight } from "../functions/player/survival";
+import config from "../data/util/config";
 
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
@@ -108,13 +109,18 @@ function showAdvancedMenu(player: Player) {
     form.show(player).then((result) => {
         if (result.canceled || result.selection === 2) return ReplayCraft2E(player);
 
-        const actions = [saveToDB, respawnCameraEntities];
+        const actions = [saveToExternalServer, respawnCameraEntities];
         const action = actions[result.selection];
         const session = replaySessions.playerSessions.get(player.id);
         if (!session) {
             player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
             return;
         }
-        if (action) action(player, session);
+        if (action === saveToExternalServer) {
+            action(session, player.id, config.backendURL);
+        }
+        if (action === respawnCameraEntities) {
+            action(player);
+        }
     });
 }

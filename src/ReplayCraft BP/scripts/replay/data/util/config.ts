@@ -24,4 +24,5 @@ export default {
     debugCameraUpdates: false,
     debugLogMemoryUsage: false,
     debugMounting: true,
+    backendURL: "",
 };

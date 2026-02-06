@@ -9,35 +9,24 @@
                 "dynamic_collision": "controller.animation.dynamic_collision"
             },
             "scripts": {
-                "animate": [
-                    "dynamic_collision"
-                ]
+                "animate": ["dynamic_collision"]
             },
             "properties": {
                 "dbg:skin": {
                     "type": "int",
                     "default": 0,
                     "client_sync": true,
-                    "range": [
-                        0,
-                        64
-                    ]
+                    "range": [0, 64]
                 },
                 "rc:cape": {
                     "type": "int",
                     "default": 0,
                     "client_sync": true,
-                    "range": [
-                        0,
-                        64
-                    ]
+                    "range": [0, 64]
                 },
                 "rc:item_use_duration": {
                     "type": "int",
-                    "range": [
-                        0,
-                        9999999
-                    ],
+                    "range": [0, 9999999],
                     "default": 0,
                     "client_sync": true
                 },
@@ -60,10 +49,7 @@
                     "type": "float",
                     "default": 0.0,
                     "client_sync": true,
-                    "range": [
-                        0.0,
-                        1.0
-                    ]
+                    "range": [0.0, 1.0]
                 },
                 "rc:is_sleeping": {
                     "type": "bool",
@@ -74,10 +60,7 @@
                     "type": "int",
                     "default": 270,
                     "client_sync": true,
-                    "range": [
-                        0,
-                        360
-                    ]
+                    "range": [0, 360]
                 },
                 "rc:is_crawling": {
                     "type": "bool",
@@ -93,10 +76,7 @@
                     "type": "float",
                     "default": 1.0,
                     "client_sync": true,
-                    "range": [
-                        0.0,
-                        1.0
-                    ]
+                    "range": [0.0, 1.0]
                 },
                 "rc:is_climbing": {
                     "type": "bool",
@@ -122,10 +102,13 @@
                     "type": "int",
                     "default": 0,
                     "client_sync": true,
-                    "range": [
-                        -10,
-                        0
-                    ]
+                    "range": [-10, 0]
+                },
+                "rc:riding_seat_offset": {
+                    "type": "int",
+                    "default": 0,
+                    "client_sync": true,
+                    "range": [-90, 0]
                 },
                 "rc:is_sprinting": {
                     "type": "bool",
@@ -153,10 +136,7 @@
                 "on_death": "Math.Min(query.player_level * 7, 100)"
             },
             "minecraft:type_family": {
-                "family": [
-                    "replayentity",
-                    "dummy-player"
-                ]
+                "family": ["replayentity", "dummy-player"]
             },
             "minecraft:is_hidden_when_invisible": {},
             "minecraft:loot": {
@@ -212,16 +192,12 @@
             },
             "rc:enable_normal_collision": {
                 "add": {
-                    "component_groups": [
-                        "rc:normal_collision"
-                    ]
+                    "component_groups": ["rc:normal_collision"]
                 }
             },
             "rc:enable_sleep_collision": {
                 "add": {
-                    "component_groups": [
-                        "rc:sleep_collision"
-                    ]
+                    "component_groups": ["rc:sleep_collision"]
                 }
             }
         }

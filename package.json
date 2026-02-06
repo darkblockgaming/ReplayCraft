@@ -23,10 +23,14 @@
     "dependencies": {
         "@minecraft/server": "2.5.0-beta.1.21.130-stable",
         "@minecraft/server-ui": "2.1.0-beta.1.21.130-stable",
-        "@minecraft/debug-utilities": "1.0.0-beta.1.21.130-stable"
+        "@minecraft/debug-utilities": "1.0.0-beta.1.21.130-stable",
+         "@minecraft/server-net": "1.0.0-beta.1.21.130-stable"
     },
     "overrides": {
         "@minecraft/debug-utilities": {
+            "@minecraft/server": "2.5.0-beta.1.21.130-stable"
+        },
+         "@minecraft/server-net": {
             "@minecraft/server": "2.5.0-beta.1.21.130-stable"
         }
     },

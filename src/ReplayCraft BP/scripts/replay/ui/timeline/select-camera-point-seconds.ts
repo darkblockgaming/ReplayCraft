@@ -8,8 +8,9 @@ import { loadBlocksUpToTick } from "../../functions/load-blocks-upto-tick";
 import { loadEntity } from "../../functions/load-entity";
 import { removeEntities } from "../../functions/remove-entities";
 import { doReplay } from "../../functions/replayControls/start-replay-playback";
-import { saveToDB } from "../../functions/replayControls/save-to-database";
+import { saveToExternalServer } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
+import config from "../../data/util/config";
 
 export async function openCameraReplaySelectFormSeconds(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -22,7 +23,8 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
     //reload the current data
     respawnCameraEntities(player);
     //save the current data
-    saveToDB(player, session);
+    //saveToDB(player, session);
+    saveToExternalServer(session, player.id, config.backendURL);
     session.showCameraSetupUI = false;
 
     if (session.replayCamPos.length === 0) {
@@ -81,7 +83,7 @@ export async function openCameraReplaySelectFormSeconds(player: Player) {
                 session.currentEditingCamIndex = pointIndex;
                 const cam = session.replayCamPos[pointIndex];
                 player.teleport(cam.position, { rotation: session.replayCamRot[pointIndex].rotation });
-                player.sendMessage({rawtext: [{ translate: "rc1.mes.you.have.been.teleported.to.camera.point" }]});
+                player.sendMessage({ rawtext: [{ translate: "rc1.mes.you.have.been.teleported.to.camera.point" }] });
 
                 // Set the state so the next item use triggers confirmation
                 session.replayStateMachine.setState("editingCameraPos");

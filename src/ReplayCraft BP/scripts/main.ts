@@ -38,7 +38,7 @@ import { playItemAnimation } from "./replay/items/item-animation-playback";
 import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 import { doSave } from "./replay/functions/replayControls/save-replay-recording";
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
-import { getSeatIndex, tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
+import { forceSeatIndexZero, getSeatIndex, tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
 
 /**
  * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
@@ -569,9 +569,26 @@ system.runInterval(() => {
                             const mount = tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
 
                             if (mount) {
+                                forceSeatIndexZero(mount, entity);
                                 const seatIndex = getSeatIndex(mount, entity);
+                                const entityData = session.replayEntityDataMap.get(playerId);
+                                if (mount.typeId.includes("boat")) {
+                                    let yawOffset = 0;
+
+                                    if (seatIndex === 1) {
+                                        yawOffset = -90;
+                                        console.log("Seat index 1 detected: applying -90 yaw offset");
+                                    }
+                                    if (seatIndex === 0 && mount.hasTag(`seat0_fixed:${entity.id}`)) {
+                                        yawOffset = -90;
+                                        console.log("Seat index 0 detected: applying 0 yaw offset");
+                                    }
+
+                                    safeSet(entityData.customEntity, "rc:riding_seat_offset", yawOffset);
+                                }
+
                                 if (config.debugMounting) {
-                                    debugLog(`Seat index: ${seatIndex}`);
+                                    //debugLog(`Seat index: ${seatIndex}`);
                                 }
                             }
 

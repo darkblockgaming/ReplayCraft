@@ -1,7 +1,8 @@
 import { Player, system, VanillaEntityIdentifier, world } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
-import { loadFromDB } from "../replayControls/load-from-database";
+import { loadFromExternalServerWithUI } from "../replayControls/load-from-database";
 import { debugWarn } from "../../data/util/debug";
+import config from "../../data/util/config";
 
 export async function respawnCameraEntities(player: Player) {
     /**
@@ -20,8 +21,8 @@ export async function respawnCameraEntities(player: Player) {
      */
 
     //We pass false to the loadFromDB function to not show the UI prompt to the player.
-    loadFromDB(player, session.buildName, false);
-
+    //loadFromDB(player, session.buildName, false);
+    loadFromExternalServerWithUI(player, session.buildName, config.backendURL, false);
     const playerDim = player.dimension.id;
     const dim = world.getDimension(playerDim);
 

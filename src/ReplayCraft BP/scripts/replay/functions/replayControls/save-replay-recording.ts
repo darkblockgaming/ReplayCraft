@@ -1,9 +1,11 @@
 import { Player } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { clearStructure } from "../clear-structure";
-import { saveToDB } from "./save-to-database";
+import { saveToExternalServer } from "./save-to-database";
+import { debugError, debugLog } from "../../data/util/debug";
+import config from "../../data/util/config";
 
-export function doSave(player: Player) {
+export async function doSave(player: Player) {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
@@ -23,5 +25,11 @@ export function doSave(player: Player) {
         clearStructure(player, session);
     });
 
-    saveToDB(player, session);
+    //saveToDB(player, session);
+    try {
+        await saveToExternalServer(session, player.id, config.backendURL);
+        debugLog("Replay successfully sent to backend");
+    } catch (err) {
+        debugError("Failed to export replay:", err);
+    }
 }

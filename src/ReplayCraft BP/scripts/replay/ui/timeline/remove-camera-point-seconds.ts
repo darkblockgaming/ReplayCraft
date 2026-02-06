@@ -1,8 +1,9 @@
 import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 import { removeEntities } from "../../functions/remove-entities";
-import { saveToDB } from "../../functions/replayControls/save-to-database";
+import { saveToExternalServer } from "../../functions/replayControls/save-to-database";
 import { respawnCameraEntities } from "../../functions/camera/camera-load-from-database";
+import config from "../../data/util/config";
 
 export function removeCameraPoint(player: Player, index: number) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -21,7 +22,8 @@ export function removeCameraPoint(player: Player, index: number) {
     session.targetFrameTick = Math.min(session.targetFrameTick, lastCamTick);
 
     removeEntities(player, false);
-    saveToDB(player, session);
+    //saveToDB(player, session);
+    saveToExternalServer(session, player.id, config.backendURL);
     respawnCameraEntities(player);
 
     player.sendMessage(`§cCamera point ${index + 1} removed.`);
