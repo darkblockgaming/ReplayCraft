@@ -34,6 +34,7 @@ export function setBuildName(player: Player) {
 
             // Update the session's buildName
             session.buildName = "rcData" + inputBuildName.trim();
+            console.log("Session entity tracking enabled:", session.entityTrackingEnabled);
 
             // Start replay using the updated session buildName
             doStart(player);

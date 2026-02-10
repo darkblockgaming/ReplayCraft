@@ -5,7 +5,7 @@ import { replaycraftInteractWithBlockBeforeEvent } from "./replay/classes/subscr
 import { replaycraftItemUseAfterEvent } from "./replay/classes/subscriptions/player-item-use-after-event";
 import { replaycraftPlaceBlockBeforeEvent } from "./replay/classes/subscriptions/player-place-block-before-event";
 import { replaycraftPlaceBlockAfterEvent } from "./replay/classes/subscriptions/player-place-block-after-event";
-import { BlockPermutation, EasingType, Entity, EquipmentSlot, Player, system, VanillaEntityIdentifier, world } from "@minecraft/server";
+import { BlockPermutation, EasingType, Entity, EquipmentSlot, Player, system, VanillaEntityIdentifier, Vector2, world } from "@minecraft/server";
 import { clearStructure } from "./replay/functions/clear-structure";
 import { playBlockSound } from "./replay/functions/play-block-sound";
 import { onPlayerSpawn } from "./replay/classes/subscriptions/player-spawn-after-event";
@@ -17,7 +17,7 @@ import "./cinematic/cinematic.js";
 import { removeEntities } from "./replay/functions/remove-entities";
 import config from "./replay/data/util/config";
 import { replaySessions } from "./replay/data/replay-player-session";
-import { BlockData, PlayerEquipmentData } from "./replay/classes/types/types";
+import { ActionFlags, BlockData, PlayerEquipmentData } from "./replay/classes/types/types";
 import { removeOwnedAmbientEntities } from "./replay/entity/remove-ambient-entities";
 import { debugLog, debugWarn } from "./replay/data/util/debug";
 import { getRiddenEntity, isPlayerRiding } from "./replay/entity/is-riding";
@@ -39,6 +39,7 @@ import { getReplayEntityId } from "./replay/items/lookup-custom-items";
 import { doSave } from "./replay/functions/replayControls/save-replay-recording";
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
 import { forceSeatIndexZero, getSeatIndex, tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
+import { findLastRecordedTick, resolveFlagsAtTick, resolveRidingTypeAtTick, vectorsEqual, vectorsEqual2 } from "./replay/data/util/resolver";
 
 /**
  * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
@@ -244,7 +245,7 @@ system.runInterval(() => {
         }
 
         // --- Position and Rotation Recording ---
-        if (isRecording) {
+        /*if (isRecording) {
             trackedPlayers.forEach((player) => {
                 // Ensure replayPositionDataMap has entry for this player
                 if (!replayPositionDataMap.has(player.id)) {
@@ -269,6 +270,44 @@ system.runInterval(() => {
                     pos.recordedVelocities.push(player.getVelocity());
                 }
             });
+        }*/
+        // Position and Rotation Recording V2
+        // --- Position and Rotation Recording V2 ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                // Ensure maps exist
+                if (!replayPositionDataMap.has(player.id)) {
+                    replayPositionDataMap.set(player.id, { positions: new Map(), velocities: new Map() });
+                }
+                if (!replayRotationDataMap.has(player.id)) {
+                    replayRotationDataMap.set(player.id, { rotations: new Map() });
+                }
+
+                const posData = replayPositionDataMap.get(player.id)!;
+                const rotData = replayRotationDataMap.get(player.id)!;
+
+                const loc = player.location;
+                const vel = player.getVelocity();
+                const rot = player.getRotation();
+
+                // Only record if position changed
+                if (!posData.lastPosition || !vectorsEqual(posData.lastPosition, loc)) {
+                    posData.positions.set(recordingEndTick, loc);
+                    posData.lastPosition = loc;
+                }
+
+                // Only record if velocity changed
+                if (!posData.lastVelocity || !vectorsEqual(posData.lastVelocity, vel)) {
+                    posData.velocities.set(recordingEndTick, vel);
+                    posData.lastVelocity = vel;
+                }
+
+                // Only record rotation if changed
+                if (!rotData.lastRotation || !vectorsEqual2(rotData.lastRotation, rot)) {
+                    rotData.rotations.set(recordingEndTick, rot);
+                    rotData.lastRotation = rot;
+                }
+            });
         }
 
         // --- Multiplayer Player Tracking ---
@@ -277,7 +316,7 @@ system.runInterval(() => {
         }
 
         // --- Action Recording ---
-        if (isRecording) {
+        /*if (isRecording) {
             trackedPlayers.forEach((player) => {
                 const data = replayActionDataMap.get(player.id);
                 if (!data) return;
@@ -294,9 +333,52 @@ system.runInterval(() => {
                 data.ridingTypeId.push(ridden?.typeId ?? null);
                 data.isCrawling.push(isPlayerCrawling(player) ? 1 : 0);
             });
-        }
+        }*/
+        // --- Action Recording V2 ---
+        if (isRecording) {
+            trackedPlayers.forEach((player) => {
+                const data = replayActionDataMap.get(player.id);
+                if (!data) return;
 
-        if (isReplaying && settingReplayType === 0) {
+                let flags = 0;
+
+                if (player.isSneaking) flags |= ActionFlags.Sneaking;
+                if (player.isSwimming) flags |= ActionFlags.Swimming;
+
+                if (config.devAnimations === true) {
+                    if (player.isClimbing) flags |= ActionFlags.Climbing;
+                    if (player.isFalling) flags |= ActionFlags.Falling;
+                    if (player.isFlying) flags |= ActionFlags.Flying;
+                    if (player.isGliding) flags |= ActionFlags.Gliding;
+                    if (player.isSprinting) flags |= ActionFlags.Sprinting;
+                    if (player.isSleeping) flags |= ActionFlags.Sleeping;
+                    if (isPlayerRiding(player)) flags |= ActionFlags.Riding;
+                    if (isPlayerCrawling(player)) flags |= ActionFlags.Crawling;
+                }
+
+                // default init
+                if (data.lastFlags === undefined) {
+                    data.lastFlags = flags;
+                    data.flags.set(recordingEndTick, flags);
+                } else if (flags !== data.lastFlags) {
+                    data.flags.set(recordingEndTick, flags);
+                    data.lastFlags = flags;
+                }
+
+                const ridden = getRiddenEntity(player);
+                const ridingTypeId = ridden?.typeId ?? null;
+
+                if (data.lastRidingTypeId === undefined) {
+                    data.lastRidingTypeId = ridingTypeId;
+                    data.ridingTypeId.set(recordingEndTick, ridingTypeId);
+                } else if (ridingTypeId !== data.lastRidingTypeId) {
+                    data.ridingTypeId.set(recordingEndTick, ridingTypeId);
+                    data.lastRidingTypeId = ridingTypeId;
+                }
+            });
+        }
+        // --- Action Playback ---
+        /*if (isReplaying && settingReplayType === 0) {
             for (const playerId of session.allRecordedPlayerIds) {
                 const joinData = session.trackedPlayerJoinTicks.get(playerId);
                 if (!joinData) continue; // skip if missing
@@ -384,9 +466,96 @@ system.runInterval(() => {
                 }
             }
         }
+*/
+        // Action Playback V2
+        if (isReplaying && settingReplayType === 0) {
+            for (const playerId of session.allRecordedPlayerIds) {
+                const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                if (!joinData) continue;
+
+                const joinTick = joinData.joinTick;
+                const tick = session.currentTick;
+
+                if (tick < joinTick) continue;
+
+                const playerData = session.replayActionDataMap.get(playerId);
+                const entityData = session.replayEntityDataMap.get(playerId);
+
+                if (!playerData || !entityData?.customEntity) continue;
+
+                // --- Resolve flags for current tick ---
+                let flags = 0;
+
+                // Find latest flag change <= current tick
+                for (const [t, v] of playerData.flags) {
+                    if (t <= tick) flags = v;
+                    else break;
+                }
+
+                const has = (f: number) => (flags & f) !== 0;
+
+                safeSet(entityData.customEntity, "isSneaking", has(ActionFlags.Sneaking));
+                safeSet(entityData.customEntity, "rc:is_falling", has(ActionFlags.Falling));
+                safeSet(entityData.customEntity, "rc:is_climbing", has(ActionFlags.Climbing));
+                safeSet(entityData.customEntity, "rc:is_sprinting", has(ActionFlags.Sprinting));
+                safeSet(entityData.customEntity, "rc:is_flying", has(ActionFlags.Flying));
+                safeSet(entityData.customEntity, "rc:is_gliding", has(ActionFlags.Gliding));
+                safeSet(entityData.customEntity, "rc:is_swimming", has(ActionFlags.Swimming));
+                safeSet(entityData.customEntity, "rc:is_sleeping", has(ActionFlags.Sleeping));
+                safeSet(entityData.customEntity, "rc:is_riding", has(ActionFlags.Riding));
+
+                // --- Swimming blend ---
+                if (has(ActionFlags.Swimming)) {
+                    const val = Number(entityData.customEntity.getProperty("rc:swim_amt") ?? 0.0);
+                    const target = 1.0;
+                    const speed = 0.1;
+                    const nextVal = val + (target - val) * speed;
+                    safeSet(entityData.customEntity, "rc:swim_amt", Math.min(nextVal, 1.0));
+                }
+
+                // --- Sleeping direction ---
+                if (has(ActionFlags.Sleeping)) {
+                    const bedBlock = entityData.customEntity.dimension.getBlock(entityData.customEntity.location);
+                    if (bedBlock && bedBlock.typeId.includes("bed")) {
+                        const direction = bedBlock.permutation.getState("direction");
+                        switch (direction) {
+                            case 0:
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 90);
+                                break;
+                            case 1:
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 0);
+                                break;
+                            case 2:
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 270);
+                                break;
+                            case 3:
+                                safeSet(entityData.customEntity, "rc:sleep_dir", 180);
+                                break;
+                        }
+                    }
+                }
+
+                // --- Riding type ---
+                let ridingType: string | null = null;
+
+                for (const [t, v] of playerData.ridingTypeId) {
+                    if (t <= tick) ridingType = v;
+                    else break;
+                }
+
+                if (has(ActionFlags.Riding) && ridingType) {
+                    const entityTypeArray = ["minecraft:minecart", "minecraft:boat", "minecraft:chest_boat", "minecraft:strider"];
+                    if (entityTypeArray.includes(ridingType)) {
+                        safeSet(entityData.customEntity, "rc:riding_y_offset", -10.0);
+                    } else {
+                        safeSet(entityData.customEntity, "rc:riding_y_offset", 0.0);
+                    }
+                }
+            }
+        }
 
         // --- Ambient Entity Recording ---
-        if (isRecording) {
+        if (isRecording && session.entityTrackingEnabled) {
             trackedPlayers.forEach((player) => {
                 const dimension = world.getDimension(player.dimension.id);
                 const nearbyEntities = dimension.getEntities({
@@ -519,7 +688,7 @@ system.runInterval(() => {
         }
 
         // --- Entity Positioning Playback ---
-        if (isReplaying && settingReplayType === 0) {
+        /*if (isReplaying && settingReplayType === 0) {
             for (const playerId of session.allRecordedPlayerIds) {
                 const joinData = session.trackedPlayerJoinTicks.get(playerId);
                 if (!joinData) continue; // skip if missing
@@ -562,8 +731,11 @@ system.runInterval(() => {
                         const playerData = session.replayActionDataMap.get(playerId);
                         if (!playerData) continue;
 
-                        const isRiding = playerData.isRiding[tickOffset] === 1;
-                        const ridingType = playerData.ridingTypeId[tickOffset];
+                        // const isRiding = playerData.isRiding[tickOffset] === 1;
+                        //const ridingType = playerData.ridingTypeId[tickOffset];
+                        const flags = resolveFlagsAtTick(playerData, tickOffset);
+                        const isRiding = (flags & ActionFlags.Riding) !== 0;
+                        const ridingType = resolveRidingTypeAtTick(playerData, tickOffset);
 
                         if (isRiding && ridingType) {
                             const mount = tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
@@ -618,6 +790,91 @@ system.runInterval(() => {
                     } else {
                         if (config.debugEntityPlayback === true) {
                             debugLog(`[ReplayCraft] Skipping movement for ${playerId} — joinTick ${joinTick} > currentTick ${session.currentTick}`);
+                        }
+                    }
+                }
+            }
+        }
+*/
+        // --- Entity Positioning Playback V2 ---
+        if (isReplaying && settingReplayType === 0) {
+            for (const playerId of session.allRecordedPlayerIds) {
+                const joinData = session.trackedPlayerJoinTicks.get(playerId);
+                if (!joinData) continue;
+
+                const joinTick = joinData.joinTick;
+                const tick = session.currentTick;
+                const tickOffset = tick - joinTick;
+                if (tickOffset < 0) continue; // player hasn't joined yet
+
+                const posData = replayPositionDataMap.get(playerId);
+                const rotData = replayRotationDataMap.get(playerId);
+
+                let entityWrapper = replayEntityDataMap.get(playerId);
+                let entity = entityWrapper?.customEntity;
+
+                // Respawn if missing
+                if (!entity || !entity.isValid) {
+                    if (!session.isReplayActive) continue;
+                    if (config.debugEntityPlayback) {
+                        debugWarn(`[ReplayCraft] Entity for ${playerId} missing/invalid, respawning...`);
+                    }
+                    summonReplayEntity(session, session.replayController, playerId);
+                    entity = replayEntityDataMap.get(playerId)?.customEntity;
+                    if (!entity) {
+                        if (config.debugEntityPlayback) {
+                            debugWarn(`[ReplayCraft] Failed to respawn entity for ${playerId}, skipping tick`);
+                        }
+                        continue;
+                    }
+                }
+
+                // --- Position ---
+                if (posData) {
+                    const posTick = findLastRecordedTick(posData.positions, tickOffset);
+                    if (posTick !== null) {
+                        const recordedPos = posData.positions.get(posTick);
+                        if (recordedPos) {
+                            // Optional: calculate fall ratio
+                            const velocity = posData.velocities.get(posTick) ?? { x: 0, y: 0, z: 0 };
+                            const ratio = calculateFallRatio(velocity);
+                            try {
+                                entity.setProperty("rc:elytra_ratio", ratio);
+                            } catch {}
+
+                            // --- Rotation ---
+                            let rotTick: number | null = null;
+                            let recordedRot: Vector2 | undefined;
+                            if (rotData) {
+                                rotTick = findLastRecordedTick(rotData.rotations, tickOffset);
+                                recordedRot = rotTick !== null ? rotData.rotations.get(rotTick) : undefined;
+                            }
+
+                            const playerData = session.replayActionDataMap.get(playerId);
+                            const flags = playerData ? resolveFlagsAtTick(playerData, tickOffset) : 0;
+                            const isRiding = (flags & ActionFlags.Riding) !== 0;
+                            const ridingType = playerData ? resolveRidingTypeAtTick(playerData, tickOffset) : null;
+
+                            if (isRiding && ridingType) {
+                                // Handle mounts
+                                const mount = tryResolvePlayerMount(entity.dimension, entity, ridingType, playerId);
+                                if (mount) {
+                                    forceSeatIndexZero(mount, entity);
+                                    const seatIndex = getSeatIndex(mount, entity);
+                                    safeSet(entity, "rc:riding_seat_offset", seatIndex === 1 ? -90 : 0);
+                                }
+
+                                if (recordedRot) {
+                                    try {
+                                        entity.setRotation(recordedRot);
+                                    } catch {}
+                                }
+                            } else {
+                                // Normal teleport
+                                entity.teleport(recordedPos, {
+                                    rotation: recordedRot ?? entity.getRotation(),
+                                });
+                            }
                         }
                     }
                 }

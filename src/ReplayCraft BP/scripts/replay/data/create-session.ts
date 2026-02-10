@@ -261,6 +261,7 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         showCameraSetupUI: false,
         currentEditingCamIndex: undefined,
         useFullRecordingRange: true,
+        entityTrackingEnabled: true,
         currentCamTransitionData: {},
         playbackHUD: {
             isVisible: false,

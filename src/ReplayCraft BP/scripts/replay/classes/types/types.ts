@@ -48,6 +48,29 @@ export interface PlayerActionsData {
     ridingTypeId: (string | null)[];
     isCrawling: number[];
 }
+export interface PlayerActionsDataV2 {
+    flags: Map<number, number>; // tick -> bitmask
+    ridingTypeId: Map<number, string | null>; // tick -> typeId|null
+
+    // runtime only (not exported)
+    lastFlags?: number;
+    lastRidingTypeId?: string | null;
+}
+export const ActionFlags = {
+    Sneaking: 1 << 0,
+    Swimming: 1 << 1,
+    Climbing: 1 << 2,
+    Falling: 1 << 3,
+    Flying: 1 << 4,
+    Gliding: 1 << 5,
+    Riding: 1 << 6,
+    Sprinting: 1 << 7,
+    Sleeping: 1 << 8,
+    Crawling: 1 << 9,
+} as const;
+
+export type ActionFlag = (typeof ActionFlags)[keyof typeof ActionFlags];
+
 export interface PlaybackEntityData {
     customEntity: Entity;
 }
@@ -131,4 +154,20 @@ export interface PlayerReplayData {
     allRecordedPlayerIds: string[];
     players: Record<string, any>;
     settings: Record<string, any>;
+}
+
+export interface PlayerPositionDataV2 {
+    positions: Map<number, Vector3>; // tick -> position
+    velocities: Map<number, Vector3>; // tick -> velocity
+
+    // runtime only
+    lastPosition?: Vector3;
+    lastVelocity?: Vector3;
+}
+
+export interface PlayerRotationDataV2 {
+    rotations: Map<number, Vector2>; // tick -> rotation (yaw/pitch)
+
+    // runtime only
+    lastRotation?: Vector2;
 }

@@ -1,3 +1,4 @@
+import { Vector2, Vector3 } from "@minecraft/server";
 import { replaySessions } from "../data/replay-player-session";
 
 export function ensureReplayDataForPlayer(playerId: string) {
@@ -8,28 +9,25 @@ export function ensureReplayDataForPlayer(playerId: string) {
 
         if (!session.replayPositionDataMap.has(playerId)) {
             session.replayPositionDataMap.set(playerId, {
-                recordedPositions: [],
-                recordedVelocities: [],
+                positions: new Map<number, Vector3>(),
+                velocities: new Map<number, Vector3>(),
+                lastPosition: undefined,
+                lastVelocity: undefined,
             });
         }
         if (!session.replayRotationDataMap.has(playerId)) {
             session.replayRotationDataMap.set(playerId, {
-                recordedRotations: [],
+                rotations: new Map<number, Vector2>(),
+                lastRotation: undefined,
             });
         }
+
         if (!session.replayActionDataMap.has(playerId)) {
             session.replayActionDataMap.set(playerId, {
-                isSneaking: [],
-                isSleeping: [],
-                isClimbing: [],
-                isFalling: [],
-                isFlying: [],
-                isGliding: [],
-                isSprinting: [],
-                isSwimming: [],
-                isRiding: [],
-                ridingTypeId: [],
-                isCrawling: [],
+                flags: new Map<number, number>(),
+                ridingTypeId: new Map<number, string | null>(),
+                lastFlags: 0,
+                lastRidingTypeId: null,
             });
         }
         if (!session.replayEquipmentDataMap.has(playerId)) {

@@ -14,12 +14,12 @@ import {
     replayCraftPlayerDamageEventsDB,
     replayCraftPlayerItemUseEventsDB,
 } from "../../classes/subscriptions/world-initialize";
-import { Player, Vector3, world } from "@minecraft/server";
+import { Player, Vector2, Vector3, world } from "@minecraft/server";
 import { replayMenuAfterLoad } from "../../ui/replay-menu-afterload";
 import { createPlayerSession } from "../../data/create-session";
 import { replaySessions } from "../../data/replay-player-session";
 import { debugLog, debugWarn, debugError } from "../../data/util/debug";
-import { AmbientEntityData, PlayerReplayData, RecordedEntityComponent } from "../../classes/types/types";
+import { AmbientEntityData, PlayerActionsDataV2, PlayerReplayData, RecordedEntityComponent } from "../../classes/types/types";
 import { http, HttpHeader, HttpRequest, HttpRequestMethod } from "@minecraft/server-net";
 
 export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
@@ -307,7 +307,7 @@ export function loadFromDB(player: Player, buildName: string, showUI: boolean) {
     }
 }
 
-export async function loadFromExternalServerWithUI(player: Player, buildName: string, backendUrl: string, showUI: boolean) {
+export async function loadFromExternalServerWithUI(player: Player, buildName: string, backendUrl: string, showUI: boolean): Promise<boolean> {
     let session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         session = createPlayerSession(player.id);
@@ -315,8 +315,12 @@ export async function loadFromExternalServerWithUI(player: Player, buildName: st
     }
 
     try {
-        // Use HttpRequest and include playerId query parameter
-        const req = new HttpRequest(`${backendUrl}/replays/${buildName}?playerId=${player.id}`);
+        const cleanBuildName = buildName.replace(/\s+$/g, "").trim();
+
+        debugLog(`Loading replay for player.id=${player.id}, buildName="${cleanBuildName}"`);
+
+        const req = new HttpRequest(`${backendUrl}/replays/${encodeURIComponent(cleanBuildName)}?playerId=${encodeURIComponent(player.id)}`);
+
         req.method = HttpRequestMethod.Get;
         req.headers = [new HttpHeader("Accept", "application/json")];
 
@@ -325,7 +329,7 @@ export async function loadFromExternalServerWithUI(player: Player, buildName: st
         if (res.status !== 200) {
             debugWarn(`Failed to fetch replay from backend. Status: ${res.status}`);
             player.sendMessage(`§cFailed to load replay ${buildName}.`);
-            return;
+            return false;
         }
 
         const data = JSON.parse(res.body) as PlayerReplayData;
@@ -358,9 +362,59 @@ export async function loadFromExternalServerWithUI(player: Player, buildName: st
             if (!pData) continue;
 
             if (pData.blocks) session.replayBlockStateMap.set(playerId, pData.blocks);
-            if (pData.positions) session.replayPositionDataMap.set(playerId, pData.positions);
-            if (pData.rotations) session.replayRotationDataMap.set(playerId, pData.rotations);
-            if (pData.actions) session.replayActionDataMap.set(playerId, pData.actions);
+            if (pData.positions) {
+                const positionsMap = new Map<number, Vector3>();
+                const velocitiesMap = new Map<number, Vector3>();
+
+                for (const [tickStr, pos] of Object.entries(pData.positions.positions ?? {})) {
+                    const tick = Number(tickStr);
+                    positionsMap.set(tick, pos as Vector3);
+                }
+
+                for (const [tickStr, vel] of Object.entries(pData.positions.velocities ?? {})) {
+                    const tick = Number(tickStr);
+                    velocitiesMap.set(tick, vel as Vector3);
+                }
+
+                session.replayPositionDataMap.set(playerId, {
+                    positions: positionsMap,
+                    velocities: velocitiesMap,
+                });
+            }
+            if (pData.rotations) {
+                const rotationsMap = new Map<number, Vector2>();
+
+                for (const [tickStr, rot] of Object.entries(pData.rotations.rotations ?? {})) {
+                    const tick = Number(tickStr);
+                    rotationsMap.set(tick, rot as Vector2);
+                }
+
+                session.replayRotationDataMap.set(playerId, {
+                    rotations: rotationsMap,
+                });
+            }
+            if (pData.actions) {
+                const actionsRaw = pData.actions;
+
+                const flagsMap = new Map<number, number>();
+                for (const [tickStr, val] of Object.entries(actionsRaw.flags || {})) {
+                    flagsMap.set(Number(tickStr), val as number);
+                }
+
+                const ridingMap = new Map<number, string | null>();
+                for (const [tickStr, val] of Object.entries(actionsRaw.ridingTypeId || {})) {
+                    ridingMap.set(Number(tickStr), val as string | null);
+                }
+
+                const playerActions: PlayerActionsDataV2 = {
+                    flags: flagsMap,
+                    ridingTypeId: ridingMap,
+                    lastFlags: actionsRaw.lastFlags ?? 0,
+                    lastRidingTypeId: actionsRaw.lastRidingTypeId ?? null,
+                };
+
+                session.replayActionDataMap.set(playerId, playerActions);
+            }
             if (pData.interactionsAfter) session.replayBlockInteractionAfterMap.set(playerId, pData.interactionsAfter);
             if (pData.interactionsBefore) session.replayBlockInteractionBeforeMap.set(playerId, pData.interactionsBefore);
             if (pData.entities) session.replayEntityDataMap.set(playerId, pData.entities);
@@ -436,8 +490,10 @@ export async function loadFromExternalServerWithUI(player: Player, buildName: st
                 debugError(`Error showing replay UI for ${player.id}:`, err);
             }
         }
+        return true;
     } catch (err) {
         debugError(`Failed to load replay from backend:`, err);
         player.sendMessage(`§cFailed to load replay ${buildName}.`);
+        return false;
     }
 }

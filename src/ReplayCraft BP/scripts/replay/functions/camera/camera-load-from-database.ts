@@ -22,7 +22,11 @@ export async function respawnCameraEntities(player: Player) {
 
     //We pass false to the loadFromDB function to not show the UI prompt to the player.
     //loadFromDB(player, session.buildName, false);
-    loadFromExternalServerWithUI(player, session.buildName, config.backendURL, false);
+    const success = await loadFromExternalServerWithUI(player, session.buildName, config.backendURL, false);
+    if (!success) {
+        player.sendMessage("§c[ReplayCraft] Error: Failed to load replay data. – aborting camera respawn.");
+        return;
+    }
     const playerDim = player.dimension.id;
     const dim = world.getDimension(playerDim);
 

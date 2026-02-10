@@ -4,14 +4,14 @@ import {
     PlayerBlockData,
     PlayerBlockInteractionData,
     PlayerBlockInteractionBeforeData,
-    PlayerPositionData,
-    PlayerRotationData,
-    PlayerActionsData,
     PlaybackEntityData,
     PlayerEquipmentData,
     AmbientEntityData,
     PlayerDamageData,
     itemUseData,
+    PlayerActionsDataV2,
+    PlayerPositionDataV2,
+    PlayerRotationDataV2,
 } from "../classes/types/types";
 
 export interface PlayerReplaySession {
@@ -49,9 +49,9 @@ export interface PlayerReplaySession {
     replayBlockStateMap: Map<string, PlayerBlockData>; //was replayBDataMap: Block Related Data (After placing/breaking)
     replayBlockInteractionAfterMap: Map<string, PlayerBlockInteractionData>; //was replayBDataBMap: Block Interaction Data (AfterEvent)
     replayBlockInteractionBeforeMap: Map<string, PlayerBlockInteractionBeforeData>; //was replayBData1Map: Block Interaction Data (BeforeEvent)
-    replayPositionDataMap: Map<string, PlayerPositionData>; //was replayPosDataMap: Player Position Data
-    replayRotationDataMap: Map<string, PlayerRotationData>; //was replayRotDataMap: Player Rotation Data
-    replayActionDataMap: Map<string, PlayerActionsData>; //was replayMDataMap: Player Actions Data
+    replayPositionDataMap: Map<string, PlayerPositionDataV2>; //was replayPosDataMap: Player Position Data
+    replayRotationDataMap: Map<string, PlayerRotationDataV2>; //was replayRotDataMap: Player Rotation Data
+    replayActionDataMap: Map<string, PlayerActionsDataV2>; //was replayMDataMap: Player Actions Data
     replayEntityDataMap: Map<string, PlaybackEntityData>; //was replayODataMap: Playback Entity Data
     replayEquipmentDataMap: Map<string, PlayerEquipmentData>; //was replaySDataMap: Player Armor/Weapons Data
     replayAmbientEntityMap: Map<string, Map<string, AmbientEntityData>>;
@@ -92,6 +92,7 @@ export interface PlayerReplaySession {
     focusPlayerSelection: number;
     affectCameraSelection: number;
     buildName: string;
+    entityTrackingEnabled: boolean;
     hideHUD: boolean;
     playbackHUD: {
         isVisible: boolean;

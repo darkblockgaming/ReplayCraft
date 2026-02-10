@@ -48,7 +48,14 @@ export async function clearStructure(player: Player, session: PlayerReplaySessio
             .map(Number)
             .sort((a, b) => b - a);
 
-        const recordingStartPos = session.replayPositionDataMap.get(playerId)?.recordedPositions?.[0];
+        //const recordingStartPos = session.replayPositionDataMap.get(playerId)?.recordedPositions?.[0];
+        const posData = session.replayPositionDataMap.get(playerId);
+        let recordingStartPos: Vector3 | undefined;
+
+        if (posData && posData.positions.size > 0) {
+            const firstTick = Math.min(...posData.positions.keys());
+            recordingStartPos = posData.positions.get(firstTick);
+        }
         if (!recordingStartPos) {
             debugWarn(`Recording start position not found for playerId: ${playerId}`);
             continue;

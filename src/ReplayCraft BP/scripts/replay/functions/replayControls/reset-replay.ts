@@ -1,5 +1,5 @@
 //@ts-check
-import { Player } from "@minecraft/server";
+import { Player, Vector2, Vector3 } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 
 /**
@@ -83,20 +83,23 @@ export function resetRec(player: Player) {
     session.replayBlockStateMap.set(id, { blockStateChanges: {} });
     session.replayBlockInteractionAfterMap.set(id, { blockSateAfterInteractions: {} });
     session.replayBlockInteractionBeforeMap.set(id, { blockStateBeforeInteractions: {} });
-    session.replayPositionDataMap.set(id, { recordedPositions: [], recordedVelocities: [] });
-    session.replayRotationDataMap.set(id, { recordedRotations: [] });
+    // --- Updated V2 Initialization ---
+    session.replayPositionDataMap.set(id, {
+        positions: new Map<number, Vector3>(),
+        velocities: new Map<number, Vector3>(),
+        lastPosition: undefined,
+        lastVelocity: undefined,
+    });
+
+    session.replayRotationDataMap.set(id, {
+        rotations: new Map<number, Vector2>(),
+        lastRotation: undefined,
+    });
     session.replayActionDataMap.set(id, {
-        isSneaking: [],
-        isSwimming: [],
-        isClimbing: [],
-        isFalling: [],
-        isFlying: [],
-        isGliding: [],
-        isRiding: [],
-        isSprinting: [],
-        isSleeping: [],
-        ridingTypeId: [],
-        isCrawling: [],
+        flags: new Map<number, number>(),
+        ridingTypeId: new Map<number, string | null>(),
+        lastFlags: 0,
+        lastRidingTypeId: null,
     });
     session.replayEntityDataMap.set(id, { customEntity: undefined });
     session.replayAmbientEntityMap.set(id, new Map());

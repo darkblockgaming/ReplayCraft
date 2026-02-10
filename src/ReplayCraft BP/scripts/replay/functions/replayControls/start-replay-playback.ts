@@ -6,6 +6,7 @@ import { waitForChunkLoad } from "../wait-for-chunk-load";
 import { startReplayCam } from "./start-replay-camera";
 import { removeEntities } from "../remove-entities";
 import { debugError, debugLog, debugWarn } from "../../data/util/debug";
+import { findLastRecordedTick } from "../../data/util/resolver";
 
 export async function doReplay(player: Player, pointIndex?: number) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -15,64 +16,43 @@ export async function doReplay(player: Player, pointIndex?: number) {
         return;
     }
 
-    if (session.isReplayActive === true) {
+    if (session.isReplayActive) {
         if (session.textPrompt) {
-            player.sendMessage({
-                rawtext: [{ translate: "rc1.mes.replay.is.already.in.progress" }],
-            });
+            player.sendMessage({ rawtext: [{ translate: "rc1.mes.replay.is.already.in.progress" }] });
         }
-        if (session.soundCue) {
-            player.playSound("note.bass");
-        }
+        if (session.soundCue) player.playSound("note.bass");
         return;
     }
 
     session.replayStateMachine.setState("recStartRep");
     session.isReplayActive = true;
-    /**
-     * We can hide the following hud elements
-     * PaperDoll = 0
-     * Armor = 1
-     * ToolTips = 2
-     * TouchControls = 3
-     * Crosshair = 4
-     * Hotbar = 5
-     * Health = 6
-     * ProgressBar = 7
-     * Hunger = 8
-     * AirBubbles = 9
-     * HorseHealth = 10
-     * StatusEffects = 11ItemText = 12
-     */
-    if (session.hideHUD === true) {
-        player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-    }
 
     // Hide HUD if needed
-    if (session.hideHUD === true) {
+    if (session.hideHUD) {
         player.onScreenDisplay.setHudVisibility(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
     const posData = session.replayPositionDataMap.get(player.id);
-    if (!posData || !posData.recordedPositions || posData.recordedPositions.length === 0) {
+    if (!posData || posData.positions.size === 0) {
         debugWarn(`No recorded positions found for player ${player.name}`);
         return;
     }
 
-    const startTick = session.targetFrameTick;
-    const totalTicks = Math.min(posData.recordedPositions.length, session.recordingEndTick);
-    const clampedTick = Math.min(Math.max(startTick, 0), totalTicks - 1);
-    const closestFrame = posData.recordedPositions[clampedTick];
+    // Get the closest recorded tick ≤ targetFrameTick
+    const posTick = findLastRecordedTick(posData.positions, session.targetFrameTick);
+    if (posTick === null) {
+        debugWarn(`No valid recorded position found for player ${player.name} at tick ${session.targetFrameTick}`);
+        return;
+    }
 
-    const firstRecordedPos = closestFrame;
+    const firstRecordedPos = posData.positions.get(posTick)!;
+
     removeEntities(player, true); // Remove any existing entities before proceeding
 
-    // Ensure chunk is loaded before proceeding
+    // Ensure chunk is loaded
     if (!isChunkLoaded(firstRecordedPos, player)) {
         debugLog(`Chunk not loaded for ${player.name}, teleporting...`);
-
         const success = player.tryTeleport(firstRecordedPos, { checkForBlocks: false });
-
         if (success) {
             await waitForChunkLoad(firstRecordedPos, player);
         } else {
@@ -81,15 +61,9 @@ export async function doReplay(player: Player, pointIndex?: number) {
         }
     }
 
-    // Proceed with replay: Start the camera and summon replay entities
-    session.cameraAffectedPlayers.forEach((player) => {
-        startReplayCam(player, pointIndex); // Ensure camera starts from correct tick
-    });
-    /*
-    session.trackedPlayers.forEach((player) => {
-        summonReplayEntity(session, player); // Ensure entities spawn from correct tick
-    });
-    **/
-    // Summon the replay entity for the main player additional players is present will be spawned later at there tick time
+    // Start camera for affected players
+    session.cameraAffectedPlayers.forEach((p) => startReplayCam(p, pointIndex));
+
+    // Summon the replay entity for this player
     summonReplayEntity(session, player, player.id);
 }

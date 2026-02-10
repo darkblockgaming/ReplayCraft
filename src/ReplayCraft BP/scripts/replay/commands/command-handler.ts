@@ -19,6 +19,7 @@ import { loadSecondsCmd } from "./player commands/load-seconds-cmd";
 import { flyCmd } from "./player commands/fly-cmd";
 import { environmentCmd } from "./player commands/enviroment-cmd";
 import { migrateReplayData } from "./player commands/migrate-replay-cmd";
+import { playerDisableEntityTracking } from "./player commands/disable-entity-tracking-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -70,6 +71,12 @@ function init(event: StartupEvent) {
         name: "rc:migratereplay",
         description: "Migrates replay data from the old database stored in level.db to the external server",
         permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftEntityTrackingCommand: CustomCommand = {
+        name: "rc:entitytracking",
+        description: "Enables or disables entity tracking for the executing player.",
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
     };
     /*
      * Commands that are GameDirectors means the player must have Operator Status, this based on testing
@@ -161,6 +168,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftflightCommand, flyCmd);
     event.customCommandRegistry.registerCommand(replaycraftEnvironmentCommand, environmentCmd);
     event.customCommandRegistry.registerCommand(replaycraftMigrateReplay, migrateReplayData);
+    event.customCommandRegistry.registerCommand(replaycraftEntityTrackingCommand, playerDisableEntityTracking);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);

@@ -2,6 +2,9 @@ import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { PlayerReplaySession } from "../data/replay-player-session.js";
 import { replayCraftSkinDB } from "../classes/subscriptions/world-initialize.js";
 import { debugError, debugWarn } from "../data/util/debug.js";
+import { findLastRecordedTick, resolveFlagsAtTick, resolveRidingTypeAtTick } from "../data/util/resolver.js";
+import { ActionFlags } from "../classes/types/types.js";
+import { safeSet } from "../../main.js";
 
 //@ts-check
 export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: Player, offlinePlayerId?: string, offlinePlayerName?: string) {
@@ -40,21 +43,24 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         }
 
         const startTick = session.targetFrameTick;
-        const totalTicks = Math.min(posData.recordedPositions.length, session.recordingEndTick);
-        const clampedTick = Math.min(Math.max(startTick, 0), totalTicks - 1);
-        const closestFrame = posData.recordedPositions[clampedTick];
 
-        const spawnPos = {
-            x: closestFrame.x,
-            y: closestFrame.y,
-            z: closestFrame.z,
-        };
+        // Find the last recorded tick for position and rotation
+        const posTick = findLastRecordedTick(posData.positions, startTick);
+        const rotTick = rotData ? findLastRecordedTick(rotData.rotations, startTick) : null;
 
+        const posAtTick = posTick !== null ? posData.positions.get(posTick) : undefined;
+        const rotAtTick = rotTick !== null ? rotData?.rotations.get(rotTick) : undefined;
+
+        if (!posAtTick || !rotAtTick) {
+            debugWarn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for player ${targetPlayerId}`);
+            return;
+        }
+
+        // Spawn entity at the last recorded position
+        const spawnPos = { x: posAtTick.x, y: posAtTick.y, z: posAtTick.z };
         const entityType = modelID === 0 ? ("dbg:replayentity_steve" as VanillaEntityIdentifier) : ("dbg:replayentity_alex" as VanillaEntityIdentifier);
 
-        // Spawn entity in the onlinePlayer's dimension
         const customEntity = onlinePlayer.dimension.spawnEntity(entityType, spawnPos);
-
         if (!customEntity) {
             debugError(`[ReplayCraft] Failed to spawn replay entity for ${onlinePlayer.name}`);
             return;
@@ -82,15 +88,49 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         debugWarn(`[ReplayCraft] Stored replay entity for ${targetPlayerId} at tick ${startTick}`);
 
         // Sync entity position and rotation at the start tick
-        const posAtTick = posData.recordedPositions[startTick];
-        const rotAtTick = rotData?.recordedRotations?.[startTick];
+        //const posAtTick = posData.recordedPositions[startTick];
+        //const rotAtTick = rotData?.recordedRotations?.[startTick];
 
         if (posAtTick && rotAtTick) {
             customEntity.teleport(posAtTick, { rotation: rotAtTick });
 
             // Apply sneaking state if present
-            if (pData?.isSneaking?.[startTick] !== undefined) {
-                customEntity.isSneaking = pData.isSneaking[startTick] === 1;
+            if (pData) {
+                // Resolve flags at this tick
+                const flags = resolveFlagsAtTick(pData, startTick);
+
+                // Apply sneaking
+                customEntity.isSneaking = (flags & ActionFlags.Sneaking) !== 0;
+
+                // Apply swimming
+                safeSet(customEntity, "rc:is_swimming", (flags & ActionFlags.Swimming) !== 0);
+
+                // Apply climbing
+                safeSet(customEntity, "rc:is_climbing", (flags & ActionFlags.Climbing) !== 0);
+
+                // Apply falling
+                safeSet(customEntity, "rc:is_falling", (flags & ActionFlags.Falling) !== 0);
+
+                // Apply flying
+                safeSet(customEntity, "rc:is_flying", (flags & ActionFlags.Flying) !== 0);
+
+                // Apply gliding
+                safeSet(customEntity, "rc:is_gliding", (flags & ActionFlags.Gliding) !== 0);
+
+                // Apply sprinting
+                safeSet(customEntity, "rc:is_sprinting", (flags & ActionFlags.Sprinting) !== 0);
+
+                // Apply sleeping
+                safeSet(customEntity, "rc:is_sleeping", (flags & ActionFlags.Sleeping) !== 0);
+
+                // Apply crawling
+                safeSet(customEntity, "rc:is_crawling", (flags & ActionFlags.Crawling) !== 0);
+
+                // Apply riding state and entity type
+                const isRiding = (flags & ActionFlags.Riding) !== 0;
+                const ridingType = resolveRidingTypeAtTick(pData, startTick);
+                safeSet(customEntity, "rc:is_riding", isRiding);
+                safeSet(customEntity, "rc:riding_type", ridingType);
             }
         } else {
             debugWarn(`[ReplayCraft] Could not find position or rotation at tick ${startTick} for player ${targetPlayerId}`);
