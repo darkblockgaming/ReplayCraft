@@ -7,12 +7,10 @@ import config from "../data/util/config";
 import { debugDatabaseUiCmd } from "./debug/database-ui-cmd";
 import { debugPlayAnimationCmd } from "./debug/play-animation-cmd";
 import { debugDatabaseConsoleCmd } from "./debug/database-list-cmd";
-import { debugShowEntityComponentsCmd } from "./debug/debug-utils/show-entity-components";
 import { debugPrintSessionCmd } from "./debug/print-session-data";
 import { updatePlaybackHudCmd } from "./player commands/playback-hud-cmd";
 import { playerPauseRecordingCmd } from "./player commands/recording-pause-cmd";
 import { playerResumeRecordingCmd } from "./player commands/resume-recording-cmd";
-import { debugUtilityCommand } from "./debug/debug-utils/debug-utlility";
 import { dbDeleteCmd } from "./admin commands/db-delete-entry";
 import { dbClearAllCmd } from "./admin commands/wipe-database";
 import { loadSecondsCmd } from "./player commands/load-seconds-cmd";
@@ -97,20 +95,9 @@ function init(event: StartupEvent) {
         permissionLevel: CommandPermissionLevel.GameDirectors,
         optionalParameters: [{ type: CustomCommandParamType.String, name: "Database Name" }],
     };
-    const replaycraftShowEntityComponetsCommand: CustomCommand = {
-        name: "rc:showentitycomponets",
-        description: "Shows requested entity components above near by entities.",
-        permissionLevel: CommandPermissionLevel.GameDirectors,
-        optionalParameters: [{ type: CustomCommandParamType.String, name: "Required Components." }],
-    };
     const replaycraftPrintSessionDataCommand: CustomCommand = {
         name: "rc:printsessiondata",
         description: "Prints the sessions data to the console.",
-        permissionLevel: CommandPermissionLevel.GameDirectors,
-    };
-    const replaycraftdebugMemory: CustomCommand = {
-        name: "rc:debugmemory",
-        description: "dev debug command to print memory usage to console.",
         permissionLevel: CommandPermissionLevel.GameDirectors,
     };
     const replaycraftDeleteDatabasEntry: CustomCommand = {
@@ -158,9 +145,7 @@ function init(event: StartupEvent) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
         event.customCommandRegistry.registerCommand(replaycraftDatabaseCommand, debugDatabaseConsoleCmd);
-        event.customCommandRegistry.registerCommand(replaycraftShowEntityComponetsCommand, debugShowEntityComponentsCmd);
         event.customCommandRegistry.registerCommand(replaycraftPrintSessionDataCommand, debugPrintSessionCmd);
-        event.customCommandRegistry.registerCommand(replaycraftdebugMemory, debugUtilityCommand);
     }
 }
 
