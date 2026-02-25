@@ -40,7 +40,8 @@ import { doSave } from "./replay/functions/replayControls/save-replay-recording"
 import { doSaveReset } from "./replay/functions/replayControls/load-progress-and-reset";
 import { forceSeatIndexZero, getSeatIndex, tryResolveMount, tryResolvePlayerMount } from "./replay/entity/mount";
 import { findLastRecordedTick, resolveFlagsAtTick, resolveRidingTypeAtTick, vectorsEqual, vectorsEqual2 } from "./replay/data/util/resolver";
-
+import { beforeChatSend } from "./replay/classes/subscriptions/chat-send-before-event";
+beforeChatSend();
 /**
  * beforeChatSend(); - we have migrated to the new custom slash commands within the bedrock API.
  */

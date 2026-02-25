@@ -3,60 +3,62 @@ import { DebugBox, DebugText, debugDrawer } from "@minecraft/debug-utilities";
 
 const debug = debugDrawer;
 const MAX_DISTANCE = 16;
-
+const debugViewers = new Set<string>(); // player.id
 let debugEnabled = false;
 let intervalId: number | undefined;
+
+function getHitboxInfo(typeId: string) {
+    // Visual approximations of Java hitboxes (Bedrock-safe)
+    if (typeId.startsWith("minecraft:item")) return { height: 0.25, scale: 0.25 };
+    if (typeId.includes("boat")) return { height: 0.6, scale: 1.2 };
+    if (typeId.includes("minecart")) return { height: 0.7, scale: 1.2 };
+
+    if (typeId.includes("player")) return { height: 1.8, scale: 1.8 };
+    if (typeId.includes("zombie")) return { height: 1.8, scale: 1.8 };
+    if (typeId.includes("skeleton")) return { height: 1.8, scale: 1.8 };
+    if (typeId.includes("creeper")) return { height: 1.7, scale: 1.7 };
+    if (typeId.includes("spider")) return { height: 0.9, scale: 1.4 };
+    if (typeId.includes("cow")) return { height: 1.4, scale: 1.4 };
+    if (typeId.includes("sheep")) return { height: 1.3, scale: 1.3 };
+
+    return { height: 1.0, scale: 1.0 };
+}
 
 function drawDebugBoxes() {
     debug.removeAll();
 
     for (const player of world.getPlayers()) {
-        const playerLoc = player.location;
+        if (!debugViewers.has(player.id)) continue;
 
         const nearbyEntities = player.dimension.getEntities({
-            location: playerLoc,
+            location: player.location,
             maxDistance: MAX_DISTANCE,
             excludeTypes: ["minecraft:player"],
         });
 
         for (const entity of nearbyEntities) {
-            const loc = entity.location;
+            const info = getHitboxInfo(entity.typeId);
 
-            // Draw green debug box
-            const offsetLocation = { x: loc.x - 0.5, y: loc.y, z: loc.z };
-            const box = new DebugBox(offsetLocation);
+            const box = new DebugBox({
+                x: 0,
+                y: info.height / 2, // center on hitbox instead of feet
+                z: 0,
+            });
+
+            box.attachedTo = entity;
+            box.scale = info.scale;
             box.color = { red: 0, green: 255, blue: 0 };
+            box.visibleTo = [player];
+
             debug.addShape(box);
 
-            // Gather deep-cloned component data
-            const components = entity.getComponents();
-            let lineOffset = 0; // how high each line goes
+            const text = new DebugText({ x: 0, y: info.height + 0.35, z: 0 }, entity.typeId);
 
-            const wantedKeys = ["minecraft:skin_id"];
+            text.attachedTo = entity;
+            text.color = { red: 255, green: 255, blue: 255 };
+            text.visibleTo = [player];
 
-            for (const comp of components) {
-                if (!wantedKeys.includes(comp.typeId)) continue;
-
-                const componentData = deepCloneComponentData(comp) as Record<string, unknown>;
-
-                let textLocation = {
-                    x: loc.x,
-                    y: loc.y + 2 + lineOffset * 0.25,
-                    z: loc.z,
-                };
-
-                // Show header with component typeId
-                const headerText = new DebugText(textLocation, comp.typeId);
-                debug.addShape(headerText);
-                lineOffset++;
-
-                // Show the 'value' property specifically for minecraft:skin_id
-                if (comp.typeId === "minecraft:skin_id" && "value" in componentData) {
-                    const skinIdText = new DebugText({ x: loc.x, y: loc.y + 2 + lineOffset * 0.25, z: loc.z }, `value: ${componentData.value}`);
-                    debug.addShape(skinIdText);
-                    lineOffset++;
-                }
-            }
+            debug.addShape(text);
         }
     }
 }
@@ -70,42 +72,27 @@ export function enable() {
 export function disable() {
     if (!debugEnabled) return;
     debugEnabled = false;
+
     if (intervalId !== undefined) {
         system.clearRun(intervalId);
         intervalId = undefined;
     }
+
     debug.removeAll();
 }
 
 export function toggle(sender?: any) {
-    if (debugEnabled) {
-        disable();
+    if (!sender?.id) return;
+
+    if (debugViewers.has(sender.id)) {
+        debugViewers.delete(sender.id);
+        if (debugViewers.size === 0) {
+            disable();
+        }
     } else {
+        debugViewers.add(sender.id);
         enable();
     }
-    sender?.sendMessage?.(`§e[Debug] Debug boxes are now §l${debugEnabled ? "ENABLED" : "DISABLED"}§r§e.`);
-}
 
-function deepCloneComponentData(obj: unknown, seen = new WeakSet<object>()): unknown {
-    if (obj === null || typeof obj !== "object") return obj;
-
-    if (seen.has(obj as object)) return undefined; // avoid circular references
-    seen.add(obj as object);
-
-    if (Array.isArray(obj)) {
-        return obj.map((item) => deepCloneComponentData(item, seen));
-    }
-
-    const cloned: Record<string, unknown> = {};
-    for (const key in obj as Record<string, unknown>) {
-        const value = (obj as Record<string, unknown>)[key];
-        if (typeof value !== "function") {
-            try {
-                cloned[key] = deepCloneComponentData(value, seen);
-            } catch {
-                // some properties may throw
-            }
-        }
-    }
-    return cloned;
+    sender.sendMessage(`§e[Debug] Debug boxes are now §l${debugViewers.has(sender.id) ? "ENABLED" : "DISABLED"}§r§e.`);
 }

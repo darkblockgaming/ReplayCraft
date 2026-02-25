@@ -13,6 +13,6 @@ export function playerDisableEntityTracking(_origin: CustomCommandOrigin, boolea
 
     return {
         status: CustomCommandStatus.Success,
-        message: `Entity tracking ${booleanValue ? "disabled" : "enabled"}.`,
+        message: `Entity tracking ${booleanValue ? "enabled" : "disabled"}.`,
     };
 }
