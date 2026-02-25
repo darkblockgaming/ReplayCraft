@@ -3,7 +3,7 @@ rc.welcome.message=§f§4[ReplayCraft]§f Type /rc:controls in chat to be given 
 ##-----------------------------------------------
 ##------------- Cinematic Menu Section (Prefix 'rc2') -------------
 
-rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v3.1.0§r
+rc2.title.cinematic.menu=§9ReplayCraft [Cinematic Menu] v3.1.1§r
 
 ## "cineMainMenu"
 rc2.body.main.menu=Create/Manage Cinematics
@@ -152,7 +152,7 @@ rc2.mes.invalid.orbital.radius.value=§f§4[ReplayCraft] §f§cInvalid Orbital R
 
 ##-----------------------------------------------
 ##------------- Replay Menu Section (Prefix 'rc1') -------------
-rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v3.1.0§r
+rc1.title.replay.menu=§9ReplayCraft [Replay Menu] v3.1.1§r
 rc1.title.replay.settings=Replay Settings
 rc1.title.preview.settings=Preview Settings
 rc1.title.rc1.settings=§bReplayCraft Settings§r
