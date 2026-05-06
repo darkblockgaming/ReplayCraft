@@ -25,7 +25,7 @@ function drawDebugBoxes() {
             // Draw green debug box
             const offsetLocation = { x: loc.x - 0.5, y: loc.y, z: loc.z };
             const box = new DebugBox(offsetLocation);
-            box.color = { red: 0, green: 255, blue: 0 };
+            box.color = { red: 0, green: 255, blue: 0, alpha: 1.0 };
             debug.addShape(box);
 
             // Gather deep-cloned component data
