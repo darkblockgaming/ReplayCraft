@@ -22,13 +22,7 @@
     },
     "dependencies": {
         "@minecraft/server": "2.8.0-beta.1.26.20-stable",
-        "@minecraft/server-ui": "2.1.0-beta.1.26.20-stable",
-        "@minecraft/debug-utilities": "1.0.0-beta.1.26.20-stable"
-    },
-    "overrides": {
-        "@minecraft/debug-utilities": {
-            "@minecraft/server": "2.8.0-beta.1.26.20-stable"
-        }
+        "@minecraft/server-ui": "2.1.0-beta.1.26.20-stable"
     },
     "prettier": {
         "trailingComma": "es5",
