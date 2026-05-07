@@ -1,5 +1,9 @@
 # Changelog
-## [v3.1.4](https://github.com/darkblockgaming/ReplayCraft/tree/v3.1.3 (2026-05-06)
+## [v3.1.5](https://github.com/darkblockgaming/ReplayCraft/tree/v3.1.5 (2026-05-07)
+
+[Full Changelog](https://github.com/darkblockgaming/ReplayCraft/compare/v3.1.4...v3.1.5)
+
+## [v3.1.4](https://github.com/darkblockgaming/ReplayCraft/tree/v3.1.4 (2026-05-06)
 
 [Full Changelog](https://github.com/darkblockgaming/ReplayCraft/compare/v3.1.3...v3.1.4)
 ## [v3.1.3](https://github.com/darkblockgaming/ReplayCraft/tree/v3.1.3 (2026-04-07)
