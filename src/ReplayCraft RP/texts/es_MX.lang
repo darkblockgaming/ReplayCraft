@@ -3,7 +3,7 @@ rc.welcome.message=§f§4[ReplayCraft]§f Escribe /rc:controls en el chat para r
 ##-----------------------------------------------
 ##------------- Sección Menú Cinemático (Prefijo 'rc2') -------------
 
-rc2.title.cinematic.menu=§9ReplayCraft [Menú Cinemático] v3.1.4§r
+rc2.title.cinematic.menu=§9ReplayCraft [Menú Cinemático] v3.1.5§r
 
 ## "cineMainMenu"
 rc2.body.main.menu=Crear/Gestionar Cinemáticas
@@ -40,7 +40,7 @@ rc2.button.next=Siguiente --->>\
 
 ## "frameManagementMenu"
 rc2.body.manage.frames=Eliminar/gestionar frames.
-rc2.button.remove.last.frame=Eliminar Último Frame
+rc2.button.remove.last.frame=Eliminar ��ltimo Frame
 rc2.button.remove.all.frames=Eliminar Todos los Frames
 rc2.button.selective.removal=Eliminación Selectiva
 
@@ -134,7 +134,7 @@ rc2.mes.cannot.reset.settings.while.camera.is.in.motion=§f§4[ReplayCraft] §f�
 rc2.mes.all.settings.have.been.reset.to.default=§f§4[ReplayCraft] §fTodos los ajustes han sido restablecidos a los valores predeterminados!
 rc2.mes.cannot.remove.last.frame.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cNo se puede eliminar el último frame mientras la cámara está en movimiento§r
 rc2.mes.no.frames.to.remove=§f§4[ReplayCraft] §f§cNo hay frames para eliminar§r
-rc2.mes.removed.last.frame=§f§4[ReplayCraft] §fÚltimo Frame eliminado
+rc2.mes.removed.last.frame=§f§4[ReplayCraft] §f��ltimo Frame eliminado
 rc2.mes.cannot.remove.all.frames.while.camera.is.in.motion=§f§4[ReplayCraft] §f§cNo se pueden eliminar todos los frames mientras la cámara está en movimiento§r
 rc2.mes.all.frames.have.been.removed=§f§4[ReplayCraft] §fTodos los frames han sido eliminados.
 rc2.mes.removed.frame.no=§f§4[ReplayCraft] §fFrame eliminado n.°
@@ -151,7 +151,7 @@ rc2.mes.invalid.orbital.radius.value=§f§4[ReplayCraft] §f§cValor de radio or
 
 ##-----------------------------------------------
 ##------------- Sección Menú de Replay (Prefijo 'rc1') -------------
-rc1.title.replay.menu=§9ReplayCraft [Menú de Replay] v3.1.4§r
+rc1.title.replay.menu=§9ReplayCraft [Menú de Replay] v3.1.5§r
 rc1.title.replay.settings=Ajustes de Replay
 rc1.title.preview.settings=Ajustes de Vista Previa
 rc1.title.rc1.settings=§bAjustes de ReplayCraft§r
