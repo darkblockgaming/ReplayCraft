@@ -39,7 +39,7 @@ export async function doSaveReset(player: Player) {
     cleanupReplayEntities(session);
 
     // Now safely load blocks
-    await loadBlocksUpToTick(session.recordingEndTick, player);
+    await loadBlocksUpToTick(session.recordingEndTick, player, player.id);
 
     // Final reset
     resetRec(player);
