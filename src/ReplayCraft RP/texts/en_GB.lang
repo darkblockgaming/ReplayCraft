@@ -294,3 +294,4 @@ rc1.new.session.title=§9ReplayCraft: Confirm New Session.
 rc1.new.session.body=Starting a new session will prevent you from being included in other replays. Are you sure you want to continue?
 rc1.ui.yes.button=Yes
 rc1.ui.no.button=No
+rc1.session.error.message=§f§4[ReplayCraft]§f §cError: No replay session found for you.
