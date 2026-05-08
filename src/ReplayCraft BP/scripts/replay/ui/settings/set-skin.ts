@@ -11,7 +11,6 @@ export function setSkin(player: Player) {
     let tempSession = false;
     let session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        //player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
         session = createPlayerSession(player.id);
         initializePlayerMaps(session, player.id);
         session.playerName = player.name;

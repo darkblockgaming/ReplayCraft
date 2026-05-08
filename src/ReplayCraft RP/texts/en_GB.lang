@@ -295,3 +295,4 @@ rc1.new.session.body=Starting a new session will prevent you from being included
 rc1.ui.yes.button=Yes
 rc1.ui.no.button=No
 rc1.session.error.message=§f§4[ReplayCraft]§f §cError: No replay session found for you.
+rc1.session.control.items.message=§f§4[ReplayCraft]§f You have been given the control items.
