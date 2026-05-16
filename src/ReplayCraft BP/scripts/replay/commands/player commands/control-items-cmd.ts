@@ -29,12 +29,12 @@ export function givePlayerControlsCmd(_origin: CustomCommandOrigin) {
             container.setItem(freeSlots[1], item2);
 
             sender.sendMessage({
-                rawtext: [{ translate: "rc1.mes.thanks" }],
+                rawtext: [{ translate: "rc1.session.control.items.message" }],
             });
         }
     });
     return {
         status: CustomCommandStatus.Success,
-        message: `§f§4[ReplayCraft]§f You have been given the controll items.`,
+        message: "",
     };
 }
