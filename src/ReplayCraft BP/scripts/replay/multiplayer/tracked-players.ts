@@ -51,7 +51,7 @@ export function updateTrackedPlayers() {
         if (changed) {
             session.trackedPlayers = newTracked;
 
-            mainRecorder.sendMessage(`§7[ReplayCraft] Tracking ${newTracked.length} player(s): §f+${playersAdded.length} -${playersRemoved.length}`);
+            debugLog(`§7[ReplayCraft] Tracking ${newTracked.length} player(s): §f+${playersAdded.length} -${playersRemoved.length}`);
 
             // Add newly tracked players to replay data
             for (const p of playersAdded) {
