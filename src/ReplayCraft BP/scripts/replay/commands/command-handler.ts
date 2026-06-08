@@ -20,6 +20,7 @@ import { entityRecordingCmd } from "./player commands/entity-recording-cmd";
 import { multiplayerRecordingCmd } from "./player commands/multiplayer-recording-cmd";
 import { playerNewRecordingCmd } from "./player commands/new-recording-cmd";
 import { playerPreviewRecordingCmd } from "./player commands/preview-replay-cmd";
+import { playerStopPlaybackCmd } from "./player commands/stop-playback-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -87,6 +88,11 @@ function init(event: StartupEvent) {
     const replaycraftPreviewRecordingCommand: CustomCommand = {
         name: "rc:previewrecording",
         description: "Previews a recording providing you have a session and recording data.",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftStopPlaybackCommand: CustomCommand = {
+        name: "rc:stopplayback",
+        description: "Stops the current playback.",
         permissionLevel: CommandPermissionLevel.Any,
     };
     /*
@@ -171,6 +177,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftMultiplayerRecordingCommand, multiplayerRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftNewRecordingCommand, playerNewRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftPreviewRecordingCommand, playerPreviewRecordingCmd);
+    event.customCommandRegistry.registerCommand(replaycraftStopPlaybackCommand, playerStopPlaybackCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
