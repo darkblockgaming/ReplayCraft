@@ -1044,10 +1044,18 @@ export function safeSet(entity: Entity & { setProperty?: (id: string, value: boo
 
 function estimateMapMemory(map: Map<any, any>): number {
     let total = 0;
-    // Rough approximation: sum JSON string lengths of values
+
     for (const value of map.values()) {
-        total += JSON.stringify(value).length;
+        try {
+            const str = JSON.stringify(value);
+            if (typeof str === "string") {
+                total += str.length;
+            }
+        } catch {
+            continue;
+        }
     }
+
     if (config.debugLogMemoryUsage) {
         debugLog(`[ReplayCraft DEBUG] Estimated memory for map: ${total} bytes`);
     }
@@ -1058,15 +1066,26 @@ function estimateMapMemory(map: Map<any, any>): number {
 function checkMapMemoryLimits(maps: Record<string, Map<any, any>>, player: any) {
     for (const [name, map] of Object.entries(maps)) {
         const memoryUsage = estimateMapMemory(map);
+
         if (config.debugLogMemoryUsage) {
             debugLog(`[ReplayCraft DEBUG] ${name}: entries=${map.size}, approxMemory=${memoryUsage} bytes`);
         }
 
-        if (memoryUsage >= MAP_MEMORY_LIMITS[name as keyof typeof MAP_MEMORY_LIMITS]) {
+        const limit = MAP_MEMORY_LIMITS[name as keyof typeof MAP_MEMORY_LIMITS];
+
+        if (limit === undefined) {
+            if (config.debugLogMemoryUsage) {
+                debugLog(`[ReplayCraft DEBUG] No memory limit defined for map "${name}"`);
+            }
+            continue; // skip instead of silently failing
+        }
+
+        if (memoryUsage >= limit) {
             stopRecording(name, player);
-            return true; // stop early if any map exceeds limit
+            return true;
         }
     }
+
     return false;
 }
 
