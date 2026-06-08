@@ -8,14 +8,12 @@ export function playerResumeRecordingCmd(_origin: CustomCommandOrigin) {
     const session = replaySessions.playerSessions.get(sender.id);
     system.run(() => {
         if (!session) {
-            sender.sendMessage("§c[ReplayCraft] Error: No replay session found for you.");
+            sender.sendMessage({
+                rawtext: [{ translate: "rc1.session.error.message" }],
+            });
             return;
         }
-        if (!session.replayStateMachine.states.recPaused) {
-            sender.sendMessage("§c[ReplayCraft] Error: You are not currently paused in a recording.");
-            return;
-        }
-        doResume(sender);
+        if (session.replayStateMachine.state == "recPaused") doResume(sender);
     });
 
     return {

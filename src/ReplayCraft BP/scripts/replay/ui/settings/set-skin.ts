@@ -2,13 +2,24 @@ import * as ui from "@minecraft/server-ui";
 import { replaySessions } from "../../data/replay-player-session";
 import { Player } from "@minecraft/server";
 import { replayCraftSkinDB } from "../../classes/subscriptions/world-initialize";
-import { debugError, debugWarn } from "../../data/util/debug";
+import { debugError, debugLog, debugWarn } from "../../data/util/debug";
+import { createPlayerSession } from "../../data/create-session";
+import { initializePlayerMaps } from "../../data/initialize-player-maps";
+import config from "../../data/util/config";
 
 export function setSkin(player: Player) {
-    const session = replaySessions.playerSessions.get(player.id);
+    let tempSession = false;
+    let session = replaySessions.playerSessions.get(player.id);
     if (!session) {
-        player.sendMessage(`§c[ReplayCraft] Error: No replay session found for you.`);
-        return;
+        session = createPlayerSession(player.id);
+        initializePlayerMaps(session, player.id);
+        session.playerName = player.name;
+        replaySessions.playerSessions.set(player.id, session);
+
+        if (config.debugPlayerItemUseAfterEvent === true) {
+            debugLog(`[Replay Init] Session created for ${player.name}`);
+        }
+        tempSession = true;
     }
 
     let skinID: number = 0;
@@ -35,6 +46,9 @@ export function setSkin(player: Player) {
         .show(player)
         .then((response) => {
             if (response.canceled && response.cancelationReason === "UserBusy") {
+                if (tempSession) {
+                    replaySessions.playerSessions.delete(player.id);
+                }
                 setSkin(player);
                 return;
             }
@@ -48,6 +62,9 @@ export function setSkin(player: Player) {
             const skinSize = response.formValues[1].toString();
             const capeType = response.formValues[2].toString();
             replayCraftSkinDB.set(player.id, `${skinType},${skinSize}, ${capeType}`);
+            if (tempSession) {
+                replaySessions.playerSessions.delete(player.id);
+            }
         })
         .catch((err) => {
             debugError("setSkin error:", err);
