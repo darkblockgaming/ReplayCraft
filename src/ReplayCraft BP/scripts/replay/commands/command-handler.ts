@@ -18,6 +18,8 @@ import { flyCmd } from "./player commands/fly-cmd";
 import { environmentCmd } from "./player commands/enviroment-cmd";
 import { entityRecordingCmd } from "./player commands/entity-recording-cmd";
 import { multiplayerRecordingCmd } from "./player commands/multiplayer-recording-cmd";
+import { playerNewRecordingCmd } from "./player commands/new-recording-cmd";
+import { playerPreviewRecordingCmd } from "./player commands/preview-replay-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -75,6 +77,16 @@ function init(event: StartupEvent) {
         name: "rc:multiplayerrecording",
         description: "Toggles multiplayer recording mode.",
         mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "Enable" }],
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftNewRecordingCommand: CustomCommand = {
+        name: "rc:newrecording",
+        description: "Starts a new recording providing you have a session if not a new session will be created.",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftPreviewRecordingCommand: CustomCommand = {
+        name: "rc:previewrecording",
+        description: "Previews a recording providing you have a session and recording data.",
         permissionLevel: CommandPermissionLevel.Any,
     };
     /*
@@ -157,6 +169,8 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftEnvironmentCommand, environmentCmd);
     event.customCommandRegistry.registerCommand(replaycraftEntityRecordingCommand, entityRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftMultiplayerRecordingCommand, multiplayerRecordingCmd);
+    event.customCommandRegistry.registerCommand(replaycraftNewRecordingCommand, playerNewRecordingCmd);
+    event.customCommandRegistry.registerCommand(replaycraftPreviewRecordingCommand, playerPreviewRecordingCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
