@@ -21,6 +21,7 @@ import { multiplayerRecordingCmd } from "./player commands/multiplayer-recording
 import { playerNewRecordingCmd } from "./player commands/new-recording-cmd";
 import { playerPreviewRecordingCmd } from "./player commands/preview-replay-cmd";
 import { playerStopPlaybackCmd } from "./player commands/stop-playback-cmd";
+import { playerSaveRecordingCmd } from "./player commands/save-recording-cmd";
 function init(event: StartupEvent) {
     /*
      * Commands that have a Level set to Any means everyone can run this command, these are things accessible to all players.
@@ -93,6 +94,11 @@ function init(event: StartupEvent) {
     const replaycraftStopPlaybackCommand: CustomCommand = {
         name: "rc:stopplayback",
         description: "Stops the current playback.",
+        permissionLevel: CommandPermissionLevel.Any,
+    };
+    const replaycraftSaveRecordingCommand: CustomCommand = {
+        name: "rc:save",
+        description: "Saves the current recording.",
         permissionLevel: CommandPermissionLevel.Any,
     };
     /*
@@ -178,6 +184,7 @@ function init(event: StartupEvent) {
     event.customCommandRegistry.registerCommand(replaycraftNewRecordingCommand, playerNewRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftPreviewRecordingCommand, playerPreviewRecordingCmd);
     event.customCommandRegistry.registerCommand(replaycraftStopPlaybackCommand, playerStopPlaybackCmd);
+    event.customCommandRegistry.registerCommand(replaycraftSaveRecordingCommand, playerSaveRecordingCmd);
     if (config.devChatCommands) {
         event.customCommandRegistry.registerCommand(replaycraftDatabaseUiCommand, debugDatabaseUiCmd);
         event.customCommandRegistry.registerCommand(playAnimationCommand, debugPlayAnimationCmd);
