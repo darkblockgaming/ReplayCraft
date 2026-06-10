@@ -69,6 +69,8 @@ export function summonReplayEntity(session: PlayerReplaySession, onlinePlayer: P
         customEntity.setProperty("rc:cape", capeID);
         switch (session.settingNameType) {
             case 0:
+                customEntity.nameTag = "";
+                break;
             case 1:
                 customEntity.nameTag = offlinePlayerName ?? onlinePlayer.name;
                 break;
