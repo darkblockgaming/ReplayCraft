@@ -3,7 +3,6 @@ import { loadFrameTicksForm } from "./load-frame-ticks-form";
 import { loadFrameSecondsForm } from "./load-frame-seconds-form";
 import { cancelRec } from "./cancel-recording";
 import { Player, world } from "@minecraft/server";
-import { addCameraPoint } from "../functions/camera/add-camera-point";
 import { doProceedFurther } from "../functions/camera/complete-camera-setup";
 import { resetCamSetup } from "../functions/camera/reset-camera-setup";
 import { respawnCameraEntities } from "../functions/camera/camera-load-from-database";
@@ -12,6 +11,7 @@ import { openCameraReplaySelectFormTicks } from "./timeline/select-camera-point-
 import { openCameraReplaySelectFormSeconds } from "./timeline/select-camera-point-seconds";
 import { replaySessions } from "../data/replay-player-session";
 import { enableFlight } from "../functions/player/survival";
+import { isInstantCameraPoint } from "./settings/instant-camera-point";
 
 // Main menu entry point
 export function ReplayCraft2E(player: Player) {
@@ -66,13 +66,14 @@ function showTimelineMenu(player: Player) {
                             rawtext: [{ translate: "rc1.hardcore.mode.check" }],
                         });
                         //do the same as ceative mode you will need to get creative with blocks to get the right angle
-                        return addCameraPoint(player);
+
+                        return isInstantCameraPoint(player);
                     }
                     //if the player is not in creative mode, and the world is not in hardcore mode, enable flight
                     return enableFlight(player);
                 }
                 // If player is in Creative mode, proceed to add camera point
-                return addCameraPoint(player);
+                return isInstantCameraPoint(player);
             case 3:
                 return openCameraReplaySelectFormTicks(player);
             case 4:

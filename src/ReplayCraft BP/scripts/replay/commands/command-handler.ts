@@ -40,6 +40,7 @@ function init(event: StartupEvent) {
         name: "rc:add",
         description: "Add a camera point.",
         permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{ type: CustomCommandParamType.Boolean, name: "If set to true snap to this point" }],
     };
     const replaycraftPauseRecordingCommand: CustomCommand = {
         name: "rc:pause",

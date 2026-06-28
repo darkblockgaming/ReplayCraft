@@ -49,10 +49,13 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
             const to = camPos[i + 1];
             const toRot = camRot[i + 1];
 
+            const isInstant = to.instant;
+        
             const tickDiff = to.tick - from.tick;
-            const easingTime = tickDiff / 20;
-            const relativeTick = from.tick - baseTick;
 
+            const easingTime = isInstant ? 0.05 : tickDiff / 20;
+
+            const relativeTick = from.tick - baseTick;
             const timeOut2Id = system.runTimeout(() => {
                 const distance = calculateDistance(from.position, to.position); // in blocks
                 const speedBPS = distance / easingTime; // blocks per second

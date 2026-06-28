@@ -2,7 +2,7 @@ import { Player, VanillaEntityIdentifier } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
 import { disableFlight } from "../player/survival";
 //addCameraPoint = addPos
-export function addCameraPoint(player: Player) {
+export function addCameraPoint(player: Player, isInstant: boolean = false) {
     const session = replaySessions.playerSessions.get(player.id);
     if (!session) {
         player.sendMessage("No session found for player.");
@@ -53,6 +53,7 @@ export function addCameraPoint(player: Player) {
     session.replayCamPos.push({
         position: player.getHeadLocation(),
         tick: cameraPosTick,
+        instant: isInstant,
     });
     session.replayCamRot.push({
         rotation: player.getRotation(),
