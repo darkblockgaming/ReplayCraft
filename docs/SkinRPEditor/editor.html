@@ -27,10 +27,32 @@
             text-align: left;
         }
 
-        #jsonEditor {
-            height: 400px;
-            width: 100%;
-            border: 1px solid #ccc;
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background: #035fff;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        /* Hide default file inputs */
+        input[type="file"] {
+            display: none;
         }
 
         /* Loading Spinner */
@@ -78,31 +100,39 @@
         <!-- SKINS -->
         <section>
             <h2>Upload Skin Files</h2>
-            <form id="skinUploadForm" enctype="multipart/form-data">
-                <label for="skinFiles">Upload Skin Files (.png):</label>
-                <input type="file" id="skinFiles" accept=".png" multiple>
-            </form>
+
+            <input type="file" id="skinFiles" accept=".png" multiple>
+
+            <button type="button" onclick="document.getElementById('skinFiles').click()">
+                Add Skin Files
+            </button>
+
+            <h3>Selected Skins:</h3>
+            <ul id="skinsPreview"></ul>
         </section>
 
         <!-- CAPES -->
         <section>
             <h2>Upload Cape Files</h2>
-            <form id="capeUploadForm" enctype="multipart/form-data">
-                <label for="capeFiles">Upload Cape Files (.png):</label>
-                <input type="file" id="capeFiles" accept=".png" multiple>
-            </form>
+
+            <input type="file" id="capeFiles" accept=".png" multiple>
+
+            <button type="button" onclick="document.getElementById('capeFiles').click()">
+                Add Cape Files
+            </button>
+
+            <h3>Selected Capes:</h3>
+            <ul id="capesPreview"></ul>
         </section>
 
+        <!-- GENERATE -->
         <section>
             <h2>Generate Pack</h2>
-            <button type="button" id="generateSkinPackButton">Generate Skin/Cape Pack</button>
+            <button type="button" id="generateSkinPackButton">
+                Generate Skin/Cape Pack
+            </button>
         </section>
-<!--
-        <section>
-            <h2>Create and Download McPack</h2>
-            <button type="button" id="createArchiveButton">Download Pack</button>
-        </section>
-        -->
+
     </div>
 
     <!-- Loading Indicator -->
