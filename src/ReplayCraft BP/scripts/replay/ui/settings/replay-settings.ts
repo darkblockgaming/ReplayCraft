@@ -31,10 +31,11 @@ export function replaySettings(player: Player) {
         .dropdown("rc1.dropdown.title.name.of.replay.player", ["Disable", "Player's Name", "Custom Name"], { defaultValueIndex: session.settingNameType })
         .textField("rc1.textfield.custom.name", session.settingCustomName)
         .dropdown("rc1.dropdown.title.camera.ease.type", session.easeTypes, { defaultValueIndex: session.replayCamEase })
-        .dropdown("rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)"], { defaultValueIndex: session.settingCameraType })
+        .dropdown("rc1.dropdown.title.camera.type", ["None (Free Cam)", "Cinematic Cam", "Focus Cam", "Top-Down Focus (Fixed)", "Top-Down Focus (Dynamic)", "Smooth Spline Cam"], { defaultValueIndex: session.settingCameraType })
         .dropdown("rc1.dropdown.title.focus.on.player", playerName, { defaultValueIndex: session.focusPlayerSelection })
         .dropdown("rc1.dropdown.title.affect.camera.of.players", ["All Players", ...playerName], { defaultValueIndex: session.affectCameraSelection })
-        .slider("drop.title.topdown.cam.height", 2, 20, { valueStep: 1, defaultValue: session.topDownCamHight });
+        .slider("drop.title.topdown.cam.height", 2, 20, { valueStep: 1, defaultValue: session.topDownCamHight })
+        .slider("rc1.slider.title.curve.resolution", 1, 4, { valueStep: 1, defaultValue: session.curveStepTicks });
 
     replaySettingsForm.show(player).then((response) => {
         if (response.canceled) {
@@ -68,5 +69,6 @@ export function replaySettings(player: Player) {
             session.cameraAffectedPlayers[0] = session.trackedPlayers[session.affectCameraSelection - 1];
         }
         session.topDownCamHight = Number(response.formValues[8]);
+        session.curveStepTicks = Number(response.formValues[9]);
     });
-}
+        }

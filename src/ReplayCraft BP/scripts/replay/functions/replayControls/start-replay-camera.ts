@@ -1,5 +1,6 @@
 import { EasingType, Player, system } from "@minecraft/server";
 import { replaySessions } from "../../data/replay-player-session";
+import { generateCameraCurve } from "../camera/generate-camera-curve";
 
 export function startReplayCam(player: Player, startPoint: number = 0) {
     const session = replaySessions.playerSessions.get(player.id);
@@ -42,7 +43,7 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
                 rotation: firstRot.rotation,
             });
         }, 0);
-        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id)!.push(timeOut1Id);
 
         for (let i = startPoint; i < camPos.length - 1; i++) {
             const from = camPos[i];
@@ -76,8 +77,37 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
                     },
                 });
             }, relativeTick);
-            session.cameraTransitionTimeoutsMap.get(player.id).push(timeOut2Id);
+            session.cameraTransitionTimeoutsMap.get(player.id)!.push(timeOut2Id);
         }
+    }
+
+    // Type 5: Smooth Spline Cam — instead of an eased straight line between two
+    // points (type 1), this generates a Catmull-Rom curve through every point and
+    // walks it in small steps, so the path actually bends through the points
+    // rather than turning sharply at each one.
+    if (session.settingCameraType === 5) {
+        const camPosFromStart = camPos.slice(startPoint);
+        const camRotFromStart = camRot.slice(startPoint);
+        const stepTicks = session.curveStepTicks ?? 1;
+        const waypoints = generateCameraCurve(camPosFromStart, camRotFromStart, stepTicks);
+
+        // Slight overlap on the ease time keeps the camera moving smoothly between
+        // scheduled waypoints even if a tick is delayed, instead of momentarily stalling.
+        const easeTime = (stepTicks / 20) * 1.15;
+
+        waypoints.forEach((wp, index) => {
+            const relativeTick = wp.tick - baseTick;
+            const timeOutId = system.runTimeout(() => {
+                player.camera.setCamera("minecraft:free", {
+                    location: wp.position,
+                    rotation: wp.rotation,
+                    ...(index === 0
+                        ? {}
+                        : { easeOptions: { easeTime, easeType: EasingType[ease] } }),
+                });
+            }, relativeTick);
+            session.cameraTransitionTimeoutsMap.get(player.id)!.push(timeOutId);
+        });
     }
 
     // Types 2, 3, 4 (non-eased) — adapt the same relative tick logic
@@ -91,21 +121,21 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
             });
             session.isFollowCamActive = true;
         }, 0);
-        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id)!.push(timeOut1Id);
     }
 
     if (session.settingCameraType === 3) {
         const timeOut1Id = system.runTimeout(() => {
             session.isTopDownFixedCamActive = true;
         }, 0);
-        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id)!.push(timeOut1Id);
     }
 
     if (session.settingCameraType === 4) {
         const timeOut1Id = system.runTimeout(() => {
             session.isTopDownDynamicCamActive = true;
         }, 0);
-        session.cameraInitTimeoutsMap.get(player.id).push(timeOut1Id);
+        session.cameraInitTimeoutsMap.get(player.id)!.push(timeOut1Id);
     }
     function calculateDistance(pos1: { x: number; y: number; z: number }, pos2: { x: number; y: number; z: number }): number {
         const dx = pos2.x - pos1.x;
@@ -114,3 +144,4 @@ export function startReplayCam(player: Player, startPoint: number = 0) {
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 }
+    

@@ -241,6 +241,9 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
         cameraInitTimeoutsMap: new Map(),
         cameraTransitionTimeoutsMap: new Map(),
         settingCameraType: 1,
+        // 1 = one waypoint every tick (smoothest, most system.runTimeout calls),
+        // up to 4 = one waypoint every 4 ticks (cheaper, slightly less smooth).
+        curveStepTicks: 1,
         replayCamEase: 0,
         settingReplayType: 0,
         isFollowCamActive: false,
@@ -278,4 +281,4 @@ export function createPlayerSession(_playerId: string): PlayerReplaySession {
     session.replayStateMachine = new ReplayStateMachine(session);
 
     return session;
-}
+            }
